@@ -1,0 +1,33 @@
+---
+const technologies = [
+  'React',
+  'Node.js',
+  'TypeScript',
+  'Python',
+  'AI/ML',
+  'Next.js',
+  'Docker',
+  'APIs'
+];
+---
+
+<section class="py-24 bg-surface-container-low overflow-hidden" id="stack">
+  <div class="max-w-7xl mx-auto px-8">
+    <div class="text-center mb-16">
+      <span class="text-xs font-mono text-primary-dim uppercase tracking-[0.4em] mb-4 block">
+        Nuestro Arsenal
+      </span>
+      <h2 class="text-3xl font-headline font-bold">
+        Arquitecturas del Futuro
+      </h2>
+    </div>
+    
+    <div class="flex flex-wrap justify-center gap-4">
+      {technologies.map((tech) => (
+        <div class="tech-badge">
+          {tech}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
