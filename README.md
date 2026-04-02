@@ -91,22 +91,26 @@ npm run astro      # Run Astro CLI commands
 
 ## 🎯 Key Features
 
-### No-Line Rule
-Standard 1px borders are **prohibited** for sectioning. Use background shifts or negative space instead.
+### 🎨 Animations & Micro-interactions
+- **Scroll Reveal**: Sections fade in as you scroll (Intersection Observer)
+- **Custom Cursor**: Desktop-only smooth following cursor with hover effects
+- **Progress Bar**: Gradient bar tracking scroll progress
+- **Floating Animations**: Hero geometric shapes with orbiting rings
+- **Hover Effects**: Ambient glows on interactive elements
 
-### Glass Effects
-Floating elements (nav, badges) use:
-- `backdrop-blur: 12px`
-- `background: surface-variant @ 10% opacity`
+### 📊 Content & Conversion
+- **Real Metrics**: -70% ticket reduction, <100ms response time, 99.9% uptime
+- **Testimonials**: 3 client success stories with measurable results
+- **Trust Signals**: 50+ projects, ISO 27001, GDPR badges
+- **Contact Form**: Full functional form with validation (ready for backend)
+- **Strong CTAs**: "Agendar Consulta Gratis" with clear value props
 
-### Ambient Glows
-Hover states apply digital light simulation:
-- Blur: 20px
-- Color: primary cyan
-- Opacity: 15%
-
-### Asymmetric Layouts
-Avoid 3-column grids. Use 60/40 splits and overlapping elements for visual tension.
+### 🎭 Design System Implementation
+- **No-Line Rule**: Standard 1px borders prohibited, negative space instead
+- **Glass Effects**: Backdrop blur 12px on floating elements
+- **Ambient Glows**: Digital light simulation (20px blur, 15% opacity)
+- **Asymmetric Layouts**: 60/40 splits, overlapping elements
+- **Tonal Layering**: #0e0e0e → #1a1919 for elevation (no drop shadows)
 
 ## 🔧 Customization
 
