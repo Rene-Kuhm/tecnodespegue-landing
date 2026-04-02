@@ -113,25 +113,26 @@
     e.preventDefault();
     
     const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
     
-    // Simulated submission - replace with your actual endpoint
-    // Example: fetch('/api/contact', { method: 'POST', body: JSON.stringify(data) })
-    
-    console.log('Form data:', data);
-    
-    // Show success message
-    form.classList.add('hidden');
-    successMessage?.classList.remove('hidden');
-    
-    // For production, integrate with:
-    // - Formspree: https://formspree.io/
-    // - Netlify Forms: https://docs.netlify.com/forms/setup/
-    // - Your own API endpoint
-    
-    // Optional: Send to email via mailto as fallback
-    const subject = `Nuevo contacto: ${data.name} - ${data.company}`;
-    const body = `
+    try {
+      // Submit to Formspree
+      const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        // Show success message
+        form.classList.add('hidden');
+        successMessage?.classList.remove('hidden');
+      } else {
+        // Fallback to mailto if Formspree fails
+        const data = Object.fromEntries(formData.entries());
+        const subject = `Nuevo contacto: ${data.name} - ${data.company}`;
+        const body = `
 Nombre: ${data.name}
 Email: ${data.email}
 Empresa: ${data.company}
@@ -139,9 +140,26 @@ Presupuesto: ${data.budget}
 
 Proyecto:
 ${data.project}
-    `.trim();
-    
-    // Fallback mailto - opens email client
-    window.location.href = `mailto:renekuhm2@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        `.trim();
+        
+        window.location.href = `mailto:renekuhm2@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      // Fallback to mailto on error
+      const data = Object.fromEntries(formData.entries());
+      const subject = `Nuevo contacto: ${data.name} - ${data.company}`;
+      const body = `
+Nombre: ${data.name}
+Email: ${data.email}
+Empresa: ${data.company}
+Presupuesto: ${data.budget}
+
+Proyecto:
+${data.project}
+      `.trim();
+      
+      window.location.href = `mailto:renekuhm2@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
   });
 </script>
