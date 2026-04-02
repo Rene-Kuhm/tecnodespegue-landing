@@ -1,8 +1,23 @@
 # TODO - Pre-Launch Checklist
 
+## ✅ Completado
+
+- [x] **Hero visual mejorado** - Geometría animada con glows y efectos
+- [x] **Scroll reveal animations** - Elementos aparecen al scrollear
+- [x] **Custom cursor** - Cursor personalizado desktop
+- [x] **Progress bar** - Barra de progreso al scrollear
+- [x] **Testimonials section** - 3 casos de éxito con métricas
+- [x] **Trust signals** - Stats + badges de confianza
+- [x] **Contact form** - Formulario funcional completo
+- [x] **Mejores CTAs** - "Agendar Consulta Gratis" más específico
+- [x] **Favicon SVG** - Logo TD animado
+- [x] **Meta tags SEO** - OG, Twitter, keywords completos
+- [x] **Métricas en servicios** - -70% tickets, <100ms response time
+- [x] **Micro-interacciones** - Hover effects, animaciones suaves
+
 ## 🔴 Critical (Antes de Deploy)
 
-- [ ] **Actualizar email de contacto** en `src/components/CTA.astro`
+- [ ] **Actualizar email de contacto** en `src/components/ContactForm.astro` y `CTA.astro`
   - Actual: `contacto@tecnodespegue.com`
   - Cambiar a: tu email real
 
@@ -10,28 +25,22 @@
   - Actual: `https://wa.me/5491112345678`
   - Cambiar a: `https://wa.me/549TUTELEFONO` (formato argentino sin 0 ni 15)
 
-- [ ] **Agregar favicon** en `/public/favicon.svg`
-  - Diseño sugerido: Logo TD en cyan sobre fondo negro
-
 - [ ] **Actualizar links sociales** en `src/components/Footer.astro`
-  - GitHub
-  - LinkedIn
-  - Otros
+  - GitHub: Cambiar a tu perfil
+  - LinkedIn: Cambiar a tu company page
+
+- [ ] **Configurar formulario backend**
+  - Opciones: Formspree, Netlify Forms, o tu API
+  - Ver comentarios en `ContactForm.astro`
+
+- [ ] **Crear OG image** en `/public/og-image.png`
+  - Tamaño: 1200x630px
+  - Incluir logo + tagline
 
 ## 🟡 Important (Mejoras visuales)
 
-- [ ] **Hero image**: Reemplazar placeholder en `Hero.astro`
-  - Imagen sugerida: Geometría abstracta con líneas cyan
-  - Formato: WebP optimizado
-  - Path: `/public/hero-visual.webp`
-
-- [ ] **Meta tags SEO** en `Layout.astro`:
-  - [ ] Open Graph tags
-  - [ ] Twitter Card
-  - [ ] Canonical URL
-  - [ ] Descripción optimizada
-
 - [ ] **Analytics**: Agregar Google Analytics / Plausible
+  - Script tag en Layout.astro
 
 ## 🟢 Nice to Have (Futuras iteraciones)
 
