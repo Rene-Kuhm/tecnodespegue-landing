@@ -1,0 +1,147 @@
+---
+---
+
+<div class="max-w-2xl mx-auto bg-surface-container border border-white/10 rounded-md p-8 glass-effect">
+  <form id="contact-form" class="space-y-6">
+    <div class="grid md:grid-cols-2 gap-6">
+      <div>
+        <label for="name" class="block text-sm font-label text-on-surface-variant mb-2">
+          Nombre *
+        </label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          class="w-full bg-surface-container-high border-b-2 border-outline-variant focus:border-primary px-4 py-3 text-on-surface outline-none transition-colors"
+          placeholder="Juan Pérez"
+        />
+      </div>
+      
+      <div>
+        <label for="email" class="block text-sm font-label text-on-surface-variant mb-2">
+          Email *
+        </label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          class="w-full bg-surface-container-high border-b-2 border-outline-variant focus:border-primary px-4 py-3 text-on-surface outline-none transition-colors"
+          placeholder="juan@empresa.com"
+        />
+      </div>
+    </div>
+    
+    <div>
+      <label for="company" class="block text-sm font-label text-on-surface-variant mb-2">
+        Empresa
+      </label>
+      <input
+        type="text"
+        id="company"
+        name="company"
+        class="w-full bg-surface-container-high border-b-2 border-outline-variant focus:border-primary px-4 py-3 text-on-surface outline-none transition-colors"
+        placeholder="Tu Empresa SRL"
+      />
+    </div>
+    
+    <div>
+      <label for="project" class="block text-sm font-label text-on-surface-variant mb-2">
+        Contanos sobre tu proyecto *
+      </label>
+      <textarea
+        id="project"
+        name="project"
+        required
+        rows="5"
+        class="w-full bg-surface-container-high border-b-2 border-outline-variant focus:border-primary px-4 py-3 text-on-surface outline-none transition-colors resize-none"
+        placeholder="Necesitamos automatizar nuestro proceso de..."
+      ></textarea>
+    </div>
+    
+    <div>
+      <label for="budget" class="block text-sm font-label text-on-surface-variant mb-2">
+        Presupuesto estimado
+      </label>
+      <select
+        id="budget"
+        name="budget"
+        class="w-full bg-surface-container-high border-b-2 border-outline-variant focus:border-primary px-4 py-3 text-on-surface outline-none transition-colors"
+      >
+        <option value="">Seleccionar rango</option>
+        <option value="5k-10k">USD 5K - 10K</option>
+        <option value="10k-25k">USD 10K - 25K</option>
+        <option value="25k-50k">USD 25K - 50K</option>
+        <option value="50k+">USD 50K+</option>
+      </select>
+    </div>
+    
+    <button
+      type="submit"
+      class="btn-primary w-full flex items-center justify-center gap-2 group"
+    >
+      <span>Enviar Consulta</span>
+      <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">
+        arrow_forward
+      </span>
+    </button>
+    
+    <p class="text-xs text-on-surface-variant text-center">
+      Respuesta garantizada en <strong class="text-primary">menos de 24 horas</strong>
+    </p>
+  </form>
+  
+  <div id="form-success" class="hidden text-center py-8">
+    <span class="material-symbols-outlined text-6xl text-secondary mb-4 block">
+      check_circle
+    </span>
+    <h3 class="text-2xl font-headline font-bold text-on-surface mb-2">
+      ¡Mensaje Enviado!
+    </h3>
+    <p class="text-on-surface-variant">
+      Te contactaremos en las próximas 24 horas.
+    </p>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const successMessage = document.getElementById('form-success');
+  
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    
+    // Simulated submission - replace with your actual endpoint
+    // Example: fetch('/api/contact', { method: 'POST', body: JSON.stringify(data) })
+    
+    console.log('Form data:', data);
+    
+    // Show success message
+    form.classList.add('hidden');
+    successMessage?.classList.remove('hidden');
+    
+    // For production, integrate with:
+    // - Formspree: https://formspree.io/
+    // - Netlify Forms: https://docs.netlify.com/forms/setup/
+    // - Your own API endpoint
+    
+    // Optional: Send to email via mailto as fallback
+    const subject = `Nuevo contacto: ${data.name} - ${data.company}`;
+    const body = `
+Nombre: ${data.name}
+Email: ${data.email}
+Empresa: ${data.company}
+Presupuesto: ${data.budget}
+
+Proyecto:
+${data.project}
+    `.trim();
+    
+    // Uncomment to enable mailto fallback
+    // window.location.href = `mailto:contacto@tecnodespegue.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  });
+</script>

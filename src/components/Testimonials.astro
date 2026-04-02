@@ -1,0 +1,74 @@
+---
+const testimonials = [
+  {
+    quote: "TecnoDespegue automatizó nuestro proceso de onboarding completo. Lo que antes tomaba 3 días ahora se resuelve en minutos.",
+    author: "María González",
+    role: "CTO",
+    company: "FinTech Solutions",
+    metric: "95% tiempo ahorrado"
+  },
+  {
+    quote: "El equipo no solo programa, entienden el negocio. La arquitectura que propusieron escaló sin problemas de 1K a 100K usuarios.",
+    author: "Carlos Méndez",
+    role: "Founder",
+    company: "EduTech",
+    metric: "100x crecimiento"
+  },
+  {
+    quote: "Implementaron un sistema de IA que predice demanda con 92% de precisión. ROI positivo en el primer mes.",
+    author: "Ana Rodríguez",
+    role: "Head of Operations",
+    company: "LogiChain",
+    metric: "ROI inmediato"
+  }
+];
+---
+
+<section class="py-32 bg-surface-container-lowest relative overflow-hidden">
+  <!-- Background accent -->
+  <div class="absolute top-0 right-0 w-96 h-96 bg-primary/5 blur-[150px] rounded-full"></div>
+  
+  <div class="max-w-7xl mx-auto px-8 relative z-10">
+    <div class="text-center mb-16">
+      <span class="text-xs font-mono text-secondary uppercase tracking-[0.4em] mb-4 block">
+        Client Success
+      </span>
+      <h2 class="text-3xl font-headline font-bold">
+        Casos Reales, Resultados Medibles
+      </h2>
+    </div>
+    
+    <div class="grid md:grid-cols-3 gap-8">
+      {testimonials.map((testimonial, index) => (
+        <div class="card group hover:scale-105 transition-transform duration-300">
+          <!-- Quote -->
+          <div class="mb-6">
+            <span class="material-symbols-outlined text-primary text-3xl mb-4 block opacity-30">
+              format_quote
+            </span>
+            <p class="text-on-surface-variant text-sm leading-relaxed italic">
+              "{testimonial.quote}"
+            </p>
+          </div>
+          
+          <!-- Author -->
+          <div class="pt-6 border-t border-white/5">
+            <p class="font-headline font-bold text-on-surface text-sm">
+              {testimonial.author}
+            </p>
+            <p class="text-xs text-on-surface-variant">
+              {testimonial.role} @ {testimonial.company}
+            </p>
+          </div>
+          
+          <!-- Metric badge -->
+          <div class="mt-4 inline-block px-3 py-1 bg-primary/10 border border-primary/20 rounded-sm">
+            <span class="text-xs font-mono text-primary font-bold">
+              {testimonial.metric}
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

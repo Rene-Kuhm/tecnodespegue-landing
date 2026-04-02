@@ -1,0 +1,80 @@
+---
+---
+
+<div id="custom-cursor" class="hidden lg:block"></div>
+<div id="custom-cursor-dot" class="hidden lg:block"></div>
+
+<style>
+  #custom-cursor {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(193, 255, 254, 0.3);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: all 0.15s ease-out;
+    transform: translate(-50%, -50%);
+  }
+
+  #custom-cursor-dot {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: #c1fffe;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10000;
+    transition: all 0.1s ease-out;
+    transform: translate(-50%, -50%);
+  }
+
+  #custom-cursor.hover {
+    width: 60px;
+    height: 60px;
+    border-color: rgba(193, 255, 254, 0.6);
+    background: rgba(193, 255, 254, 0.05);
+  }
+</style>
+
+<script>
+  let cursorX = 0, cursorY = 0;
+  let dotX = 0, dotY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    cursorX = e.clientX;
+    cursorY = e.clientY;
+  });
+
+  function animateCursor() {
+    const cursor = document.getElementById('custom-cursor');
+    const dot = document.getElementById('custom-cursor-dot');
+    
+    if (cursor && dot) {
+      // Smooth follow effect
+      dotX += (cursorX - dotX) * 0.3;
+      dotY += (cursorY - dotY) * 0.3;
+      
+      cursor.style.left = `${cursorX}px`;
+      cursor.style.top = `${cursorY}px`;
+      
+      dot.style.left = `${dotX}px`;
+      dot.style.top = `${dotY}px`;
+    }
+    
+    requestAnimationFrame(animateCursor);
+  }
+
+  // Hover effects
+  document.addEventListener('DOMContentLoaded', () => {
+    animateCursor();
+    
+    const cursor = document.getElementById('custom-cursor');
+    const hoverElements = document.querySelectorAll('a, button, .card, .tech-badge');
+    
+    hoverElements.forEach((el) => {
+      el.addEventListener('mouseenter', () => cursor?.classList.add('hover'));
+      el.addEventListener('mouseleave', () => cursor?.classList.remove('hover'));
+    });
+  });
+</script>

@@ -34,18 +34,37 @@
     
     <div class="relative hidden lg:block">
       <div class="aspect-square relative">
-        <div class="absolute inset-0 bg-primary/10 blur-[100px] rounded-full"></div>
+        <!-- Animated gradient glow -->
+        <div class="absolute inset-0 bg-primary/10 blur-[100px] rounded-full animate-pulse-slow"></div>
         
-        <!-- Placeholder visual - reemplazar con imagen real -->
-        <div class="w-full h-full flex items-center justify-center rounded-xl border border-white/10 bg-surface-container-low backdrop-blur-sm">
-          <div class="text-center space-y-4">
-            <span class="material-symbols-outlined text-9xl text-primary/30">neurology</span>
-            <p class="text-on-surface-variant text-sm italic">Digital Infrastructure</p>
+        <!-- 3D-style geometric visualization -->
+        <div class="w-full h-full relative rounded-xl border border-white/10 bg-gradient-to-br from-surface-container-low to-black overflow-hidden">
+          <!-- Grid overlay -->
+          <div class="absolute inset-0 grid-bg opacity-20"></div>
+          
+          <!-- Floating geometric shapes -->
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="relative w-64 h-64">
+              <!-- Main sphere -->
+              <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full bg-gradient-to-br from-primary/20 to-secondary/10 border border-primary/30 animate-float"></div>
+              
+              <!-- Orbiting rings -->
+              <div class="absolute inset-0 border border-primary/20 rounded-full animate-spin-slow"></div>
+              <div class="absolute inset-4 border border-secondary/20 rounded-full animate-spin-reverse"></div>
+              
+              <!-- Corner accents -->
+              <div class="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-primary/40"></div>
+              <div class="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-secondary/40"></div>
+            </div>
           </div>
+          
+          <!-- Scan line effect -->
+          <div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent h-32 animate-scan"></div>
         </div>
         
-        <div class="absolute -bottom-6 -left-6 bg-surface-container p-6 border border-white/5 shadow-2xl rounded-md max-w-xs glass-effect">
-          <span class="material-symbols-outlined text-secondary text-4xl mb-4">terminal</span>
+        <!-- Floating badge with icon -->
+        <div class="absolute -bottom-6 -left-6 bg-surface-container p-6 border border-white/5 shadow-2xl rounded-md max-w-xs glass-effect hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-secondary text-4xl mb-4 block">terminal</span>
           <p class="text-sm font-label text-on-surface-variant leading-snug italic">
             "Transformamos ideas complejas en código de alto rendimiento."
           </p>
