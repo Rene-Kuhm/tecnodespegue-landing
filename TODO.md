@@ -15,27 +15,24 @@
 - [x] **Métricas en servicios** - -70% tickets, <100ms response time
 - [x] **Micro-interacciones** - Hover effects, animaciones suaves
 
+## ✅ Completado Hoy (2026-04-03)
+
+- [x] **Email actualizado** → renekuhm2@gmail.com
+- [x] **WhatsApp actualizado** → +54 9 2334 409838
+- [x] **Formulario con Formspree** → Listo con fallback mailto
+- [x] **OG image PNG** → Generado 1200x630, 60KB
+- [x] **Sociales** → Comentados hasta crear perfiles
+
 ## 🔴 Critical (Antes de Deploy)
 
-- [ ] **Actualizar email de contacto** en `src/components/ContactForm.astro` y `CTA.astro`
-  - Actual: `contacto@tecnodespegue.com`
-  - Cambiar a: tu email real
+- [ ] **Configurar Formspree Form ID**
+  - Ver `FORMSPREE_SETUP.md` para instrucciones
+  - 5 minutos en https://formspree.io/
+  - Actualizar línea 97 de `ContactForm.astro`
 
-- [ ] **Actualizar WhatsApp** en `src/components/CTA.astro`
-  - Actual: `https://wa.me/5491112345678`
-  - Cambiar a: `https://wa.me/549TUTELEFONO` (formato argentino sin 0 ni 15)
-
-- [ ] **Actualizar links sociales** en `src/components/Footer.astro`
-  - GitHub: Cambiar a tu perfil
-  - LinkedIn: Cambiar a tu company page
-
-- [ ] **Configurar formulario backend**
-  - Opciones: Formspree, Netlify Forms, o tu API
-  - Ver comentarios en `ContactForm.astro`
-
-- [ ] **Crear OG image** en `/public/og-image.png`
-  - Tamaño: 1200x630px
-  - Incluir logo + tagline
+- [ ] **Crear perfiles sociales** (opcional)
+  - GitHub, LinkedIn
+  - Descomentar links en `Footer.astro` cuando estén listos
 
 ## 🟡 Important (Mejoras visuales)
 

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      margin: 0;
+      width: 1200px;
+      height: 630px;
+      background: #0e0e0e;
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+      position: relative;
+      overflow: hidden;
+    }
+    .grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(193, 255, 254, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(193, 255, 254, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .glow {
+      position: absolute;
+      right: 300px;
+      top: 315px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(193, 255, 254, 0.3) 0%, transparent 70%);
+      transform: translate(50%, -50%);
+    }
+    .content {
+      position: relative;
+      z-index: 10;
+      padding: 100px;
+    }
+    h1 {
+      font-size: 72px;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0 0 40px 0;
+      letter-spacing: -1px;
+    }
+    .tagline {
+      font-size: 36px;
+      color: #adaaaa;
+      margin: 0 0 20px 0;
+    }
+    .badge {
+      display: inline-block;
+      padding: 12px 24px;
+      background: rgba(193, 255, 254, 0.1);
+      border: 1px solid #c1fffe;
+      border-radius: 4px;
+      color: #c1fffe;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-top: 40px;
+    }
+    .geometric {
+      position: absolute;
+      right: 150px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .circle {
+      position: absolute;
+      border: 2px solid rgba(193, 255, 254, 0.2);
+      border-radius: 50%;
+    }
+    .circle-1 {
+      width: 240px;
+      height: 240px;
+      left: -120px;
+      top: -120px;
+    }
+    .circle-2 {
+      width: 160px;
+      height: 160px;
+      left: -80px;
+      top: -80px;
+      background: rgba(0, 253, 135, 0.1);
+      border-color: rgba(0, 253, 135, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="glow"></div>
+  <div class="content">
+    <h1>TecnoDespegue</h1>
+    <div class="tagline">Desarrollo Fullstack</div>
+    <div class="tagline">Automatizaciones con IA</div>
+    <div class="tagline">Flujos de Trabajo Inteligentes</div>
+    <div class="badge">IA-READY SOLUTIONS</div>
+  </div>
+  <div class="geometric">
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+  </div>
+</body>
+</html>
