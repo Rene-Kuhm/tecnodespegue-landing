@@ -1,0 +1,46 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0e0e0e"/>
+  
+  <!-- Grid pattern -->
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(193, 255, 254, 0.03)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  
+  <!-- Gradient glow -->
+  <circle cx="900" cy="315" r="300" fill="url(#glow)" opacity="0.3"/>
+  <defs>
+    <radialGradient id="glow">
+      <stop offset="0%" stop-color="#c1fffe"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Content -->
+  <text x="100" y="220" font-family="Space Grotesk, sans-serif" font-size="72" font-weight="700" fill="#ffffff">
+    <tspan>TecnoDespegue</tspan>
+  </text>
+  
+  <text x="100" y="300" font-family="Inter, sans-serif" font-size="36" fill="#adaaaa">
+    <tspan>Desarrollo Fullstack</tspan>
+  </text>
+  <text x="100" y="350" font-family="Inter, sans-serif" font-size="36" fill="#adaaaa">
+    <tspan>Automatizaciones con IA</tspan>
+  </text>
+  <text x="100" y="400" font-family="Inter, sans-serif" font-size="36" fill="#adaaaa">
+    <tspan>Flujos de Trabajo Inteligentes</tspan>
+  </text>
+  
+  <!-- Badge -->
+  <rect x="100" y="460" width="200" height="40" rx="4" fill="rgba(193, 255, 254, 0.1)" stroke="#c1fffe" stroke-width="1"/>
+  <text x="120" y="487" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#c1fffe" letter-spacing="2">
+    IA-READY SOLUTIONS
+  </text>
+  
+  <!-- Geometric accent -->
+  <circle cx="950" cy="315" r="120" fill="none" stroke="rgba(193, 255, 254, 0.2)" stroke-width="2"/>
+  <circle cx="950" cy="315" r="80" fill="rgba(0, 253, 135, 0.1)" stroke="rgba(0, 253, 135, 0.3)" stroke-width="2"/>
+</svg>
