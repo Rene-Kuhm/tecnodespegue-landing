@@ -1,0 +1,115 @@
+---
+const projects = [
+  {
+    title: "Aguamarina Mosaicos",
+    description: "Sistema e-commerce empresarial completo con tienda online, panel de administración y API REST. Catálogo de productos, gestión de pedidos y métricas en tiempo real.",
+    stack: ["Next.js 15", "React 19", "TypeScript", "PostgreSQL", "Railway"],
+    link: "https://acuamarina-ceramica.vercel.app",
+    repo: "https://github.com/Rene-Kuhm/acuamarina-ceramica",
+    type: "E-Commerce",
+    icon: "storefront"
+  },
+  {
+    title: "E-Commerce Premium",
+    description: "Plataforma e-commerce con diseño premium inspirado en Nike/Adidas. Filtros avanzados, carrito persistente, checkout con validación Zod y accesibilidad WCAG 2.1 AA.",
+    stack: ["Next.js", "React 19", "TypeScript", "Tailwind", "Zod"],
+    link: "",
+    repo: "https://github.com/Rene-Kuhm/e-commerce-profecional",
+    type: "E-Commerce",
+    icon: "shopping_bag"
+  },
+  {
+    title: "TecnoDespegue Automation",
+    description: "Pipeline de automatización con IA que genera contenido, crea imágenes con GPT-5 y publica automáticamente en Instagram, Facebook y TikTok vía cron jobs.",
+    stack: ["Python", "OpenClaw", "OpenRouter", "Postiz", "Docker"],
+    link: "",
+    repo: "https://github.com/Rene-Kuhm/tecnodespegue-automation",
+    type: "IA & Automatización",
+    icon: "smart_toy"
+  },
+  {
+    title: "HydroTemp AIO Driver",
+    description: "Ingeniería inversa completa del protocolo HID de displays AIO. Driver macOS nativo que lee sensores de CPU, GPU y fans en tiempo real a 200ms de refresh.",
+    stack: ["Python", "USB HID", "macOS", "LaunchAgent"],
+    link: "",
+    repo: "https://github.com/Rene-Kuhm/hydrotemp-aio-mac",
+    type: "Hardware & Drivers",
+    icon: "memory"
+  },
+  {
+    title: "Vaulta — Password Manager",
+    description: "Gestor de contraseñas multiplataforma con Material 3, arquitectura limpia, contratos de seguridad y cifrado. Dashboard con métricas de seguridad del vault.",
+    stack: ["Flutter", "Dart", "Material 3", "Encryption"],
+    link: "",
+    repo: "https://github.com/Rene-Kuhm/Gestor-de-Contrase-as",
+    type: "Mobile & Desktop",
+    icon: "lock"
+  }
+];
+---
+
+<section class="py-32 relative" id="portfolio">
+  <div class="absolute inset-0 grid-bg opacity-10"></div>
+  
+  <div class="max-w-7xl mx-auto px-8 relative z-10">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+      <div class="max-w-2xl">
+        <span class="text-xs font-mono text-secondary uppercase tracking-[0.4em] mb-4 block">
+          Portfolio
+        </span>
+        <h2 class="font-headline text-3xl font-bold tracking-tight text-on-surface mb-4">
+          Proyectos Reales, Código Real
+        </h2>
+        <p class="text-on-surface-variant font-body">
+          No mockups. No demos. Sistemas en producción que resuelven problemas reales.
+        </p>
+      </div>
+      <div class="h-px bg-outline-variant flex-grow mx-8 hidden md:block"></div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+      {projects.map((project, index) => (
+        <div class={`${index === 0 ? 'md:col-span-8' : index === 1 ? 'md:col-span-4' : 'md:col-span-4'} card group relative overflow-hidden`}>
+          <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-30 transition-opacity">
+            <span class="material-symbols-outlined text-6xl text-primary">{project.icon}</span>
+          </div>
+          
+          <div class="mb-2">
+            <span class="px-2 py-1 bg-surface-container-high rounded-sm text-[10px] font-mono text-secondary border border-secondary/10 uppercase">
+              {project.type}
+            </span>
+          </div>
+          
+          <h3 class="text-xl font-headline font-bold text-on-surface mb-3 group-hover:text-primary transition-colors">
+            {project.title}
+          </h3>
+          
+          <p class="text-on-surface-variant text-sm leading-relaxed mb-4">
+            {project.description}
+          </p>
+          
+          <div class="flex flex-wrap gap-2 mb-6">
+            {project.stack.map((tech) => (
+              <span class="px-2 py-0.5 bg-white/5 border border-white/10 rounded-sm text-[10px] font-mono text-on-surface-variant">
+                {tech}
+              </span>
+            ))}
+          </div>
+          
+          <div class="flex gap-4 pt-4 border-t border-white/5">
+            {project.link && (
+              <a href={project.link} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-primary text-xs font-mono hover:underline">
+                <span class="material-symbols-outlined text-sm">open_in_new</span>
+                Ver en vivo
+              </a>
+            )}
+            <a href={project.repo} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-on-surface-variant text-xs font-mono hover:text-primary transition-colors">
+              <span class="material-symbols-outlined text-sm">code</span>
+              Código fuente
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
