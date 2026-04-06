@@ -2,11 +2,12 @@
 ---
 
 <nav class="fixed top-0 w-full z-50 glass-effect bg-surface-variant/10 border-b border-white/5">
-  <div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
-    <div class="text-xl font-bold tracking-tighter text-primary font-headline uppercase">
+  <div class="flex justify-between items-center px-4 md:px-8 py-3 md:py-4 max-w-7xl mx-auto">
+    <a href="#" class="text-lg md:text-xl font-bold tracking-tighter text-primary font-headline uppercase">
       TecnoDespegue
-    </div>
+    </a>
     
+    <!-- Desktop Menu -->
     <div class="hidden md:flex gap-8">
       <a href="#soluciones" class="text-zinc-400 font-medium hover:text-primary transition-colors text-sm font-label">
         Soluciones
@@ -25,11 +26,101 @@
       </a>
     </div>
     
+    <!-- Desktop CTA -->
     <a 
       href="#contacto" 
-      class="bg-primary hover:bg-primary-dim text-on-primary-container px-5 py-2 font-bold tracking-tight text-sm rounded-md transition-all duration-300 active:scale-95 ambient-glow"
+      class="hidden md:inline-flex bg-primary hover:bg-primary-dim text-on-primary-container px-5 py-2 font-bold tracking-tight text-sm rounded-md transition-all duration-300 active:scale-95 ambient-glow"
     >
       Iniciar Proyecto
     </a>
+    
+    <!-- Mobile Hamburger Button -->
+    <button 
+      id="mobile-menu-btn"
+      class="md:hidden flex flex-col gap-1.5 p-2"
+      aria-label="Abrir menú"
+    >
+      <span class="w-6 h-0.5 bg-zinc-400 transition-transform"></span>
+      <span class="w-6 h-0.5 bg-zinc-400 transition-opacity"></span>
+      <span class="w-6 h-0.5 bg-zinc-400 transition-transform"></span>
+    </button>
+  </div>
+  
+  <!-- Mobile Menu Overlay -->
+  <div 
+    id="mobile-menu"
+    class="md:hidden fixed inset-0 top-[60px] bg-surface/95 backdrop-blur-xl z-40 transform translate-x-full transition-transform duration-300 ease-in-out"
+  >
+    <div class="flex flex-col items-center justify-center min-h-screen gap-8 p-8">
+      <a href="#soluciones" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors" onclick="toggleMobileMenu()">
+        Soluciones
+      </a>
+      <a href="#portfolio" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors" onclick="toggleMobileMenu()">
+        Portfolio
+      </a>
+      <a href="#stack" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors" onclick="toggleMobileMenu()">
+        Stack
+      </a>
+      <a href="#proceso" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors" onclick="toggleMobileMenu()">
+        Proceso
+      </a>
+      <a href="#contacto" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors" onclick="toggleMobileMenu()">
+        Contacto
+      </a>
+      <a 
+        href="#contacto" 
+        class="mt-4 bg-primary hover:bg-primary-dim text-on-primary-container px-8 py-3 font-bold tracking-tight text-lg rounded-md transition-all ambient-glow"
+        onclick="toggleMobileMenu()"
+      >
+        Iniciar Proyecto
+      </a>
+    </div>
   </div>
 </nav>
+
+<script>
+  function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    const btn = document.getElementById('mobile-menu-btn');
+    const spans = btn?.querySelectorAll('span');
+    
+    if (menu?.classList.contains('translate-x-full')) {
+      menu.classList.remove('translate-x-full');
+      menu.classList.add('translate-x-0');
+      // Animate hamburger to X
+      spans[0]?.classList.add('rotate-45', 'translate-y-2');
+      spans[1]?.classList.add('opacity-0');
+      spans[2]?.classList.add('-rotate-45', '-translate-y-2');
+      document.body.style.overflow = 'hidden';
+    } else {
+      menu?.classList.add('translate-x-full');
+      menu?.classList.remove('translate-x-0');
+      // Reset hamburger
+      spans[0]?.classList.remove('rotate-45', 'translate-y-2');
+      spans[1]?.classList.remove('opacity-0');
+      spans[2]?.classList.remove('-rotate-45', '-translate-y-2');
+      document.body.style.overflow = '';
+    }
+  }
+
+  document.getElementById('mobile-menu-btn')?.addEventListener('click', toggleMobileMenu);
+  
+  // Close menu on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const menu = document.getElementById('mobile-menu');
+      if (!menu?.classList.contains('translate-x-full')) {
+        toggleMobileMenu();
+      }
+    }
+  });
+</script>
+
+<style>
+  @media (max-width: 767px) {
+    nav {
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+    }
+  }
+</style>
