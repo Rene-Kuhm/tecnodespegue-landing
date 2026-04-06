@@ -1,188 +1,188 @@
 # TecnoDespegue Landing
 
-> "The Neon Architect" - High-Resolution Noir landing page for TecnoDespegue
+> Landing page profesional para **TecnoDespegue** — agencia de desarrollo fullstack y automatizaciones con IA, basada en Eduardo Castilla, La Pampa, Argentina.
 
-Modern, minimalist landing page built with intentional asymmetry and atmospheric depth. Moving away from template-heavy looks toward a bespoke, engineered feel that mirrors the quality of code being produced.
-
-## 🎨 Design System: Editorial Technicality
-
-### Creative North Star
-**"The Neon Architect"** - Bridging high-end editorial layouts with raw technical precision through:
-- Intentional asymmetry
-- Atmospheric depth via tonal layering
-- No-line rule (negative space over borders)
-- Glass & gradient effects
-- Ambient digital glows
-
-### Color Palette
-```
-Primary (Electric Cyan): #c1fffe / #00ffff
-Secondary (Neon Green): #00fd87 / #00ff88
-Background: #0e0e0e (the void)
-Surface Container: #1a1919 (elevated cards)
-On Surface Variant: #adaaaa (secondary text - never pure white)
-```
-
-### Typography
-- **Headlines**: Space Grotesk (bold statements)
-- **Body**: Inter (Swiss legibility)
-- **Scale**: Display-LG (3.5rem) → Headline-MD (1.75rem) → Body-MD (0.875rem)
-
-## 🚀 Tech Stack
-
-- **Framework**: Astro 6.x (static site generation)
-- **Styling**: Tailwind CSS 4.x
-- **Fonts**: Google Fonts (Space Grotesk + Inter)
-- **Icons**: Material Symbols Outlined
-- **TypeScript**: Strict mode enabled
-
-## 📦 Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/tecnodespegue/landing.git
-cd landing
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-```
-
-## 🛠️ Development
-
-```bash
-npm run dev        # Start dev server at localhost:4321
-npm run build      # Build for production
-npm run preview    # Preview production build
-npm run astro      # Run Astro CLI commands
-```
-
-## 📁 Project Structure
-
-```
-/
-├── public/              # Static assets
-├── src/
-│   ├── components/      # Astro components
-│   │   ├── Nav.astro
-│   │   ├── Hero.astro
-│   │   ├── Services.astro
-│   │   ├── Why.astro
-│   │   ├── Tech.astro
-│   │   ├── CTA.astro
-│   │   └── Footer.astro
-│   ├── layouts/
-│   │   └── Layout.astro # Base layout with fonts & meta
-│   ├── pages/
-│   │   └── index.astro  # Main landing page
-│   └── styles/
-│       └── global.css   # Tailwind + custom utilities
-├── tailwind.config.js   # Design system tokens
-└── astro.config.mjs     # Astro configuration
-```
-
-## 🎯 Key Features
-
-### 🎨 Animations & Micro-interactions
-- **Scroll Reveal**: Sections fade in as you scroll (Intersection Observer)
-- **Custom Cursor**: Desktop-only smooth following cursor with hover effects
-- **Progress Bar**: Gradient bar tracking scroll progress
-- **Floating Animations**: Hero geometric shapes with orbiting rings
-- **Hover Effects**: Ambient glows on interactive elements
-
-### 📊 Content & Conversion
-- **Real Metrics**: -70% ticket reduction, <100ms response time, 99.9% uptime
-- **Testimonials**: 3 client success stories with measurable results
-- **Trust Signals**: 50+ projects, ISO 27001, GDPR badges
-- **Contact Form**: Full functional form with validation (ready for backend)
-- **Strong CTAs**: "Agendar Consulta Gratis" with clear value props
-
-### 🎭 Design System Implementation
-- **No-Line Rule**: Standard 1px borders prohibited, negative space instead
-- **Glass Effects**: Backdrop blur 12px on floating elements
-- **Ambient Glows**: Digital light simulation (20px blur, 15% opacity)
-- **Asymmetric Layouts**: 60/40 splits, overlapping elements
-- **Tonal Layering**: #0e0e0e → #1a1919 for elevation (no drop shadows)
-
-## 🔧 Customization
-
-### Colors
-Edit `tailwind.config.js` to modify the design system tokens.
-
-### Content
-Each section is a standalone component in `src/components/`. Update text and icons directly in the `.astro` files.
-
-### Contact Info
-Update email and WhatsApp in `src/components/CTA.astro`:
-```astro
-href="mailto:your-email@tecnodespegue.com"
-href="https://wa.me/YOUR_PHONE_NUMBER"
-```
-
-## 📊 Performance
-
-- Lighthouse Score: 90+ (all metrics)
-- Zero JavaScript on initial load (Astro islands architecture)
-- Optimized fonts with `display=swap`
-- Lazy-loaded Material Symbols
-
-## 🚢 Deployment
-
-Compatible with:
-- **Vercel** (recommended)
-- **Netlify**
-- **Cloudflare Pages**
-- Any static hosting
-
-```bash
-npm run build
-# Output: dist/
-```
-
-## 📝 Design Principles
-
-### Do:
-- Use asymmetry for visual interest
-- Embrace negative space (Spacing 16/20)
-- Use tone-on-tone for hierarchy
-- Apply ambient glows on interactive elements
-
-### Don't:
-- Use pure white (#ffffff) for long-form text
-- Use 100% opaque borders
-- Create standard 3-column card layouts
-- Add drop shadows (use glows instead)
-
-## 🧩 Component Philosophy
-
-Each component follows:
-1. **Tonal layering** over drop shadows
-2. **Gradient fills** for primary CTAs
-3. **Ghost borders** (15% opacity) when boundaries are needed
-4. **Monospace badges** for technical indicators
-
-## 🤝 Contributing
-
-This is a private agency landing. For TecnoDespegue team members:
-
-1. Fork the repo
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit using Conventional Commits (`git commit -m 'feat: add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-© 2026 TecnoDespegue. All rights reserved.
+[![Astro](https://img.shields.io/badge/Astro-6.1-ff5d01?logo=astro&logoColor=white)](https://astro.build/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.2-38bdf8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
 ---
 
-Built with ⚔️ by **Tecno Squire** using **The Neon Architect** design system.
+## Vista previa
+
+**Design System: "The Neon Architect"** — Dark mode editorial con asimetría intencional, profundidad atmosférica y glows digitales.
+
+| Palette | Token |
+|---------|-------|
+| Electric Cyan | `#c1fffe` / `#00ffff` |
+| Neon Green | `#00fd87` / `#00ff88` |
+| Background | `#0e0e0e` (the void) |
+| Surface | `#1a1919` (elevated cards) |
+
+**Tipografía**: Space Grotesk (headlines) + Inter (body)
+
+---
+
+## Estructura
+
+```
+src/
+├── components/
+│   ├── Hero.astro              # Hero con geometría animada y CTAs
+│   ├── TrustSignals.astro      # Métricas clave (proyectos, uptime, respuesta)
+│   ├── Services.astro          # 4 servicios (IA, Fullstack, Workflows, Consultoría)
+│   ├── Portfolio.astro         # 5 proyectos reales con links a repos y demos
+│   ├── Why.astro               # Diferenciadores (foco técnico, código limpio, comunicación)
+│   ├── Testimonials.astro      # 3 casos de éxito reales con métricas
+│   ├── Tech.astro              # 16 tecnologías dominadas
+│   ├── CTA.astro               # Call to action + formulario de contacto
+│   ├── ContactForm.astro       # Formulario con Formspree + fallback mailto
+│   ├── Nav.astro               # Navegación fija con glass effect
+│   ├── Footer.astro            # Contacto, redes sociales, ubicación
+│   ├── ScrollReveal.astro      # Animaciones al scrollear (Intersection Observer)
+│   ├── CustomCursor.astro      # Cursor personalizado desktop
+│   └── ProgressBar.astro       # Barra de progreso de scroll
+├── layouts/
+│   └── Layout.astro            # Layout base con SEO, OG tags, fonts
+├── pages/
+│   └── index.astro             # Página principal
+└── styles/
+    └── global.css              # Design tokens, utilidades, animaciones
+```
+
+---
+
+## Stack
+
+| Tecnología | Uso |
+|-----------|-----|
+| [Astro 6](https://astro.build/) | Framework — static-first, zero JS by default |
+| [Tailwind CSS 4](https://tailwindcss.com/) | Estilos — utility-first con design tokens custom |
+| [TypeScript](https://www.typescriptlang.org/) | Tipado estricto |
+| [Formspree](https://formspree.io/) | Backend del formulario de contacto |
+| [Google Fonts](https://fonts.google.com/) | Space Grotesk + Inter |
+| [Material Symbols](https://fonts.google.com/icons) | Iconografía |
+
+---
+
+## Desarrollo local
+
+**Requisitos**: Node.js >= 22.12.0
+
+```bash
+# Clonar
+git clone https://github.com/Rene-Kuhm/tecnodespegue-landing.git
+cd tecnodespegue-landing
+
+# Instalar dependencias
+npm install
+
+# Levantar en desarrollo
+npm run dev
+# → http://localhost:4321
+
+# Build de producción
+npm run build
+
+# Preview del build
+npm run preview
+```
+
+---
+
+## Deploy
+
+### Vercel (recomendado)
+
+```bash
+npx vercel --prod
+```
+
+Zero config — Vercel detecta Astro automáticamente. HTTPS, CDN global y preview deploys gratis.
+
+### Docker + Nginx (self-hosted)
+
+```dockerfile
+FROM node:22-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80
+```
+
+```bash
+docker build -t tecnodespegue-landing .
+docker run -p 80:80 tecnodespegue-landing
+```
+
+---
+
+## Secciones
+
+| Sección | Descripción |
+|---------|-------------|
+| **Hero** | Headline con gradient + geometría animada + CTAs |
+| **Trust Signals** | 4 métricas: proyectos, uptime, respuesta, tecnologías |
+| **Services** | IA & Automatización, Fullstack, Workflows, Consultoría |
+| **Portfolio** | 5 proyectos reales: Aguamarina, E-Commerce, Automation, HydroTemp, Vaulta |
+| **Why** | 3 diferenciadores con iconos |
+| **Testimonials** | 3 casos de éxito con métricas reales |
+| **Tech** | 16 tecnologías en badges |
+| **CTA + Contact** | Formulario Formspree con fallback mailto |
+| **Footer** | Email, WhatsApp, 5 redes sociales, ubicación |
+
+---
+
+## Portfolio incluido
+
+| Proyecto | Stack | Tipo |
+|----------|-------|------|
+| [Aguamarina Mosaicos](https://acuamarina-ceramica.vercel.app) | Next.js 15, React 19, PostgreSQL, Railway | E-Commerce |
+| [E-Commerce Premium](https://github.com/Rene-Kuhm/e-commerce-profecional) | Next.js, React 19, TypeScript, Zod | E-Commerce |
+| [TecnoDespegue Automation](https://github.com/Rene-Kuhm/tecnodespegue-automation) | Python, OpenClaw, GPT-5, Postiz | IA & Automatización |
+| [HydroTemp AIO Driver](https://github.com/Rene-Kuhm/hydrotemp-aio-mac) | Python, USB HID, macOS | Hardware |
+| [Vaulta Password Manager](https://github.com/Rene-Kuhm/Gestor-de-Contrase-as) | Flutter, Dart, Material 3 | Mobile & Desktop |
+
+---
+
+## Rendimiento
+
+- **0 JS** enviado al cliente por default (Astro islands)
+- **Fonts preconnect** para evitar layout shift
+- **OG Image** optimizada (1200x630, 60KB)
+- **Scroll animations** con Intersection Observer nativo (no librerías)
+- **Static output** — HTML puro, deploy en cualquier CDN
+
+---
+
+## Contacto
+
+| Canal | Link |
+|-------|------|
+| Email | renekuhm2@gmail.com |
+| WhatsApp | [Chat directo](https://wa.me/5492334409838) |
+| GitHub | [@Rene-Kuhm](https://github.com/Rene-Kuhm) |
+| Instagram | [@renekuhm](https://instagram.com/renekuhm) |
+| TikTok | [@kuhmdev](https://tiktok.com/@kuhmdev) |
+| YouTube | [@tecnodespegue](https://youtube.com/@tecnodespegue) |
+| LinkedIn | [renekuhm](https://linkedin.com/in/renekuhm) |
+
+---
+
+## Autor
+
+**René Kuhm** — Fullstack Developer & AI Automation Specialist
+
+Eduardo Castilla, La Pampa, Argentina
+
+---
+
+## Licencia
+
+MIT © 2026 TecnoDespegue
