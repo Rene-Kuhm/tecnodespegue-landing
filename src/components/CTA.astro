@@ -1,5 +1,6 @@
 ---
 import ContactForm from './ContactForm.astro';
+import Icon from './Icon.astro';
 ---
 
 <section class="py-32 relative" id="contacto">
@@ -22,7 +23,7 @@ import ContactForm from './ContactForm.astro';
           class="group relative inline-flex items-center justify-center btn-primary"
         >
           <span class="relative z-10 flex items-center gap-2">
-            <span class="material-symbols-outlined text-sm">calendar_month</span>
+            <Icon name="calendar_month" class="w-4 h-4" />
             Agendá tu Consulta Gratis
           </span>
         </a>
@@ -33,7 +34,7 @@ import ContactForm from './ContactForm.astro';
           rel="noopener noreferrer"
           class="btn-secondary flex items-center gap-2"
         >
-          <span class="material-symbols-outlined text-sm">chat</span>
+          <Icon name="chat" class="w-4 h-4" />
           WhatsApp Directo
         </a>
       </div>
@@ -47,15 +48,15 @@ import ContactForm from './ContactForm.astro';
     <!-- Trust signals footer -->
     <div class="mt-20 pt-20 border-t border-white/5 flex flex-wrap justify-center gap-12 text-zinc-600">
       <div class="flex items-center gap-2">
-        <span class="material-symbols-outlined text-sm">verified</span>
+        <Icon name="verified" class="w-4 h-4" />
         <span class="text-[10px] uppercase font-bold tracking-widest">Respuesta &lt; 24h</span>
       </div>
       <div class="flex items-center gap-2">
-        <span class="material-symbols-outlined text-sm">code</span>
+        <Icon name="code" class="w-4 h-4" />
         <span class="text-[10px] uppercase font-bold tracking-widest">Consulta Sin Costo</span>
       </div>
       <div class="flex items-center gap-2">
-        <span class="material-symbols-outlined text-sm">support_agent</span>
+        <Icon name="support_agent" class="w-4 h-4" />
         <span class="text-[10px] uppercase font-bold tracking-widest">NDA Disponible</span>
       </div>
     </div>

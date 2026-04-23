@@ -1,4 +1,6 @@
 ---
+import Icon from './Icon.astro';
+
 const stats = [
   { value: "5+", label: "Proyectos en Producción" },
   { value: "99.9%", label: "Uptime Promedio" },
@@ -24,15 +26,15 @@ const stats = [
     
     <div class="mt-12 flex flex-wrap justify-center gap-6 items-center opacity-50">
       <div class="flex items-center gap-2 text-on-surface-variant text-xs">
-        <span class="material-symbols-outlined text-lg">code</span>
+        <Icon name="code" class="w-5 h-5" />
         <span>Open Source</span>
       </div>
       <div class="flex items-center gap-2 text-on-surface-variant text-xs">
-        <span class="material-symbols-outlined text-lg">deployed_code</span>
+        <Icon name="deployed_code" class="w-5 h-5" />
         <span>CI/CD Automático</span>
       </div>
       <div class="flex items-center gap-2 text-on-surface-variant text-xs">
-        <span class="material-symbols-outlined text-lg">cloud</span>
+        <Icon name="cloud" class="w-5 h-5" />
         <span>Deploy en Cloud & Self-Hosted</span>
       </div>
     </div>
