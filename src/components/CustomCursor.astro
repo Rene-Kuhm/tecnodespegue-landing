@@ -1,10 +1,24 @@
 ---
 ---
 
-<div id="custom-cursor" class="hidden lg:block"></div>
-<div id="custom-cursor-dot" class="hidden lg:block"></div>
+<div id="custom-cursor" class="hidden lg:block" aria-hidden="true"></div>
+<div id="custom-cursor-dot" class="hidden lg:block" aria-hidden="true"></div>
 
 <style>
+  @media (min-width: 1024px) and (pointer: fine) {
+    :global(html),
+    :global(body),
+    :global(a),
+    :global(button),
+    :global(input),
+    :global(textarea),
+    :global(select),
+    :global(.card),
+    :global(.tech-badge) {
+      cursor: none;
+    }
+  }
+
   #custom-cursor {
     position: fixed;
     width: 40px;
@@ -13,8 +27,9 @@
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
-    transition: all 0.15s ease-out;
+    transition: width 0.2s ease-out, height 0.2s ease-out, border-color 0.2s ease-out, background 0.2s ease-out;
     transform: translate(-50%, -50%);
+    will-change: transform, left, top;
   }
 
   #custom-cursor-dot {
@@ -25,8 +40,8 @@
     border-radius: 50%;
     pointer-events: none;
     z-index: 10000;
-    transition: all 0.1s ease-out;
     transform: translate(-50%, -50%);
+    will-change: left, top;
   }
 
   #custom-cursor.hover {
@@ -35,46 +50,76 @@
     border-color: rgba(193, 255, 254, 0.6);
     background: rgba(193, 255, 254, 0.05);
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    #custom-cursor,
+    #custom-cursor-dot {
+      display: none !important;
+    }
+    :global(html),
+    :global(body),
+    :global(a),
+    :global(button) {
+      cursor: auto !important;
+    }
+  }
 </style>
 
 <script>
-  let cursorX = 0, cursorY = 0;
-  let dotX = 0, dotY = 0;
+  const supportsFinePointer = window.matchMedia('(pointer: fine)').matches;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  document.addEventListener('mousemove', (e) => {
-    cursorX = e.clientX;
-    cursorY = e.clientY;
-  });
+  if (supportsFinePointer && !prefersReducedMotion) {
+    let cursorX = 0, cursorY = 0;
+    let dotX = 0, dotY = 0;
 
-  function animateCursor() {
-    const cursor = document.getElementById('custom-cursor');
-    const dot = document.getElementById('custom-cursor-dot');
-    
-    if (cursor && dot) {
-      // Smooth follow effect
-      dotX += (cursorX - dotX) * 0.3;
-      dotY += (cursorY - dotY) * 0.3;
-      
-      cursor.style.left = `${cursorX}px`;
-      cursor.style.top = `${cursorY}px`;
-      
-      dot.style.left = `${dotX}px`;
-      dot.style.top = `${dotY}px`;
-    }
-    
-    requestAnimationFrame(animateCursor);
-  }
-
-  // Hover effects
-  document.addEventListener('DOMContentLoaded', () => {
-    animateCursor();
-    
-    const cursor = document.getElementById('custom-cursor');
-    const hoverElements = document.querySelectorAll('a, button, .card, .tech-badge');
-    
-    hoverElements.forEach((el) => {
-      el.addEventListener('mouseenter', () => cursor?.classList.add('hover'));
-      el.addEventListener('mouseleave', () => cursor?.classList.remove('hover'));
+    document.addEventListener('mousemove', (e) => {
+      cursorX = e.clientX;
+      cursorY = e.clientY;
     });
-  });
+
+    function animateCursor() {
+      const cursor = document.getElementById('custom-cursor');
+      const dot = document.getElementById('custom-cursor-dot');
+
+      if (cursor && dot) {
+        dotX += (cursorX - dotX) * 0.3;
+        dotY += (cursorY - dotY) * 0.3;
+
+        cursor.style.left = `${cursorX}px`;
+        cursor.style.top = `${cursorY}px`;
+
+        dot.style.left = `${dotX}px`;
+        dot.style.top = `${dotY}px`;
+      }
+
+      requestAnimationFrame(animateCursor);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      animateCursor();
+
+      const cursor = document.getElementById('custom-cursor');
+      const hoverElements = document.querySelectorAll('a, button, .card, .tech-badge');
+
+      hoverElements.forEach((el) => {
+        el.addEventListener('mouseenter', () => cursor?.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursor?.classList.remove('hover'));
+      });
+    });
+
+    document.addEventListener('mouseleave', () => {
+      const cursor = document.getElementById('custom-cursor');
+      const dot = document.getElementById('custom-cursor-dot');
+      if (cursor) cursor.style.opacity = '0';
+      if (dot) dot.style.opacity = '0';
+    });
+
+    document.addEventListener('mouseenter', () => {
+      const cursor = document.getElementById('custom-cursor');
+      const dot = document.getElementById('custom-cursor-dot');
+      if (cursor) cursor.style.opacity = '1';
+      if (dot) dot.style.opacity = '1';
+    });
+  }
 </script>
