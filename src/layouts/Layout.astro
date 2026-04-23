@@ -13,6 +13,67 @@ const {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL('/og-image.png', Astro.site);
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "TecnoDespegue",
+  "url": Astro.site?.toString(),
+  "logo": new URL('/favicon.svg', Astro.site).toString(),
+  "description": description,
+  "email": "renekuhm2@gmail.com",
+  "telephone": "+54-9-2334-409838",
+  "founder": {
+    "@type": "Person",
+    "name": "René Kuhm",
+    "jobTitle": "Senior Fullstack Engineer",
+    "url": "https://github.com/Rene-Kuhm"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Eduardo Castilla",
+    "addressRegion": "La Pampa",
+    "addressCountry": "AR"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Argentina"
+  },
+  "sameAs": [
+    "https://github.com/Rene-Kuhm",
+    "https://instagram.com/renekuhm",
+    "https://tiktok.com/@kuhmdev",
+    "https://youtube.com/@tecnodespegue",
+    "https://linkedin.com/in/renekuhm"
+  ],
+  "knowsAbout": [
+    "Fullstack Development",
+    "AI Automation",
+    "TypeScript",
+    "React",
+    "Next.js",
+    "Node.js",
+    "Python",
+    "Docker",
+    "PostgreSQL"
+  ]
+};
+
+const professionalServiceSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "TecnoDespegue",
+  "image": ogImage.toString(),
+  "priceRange": "USD 5K - 50K+",
+  "url": Astro.site?.toString(),
+  "telephone": "+54-9-2334-409838",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Eduardo Castilla",
+    "addressRegion": "La Pampa",
+    "addressCountry": "AR"
+  }
+};
 ---
 
 <!doctype html>
@@ -58,10 +119,15 @@ const ogImage = new URL('/og-image.png', Astro.site);
     
     <!-- Generator -->
     <meta name="generator" content={Astro.generator} />
-    
+
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(professionalServiceSchema)} />
+
     <title>{title}</title>
   </head>
   <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
     <slot />
   </body>
 </html>
