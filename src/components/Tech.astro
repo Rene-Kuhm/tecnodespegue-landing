@@ -1,21 +1,21 @@
 ---
 const technologies = [
-  'React',
-  'Next.js',
-  'Astro',
-  'Node.js',
-  'TypeScript',
-  'Python',
-  'Flutter',
-  'Dart',
-  'Tailwind CSS',
-  'PostgreSQL',
-  'Docker',
-  'AI/ML',
-  'n8n',
-  'Railway',
-  'Vercel',
-  'Linux'
+  { name: 'React',        icon: '/tech/react.svg' },
+  { name: 'Next.js',      icon: '/tech/nextdotjs.svg' },
+  { name: 'Astro',        icon: '/tech/astro.svg' },
+  { name: 'Node.js',      icon: '/tech/nodedotjs.svg' },
+  { name: 'TypeScript',   icon: '/tech/typescript.svg' },
+  { name: 'Python',       icon: '/tech/python.svg' },
+  { name: 'Flutter',      icon: '/tech/flutter.svg' },
+  { name: 'Dart',         icon: '/tech/dart.svg' },
+  { name: 'Tailwind CSS', icon: '/tech/tailwindcss.svg' },
+  { name: 'PostgreSQL',   icon: '/tech/postgresql.svg' },
+  { name: 'Docker',       icon: '/tech/docker.svg' },
+  { name: 'AI / ML',      symbol: 'psychology' },
+  { name: 'n8n',          icon: '/tech/n8n.svg' },
+  { name: 'Railway',      icon: '/tech/railway.svg' },
+  { name: 'Vercel',       icon: '/tech/vercel.svg' },
+  { name: 'Linux',        icon: '/tech/linux.svg' }
 ];
 ---
 
@@ -29,11 +29,30 @@ const technologies = [
         Tecnologías que Dominamos
       </h2>
     </div>
-    
-    <div class="flex flex-wrap justify-center gap-4">
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-3">
       {technologies.map((tech) => (
-        <div class="tech-badge">
-          {tech}
+        <div class="group flex flex-col items-center justify-center gap-3 p-6 bg-surface-container border border-white/5 rounded-card hover:border-primary/40 hover:bg-surface-container-high transition-all duration-300">
+          <div class="h-10 w-10 flex items-center justify-center opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300">
+            {tech.icon ? (
+              <img
+                src={tech.icon}
+                alt={`${tech.name} logo`}
+                width="40"
+                height="40"
+                loading="lazy"
+                decoding="async"
+                class="h-10 w-10"
+              />
+            ) : (
+              <span class="material-symbols-outlined text-primary" style="font-size: 2.25rem;">
+                {tech.symbol}
+              </span>
+            )}
+          </div>
+          <span class="text-[11px] font-mono text-on-surface-variant group-hover:text-primary transition-colors uppercase tracking-wider text-center">
+            {tech.name}
+          </span>
         </div>
       ))}
     </div>
