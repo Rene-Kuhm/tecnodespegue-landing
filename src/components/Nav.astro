@@ -39,6 +39,8 @@
       id="mobile-menu-btn"
       class="md:hidden flex flex-col gap-1.5 p-2"
       aria-label="Abrir menú"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
     >
       <span class="w-6 h-0.5 bg-zinc-400 transition-transform"></span>
       <span class="w-6 h-0.5 bg-zinc-400 transition-opacity"></span>
@@ -50,6 +52,7 @@
   <div 
     id="mobile-menu"
     class="md:hidden fixed inset-0 top-[60px] bg-surface/95 backdrop-blur-xl z-40 transform translate-x-full transition-transform duration-300 ease-in-out"
+    aria-hidden="true"
   >
     <div class="flex flex-col items-center justify-center min-h-screen gap-8 p-8">
       <a href="#soluciones" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors" onclick="toggleMobileMenu()">
@@ -83,18 +86,24 @@
     const menu = document.getElementById('mobile-menu');
     const btn = document.getElementById('mobile-menu-btn');
     const spans = btn?.querySelectorAll('span');
+    if (!menu || !spans) return;
+    const isClosed = menu?.classList.contains('translate-x-full');
     
-    if (menu?.classList.contains('translate-x-full')) {
+    if (isClosed) {
       menu.classList.remove('translate-x-full');
       menu.classList.add('translate-x-0');
+      menu.setAttribute('aria-hidden', 'false');
+      btn?.setAttribute('aria-expanded', 'true');
       // Animate hamburger to X
       spans[0]?.classList.add('rotate-45', 'translate-y-2');
       spans[1]?.classList.add('opacity-0');
       spans[2]?.classList.add('-rotate-45', '-translate-y-2');
       document.body.style.overflow = 'hidden';
     } else {
-      menu?.classList.add('translate-x-full');
-      menu?.classList.remove('translate-x-0');
+      menu.classList.add('translate-x-full');
+      menu.classList.remove('translate-x-0');
+      menu.setAttribute('aria-hidden', 'true');
+      btn?.setAttribute('aria-expanded', 'false');
       // Reset hamburger
       spans[0]?.classList.remove('rotate-45', 'translate-y-2');
       spans[1]?.classList.remove('opacity-0');
