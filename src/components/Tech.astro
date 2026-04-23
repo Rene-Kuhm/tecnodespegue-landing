@@ -1,4 +1,6 @@
 ---
+import Icon from './Icon.astro';
+
 const technologies = [
   { name: 'React',        icon: '/tech/react.svg' },
   { name: 'Next.js',      icon: '/tech/nextdotjs.svg' },
@@ -44,11 +46,9 @@ const technologies = [
                 decoding="async"
                 class="h-10 w-10"
               />
-            ) : (
-              <span class="material-symbols-outlined text-primary" style="font-size: 2.25rem;">
-                {tech.symbol}
-              </span>
-            )}
+            ) : tech.symbol ? (
+              <Icon name={tech.symbol} class="w-10 h-10 text-primary" />
+            ) : null}
           </div>
           <span class="text-[11px] font-mono text-on-surface-variant group-hover:text-primary transition-colors uppercase tracking-wider text-center">
             {tech.name}

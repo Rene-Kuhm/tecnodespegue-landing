@@ -1,4 +1,5 @@
 ---
+import Icon from './Icon.astro';
 ---
 
 <section class="py-32 bg-surface-container-lowest" id="soluciones">
@@ -19,7 +20,7 @@
       <!-- AI Automations - Large Card -->
       <div class="md:col-span-8 group cursor-pointer card relative overflow-hidden">
         <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-100 transition-opacity">
-          <span class="material-symbols-outlined text-6xl text-primary">psychology</span>
+          <Icon name="psychology" class="w-16 h-16 text-primary" />
         </div>
         
         <h3 class="text-2xl font-headline font-bold text-primary mb-4">
@@ -45,7 +46,7 @@
       
       <!-- Fullstack Development -->
       <div class="md:col-span-4 card group">
-        <span class="material-symbols-outlined text-secondary text-4xl mb-6">layers</span>
+        <Icon name="layers" class="w-10 h-10 text-secondary mb-6" />
         <h3 class="text-xl font-headline font-bold text-on-surface mb-4">
           Desarrollo Fullstack
         </h3>
@@ -60,7 +61,7 @@
       
       <!-- Workflows -->
       <div class="md:col-span-4 card group">
-        <span class="material-symbols-outlined text-primary text-4xl mb-6">account_tree</span>
+        <Icon name="account_tree" class="w-10 h-10 text-primary mb-6" />
         <h3 class="text-xl font-headline font-bold text-on-surface mb-4">
           Flujos de Trabajo
         </h3>
@@ -82,13 +83,13 @@
         
         <div class="flex-shrink-0 grid grid-cols-3 gap-2">
           <div class="w-12 h-12 bg-surface-container-high rounded-chip border border-white/5 flex items-center justify-center">
-            <span class="material-symbols-outlined text-primary/40">api</span>
+            <Icon name="api" class="w-5 h-5 text-primary/40" />
           </div>
           <div class="w-12 h-12 bg-surface-container-high rounded-chip border border-white/5 flex items-center justify-center">
-            <span class="material-symbols-outlined text-primary/40">database</span>
+            <Icon name="database" class="w-5 h-5 text-primary/40" />
           </div>
           <div class="w-12 h-12 bg-surface-container-high rounded-chip border border-white/5 flex items-center justify-center">
-            <span class="material-symbols-outlined text-primary/40">cloud_done</span>
+            <Icon name="cloud_done" class="w-5 h-5 text-primary/40" />
           </div>
         </div>
       </div>

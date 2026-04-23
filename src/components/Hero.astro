@@ -1,4 +1,5 @@
 ---
+import Icon from './Icon.astro';
 ---
 
 <section class="relative min-h-screen flex items-center pt-20 overflow-hidden">
@@ -64,7 +65,7 @@
         
         <!-- Floating badge with icon -->
         <div class="absolute -bottom-6 -left-6 bg-surface-container p-6 border border-white/5 shadow-2xl rounded-card max-w-xs glass-effect hover:scale-105 transition-transform">
-          <span class="material-symbols-outlined text-secondary text-4xl mb-4 block">terminal</span>
+          <Icon name="terminal" class="w-10 h-10 text-secondary mb-4 block" />
           <p class="text-sm font-label text-on-surface-variant leading-snug italic">
             "Transformamos ideas complejas en código de alto rendimiento."
           </p>
