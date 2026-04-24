@@ -1,13 +1,3 @@
-<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background -->
-  <rect width="64" height="64" rx="12" fill="#0e0e0e"/>
-  
-  <!-- TD Monogram -->
-  <path d="M16 20 H28 V24 H24 V44 H20 V24 H16 Z" fill="#c1fffe"/>
-  <path d="M32 20 H40 C46 20 48 24 48 32 C48 40 46 44 40 44 H32 V20 Z M36 24 V40 H40 C43 40 44 38 44 32 C44 26 43 24 40 24 Z" fill="#00fd87"/>
-  
-  <!-- Accent dot -->
-  <circle cx="52" cy="20" r="3" fill="#c1fffe">
-    <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
-  </circle>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none"><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description><dc:creator>RealFaviconGenerator</dc:creator><dc:source>https://realfavicongenerator.net</dc:source></rdf:Description></rdf:RDF></metadata><rect x="0.5" y="0.5" width="63" height="63" rx="12" fill="#0e0e0e" stroke="#c1fffe" stroke-opacity="0.15"></rect><path d="M16 44 L32 20 L48 44" stroke="#c1fffe" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M24 52 L40 52" stroke="#00fd87" stroke-width="4" stroke-linecap="round">
+    <animate attributeName="opacity" values="1;0.35;1" dur="2s" repeatCount="indefinite"></animate>
+  </path></svg>
