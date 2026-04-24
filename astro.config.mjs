@@ -8,6 +8,17 @@ export default defineConfig({
   site: 'https://www.tecnodespegue.com',
   vite: {
     plugins: [tailwindcss()],
-    server: { allowedHosts: true }
-  }
+    server: { allowedHosts: true },
+    build: {
+      cssCodeSplit: false,
+      rollupOptions: {
+        output: {
+          assetFileNames: ({ name }) => {
+            if (name?.endsWith('.woff2')) return 'fonts/[name][extname]';
+            return '_astro/[name].[hash][extname]';
+          },
+        },
+      },
+    },
+  },
 });
