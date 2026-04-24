@@ -6,11 +6,13 @@ import '@fontsource-variable/space-grotesk';
 interface Props {
   title: string;
   description?: string;
+  noindex?: boolean;
 }
 
-const { 
-  title, 
-  description = "Desarrollo fullstack, automatizaciones con IA y flujos de trabajo inteligentes. Arquitecturas escalables para empresas que buscan crecer sin límites."
+const {
+  title,
+  description = "Desarrollo fullstack, automatizaciones con IA y flujos de trabajo inteligentes. Arquitecturas escalables para empresas que buscan crecer sin límites.",
+  noindex = false
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -96,6 +98,7 @@ const professionalServiceSchema = {
     
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />

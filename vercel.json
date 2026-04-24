@@ -1,0 +1,11 @@
+{
+  "routes": [
+    { "src": "/index\\.html", "headers": { "Location": "/" }, "status": 301 },
+    { "src": "/work", "dest": "/404.html", "status": 410 },
+    { "src": "/about", "dest": "/404.html", "status": 410 },
+    { "src": "/terms", "dest": "/404.html", "status": 410 },
+    { "src": "/blog(/.*)?", "dest": "/404.html", "status": 410 },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/404.html", "status": 404 }
+  ]
+}
