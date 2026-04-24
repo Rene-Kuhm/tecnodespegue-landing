@@ -55,25 +55,24 @@
     aria-hidden="true"
   >
     <div class="flex flex-col items-center justify-center min-h-screen gap-8 p-8">
-      <a href="#soluciones" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors" onclick="toggleMobileMenu()">
+      <a href="#soluciones" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors">
         Soluciones
       </a>
-      <a href="#portfolio" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors" onclick="toggleMobileMenu()">
+      <a href="#portfolio" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors">
         Portfolio
       </a>
-      <a href="#stack" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors" onclick="toggleMobileMenu()">
+      <a href="#stack" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors">
         Stack
       </a>
-      <a href="#proceso" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors" onclick="toggleMobileMenu()">
+      <a href="#proceso" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors">
         Proceso
       </a>
-      <a href="#contacto" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors" onclick="toggleMobileMenu()">
+      <a href="#contacto" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors">
         Contacto
       </a>
-      <a 
-        href="#contacto" 
+      <a
+        href="#contacto"
         class="mt-4 bg-primary hover:bg-primary-dim text-on-primary-container px-8 py-3 font-bold tracking-tight text-lg rounded-card transition-all ambient-glow"
-        onclick="toggleMobileMenu()"
       >
         Iniciá tu Proyecto
       </a>
@@ -113,7 +112,12 @@
   }
 
   document.getElementById('mobile-menu-btn')?.addEventListener('click', toggleMobileMenu);
-  
+
+  // Close menu when any link inside it is tapped
+  document.getElementById('mobile-menu')?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', toggleMobileMenu);
+  });
+
   // Close menu on escape key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
