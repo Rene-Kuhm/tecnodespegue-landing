@@ -1,7 +1,5 @@
 ---
 import '../styles/global.css';
-import '@fontsource-variable/inter';
-import '@fontsource-variable/space-grotesk';
 
 interface Props {
   title: string;
@@ -96,8 +94,9 @@ const professionalServiceSchema = {
     <meta name="apple-mobile-web-app-title" content="TecnoDespegue" />
     <link rel="manifest" href="/site.webmanifest" />
     
-    <!-- Preload critical font (LCP element uses Space Grotesk Variable) -->
+    <!-- Preload critical fonts -->
     <link rel="preload" href="/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
@@ -130,7 +129,14 @@ const professionalServiceSchema = {
     <script is:inline type="application/ld+json" set:html={JSON.stringify(professionalServiceSchema)} />
 
     {import.meta.env.PROD && (
-      <script is:inline defer data-domain={plausibleDomain} src="https://plausible.io/js/script.js"></script>
+      <script is:inline define:vars={{ plausibleDomain }}>
+        window.addEventListener('load', function () {
+          var s = document.createElement('script');
+          s.setAttribute('data-domain', plausibleDomain);
+          s.src = 'https://plausible.io/js/script.js';
+          document.head.appendChild(s);
+        });
+      </script>
     )}
 
     <title>{title}</title>
