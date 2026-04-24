@@ -1,0 +1,91 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<Layout
+  title="404 — Página no encontrada | TecnoDespegue"
+  description="La página que buscás no existe o fue movida. Volvé al inicio de TecnoDespegue o escribinos para encontrar lo que necesitás."
+>
+  <Nav />
+
+  <main id="contenido" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden">
+    <div class="absolute inset-0 grid-bg opacity-30"></div>
+    <div class="absolute inset-0 hero-gradient"></div>
+
+    <div class="max-w-4xl mx-auto px-8 relative z-10 text-center">
+      <!-- Status badge -->
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-chip bg-surface-container border border-primary/20 mb-10">
+        <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+        <span class="text-[0.6875rem] font-label text-primary uppercase tracking-widest">
+          Error 404 — Ruta Perdida
+        </span>
+      </div>
+
+      <!-- Animated 404 visual -->
+      <div class="relative w-64 h-64 md:w-72 md:h-72 mx-auto mb-12">
+        <div class="absolute inset-0 bg-primary/10 blur-[100px] rounded-full animate-pulse-slow"></div>
+
+        <div class="relative w-full h-full flex items-center justify-center">
+          <!-- Orbiting rings -->
+          <div class="absolute inset-0 border border-primary/20 rounded-full animate-spin-slow"></div>
+          <div class="absolute inset-6 border border-secondary/20 rounded-full animate-spin-reverse"></div>
+
+          <!-- Corner accents -->
+          <div class="absolute top-0 right-0 w-14 h-14 border-t-2 border-r-2 border-primary/40"></div>
+          <div class="absolute bottom-0 left-0 w-14 h-14 border-b-2 border-l-2 border-secondary/40"></div>
+
+          <!-- 404 text -->
+          <h1 class="relative font-headline text-[5.5rem] md:text-[7rem] font-bold tracking-tighter leading-none text-primary z-10">
+            404
+          </h1>
+        </div>
+      </div>
+
+      <!-- Headline -->
+      <h2 class="font-headline text-[2rem] md:text-[3rem] font-bold tracking-tight mb-6 leading-tight text-on-surface">
+        Esta página <span class="italic underline decoration-primary decoration-4 underline-offset-8">despegó</span> sin avisar
+      </h2>
+
+      <!-- Description -->
+      <p class="text-on-surface-variant text-lg max-w-xl mx-auto mb-10 font-body leading-relaxed">
+        La URL que buscás no existe, fue movida o nunca estuvo en nuestro radar. Tranqui, hay un montón de cosas más que podés explorar.
+      </p>
+
+      <!-- Primary CTAs -->
+      <div class="flex flex-wrap gap-4 justify-center mb-16">
+        <a href="/" class="btn-primary inline-flex items-center gap-2">
+          <Icon name="arrow_forward" class="w-4 h-4" />
+          Volver al Inicio
+        </a>
+        <a
+          href="https://wa.me/5492334409838?text=Hola,%20llegué%20a%20un%20404%20en%20tecnodespegue.com%20y%20quiero%20consultar"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-secondary inline-flex items-center gap-2"
+        >
+          <Icon name="chat" class="w-4 h-4" />
+          Hablar por WhatsApp
+        </a>
+      </div>
+
+      <!-- Quick section links -->
+      <div class="pt-12 border-t border-white/5">
+        <p class="text-[10px] uppercase font-bold tracking-widest text-zinc-600 mb-6">
+          O explorá estas secciones
+        </p>
+        <div class="flex flex-wrap gap-3 justify-center">
+          <a href="/#soluciones" class="tech-badge">Soluciones</a>
+          <a href="/#portfolio" class="tech-badge">Portfolio</a>
+          <a href="/#stack" class="tech-badge">Stack</a>
+          <a href="/#proceso" class="tech-badge">Proceso</a>
+          <a href="/#contacto" class="tech-badge">Contacto</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
