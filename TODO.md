@@ -30,17 +30,20 @@
 - [x] **Nav actualizado** — Link a Portfolio
 - [x] **Ubicación** — Eduardo Castilla, La Pampa, Argentina en footer
 
+## ✅ Completado (2026-04-23)
+
+- [x] **Deploy** — Vercel en producción
+- [x] **Dominio** — tecnodespegue.com conectado
+- [x] **Analytics** — Plausible integrado (condicional a PROD)
+- [x] **Página 404 personalizada** — Custom 404 con branding TecnoDespegue (anillos animados, voseo, CTAs home/WhatsApp + quick links)
+
 ## 🟡 Pendiente
 
-- [ ] **Dominio**: Conectar tecnodespegue.com
-- [ ] **Deploy**: Vercel o servidor local con Docker + Nginx
-- [ ] **Analytics**: Google Analytics o Plausible
 - [ ] **LinkedIn**: Verificar URL del perfil de LinkedIn
 
 ## 🟢 Nice to Have
 
 - [ ] Blog section
-- [ ] Página 404 personalizada
 - [ ] Case studies detallados por proyecto
 - [ ] Modo light/dark toggle
 - [ ] Animación de escritura en el Hero
