@@ -49,7 +49,7 @@ vercel --prod
 4. Deploy ✅
 
 **Custom domain:**
-- Settings → Domains → Add `tecnodespegue.com`
+- Settings → Domains → Add `www.tecnodespegue.com` (Primary) + `tecnodespegue.com` (redirect)
 - Configurar DNS records que te indica
 
 ---
@@ -102,7 +102,7 @@ npm run build
 
 ### Verificar
 
-- [ ] https://tecnodespegue.com carga correctamente
+- [ ] https://www.tecnodespegue.com carga correctamente
 - [ ] Formulario envía emails
 - [ ] Responsive en mobile
 - [ ] WhatsApp abre correctamente
@@ -125,7 +125,7 @@ npm run build
 
 **Plausible (recomendado - privacy-friendly):**
 ```html
-<script defer data-domain="tecnodespegue.com" src="https://plausible.io/js/script.js"></script>
+<script defer data-domain="www.tecnodespegue.com" src="https://plausible.io/js/script.js"></script>
 ```
 
 ---

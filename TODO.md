@@ -33,7 +33,7 @@
 ## ✅ Completado (2026-04-23)
 
 - [x] **Deploy** — Vercel en producción
-- [x] **Dominio** — tecnodespegue.com conectado
+- [x] **Dominio** — www.tecnodespegue.com conectado (canónico)
 - [x] **Analytics** — Plausible integrado (condicional a PROD)
 - [x] **Página 404 personalizada** — Custom 404 con branding TecnoDespegue (anillos animados, voseo, CTAs home/WhatsApp + quick links)
 
