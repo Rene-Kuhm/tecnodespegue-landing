@@ -4,18 +4,18 @@
 <div id="progress-bar" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-primary via-secondary to-primary z-50 transition-all duration-150"></div>
 
 <script>
+  const progressBar = document.getElementById('progress-bar');
+  let docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
   function updateProgressBar() {
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const scrollPercent = (scrollTop / docHeight) * 100;
-    
-    const progressBar = document.getElementById('progress-bar');
-    if (progressBar) {
-      progressBar.style.width = `${scrollPercent}%`;
-    }
+    if (!progressBar) return;
+    progressBar.style.width = `${(window.scrollY / docHeight) * 100}%`;
   }
 
-  window.addEventListener('scroll', updateProgressBar);
-  window.addEventListener('resize', updateProgressBar);
-  updateProgressBar();
+  window.addEventListener('scroll', updateProgressBar, { passive: true });
+  window.addEventListener('resize', () => {
+    docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    requestAnimationFrame(updateProgressBar);
+  }, { passive: true });
+  requestAnimationFrame(updateProgressBar);
 </script>
