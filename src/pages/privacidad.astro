@@ -1,0 +1,267 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const lastUpdated = "24 de abril de 2026";
+---
+
+<Layout
+  title="Política de Privacidad | TecnoDespegue"
+  description="Política de privacidad y tratamiento de datos personales de TecnoDespegue, conforme a la Ley 25.326 de Protección de Datos Personales de Argentina."
+>
+  <Nav />
+
+  <main id="contenido" class="pt-24 pb-20">
+    <div class="max-w-3xl mx-auto px-8">
+
+      <!-- Header -->
+      <div class="mb-12">
+        <span class="text-xs font-mono text-secondary uppercase tracking-[0.4em] mb-4 block">Legal</span>
+        <h1 class="font-headline text-4xl font-bold text-on-surface mb-4">
+          Política de Privacidad
+        </h1>
+        <p class="text-on-surface-variant text-sm font-mono">
+          Última actualización: {lastUpdated}
+        </p>
+      </div>
+
+      <div class="space-y-10 text-on-surface-variant leading-relaxed">
+
+        <!-- 1 -->
+        <section>
+          <h2 class="font-headline text-xl font-bold text-on-surface mb-3">
+            1. Responsable del tratamiento
+          </h2>
+          <p>
+            El responsable del tratamiento de los datos personales recabados a través de este sitio web es:
+          </p>
+          <ul class="mt-3 space-y-1 text-sm font-mono border-l-2 border-primary/30 pl-4">
+            <li><span class="text-primary">Titular:</span> René Kuhm</li>
+            <li><span class="text-primary">Marca:</span> TecnoDespegue</li>
+            <li><span class="text-primary">Domicilio:</span> Eduardo Castex, La Pampa, Argentina</li>
+            <li><span class="text-primary">Email:</span> renekuhm2@gmail.com</li>
+            <li><span class="text-primary">Sitio web:</span> https://www.tecnodespegue.com</li>
+          </ul>
+        </section>
+
+        <!-- 2 -->
+        <section>
+          <h2 class="font-headline text-xl font-bold text-on-surface mb-3">
+            2. Marco legal aplicable
+          </h2>
+          <p>
+            Esta política se rige por la <strong class="text-on-surface">Ley 25.326 de Protección de Datos Personales</strong> de la República Argentina y su decreto reglamentario 1558/2001, así como por las disposiciones de la Agencia de Acceso a la Información Pública (AAIP). En la medida en que resulte aplicable, también se consideran los principios del Reglamento General de Protección de Datos (RGPD) de la Unión Europea.
+          </p>
+        </section>
+
+        <!-- 3 -->
+        <section>
+          <h2 class="font-headline text-xl font-bold text-on-surface mb-3">
+            3. Datos que recopilamos
+          </h2>
+          <p class="mb-4">Recopilamos únicamente los datos que usted nos proporciona de forma voluntaria a través del formulario de contacto:</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm border border-white/10 rounded-card">
+              <thead>
+                <tr class="bg-surface-container-high">
+                  <th class="text-left px-4 py-3 text-on-surface font-semibold">Dato</th>
+                  <th class="text-left px-4 py-3 text-on-surface font-semibold">Obligatorio</th>
+                  <th class="text-left px-4 py-3 text-on-surface font-semibold">Finalidad</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/5">
+                <tr>
+                  <td class="px-4 py-3 font-mono text-xs text-primary">Nombre</td>
+                  <td class="px-4 py-3">Sí</td>
+                  <td class="px-4 py-3">Identificación en la respuesta</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-3 font-mono text-xs text-primary">Email</td>
+                  <td class="px-4 py-3">Sí</td>
+                  <td class="px-4 py-3">Canal de respuesta a la consulta</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-3 font-mono text-xs text-primary">Empresa</td>
+                  <td class="px-4 py-3">No</td>
+                  <td class="px-4 py-3">Contexto del proyecto</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-3 font-mono text-xs text-primary">Descripción del proyecto</td>
+                  <td class="px-4 py-3">Sí</td>
+                  <td class="px-4 py-3">Evaluación de la consulta</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-3 font-mono text-xs text-primary">Presupuesto estimado</td>
+                  <td class="px-4 py-3">No</td>
+                  <td class="px-4 py-3">Orientación de la propuesta</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mt-4 text-sm">
+            No recopilamos datos sensibles (salud, origen étnico, religión, orientación sexual, datos biométricos ni antecedentes penales).
+          </p>
+        </section>
+
+        <!-- 4 -->
+        <section>
+          <h2 class="font-headline text-xl font-bold text-on-surface mb-3">
+            4. Finalidad y base legal del tratamiento
+          </h2>
+          <p>
+            Los datos recopilados se utilizan exclusivamente para <strong class="text-on-surface">responder a su consulta comercial</strong> y evaluar la posibilidad de iniciar una relación de servicios. La base legal del tratamiento es el <strong class="text-on-surface">consentimiento del titular</strong>, prestado al completar y enviar el formulario de contacto.
+          </p>
+          <p class="mt-3">
+            No utilizamos sus datos para envío de publicidad no solicitada, perfilado automatizado, ni los cedemos a terceros con fines comerciales.
+          </p>
+        </section>
+
+        <!-- 5 -->
+        <section>
+          <h2 class="font-headline text-xl font-bold text-on-surface mb-3">
+            5. Destinatarios de los datos
+          </h2>
+          <p class="mb-3">Los datos del formulario son procesados por los siguientes servicios:</p>
+          <ul class="space-y-2 text-sm">
+            <li class="flex gap-3">
+              <span class="text-primary font-mono shrink-0">Formspree</span>
+              <span>Proveedor de formularios (EE. UU.). Actúa como encargado del tratamiento. Política: <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">formspree.io/legal/privacy-policy</a></span>
+            </li>
+            <li class="flex gap-3">
+              <span class="text-primary font-mono shrink-0">Vercel</span>
+              <span>Alojamiento del sitio web (EE. UU.). Puede registrar metadatos de acceso (IP, User-Agent). Política: <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">vercel.com/legal/privacy-policy</a></span>
+            </li>
+            <li class="flex gap-3">
+              <span class="text-primary font-mono shrink-0">Plausible Analytics</span>
+              <span>Analítica web sin cookies, sin datos personales identificables, servidores en la UE. Política: <a href="https://plausible.io/privacy" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">plausible.io/privacy</a></span>
+            </li>
+          </ul>
+          <p class="mt-4 text-sm">
+            No vendemos, alquilamos ni compartimos sus datos con terceros para fines distintos a los indicados.
+          </p>
+        </section>
+
+        <!-- 6 -->
+        <section>
+          <h2 class="font-headline text-xl font-bold text-on-surface mb-3">
+            6. Conservación de los datos
+          </h2>
+          <p>
+            Los datos del formulario de contacto se conservan durante el tiempo necesario para gestionar la consulta y, en caso de iniciarse una relación comercial, durante la vigencia de dicha relación más los plazos legales de prescripción aplicables en Argentina (<strong class="text-on-surface">hasta 5 años</strong> según el Código Civil y Comercial). Una vez cumplida la finalidad, los datos se eliminan de forma segura.
+          </p>
+        </section>
+
+        <!-- 7 -->
+        <section>
+          <h2 class="font-headline text-xl font-bold text-on-surface mb-3">
+            7. Derechos del titular (derechos ARCO)
+          </h2>
+          <p class="mb-4">
+            Conforme a la Ley 25.326, usted tiene derecho a:
+          </p>
+          <div class="grid sm:grid-cols-2 gap-3">
+            {[
+              { letra: "A", nombre: "Acceso", desc: "Conocer qué datos suyos tenemos almacenados." },
+              { letra: "R", nombre: "Rectificación", desc: "Corregir datos inexactos o incompletos." },
+              { letra: "C", nombre: "Cancelación", desc: "Solicitar la eliminación de sus datos." },
+              { letra: "O", nombre: "Oposición", desc: "Oponerse al tratamiento en determinadas circunstancias." },
+            ].map(({ letra, nombre, desc }) => (
+              <div class="flex gap-3 bg-surface-container p-4 rounded-card border border-white/5">
+                <span class="text-2xl font-headline font-bold text-primary shrink-0">{letra}</span>
+                <div>
+                  <p class="font-bold text-on-surface text-sm">{nombre}</p>
+                  <p class="text-xs mt-1">{desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p class="mt-4 text-sm">
+            Para ejercer cualquiera de estos derechos, envíe un email a <a href="mailto:renekuhm2@gmail.com" class="text-primary hover:underline">renekuhm2@gmail.com</a> indicando su nombre, el derecho que desea ejercer y, si aplica, los datos a los que se refiere. Responderemos en un plazo máximo de <strong class="text-on-surface">10 días hábiles</strong>.
+          </p>
+          <p class="mt-3 text-sm">
+            Si considera que el tratamiento de sus datos no se ajusta a la normativa, puede presentar una reclamación ante la <strong class="text-on-surface">Agencia de Acceso a la Información Pública (AAIP)</strong>: <a href="https://www.argentina.gob.ar/aaip" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">www.argentina.gob.ar/aaip</a>.
+          </p>
+        </section>
+
+        <!-- 8 -->
+        <section>
+          <h2 class="font-headline text-xl font-bold text-on-surface mb-3">
+            8. Cookies y analítica
+          </h2>
+          <p>
+            Este sitio utiliza <strong class="text-on-surface">Plausible Analytics</strong>, una herramienta de analítica web respetuosa con la privacidad que <strong class="text-on-surface">no utiliza cookies</strong>, no rastrea usuarios entre sitios y no almacena datos personales identificables. Las métricas recopiladas (páginas visitadas, duración de sesión, país de origen) son agregadas y anónimas.
+          </p>
+          <p class="mt-3">
+            Al no utilizar cookies de rastreo ni publicidad, este sitio no requiere banner de consentimiento de cookies conforme a la normativa aplicable.
+          </p>
+        </section>
+
+        <!-- 9 -->
+        <section>
+          <h2 class="font-headline text-xl font-bold text-on-surface mb-3">
+            9. Seguridad
+          </h2>
+          <p>
+            Adoptamos las medidas técnicas y organizativas adecuadas para proteger sus datos contra acceso no autorizado, pérdida o divulgación. La comunicación entre su navegador y este sitio está cifrada mediante <strong class="text-on-surface">HTTPS/TLS</strong>. Los datos del formulario se transmiten de forma segura a través de Formspree, que cumple con estándares de seguridad de la industria.
+          </p>
+        </section>
+
+        <!-- 10 -->
+        <section>
+          <h2 class="font-headline text-xl font-bold text-on-surface mb-3">
+            10. Transferencias internacionales
+          </h2>
+          <p>
+            Algunos de nuestros proveedores (Formspree, Vercel) operan desde los Estados Unidos. Estas transferencias se realizan bajo las garantías previstas por la AAIP y los mecanismos de adecuación reconocidos internacionalmente. Plausible Analytics procesa los datos en servidores ubicados dentro de la Unión Europea.
+          </p>
+        </section>
+
+        <!-- 11 -->
+        <section>
+          <h2 class="font-headline text-xl font-bold text-on-surface mb-3">
+            11. Menores de edad
+          </h2>
+          <p>
+            Este sitio web está dirigido a empresas y profesionales. No recopilamos conscientemente datos personales de menores de 18 años. Si detectamos que hemos recibido datos de un menor sin consentimiento parental, los eliminaremos de inmediato.
+          </p>
+        </section>
+
+        <!-- 12 -->
+        <section>
+          <h2 class="font-headline text-xl font-bold text-on-surface mb-3">
+            12. Modificaciones a esta política
+          </h2>
+          <p>
+            Podemos actualizar esta política ocasionalmente para reflejar cambios en nuestras prácticas o en la normativa aplicable. La fecha de última actualización siempre estará indicada al inicio del documento. El uso continuado del sitio tras la publicación de cambios implica su aceptación.
+          </p>
+        </section>
+
+        <!-- 13 -->
+        <section>
+          <h2 class="font-headline text-xl font-bold text-on-surface mb-3">
+            13. Contacto
+          </h2>
+          <p>
+            Para cualquier consulta relacionada con esta política o con el tratamiento de sus datos personales, puede contactarnos en:
+          </p>
+          <div class="mt-3 font-mono text-sm border-l-2 border-primary/30 pl-4 space-y-1">
+            <p><span class="text-primary">Email:</span> renekuhm2@gmail.com</p>
+            <p><span class="text-primary">WhatsApp:</span> <a href="https://wa.me/5492334409838" target="_blank" rel="noopener noreferrer" class="hover:text-primary transition-colors">+54 9 2334 409838</a></p>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Back link -->
+      <div class="mt-16 pt-8 border-t border-white/5">
+        <a href="/" class="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-primary transition-colors font-mono">
+          ← Volver al inicio
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
