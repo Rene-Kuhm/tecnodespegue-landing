@@ -131,10 +131,15 @@ const professionalServiceSchema = {
     {import.meta.env.PROD && (
       <script is:inline define:vars={{ plausibleDomain }}>
         window.addEventListener('load', function () {
-          var s = document.createElement('script');
-          s.setAttribute('data-domain', plausibleDomain);
-          s.src = 'https://plausible.io/js/script.js';
-          document.head.appendChild(s);
+          var load = function () {
+            var s = document.createElement('script');
+            s.setAttribute('data-domain', plausibleDomain);
+            s.src = 'https://plausible.io/js/script.js';
+            document.head.appendChild(s);
+          };
+          'requestIdleCallback' in window
+            ? requestIdleCallback(load)
+            : setTimeout(load, 0);
         });
       </script>
     )}

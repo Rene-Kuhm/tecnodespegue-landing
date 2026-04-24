@@ -5,17 +5,24 @@
 
 <script>
   const progressBar = document.getElementById('progress-bar');
-  let docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  let docHeight = 0;
 
   function updateProgressBar() {
-    if (!progressBar) return;
+    if (!progressBar || docHeight === 0) return;
     progressBar.style.width = `${(window.scrollY / docHeight) * 100}%`;
   }
 
   window.addEventListener('scroll', updateProgressBar, { passive: true });
   window.addEventListener('resize', () => {
-    docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    requestAnimationFrame(updateProgressBar);
+    requestAnimationFrame(() => {
+      docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      updateProgressBar();
+    });
   }, { passive: true });
-  requestAnimationFrame(updateProgressBar);
+
+  // Defer layout read to first rAF — never force synchronous layout at init
+  requestAnimationFrame(() => {
+    docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    updateProgressBar();
+  });
 </script>
