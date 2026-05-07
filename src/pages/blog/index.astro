@@ -1,0 +1,122 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import { formatDate, calculateReadTime, getCategories, getTopTags } from '../../utils/blog.ts';
+
+const allPosts = await getCollection('posts');
+const posts = allPosts
+  .filter(p => !p.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const categories = getCategories(posts);
+const topTags = getTopTags(posts, 12);
+
+const title = 'Blog — TecnoDespegue';
+const description = 'Artículos sobre desarrollo fullstack, automatización con IA, arquitectura de software y estrategia tecnológica para startups. Sin humo, solo experiencia real.';
+---
+
+<Layout title={title} description={description}>
+  <Nav />
+
+  <main id="contenido" class="pt-24 pb-24 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 md:px-8">
+
+      <!-- Header -->
+      <div class="mb-12 md:mb-16">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-chip bg-primary/10 text-primary text-xs font-bold tracking-widest uppercase font-label mb-4">
+          <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+          Blog
+        </div>
+        <h1 class="font-headline text-4xl md:text-5xl lg:text-6xl font-bold text-on-surface mb-4 leading-tight tracking-tight">
+          Pensamientos técnicos<br class="hidden md:block" />
+          <span class="text-primary">sin humo</span>
+        </h1>
+        <p class="text-on-surface-variant text-base md:text-lg max-w-2xl leading-relaxed">
+          {description}
+        </p>
+      </div>
+
+      <!-- Posts Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+        {posts.map((post, idx) => {
+          const date = formatDate(post.data.date);
+          const readTime = post.data.readTime ?? calculateReadTime(post.body, 200);
+          const isFirst = idx === 0;
+          return (
+            <article class={`group relative bg-surface-container border border-outline-variant/30 rounded-card overflow-hidden hover:border-primary/30 transition-all duration-300 ${isFirst ? 'lg:col-span-2' : ''}`}>
+              <a href={`/blog/${post.id}/`} class="block">
+                <div class={`p-6 md:p-8 ${isFirst ? 'md:grid md:grid-cols-2 md:gap-8 items-center' : ''}`}>
+                  <div class={`${isFirst ? '' : 'mb-4'}`}>
+                    <div class="flex items-center gap-3 mb-3 text-xs font-mono text-zinc-400">
+                      <time datetime={post.data.date.toISOString()}>{date}</time>
+                      <span class="text-outline-variant">·</span>
+                      <span>{readTime} min de lectura</span>
+                      <span class="text-outline-variant">·</span>
+                      <span class="text-primary">{post.data.category}</span>
+                    </div>
+                    <h2 class="font-headline text-xl md:text-2xl lg:text-3xl font-bold text-on-surface group-hover:text-primary transition-colors leading-tight tracking-tight mb-3">
+                      {post.data.title}
+                    </h2>
+                    <p class="text-on-surface-variant text-sm md:text-base leading-relaxed line-clamp-3">
+                      {post.data.description}
+                    </p>
+                    {post.data.tags && post.data.tags.length > 0 && (
+                      <div class="mt-4 flex flex-wrap gap-2">
+                        {post.data.tags.slice(0, 4).map(tag => (
+                          <span class="px-2.5 py-1 text-xs font-medium text-zinc-400 bg-surface-container-high border border-outline-variant/30 rounded-chip font-label">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  {isFirst && (
+                    <div class="hidden md:flex items-center justify-center">
+                      <div class="w-full h-48 lg:h-64 bg-surface-container-high rounded-card border border-outline-variant/30 flex items-center justify-center">
+                        <div class="text-center text-zinc-500 font-mono text-sm">
+                          <span class="text-4xl font-headline font-bold text-primary/20 block mb-2">{readTime}′</span>
+                          Lectura
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </a>
+            </article>
+          );
+        })}
+      </div>
+
+      <!-- Footer meta -->
+      <div class="mt-16 pt-8 border-t border-outline-variant/20">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-zinc-400">
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-3 font-label">Categorías</h3>
+            <div class="flex flex-wrap gap-2">
+              {categories.map(cat => (
+                <span class="px-3 py-1 bg-surface-container-high border border-outline-variant/30 rounded-chip text-xs font-medium hover:text-primary hover:border-primary/30 transition-colors cursor-default">
+                  {cat}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-3 font-label">Tags frecuentes</h3>
+            <div class="flex flex-wrap gap-2">
+              {topTags.map(tag => (
+                <span class="px-3 py-1 bg-surface-container-high border border-outline-variant/30 rounded-chip text-xs font-medium hover:text-primary hover:border-primary/30 transition-colors cursor-default">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
