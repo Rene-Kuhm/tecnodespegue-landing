@@ -4,6 +4,7 @@ import type { CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
+import Comments from '../../components/Comments.astro';
 import { formatDate, calculateReadTime } from '../../utils/blog.ts';
 
 export async function getStaticPaths() {
@@ -147,14 +148,25 @@ const blogPostingSchema = {
           <p class="text-on-surface-variant text-sm md:text-base max-w-lg mx-auto mb-6">
             Consulta de 30 minutos sin cargo. Analizamos tu stack actual y te decimos exactamente qué optimizar.
           </p>
-          <a
-            href="/#contacto"
-            class="inline-flex bg-primary hover:bg-primary-dim text-on-primary-container px-6 py-3 font-bold tracking-tight text-sm rounded-card transition-all duration-300 active:scale-95 ambient-glow"
-          >
-            Hablá con un experto
-          </a>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <a
+              href="/#contacto"
+              class="inline-flex bg-primary hover:bg-primary-dim text-on-primary-container px-6 py-3 font-bold tracking-tight text-sm rounded-card transition-all duration-300 active:scale-95 ambient-glow"
+            >
+              Hablá con un experto
+            </a>
+            <a
+              href="/#contacto"
+              class="inline-flex border border-outline-variant/50 hover:border-primary text-on-surface-variant hover:text-primary px-6 py-3 font-medium text-sm rounded-card transition-all duration-300 active:scale-95"
+            >
+              ¿Te gustó? Escribime
+            </a>
+          </div>
         </div>
       </div>
+
+      <!-- Comments & Reactions (Giscus) -->
+      <Comments />
 
     </article>
   </main>
