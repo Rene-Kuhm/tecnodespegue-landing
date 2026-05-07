@@ -1,0 +1,59 @@
+---
+// Giscus — Comments & Reactions via GitHub Discussions
+// Zero JS on build; Giscus script loads on scroll (data-loading="lazy")
+---
+
+<!--
+  ─────────────────────────────────────────────
+  HOW TO CONFIGURE GISCUS (first-time setup)
+  ─────────────────────────────────────────────
+  1. Go to https://giscus.app
+  2. Under "Repository", enter: Rene-Kuhm/tecnodespegue-landing
+     → Make sure "Discussions" is enabled in:
+       Settings > General > Features > Discussions (checkbox ON)
+  3. Choose "Discussion Category" > "Create a new category"
+     → Name: Blog Comments
+     → Choose "Announcements" format (or "General" — your call)
+  4. The app will auto-generate your repo-id and category-id.
+     Replace the placeholders below with those real values.
+  5. Verify the preview at the bottom shows a working comment box.
+  6. Done. The IDs below are the ones you said you'd set.
+  ─────────────────────────────────────────────
+-->
+
+<section class="mt-16 pt-10 border-t border-outline-variant/20">
+  <div class="giscus-wrapper">
+    <script
+      src="https://giscus.app/client.js"
+      data-repo="Rene-Kuhm/tecnodespegue-landing"
+      data-repo-id="R_kgDON7p8-w"
+      data-category="Blog Comments"
+      data-category-id="DIC_kwDON7p8-c4CnGyV"
+      data-mapping="pathname"
+      data-strict="0"
+      data-reactions-enabled="true"
+      data-emit-metadata="0"
+      data-input-position="bottom"
+      data-theme="dark"
+      data-lang="es"
+      data-loading="lazy"
+      crossorigin="anonymous"
+      async
+    >
+    </script>
+  </div>
+</section>
+
+<style is:global>
+  /* Giscus container — match dark theme */
+  .giscus-wrapper {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Respect dark-mode surface by nudging Giscus iframe transparency */
+  .giscus,
+  .giscus-frame {
+    background-color: transparent !important;
+  }
+</style>
