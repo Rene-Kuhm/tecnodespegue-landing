@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/Nav.astro';
+import BlogHero from '../../components/BlogHero.astro';
 import Footer from '../../components/Footer.astro';
 import { formatDate, calculateReadTime, getCategories, getTopTags } from '../../utils/blog.ts';
 
@@ -20,23 +21,9 @@ const description = 'Artículos sobre desarrollo fullstack, automatización con 
 <Layout title={title} description={description}>
   <Nav />
 
-  <main id="contenido" class="pt-24 pb-24 min-h-screen">
-    <div class="max-w-7xl mx-auto px-4 md:px-8">
+  <BlogHero featuredCount={posts.length} />
 
-      <!-- Header -->
-      <div class="mb-12 md:mb-16">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-chip bg-primary/10 text-primary text-xs font-bold tracking-widest uppercase font-label mb-4">
-          <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-          Blog
-        </div>
-        <h1 class="font-headline text-4xl md:text-5xl lg:text-6xl font-bold text-on-surface mb-4 leading-tight tracking-tight">
-          Pensamientos técnicos<br class="hidden md:block" />
-          <span class="text-primary">sin humo</span>
-        </h1>
-        <p class="text-on-surface-variant text-base md:text-lg max-w-2xl leading-relaxed">
-          {description}
-        </p>
-      </div>
+  <main id="contenido" class="pb-24 min-h-screen">
 
       <!-- Posts Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
