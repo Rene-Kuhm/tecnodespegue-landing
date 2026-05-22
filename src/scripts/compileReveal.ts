@@ -1,3 +1,5 @@
+import { TERMINAL_LINES } from './heroScript';
+
 export async function compilePhases(element: HTMLElement, lines: string[] = TERMINAL_LINES) {
   const minDelay = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--compile-delay-min')) || 200;
   const maxDelay = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--compile-delay-max')) || 600;
