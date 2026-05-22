@@ -1,0 +1,59 @@
+---
+// src/components/CompileBadge.astro
+---
+
+<div class="compile-badge">
+  <span class="compile-text">> importando</span>
+</div>
+
+<style>
+.compile-badge {
+  display: inline-flex;
+  padding: 0.5rem 1rem;
+  background-color: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 0.75rem;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.compile-text {
+  color: rgb(16, 185, 129);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+}
+</style>
+
+<script>
+import { compilePhases } from '../scripts/compileReveal';
+
+const badge = document.querySelector('.compile-badge');
+if (badge) {
+  const textElement = badge.querySelector('.compile-text');
+  
+  if (textElement) {
+    compilePhases(textElement);
+    
+    // Set up IntersectionObserver for fade-out
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) {
+            entry.target.classList.add('fade-out');
+          } else {
+            entry.target.classList.remove('fade-out');
+          }
+        });
+      },
+      {
+        rootMargin: '0px 0px -80% 0px'
+      }
+    );
+    
+    observer.observe(badge);
+  }
+}
+</script>
