@@ -1,12 +1,5 @@
 {
   "routes": [
-    {
-      "src": "/(.*)",
-      "has": [{ "type": "host", "value": "tecnodespegue\\.com(?<!www\\.tecnodespegue\\.com)" }],
-      "destination": "https://www.tecnodespegue.com/:$1",
-      "status": 301,
-      "permanent": true
-    },
     { "src": "/index\\.html", "headers": { "Location": "/" }, "status": 301 },
     { "src": "/work", "dest": "/404.html", "status": 410 },
     { "src": "/about", "dest": "/404.html", "status": 410 },
