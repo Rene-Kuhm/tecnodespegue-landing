@@ -1,0 +1,189 @@
+---
+import Icon from './Icon.astro';
+---
+
+<section class="py-32 bg-surface relative overflow-hidden" id="optimizacion">
+  <div class="absolute inset-0 grid-bg opacity-10"></div>
+  
+  <div class="max-w-7xl mx-auto px-8 relative z-10 grid lg:grid-cols-12 gap-16 items-center">
+    
+    <!-- Left Column: Copy and Pillars -->
+    <div class="lg:col-span-6 space-y-8">
+      <div>
+        <span class="text-xs font-mono text-secondary uppercase tracking-[0.4em] mb-4 block">
+          Auditoría & Refactor
+        </span>
+        <h2 class="font-headline text-3xl md:text-4xl font-bold tracking-tight text-on-surface mb-6 leading-tight">
+          Arreglamos tu sistema. Lo mejoramos. Lo hacemos <span class="text-primary italic">seguro, rápido y eficiente</span>.
+        </h2>
+        <p class="text-on-surface-variant font-body leading-relaxed text-base">
+          No tires tu código a la basura. Analizamos tu infraestructura digital existente para diagnosticar fugas de memoria, parchar vulnerabilidades críticas y modernizar tu arquitectura al stack más veloz de la industria.
+        </p>
+      </div>
+      
+      <div class="grid sm:grid-cols-2 gap-6">
+        <!-- Pillar 1: Reparación -->
+        <div class="space-y-3 group">
+          <div class="w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 group-hover:bg-red-500/20 transition-colors">
+            <Icon name="bug_report" class="w-5 h-5" />
+          </div>
+          <h3 class="font-headline font-bold text-sm text-on-surface uppercase tracking-wider">
+            Diagnóstico & Reparación
+          </h3>
+          <p class="text-xs text-on-surface-variant leading-relaxed">
+            Eliminamos leaks de memoria, bugs heredados y fallos lógicos que interrumpen tu servicio.
+          </p>
+        </div>
+
+        <!-- Pillar 2: Optimización -->
+        <div class="space-y-3 group">
+          <div class="w-10 h-10 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center text-secondary group-hover:bg-secondary/20 transition-colors">
+            <Icon name="speed" class="w-5 h-5" />
+          </div>
+          <h3 class="font-headline font-bold text-sm text-on-surface uppercase tracking-wider">
+            Aceleración Extrema
+          </h3>
+          <p class="text-xs text-on-surface-variant leading-relaxed">
+            Reducimos tiempos de carga y respuesta (LCP/TTFB) optimizando algoritmos, bases de datos y caching.
+          </p>
+        </div>
+
+        <!-- Pillar 3: Seguridad -->
+        <div class="space-y-3 group">
+          <div class="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary group-hover:bg-primary/20 transition-colors">
+            <Icon name="lock" class="w-5 h-5" />
+          </div>
+          <h3 class="font-headline font-bold text-sm text-on-surface uppercase tracking-wider">
+            Blindaje & Seguridad
+          </h3>
+          <p class="text-xs text-on-surface-variant leading-relaxed">
+            Sanitizamos inputs, auditamos fallos de inyección y ciframos datos sensibles de extremo a extremo.
+          </p>
+        </div>
+
+        <!-- Pillar 4: Modernización -->
+        <div class="space-y-3 group">
+          <div class="w-10 h-10 rounded-lg bg-[rgb(234,179,8)]/10 border border-[rgb(234,179,8)]/20 flex items-center justify-center text-[rgb(234,179,8)] group-hover:bg-[rgb(234,179,8)]/20 transition-colors">
+            <Icon name="deployed_code" class="w-5 h-5" />
+          </div>
+          <h3 class="font-headline font-bold text-sm text-on-surface uppercase tracking-wider">
+            Modernización Stack
+          </h3>
+          <p class="text-xs text-on-surface-variant leading-relaxed">
+            Reemplazamos frameworks legacy obsoletos por tecnologías reactivas, escalables y orientadas al cloud.
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Right Column: Interactive Diagnostic Refactor Simulator -->
+    <div class="lg:col-span-6 relative">
+      <div class="absolute -inset-4 bg-gradient-to-br from-secondary/5 via-primary/5 to-transparent blur-2xl rounded-full"></div>
+      
+      <div class="relative rounded-card border border-white/10 bg-surface-container-lowest shadow-2xl overflow-hidden flex flex-col min-h-[380px]">
+        <!-- Terminal Header -->
+        <div class="flex items-center justify-between px-4 py-3 bg-surface-container-high border-b border-white/5 font-mono text-[11px] text-on-surface-variant">
+          <div class="flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-500/70"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/70"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-green-500/70"></span>
+          </div>
+          <span>RefactorAudit.tsx · system analyzer</span>
+          <span class="text-secondary tracking-widest text-[9px] animate-pulse uppercase">active_scanner</span>
+        </div>
+        
+        <!-- Console Body -->
+        <div class="p-6 font-mono text-xs leading-relaxed flex-1 flex flex-col justify-between relative">
+          <!-- Continuous Scanner Sweep Laser -->
+          <div class="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-secondary to-transparent opacity-60 animate-sweep z-10 pointer-events-none"></div>
+
+          <!-- Comparison Grid -->
+          <div class="grid grid-cols-2 gap-4 divide-x divide-white/5 flex-1 items-stretch">
+            
+            <!-- Legacy metrics (Red State) -->
+            <div class="pr-4 flex flex-col justify-between space-y-4">
+              <div>
+                <div class="text-[9px] uppercase tracking-widest text-red-400 font-bold mb-2 flex items-center gap-1">
+                  <Icon name="error" class="w-3.5 h-3.5 text-red-500 animate-pulse" /> Legacy system
+                </div>
+                <div class="space-y-2 text-on-surface-variant text-[11px]">
+                  <div>T. respuesta: <span class="text-red-400 font-bold">1,842ms</span></div>
+                  <div>Seguridad: <span class="text-red-400">Crítica (XSS/SQLi)</span></div>
+                  <div>Fugas RAM: <span class="text-red-400">8 detectadas</span></div>
+                  <div>LCP Core: <span class="text-red-400">5.4s (Pobre)</span></div>
+                </div>
+              </div>
+              <div class="p-2.5 bg-red-950/20 border border-red-900/30 rounded text-[10px] text-red-300">
+                ✗ Sistema obsoleto, vulnerable y lento.
+              </div>
+            </div>
+            
+            <!-- Upgraded metrics (Green State) -->
+            <div class="pl-6 flex flex-col justify-between space-y-4">
+              <div>
+                <div class="text-[9px] uppercase tracking-widest text-secondary font-bold mb-2 flex items-center gap-1">
+                  <Icon name="verified" class="w-3.5 h-3.5 text-secondary animate-pulse" /> TecnoDespegue Core
+                </div>
+                <div class="space-y-2 text-on-surface-variant text-[11px]">
+                  <div>T. respuesta: <span class="text-secondary font-bold">72ms</span></div>
+                  <div>Seguridad: <span class="text-secondary">AES-256 / Sanitized</span></div>
+                  <div>Fugas RAM: <span class="text-secondary">0 (Lógica depurada)</span></div>
+                  <div>LCP Core: <span class="text-secondary">0.9s (Excelente)</span></div>
+                </div>
+              </div>
+              <div class="p-2.5 bg-emerald-950/20 border border-emerald-900/30 rounded text-[10px] text-emerald-300 relative flex items-center justify-between overflow-hidden">
+                <span>✓ Optimizado y modernizado.</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Modernization badge popper at bottom -->
+          <div class="mt-6 pt-4 border-t border-white/5 flex justify-center">
+            <div class="compile-badge relative overflow-hidden group">
+              <span class="compile-text text-secondary flex items-center gap-1.5">
+                <Icon name="verified" class="w-4 h-4" />
+                ✓ +94% RENDIMIENTO & CÓDIGO INMUNIZADO
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+@keyframes sweep {
+  0% {
+    top: 0%;
+  }
+  50% {
+    top: 100%;
+  }
+  100% {
+    top: 0%;
+  }
+}
+
+.animate-sweep {
+  animation: sweep 4s ease-in-out infinite;
+}
+
+/* Custom premium glow effects */
+.compile-badge {
+  display: inline-flex;
+  padding: 0.5rem 1rem;
+  background-color: var(--color-surface-container);
+  border: 1px solid rgba(0, 253, 135, 0.25);
+  border-radius: 0.5rem;
+  box-shadow: 0 0 20px rgba(0, 253, 135, 0.1);
+  transform-origin: center;
+  transition: all 0.3s;
+}
+
+.compile-badge:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 25px rgba(0, 253, 135, 0.25);
+  border-color: rgba(0, 253, 135, 0.5);
+}
+</style>

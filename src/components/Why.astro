@@ -71,14 +71,15 @@ import Icon from './Icon.astro';
         <div class="p-6 font-mono text-[13px] leading-relaxed space-y-2 flex-1">
           <div class="flex gap-3">
             <span class="text-secondary">$</span>
-            <span class="text-on-surface">pnpm deploy --prod</span>
+            <span class="text-on-surface">pnpm test:all && pytest</span>
           </div>
           <div class="text-on-surface-variant pl-5 space-y-1">
-            <div><span class="text-primary">→</span> building astro bundle <span class="text-secondary">✓ 2.4s</span></div>
-            <div><span class="text-primary">→</span> running test suite <span class="text-secondary">✓ 147 passed</span></div>
-            <div><span class="text-primary">→</span> pushing image to registry <span class="text-secondary">✓</span></div>
+            <div><span class="text-primary">→</span> running vitest suite <span class="text-secondary">✓ 84 passed</span></div>
+            <div><span class="text-primary">→</span> running python pytest <span class="text-secondary">✓ 53 passed</span></div>
+            <div><span class="text-primary">→</span> building optimized images <span class="text-secondary">✓ 4.2s</span></div>
+            <div><span class="text-primary">→</span> deploying node & python apis <span class="text-secondary">✓</span></div>
             <div><span class="text-primary">→</span> rolling update (0 downtime) <span class="text-secondary">✓</span></div>
-            <div><span class="text-primary">→</span> health check <span class="text-secondary">200 OK</span></div>
+            <div><span class="text-primary">→</span> system health check <span class="text-secondary">200 OK</span></div>
           </div>
           <div class="flex gap-3 pt-2">
             <span class="text-secondary">$</span>

@@ -1,87 +1,124 @@
 ---
 // src/components/CompileReveal.astro
 export interface Props {
-  children: any;
+  sectionName: 'Servicios' | 'Portafolio' | 'PorQué' | 'Testimonios' | 'Tecnologías' | 'Contacto';
+  importPath: string;
+  class?: string;
 }
+
+const { sectionName, importPath, class: className = '' } = Astro.props;
 ---
 
-<div class="compile-reveal">
-  <div class="compile-phase">> importando</div>
-  <div class="reveal-content">
+<div class={`compile-container relative ${className}`} data-section={sectionName} data-import={importPath}>
+  <!-- Terminal Import Line (Phases 1 & 2) -->
+  <div class="compile-terminal">
+    <div class="terminal-bar font-mono text-[0.8rem] md:text-sm">
+      <span class="terminal-type-target">
+        {`> importando { ${sectionName} } desde '${importPath}'`}
+      </span>
+      <span class="terminal-cursor">_</span>
+    </div>
+    <!-- Progress bar tracker -->
+    <div class="progress-track mt-3 h-[2px] w-full bg-white/5 overflow-hidden rounded-full">
+      <div class="progress-bar h-full w-full bg-secondary scale-x-0 origin-left"></div>
+    </div>
+  </div>
+  
+  <!-- Slotted Section Content (Phase 3) -->
+  <div class="reveal-content opacity-0 scale-[0.97] pointer-events-none origin-top">
     <slot />
   </div>
+
+  <!-- Dynamic Compile Confirmation Badge (Phase 4) -->
+  <div class="badge-container absolute -top-3 right-8 z-20 hidden"></div>
 </div>
 
 <style>
-.compile-reveal {
-  position: relative;
+.compile-container {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
+  margin-bottom: 4rem;
 }
 
-.compile-phase {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.875rem;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
+.compile-terminal {
+  position: relative;
+  padding: 1.25rem;
+  background-color: var(--color-surface-container-low); /* #131313 */
+  border-left: 3px solid var(--color-primary); /* c1fffe */
+  border-radius: var(--radius-card);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.terminal-bar {
+  color: var(--color-on-surface-variant);
+  line-height: 1.6;
+}
+
+.terminal-type-target {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.terminal-cursor {
+  animation: blink 1s step-end infinite;
+  color: var(--color-secondary);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Fallback for disabled JS / instant render */
+:global(.started) .compile-terminal {
+  border-left-color: var(--color-secondary);
+  transition: border-color 0.5s ease;
+}
+
+/* spring badge custom styling mapped globally for dynamic injection */
+:global(.compile-badge) {
+  display: inline-flex;
+  padding: 0.4rem 0.8rem;
+  background-color: var(--color-surface-container);
+  border: 1px solid rgba(0, 253, 135, 0.2);
   border-radius: 0.5rem;
-  background-color: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.2);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  animation: badge-pop 400ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transform-origin: center;
 }
 
-.phase-import { color: rgb(16, 185, 129); }
-.phase-compile { color: rgb(59, 130, 246); }
-.phase-optimize { color: rgb(236, 72, 153); }
-.phase-ready { color: rgb(34, 197, 94); }
-
-.reveal-content {
-  opacity: 0;
-  transition: opacity 0.5s ease;
+:global(.compile-text) {
+  color: var(--color-secondary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.725rem;
+  font-weight: 500;
+  letter-spacing: 0.025em;
 }
 
-.reveal-content.visible {
-  opacity: 1;
+/* A11y support */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-content {
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto !important;
+  }
+  .compile-terminal,
+  .badge-container {
+    display: none !important;
+  }
 }
 </style>
 
 <script>
-import { compilePhases } from '../scripts/compileReveal';
+import { initCompileReveals } from '../scripts/compileReveal';
 
-const reveal = document.querySelector('.compile-reveal');
-if (reveal) {
-  const phaseElement = reveal.querySelector('.compile-phase');
-  const contentElement = reveal.querySelector('.reveal-content');
-  
-  if (phaseElement && contentElement) {
-    // Run compile phases on the phase element
-    compilePhases(phaseElement, [
-      'IMPORTANDO módulos necesarios...',
-      'COMPILANDO componentes visuales...',
-      'OPTIMIZANDO rendimiento...',
-      'LISTO para revelar contenido'
-    ]).then(() => {
-      // Show content after all phases complete
-      contentElement.classList.add('visible');
-      
-      // Set up IntersectionObserver for fade-out
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach(entry => {
-            if (!entry.isIntersecting) {
-              entry.target.classList.add('fade-out');
-            } else {
-              entry.target.classList.remove('fade-out');
-            }
-          });
-        },
-        {
-          rootMargin: '0px 0px -80% 0px'
-        }
-      );
-      
-      observer.observe(reveal);
-    });
-  }
-}
+// Initialize on DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+  initCompileReveals();
+});
 </script>
