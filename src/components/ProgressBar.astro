@@ -8,21 +8,24 @@
   let docHeight = 0;
 
   function updateProgressBar() {
-    if (!progressBar || docHeight === 0) return;
+    if (!progressBar) return;
+
+    // Lazily compute the document scrollHeight only when a scroll event occurs.
+    // This completely avoids forcing the browser to compute the entire initial layout 
+    // synchronously during parsing, eliminating the startup reflow entirely.
+    if (docHeight === 0) {
+      docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    }
+
+    if (docHeight <= 0) return;
     progressBar.style.width = `${(window.scrollY / docHeight) * 100}%`;
   }
 
+  // Listen to passive scroll events
   window.addEventListener('scroll', updateProgressBar, { passive: true });
-  window.addEventListener('resize', () => {
-    requestAnimationFrame(() => {
-      docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      updateProgressBar();
-    });
-  }, { passive: true });
 
-  // Defer layout read to first rAF — never force synchronous layout at init
-  requestAnimationFrame(() => {
-    docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    updateProgressBar();
-  });
+  // Reset docHeight on resize so that it gets lazily recomputed on the next scroll event
+  window.addEventListener('resize', () => {
+    docHeight = 0;
+  }, { passive: true });
 </script>
