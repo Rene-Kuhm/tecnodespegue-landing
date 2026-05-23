@@ -1,5 +1,20 @@
 import { typeWriter } from './heroScript';
 
+// Cache CSS variable values ONCE at module load to completely avoid recurring 
+// 'getComputedStyle' forced synchronous layouts (reflows) inside IntersectionObserver.
+let minDelay = 200;
+let maxDelay = 600;
+
+if (typeof window !== 'undefined') {
+  try {
+    const computed = getComputedStyle(document.documentElement);
+    minDelay = parseInt(computed.getPropertyValue('--compile-delay-min')) || 200;
+    maxDelay = parseInt(computed.getPropertyValue('--compile-delay-max')) || 600;
+  } catch (e) {
+    // Fail-safe fallback values remain
+  }
+}
+
 export function initCompileReveals() {
   const containers = document.querySelectorAll('.compile-container');
 
@@ -39,16 +54,15 @@ async function runCompileSequence(container: HTMLElement) {
   const sectionName = container.getAttribute('data-section') || '';
   const importPath = container.getAttribute('data-import') || '';
   
-  // Calculate dynamic random duration (200ms - 600ms)
-  const minDelay = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--compile-delay-min')) || 200;
-  const maxDelay = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--compile-delay-max')) || 600;
+  // Calculate dynamic random duration using pre-cached variables
   const compileDuration = Math.round(Math.random() * (maxDelay - minDelay) + minDelay);
 
   // Full import text to type
   const fullText = `> importando { ${sectionName} } desde '${importPath}'`;
-  terminalText.textContent = ''; // Clear initial SSR text for typing
 
   // --- Phase 1: Terminal Import typing ---
+  // typeWriter synchronously clears and populates the text with invisible spans 
+  // preventing layout shifts (CLS) on section mount.
   await new Promise<void>((resolve) => {
     typeWriter(terminalText, fullText, () => {
       resolve();
@@ -73,7 +87,6 @@ async function runCompileSequence(container: HTMLElement) {
   await new Promise((resolve) => setTimeout(resolve, 350));
 
   // --- Phase 4: Confirmation Badge pop ---
-  // Generate the badge element dynamically inside the container
   badgeContainer.innerHTML = `
     <div class="compile-badge">
       <span class="compile-text">✓ compilado en ${compileDuration}ms</span>
