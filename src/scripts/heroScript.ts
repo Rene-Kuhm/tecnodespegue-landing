@@ -22,30 +22,41 @@ export function typeWriter(
     finalCallback = callback;
   }
 
+  // Pre-initialize ALL steps to prevent layout shifts (CLS)!
+  // We synchronously clear and populate each target with invisible spans immediately 
+  // so that they preserve their layout space and never collapse the container height.
+  const initializedSteps = steps.map(step => {
+    const { element, text } = step;
+    
+    // Clear initial content
+    element.textContent = '';
+    
+    // Populate with opacity: 0 character spans
+    const spans = text.split('').map(char => {
+      const span = document.createElement('span');
+      span.textContent = char;
+      span.style.opacity = '0';
+      element.appendChild(span);
+      return span;
+    });
+
+    return { element, text, spans };
+  });
+
   let stepIndex = 0;
 
   function runStep() {
-    if (stepIndex < steps.length) {
-      const { element, text } = steps[stepIndex];
-      // Clear initial content of this element
-      element.textContent = '';
-      
+    if (stepIndex < initializedSteps.length) {
+      const { spans, text } = initializedSteps[stepIndex];
       let charIndex = 0;
       const maxChunkSize = text.length > 40 ? 3 : 1;
 
       function type() {
-        if (charIndex < text.length) {
-          // Calculate chunk size, but don't exceed remaining characters
-          const chunkSize = Math.min(maxChunkSize, text.length - charIndex);
-          const nextChunk = text.substring(charIndex, charIndex + chunkSize);
+        if (charIndex < spans.length) {
+          const chunkSize = Math.min(maxChunkSize, spans.length - charIndex);
 
-          for (const char of nextChunk) {
-            const span = document.createElement('span');
-            span.textContent = char;
-            span.style.opacity = '0';
-            element.appendChild(span);
-
-            // Animate opacity using Web Animations API
+          for (let c = 0; c < chunkSize; c++) {
+            const span = spans[charIndex + c];
             span.animate(
               [
                 { opacity: 0 },
@@ -61,20 +72,18 @@ export function typeWriter(
           charIndex += chunkSize;
           requestAnimationFrame(type);
         } else {
-          // Move to next step
+          // Finished this step, proceed to the next after minimal delay
           stepIndex++;
-          // Minimal delay between elements for natural feel
           setTimeout(runStep, 100);
         }
       }
 
-      // Start typing this step
+      // Start sequential typing
       type();
     } else if (finalCallback) {
       finalCallback();
     }
   }
 
-  // Start sequential typing
   runStep();
 }
