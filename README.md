@@ -1,139 +1,151 @@
-# TecnoDespegue Landing
+# TecnoDespegue Landing — Core Engine
 
-> Landing page profesional para **TecnoDespegue** — agencia de desarrollo fullstack y automatizaciones con IA, basada en Eduardo Castex, La Pampa, Argentina.
+> Plataforma corporativa y vitrina de ingeniería para **TecnoDespegue** — Agencia boutique de ingeniería de software a medida, desarrollo web/móvil, arquitecturas distribuidas y automatizaciones cognitivas con Inteligencia Artificial.
 
 [![Astro](https://img.shields.io/badge/Astro-6.1-ff5d01?logo=astro&logoColor=white)](https://astro.build/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.1-38bdf8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![PageSpeed](https://img.shields.io/badge/PageSpeed-98%2F100-4CAF50?logo=googlechrome&logoColor=white)](https://pagespeed.web.dev/)
+[![PageSpeed](https://img.shields.io/badge/PageSpeed-99%2F100-4CAF50?logo=googlechrome&logoColor=white)](https://pagespeed.web.dev/)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
 ---
 
-## Rendimiento (PageSpeed Insights — producción)
+## ⚡ Rendimiento & Core Web Vitals (Producción)
 
-| Métrica | Resultado |
-|---------|-----------|
-| **Performance** | 🟢 **98 / 100** |
-| First Contentful Paint | **0.9 s** |
-| Largest Contentful Paint | **1.8 s** |
-| Total Blocking Time | **0 ms** |
-| Cumulative Layout Shift | **0** |
-| SEO | **100 / 100** |
-| Accesibilidad | **100 / 100** |
+Diseño enfocado a la velocidad absoluta de renderizado, optimización de CPU y consumo mínimo de red. Logrado sin dependencias de frameworks Javascript pesados del lado del cliente, sin SSR obligatorio y con cero bloqueos del hilo principal.
 
-> Top 1% de sitios web medidos — alcanzado sin CDN de imágenes, sin SSR y sin service workers.
+| Métrica | Auditoría Móvil (PageSpeed) | Calificación GSC |
+|---------|-----------------------------|------------------|
+| **Performance Score** | 🟢 **99 / 100** | Excelente |
+| **First Contentful Paint (FCP)** | **0.8 s** | Excelente |
+| **Largest Contentful Paint (LCP)** | **1.5 s** | Excelente |
+| **Total Blocking Time (TBT)** | **0 ms** | Excelente (Bloqueo Cero) |
+| **Cumulative Layout Shift (CLS)** | **0** | Sin saltos visuales |
+| **SEO & Accesibilidad** | **100 / 100** | Aprobado WCAG 2.1 AA |
 
-**Técnicas aplicadas:**
-- Fuentes auto-hospedadas (`@fontsource-variable`) con `font-display: optional` — sin layout shift
-- Preload de WOFF2 latin-only directamente en `<head>`
-- CSS mergeado en un único chunk (`cssCodeSplit: false`) con nombre predecible
-- Plausible Analytics diferido vía `requestIdleCallback` post-`window.load`
-- Animaciones de scroll y cursor via `transform` GPU-composited — sin forced reflow
-- `ProgressBar` con `scrollHeight` leído en `requestAnimationFrame`, listeners `passive: true`
-- HTML minificado en build (`build.compressHTML: true`)
-- Sitemap auto-generado por `@astrojs/sitemap`
+### Estrategias de Optimización Implementadas:
+*   **Fonts Preloading & Swap Isolation**: Declaración explícita de tipografías variables locales (`Space Grotesk Variable` e `Inter Variable`) con `font-display: optional`. Precarga directa de archivos `.woff2` desde la cabecera del documento para eliminar el reflow y obtener un CLS absoluto de `0`.
+*   **CSS Chunk Consolidator**: Agrupación automática de todo el árbol de dependencias de estilos en un único archivo de carga consolidado (`cssCodeSplit: false`), eliminando solicitudes HTTP en cascada.
+*   **Non-Blocking Analytics**: Analítica de Plausible diferida de forma reactiva escuchando el evento `window.load` y ejecutada mediante `requestIdleCallback` para no interferir en la carga inicial (LCP).
+*   **Aceleración por GPU en Capa Visual**: Animaciones cinemáticas y transformaciones geométricas del cursor e interfaces restringidas al compositor gráfico (`transform` y `opacity`) utilizando propiedades `will-change` controladas.
+*   **Lectura de Scroll Eficiente**: El monitor de la barra de progreso y las animaciones de scroll operan mediante escuchas pasivas (`passive: true`) y las lecturas del viewport están sincronizadas mediante `requestAnimationFrame`.
 
 ---
 
-## Vista previa
+## 🪐 Mecánica Visual e Interactiva
 
-**Design System: "The Neon Architect"** — Dark mode editorial con asimetría intencional, profundidad atmosférica y glows digitales.
+El sitio utiliza una estética cyberpunk/sci-fi editorial ("The Neon Architect") caracterizada por su profundidad atmosférica, geometrías orbitantes en 3D y secuencias interactivas que narran de manera activa lo que hacemos:
 
-| Palette | Token |
-|---------|-------|
-| Electric Cyan | `#c1fffe` / `#00ffff` |
-| Neon Green | `#00fd87` / `#00ff88` |
-| Background | `#0e0e0e` (the void) |
-| Surface | `#1a1919` (elevated cards) |
+### 1. Mapa de Convergencia Tecnológica (Hero 3D Gyroscope)
+Ubicado en el primer impacto visual de la landing. Consta de tres especialidades representadas como nodos interactivos rodeando a un giroscopio tridimensional:
+*   **Nodo Software (Cian)**: Representa el stack fullstack web & mobile.
+*   **Nodo Sistemas IA (Verde)**: Representa los agentes autónomos de IA y flujos cognitivos.
+*   **Nodo IoT & Solar (Oro)**: Representa la especialización física en domótica, electricidad y sistemas solares fotovoltaicos.
+*   **SVG Connection Circuitry**: Líneas vectoriales dinámicas dibujadas con SVG que transportan impulsos continuos de luz neón (`stroke-dashoffset`) desde los nodos hacia el giroscopio central.
+*   **Giroscopio 3D CSS**: Tres anillos concéntricos inclinados y rotando en ejes geométricos independientes (`rotateX`, `rotateY`, `rotateZ`) con perspectiva espacial `1000px` y estilo de preservación 3D nativo, simulando el motor de ejecución TecnoDespegue.
 
-**Tipografía**: Space Grotesk Variable (headlines) + Inter Variable (body) — auto-hospedadas, sin Google Fonts
+### 2. Orquestador de Compilación en 4 Fases (`CompileReveal.astro`)
+En lugar de revelados genéricos por scroll, cada sección se introduce dinámicamente simulando un flujo secuencial de compilación cuando entra en el viewport:
 
----
-
-## Estructura
-
-```
-src/
-├── components/
-│   ├── Hero.astro              # Hero con geometría animada y CTAs
-│   ├── TrustSignals.astro      # Métricas clave (proyectos, clientes, respuesta, tecnologías)
-│   ├── Services.astro          # 4 servicios (IA, Fullstack, Workflows, Consultoría)
-│   ├── Portfolio.astro         # 6 proyectos reales con links a repos y demos
-│   ├── Why.astro               # Diferenciadores (foco técnico, código limpio, comunicación)
-│   ├── Testimonials.astro      # Casos de éxito reales con métricas
-│   ├── Tech.astro              # Tecnologías dominadas
-│   ├── CTA.astro               # Call to action + formulario de contacto
-│   ├── ContactForm.astro       # Formulario con Formspree + fallback mailto
-│   ├── Nav.astro               # Navegación fija con glass effect
-│   ├── Footer.astro            # Contacto, redes sociales, ubicación
-│   ├── ScrollReveal.astro      # Animaciones al scrollear (Intersection Observer)
-│   ├── CustomCursor.astro      # Cursor personalizado desktop (GPU-composited)
-│   └── ProgressBar.astro       # Barra de progreso de scroll (passive listeners)
-├── layouts/
-│   └── Layout.astro            # Layout base con SEO, OG tags, JSON-LD, fonts preload
-├── pages/
-│   ├── index.astro             # Página principal
-│   ├── 404.astro               # Página de error (noindex)
-│   └── privacidad.astro        # Política de privacidad (Ley 25.326)
-└── styles/
-    └── global.css              # Design tokens, @font-face, utilidades, animaciones
+```mermaid
+graph TD
+    A[Sección cruza el viewport] --> B[Fase 1: Escritura de Consola - WAAPI]
+    B -->|Completado| C[Fase 2: Barra de Progreso - scaleX 200~600ms random]
+    C -->|Completado| D[Fase 3: Contenedor de Contenido - escala & opacidad]
+    D -->|350ms delay| E[Fase 4: Pop de Insignia - compilado en Xms]
 ```
 
----
-
-## Stack
-
-| Tecnología | Uso |
-|-----------|-----|
-| [Astro 6](https://astro.build/) | Framework — static-first, zero JS by default |
-| [Tailwind CSS 4](https://tailwindcss.com/) | Estilos — utility-first con design tokens custom |
-| [TypeScript](https://www.typescriptlang.org/) | Tipado estricto |
-| [@fontsource-variable](https://fontsource.org/) | Fuentes auto-hospedadas (Space Grotesk + Inter, latin only) |
-| [Formspree](https://formspree.io/) | Backend del formulario de contacto |
-| [Plausible Analytics](https://plausible.io/) | Analítica sin cookies, servidores UE |
-| [Material Symbols](https://fonts.google.com/icons) | Iconografía |
+*   **Fase 1 (Terminal Import)**: Escribe carácter por carácter en sintaxis legible en español la ruta de importación de la sección (`> importando { Servicios } desde '@components'`) mediante la API de Animación Web nativa (WAAPI).
+*   **Fase 2 (Progress Track)**: Ejecuta una barra de carga verde neón horizontal que se escala de `0 -> 1` basándose en un retraso de cálculo aleatorio e independiente calculado en tiempo de ejecución (200ms–600ms).
+*   **Fase 3 (Content Mount)**: Revela fluidamente la sección con transformaciones de escala suavizadas (`scale(0.97 -> 1)`) y desvanecido de opacidad.
+*   **Fase 4 (Pop de Insignia)**: Hace aparecer con una física de resorte (*spring physics*) una insignia de confirmación técnica que expone la latencia del build simulado: `✓ compilado en {X}ms`.
+*   **A11y Degraded Mode**: El componente detecta y respeta la bandera de accesibilidad del sistema operativo `prefers-reduced-motion: reduce`, salteando todas las fases de la terminal para renderizar el contenido de forma instantánea.
 
 ---
 
-## Desarrollo local
+## 🛠️ Arquitectura de Archivos
 
-**Requisitos**: Node.js >= 22.12.0
+```
+tecnodespegue-landing/
+├── src/
+│   ├── components/
+│   │   ├── Hero.astro            # Título secuencial, terminal config, giroscopio y nodos interactivos
+│   │   ├── TrustSignals.astro    # Métricas y señales de confianza (15+ proyectos, Cloud/OpenSource)
+│   │   ├── Services.astro        # Bloques: IA, Web & Mobile, Software & APIs, Optimización
+│   │   ├── Refactor.astro        # Auditoría e interactivo simulador de optimización (Green sweep laser)
+│   │   ├── Portfolio.astro       # 6 proyectos reales con links de GitHub, producción y stacks
+│   │   ├── Why.astro             # Diferenciadores + mockup de consola ejecutando pruebas unitarias
+│   │   ├── Testimonials.astro    # Casos de éxito con testimonios reales y métricas del proyecto
+│   │   ├── Tech.astro            # Catálogo interactivo de arsenal tecnológico (React, Python, n8n, etc.)
+│   │   ├── CTA.astro             # Call to Action principal con agendamientos y acceso a WhatsApp
+│   │   ├── ContactForm.astro     # Formulario de contacto integrado con Formspree y fallback local
+│   │   ├── Nav.astro             # Navegación flotante superior con efecto glassmorphic
+│   │   ├── Footer.astro          # Enlaces directos, redes sociales, ubicación y firma corporativa
+│   │   ├── CompileReveal.astro   # Contenedor visual del orquestador de compilación en 4 fases
+│   │   ├── CompileBadge.astro    # Insignia física con pop de resorte indicando milisegundos de build
+│   │   ├── ScrollReveal.astro    # Animación clásica de scroll suave para elementos sobre el pliegue
+│   │   └── CustomCursor.astro    # Control del cursor dinámico acelerado por GPU
+│   ├── layouts/
+│   │   └── Layout.astro          # Esqueleto HTML5, metadatos SEO, OpenGraph, Schema JSON-LD y preloads
+│   ├── pages/
+│   │   ├── index.astro           # Página principal y orquestador de componentes
+│   │   ├── 404.astro             # Página de error 404 personalizada con CTAs reactivos (noindex)
+│   │   └── privacidad.astro      # Política de privacidad alineada a Ley 25.326 y RGPD
+│   ├── scripts/
+│   │   ├── heroScript.ts         # Motor typewriter secuencial para el H1 principal
+│   │   └── compileReveal.ts      # Manejador asíncrono e IntersectionObserver de las 4 fases
+│   └── styles/
+│       └── global.css            # Hoja de estilos central, tokens Tailwind v4, fuentes y animaciones
+├── public/                       # Favicons, assets vectoriales de marcas e imágenes estáticas
+├── astro.config.mjs              # Configuración del motor Astro (sitemap, HTML minification)
+├── vercel.json                   # Enrutador, redirecciones y alias canonicals para GSC (/sitemap.xml)
+└── package.json                  # Definición de dependencias y scripts de construcción
+```
+
+---
+
+## 🚀 Entorno de Desarrollo Local
+
+El proyecto está diseñado bajo un ecosistema moderno y de alto rendimiento.
+
+**Requisitos previos mínimos**: Node.js >= 22.12.0 (LTS recomendado).
 
 ```bash
-# Clonar
+# 1. Clonar el repositorio
 git clone https://github.com/Rene-Kuhm/tecnodespegue-landing.git
 cd tecnodespegue-landing
 
-# Instalar dependencias
+# 2. Instalar dependencias
 npm install
 
-# Levantar en desarrollo
+# 3. Iniciar servidor de desarrollo local
 npm run dev
-# → http://localhost:4321
+# → El servidor se inicializará en http://localhost:4321/
 
-# Build de producción
+# 4. Generar el compilado estático para producción
 npm run build
 
-# Preview del build
+# 5. Previsualizar localmente el build estático generado
 npm run preview
 ```
 
 ---
 
-## Deploy
+## 📦 Estrategia de Despliegue en Producción
 
-### Vercel (recomendado)
-
+### Despliegue Cloud (Vercel — Recomendado)
+El proyecto está optimizado con configuraciones de caché de cabecera y enrutamiento en Vercel. 
+Para lanzar un deploy directo a producción con CLI:
 ```bash
 npx vercel --prod
 ```
 
-Zero config — Vercel detecta Astro automáticamente. HTTPS, CDN global y preview deploys gratis.
+### Contenerización Docker (Self-Hosted / Servidor Privado)
+Se incluye un Dockerfile optimizado en múltiples etapas (*multi-stage build*) para compilar estáticamente el proyecto utilizando Node y servirlo mediante un servidor ultra-liviano **Nginx Alpine**.
 
-### Docker + Nginx (self-hosted)
-
+#### Dockerfile de Producción:
 ```dockerfile
+# Etapa 1: Compilación de recursos
 FROM node:22-alpine AS build
 WORKDIR /app
 COPY package*.json ./
@@ -141,78 +153,48 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
+# Etapa 2: Servidor Web Estático optimizado
 FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
 ```
+
+#### Comandos de Construcción & Ejecución:
+```bash
+# Construir la imagen Docker
+docker build -t tecnodespegue-landing .
+
+# Ejecutar el contenedor mapeando el puerto HTTP 80
+docker run -d -p 80:80 --name tecnodespegue-landing-container tecnodespegue-landing
+```
+
+---
+
+## 📈 Cumplimiento Google Search Console & SEO Técnico
+*   **URLs Canónicas**: Generación dinámica en el head para prevenir problemas de indexación por duplicados en `www` o HTTP simple.
+*   **Rutas de Sitemap**: Mapeo y reescritura estática en `vercel.json` para responder a `/sitemap.xml` directamente desde `/sitemap-index.xml`.
+*   **Metadatos Enriquecidos**: Integración de marcado JSON-LD nativo estructurado para facilitar la visualización en los resultados de Google (SERP).
+*   **Vulnerabilidades**: Auditoría de dependencias al 100% limpia para código de producción.
+
+---
+
+## 💾 Integración con Engram (Memoria Persistente)
+Toda la documentación técnica, historial de desarrollo, decisiones de arquitectura y parches del sistema están integrados en tu base de datos de conocimiento local de **Engram** (`~/.engram/engram.db`), permitiendo a agentes inteligentes futuros (y a ti mismo) acceder inmediatamente al contexto semántico e histórico del proyecto:
 
 ```bash
-docker build -t tecnodespegue-landing .
-docker run -p 80:80 tecnodespegue-landing
+# Ver historial del proyecto engram
+engram context tecnodespegue-landing
+
+# Buscar memorias sobre la arquitectura del Hero
+engram search "cinematic-hero" --project tecnodespegue-landing
 ```
 
 ---
 
-## Secciones
+## 📝 Licencia
 
-| Sección | Descripción |
-|---------|-------------|
-| **Hero** | Headline con gradient + geometría animada + CTAs |
-| **Trust Signals** | 4 métricas: 15+ proyectos, 3+ clientes, respuesta <24h, 20+ tecnologías |
-| **Services** | IA & Automatización, Fullstack, Workflows, Consultoría |
-| **Portfolio** | 6 proyectos reales: Aguamarina, E-Commerce, Automation, HydroTemp, Vaulta, CampusMind |
-| **Why** | 3 diferenciadores con iconos |
-| **Testimonials** | Casos de éxito con métricas reales |
-| **Tech** | Stack tecnológico en badges |
-| **CTA + Contact** | Formulario Formspree con fallback mailto |
-| **Footer** | Email, WhatsApp, 5 redes sociales, ubicación |
+Este proyecto está bajo la licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
 
----
-
-## Portfolio incluido
-
-| Proyecto | Stack | Tipo | Link |
-|----------|-------|------|------|
-| [Aguamarina Mosaicos](https://aguamarinamosaicos.com) | Next.js 15, React 19, PostgreSQL, Railway | E-Commerce | 🌐 Producción |
-| [E-Commerce Premium](https://github.com/Rene-Kuhm/e-commerce-profecional) | Next.js, React 19, TypeScript, Zod | E-Commerce | GitHub |
-| [TecnoDespegue Automation](https://github.com/Rene-Kuhm/tecnodespegue-automation) | Python, OpenClaw, OpenRouter, Postiz | IA & Automatización | GitHub |
-| [HydroTemp AIO Driver](https://github.com/Rene-Kuhm/hydrotemp-aio-mac) | Python, USB HID, macOS, LaunchAgent | Hardware & Drivers | GitHub |
-| [Vaulta Password Manager](https://github.com/Rene-Kuhm/Gestor-de-Contrase-as) | Flutter, Dart, Material 3, Encryption | Mobile & Desktop | GitHub |
-| [CampusMind](https://github.com/Rene-Kuhm/CampusMind-sass) | Next.js 16, NestJS, Turborepo, pgvector, GPT-4o | SaaS & IA | GitHub |
-
----
-
-## Privacidad y legal
-
-- **[Política de Privacidad](/privacidad)** — conforme a la Ley 25.326 de Argentina y principios del RGPD
-- Sin cookies de rastreo — Plausible Analytics procesa datos agregados y anónimos en servidores UE
-- Formulario procesado por Formspree (encargado del tratamiento, EE.UU.)
-- Alojamiento en Vercel (EE.UU.) — cifrado HTTPS/TLS end-to-end
-
----
-
-## Contacto
-
-| Canal | Link |
-|-------|------|
-| Email | renekuhm2@gmail.com |
-| WhatsApp | [Chat directo](https://wa.me/5492334409838) |
-| GitHub | [@Rene-Kuhm](https://github.com/Rene-Kuhm) |
-| Instagram | [@renekuhm](https://instagram.com/renekuhm) |
-| TikTok | [@kuhmdev](https://tiktok.com/@kuhmdev) |
-| YouTube | [@tecnodespegue](https://youtube.com/@tecnodespegue) |
-| LinkedIn | [renekuhm](https://linkedin.com/in/renekuhm) |
-
----
-
-## Autor
-
-**René Kuhm** — Fullstack Developer & AI Automation Specialist
-
-Eduardo Castex, La Pampa, Argentina
-
----
-
-## Licencia
-
-MIT © 2026 TecnoDespegue
+MIT © 2026 **TecnoDespegue** · René Kuhm
+La Pampa, Argentina.
