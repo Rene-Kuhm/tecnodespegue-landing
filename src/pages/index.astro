@@ -7,12 +7,14 @@ import Hero from '../components/Hero.astro';
 import TrustSignals from '../components/TrustSignals.astro';
 import Services from '../components/Services.astro';
 import Portfolio from '../components/Portfolio.astro';
+import Refactor from '../components/Refactor.astro';
 import Why from '../components/Why.astro';
 import Testimonials from '../components/Testimonials.astro';
 import Tech from '../components/Tech.astro';
 import CTA from '../components/CTA.astro';
 import Footer from '../components/Footer.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
+import CompileReveal from '../components/CompileReveal.astro';
 ---
 
 <Layout title="TecnoDespegue | Desarrollo Fullstack & Automatizaciones con IA">
@@ -23,33 +25,39 @@ import ScrollReveal from '../components/ScrollReveal.astro';
   <main id="contenido">
     <Hero />
     
+    <!-- Above fold TrustSignals gets standard subtle scroll reveal -->
     <ScrollReveal>
       <TrustSignals />
     </ScrollReveal>
     
-    <ScrollReveal delay={100}>
+    <!-- Dynamic terminal compile reveals for principal sections -->
+    <CompileReveal sectionName="Servicios" importPath="@components/Services.astro">
       <Services />
-    </ScrollReveal>
+    </CompileReveal>
     
-    <ScrollReveal delay={100}>
+    <CompileReveal sectionName="Portafolio" importPath="@components/Portfolio.astro">
       <Portfolio />
-    </ScrollReveal>
+    </CompileReveal>
     
-    <ScrollReveal delay={200}>
+    <CompileReveal sectionName="Optimización" importPath="@components/Refactor.astro">
+      <Refactor />
+    </CompileReveal>
+    
+    <CompileReveal sectionName="PorQué" importPath="@components/Why.astro">
       <Why />
-    </ScrollReveal>
+    </CompileReveal>
     
-    <ScrollReveal delay={100}>
+    <CompileReveal sectionName="Testimonios" importPath="@components/Testimonials.astro">
       <Testimonials />
-    </ScrollReveal>
+    </CompileReveal>
     
-    <ScrollReveal delay={100}>
+    <CompileReveal sectionName="Tecnologías" importPath="@components/Tech.astro">
       <Tech />
-    </ScrollReveal>
+    </CompileReveal>
     
-    <ScrollReveal delay={200}>
+    <CompileReveal sectionName="Contacto" importPath="@components/CTA.astro">
       <CTA />
-    </ScrollReveal>
+    </CompileReveal>
   </main>
   
   <Footer />

@@ -4,43 +4,77 @@ export const TERMINAL_LINES = [
   "importando {Card} desde '@components'"
 ];
 
-export function typeWriter(element: HTMLElement, text: string, callback?: () => void) {
-  const maxChunkSize = text.length > 40 ? 3 : 1;
-  let i = 0;
+export function typeWriter(
+  target: HTMLElement | { element: HTMLElement; text: string }[],
+  textOrCallback?: string | (() => void),
+  callback?: () => void
+) {
+  let steps: { element: HTMLElement; text: string }[] = [];
+  let finalCallback: (() => void) | undefined = undefined;
 
-  function type() {
-    if (i < text.length) {
-      // Calculate chunk size, but don't exceed remaining characters
-      const chunkSize = Math.min(maxChunkSize, text.length - i);
-      const nextChunk = text.substring(i, i + chunkSize);
+  if (Array.isArray(target)) {
+    steps = target;
+    if (typeof textOrCallback === 'function') {
+      finalCallback = textOrCallback;
+    }
+  } else {
+    steps = [{ element: target, text: typeof textOrCallback === 'string' ? textOrCallback : '' }];
+    finalCallback = callback;
+  }
+
+  let stepIndex = 0;
+
+  function runStep() {
+    if (stepIndex < steps.length) {
+      const { element, text } = steps[stepIndex];
+      // Clear initial content of this element
+      element.textContent = '';
       
-      // Use Web Animations API for each character in the chunk
-      for (const char of nextChunk) {
-        const span = document.createElement('span');
-        span.textContent = char;
-        span.style.opacity = '0';
-        element.appendChild(span);
-        
-        // Animate the opacity with a slight stagger
-        span.animate(
-          [
-            { opacity: 0 },
-            { opacity: 1 }
-          ],
-          {
-            duration: 40,
-            fill: 'forwards'
+      let charIndex = 0;
+      const maxChunkSize = text.length > 40 ? 3 : 1;
+
+      function type() {
+        if (charIndex < text.length) {
+          // Calculate chunk size, but don't exceed remaining characters
+          const chunkSize = Math.min(maxChunkSize, text.length - charIndex);
+          const nextChunk = text.substring(charIndex, charIndex + chunkSize);
+
+          for (const char of nextChunk) {
+            const span = document.createElement('span');
+            span.textContent = char;
+            span.style.opacity = '0';
+            element.appendChild(span);
+
+            // Animate opacity using Web Animations API
+            span.animate(
+              [
+                { opacity: 0 },
+                { opacity: 1 }
+              ],
+              {
+                duration: 40,
+                fill: 'forwards'
+              }
+            );
           }
-        );
+
+          charIndex += chunkSize;
+          requestAnimationFrame(type);
+        } else {
+          // Move to next step
+          stepIndex++;
+          // Minimal delay between elements for natural feel
+          setTimeout(runStep, 100);
+        }
       }
-      
-      i += chunkSize;
-      requestAnimationFrame(type);
-    } else if (callback) {
-      callback();
+
+      // Start typing this step
+      type();
+    } else if (finalCallback) {
+      finalCallback();
     }
   }
 
-  // Start typing after a brief delay
-  setTimeout(type, 500);
+  // Start sequential typing
+  runStep();
 }
