@@ -16,6 +16,7 @@ const {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL('/og-image.png', Astro.site);
 const plausibleDomain = Astro.site?.hostname ?? canonicalURL.hostname;
+const tiktokPixelId = 'D8AARK3C77U6KT5BPNHG';
 
 const organizationSchema = {
   "@context": "https://schema.org",
@@ -127,6 +128,105 @@ const professionalServiceSchema = {
     <!-- Structured Data -->
     <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(professionalServiceSchema)} />
+
+    <script is:inline define:vars={{ tiktokPixelId }}>
+      !function (w, d, t) {
+        w.TiktokAnalyticsObject = t;
+        var ttq = w[t] = w[t] || [];
+        ttq.methods = [
+          'page', 'track', 'identify', 'instances', 'debug', 'on', 'off',
+          'once', 'ready', 'alias', 'group', 'enableCookie', 'disableCookie',
+          'holdConsent', 'revokeConsent', 'grantConsent'
+        ];
+        ttq.setAndDefer = function (target, method) {
+          target[method] = function () {
+            target.push([method].concat(Array.prototype.slice.call(arguments, 0)));
+          };
+        };
+        for (var i = 0; i < ttq.methods.length; i++) {
+          ttq.setAndDefer(ttq, ttq.methods[i]);
+        }
+        ttq.instance = function (id) {
+          var instance = ttq._i[id] || [];
+          for (var i = 0; i < ttq.methods.length; i++) {
+            ttq.setAndDefer(instance, ttq.methods[i]);
+          }
+          return instance;
+        };
+        ttq.load = function (id, opts) {
+          var url = 'https://analytics.tiktok.com/i18n/pixel/events.js';
+          ttq._i = ttq._i || {};
+          ttq._i[id] = [];
+          ttq._i[id]._u = url;
+          ttq._t = ttq._t || {};
+          ttq._t[id] = +new Date();
+          ttq._o = ttq._o || {};
+          ttq._o[id] = opts || {};
+          var script = d.createElement('script');
+          script.type = 'text/javascript';
+          script.async = true;
+          script.src = url + '?sdkid=' + id + '&lib=' + t;
+          var firstScript = d.getElementsByTagName('script')[0];
+          firstScript.parentNode.insertBefore(script, firstScript);
+        };
+
+        ttq.load(tiktokPixelId);
+        ttq.page();
+      }(window, document, 'ttq');
+
+      window.tdTikTokEventId = function () {
+        if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+        return 'td_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2);
+      };
+
+      window.tdTrackTikTok = function (eventName, params, customer) {
+        var eventId = (params && params.event_id) || window.tdTikTokEventId();
+        var payload = Object.assign({
+          content_type: 'service',
+          content_id: 'tecnodespegue',
+          content_name: document.title,
+          value: 0,
+          currency: 'USD',
+          event_id: eventId
+        }, params || {});
+
+        if (window.ttq && typeof window.ttq.track === 'function') {
+          window.ttq.track(eventName, payload, { event_id: eventId });
+        }
+
+        if (navigator.sendBeacon) {
+          var body = JSON.stringify({ event: eventName, properties: payload, customer: customer || {} });
+          navigator.sendBeacon('/api/tiktok-event', new Blob([body], { type: 'application/json' }));
+        } else {
+          fetch('/api/tiktok-event', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ event: eventName, properties: payload, customer: customer || {} }),
+            keepalive: true
+          }).catch(function () {});
+        }
+      };
+
+      window.addEventListener('load', function () {
+        window.tdTrackTikTok('ViewContent', {
+          content_name: document.title,
+          url: window.location.href
+        });
+      });
+
+      document.addEventListener('click', function (event) {
+        var target = event.target instanceof Element
+          ? event.target.closest('[data-tiktok-event]')
+          : null;
+        if (!target) return;
+
+        var eventName = target.getAttribute('data-tiktok-event') || 'ClickButton';
+        window.tdTrackTikTok(eventName, {
+          content_name: target.getAttribute('data-tiktok-label') || target.textContent?.trim() || document.title,
+          url: target.getAttribute('href') || window.location.href
+        });
+      });
+    </script>
 
     {import.meta.env.PROD && (
       <script is:inline define:vars={{ plausibleDomain }}>
