@@ -122,6 +122,24 @@ import Icon from './Icon.astro';
       });
       
       if (response.ok) {
+        const tracker = (window as Window & {
+          tdTrackTikTok?: (
+            eventName: string,
+            params?: Record<string, unknown>,
+            customer?: Record<string, string>
+          ) => void;
+        }).tdTrackTikTok;
+        const data = Object.fromEntries(formData.entries());
+        tracker?.('Lead', {
+          content_name: 'Formulario de contacto',
+          content_id: 'contact-form',
+          content_type: 'lead_form',
+          url: window.location.href
+        }, {
+          email: String(data.email || ''),
+          external_id: String(data.email || '')
+        });
+
         // Show success message
         form.classList.add('hidden');
         successMessage?.classList.remove('hidden');
