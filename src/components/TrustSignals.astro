@@ -21,7 +21,7 @@ const stats = [
     <div class="trust-stats">
       {stats.map((stat) => (
         <div class="trust-stat" data-trust-stat>
-          <div class="trust-stat-num font-display text-shine">{stat.value}</div>
+          <div class="trust-stat-num font-display">{stat.value}</div>
           <div class="trust-stat-label">{stat.label}</div>
         </div>
       ))}
@@ -78,6 +78,8 @@ const stats = [
     font-size: clamp(2.5rem, 5vw, 4rem);
     line-height: 1;
     margin-bottom: 0.5rem;
+    color: var(--color-marvel-gold);
+    text-shadow: 0 0 24px rgba(248, 180, 0, 0.25);
   }
 
   .trust-stat-label {

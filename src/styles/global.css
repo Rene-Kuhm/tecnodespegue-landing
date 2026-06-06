@@ -253,8 +253,11 @@ html.lenis body {
   }
 
   /* Metallic shine para títulos.
-     Solo se anima si el usuario NO pidió reduced-motion
-     (respeta WCAG 2.3.3 + accesibilidad vestibular). */
+     El gradiente dorado se queda ESTÁTICO (se ve metalizado/elegante),
+     pero el barrido animado está apagado por defecto: era molesto y
+     distrae a los usuarios del contenido (múltiples reportes).
+     Para el resto de animaciones decorativas largas (marvel-sweep,
+     glow-drift, spin, scan), reduced-motion las apaga como cortesía. */
   .text-shine {
     background: linear-gradient(110deg,
       #C5A572 0%, #C5A572 35%,
@@ -265,25 +268,17 @@ html.lenis body {
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
+    background-position: 50% 0;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    .text-shine {
-      animation: shine-sweep 4s linear infinite;
-    }
-  }
+  /* (animación de barrido removida a propósito:
+     el usuario pidió que se apague para todos los usuarios,
+     no solo con reduced-motion del SO) */
 
-  @keyframes shine-sweep {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-  }
-
-  /* Respeto global: reduced-motion apaga TODAS las animaciones
-     decorativas largas (marquees, shines, drifts, sweeps, spins).
-     Las micro-interacciones (pulse, blink) se mantienen porque
-     no causan molestia vestibular. */
+  /* Respeto global: reduced-motion apaga las animaciones
+     decorativas largas que aún quedan activas.
+     Las micro-interacciones (pulse, blink) se mantienen. */
   @media (prefers-reduced-motion: reduce) {
-    .text-shine,
     .animate-marvel-sweep,
     .animate-marvel-sweep-slow,
     .animate-spin-slow,
