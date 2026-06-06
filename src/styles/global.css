@@ -252,23 +252,24 @@ html.lenis body {
     color: transparent;
   }
 
-  /* Metallic shine para títulos.
-     El gradiente dorado se queda ESTÁTICO (se ve metalizado/elegante),
-     pero el barrido animado está apagado por defecto: era molesto y
-     distrae a los usuarios del contenido (múltiples reportes).
-     Para el resto de animaciones decorativas largas (marvel-sweep,
-     glow-drift, spin, scan), reduced-motion las apaga como cortesía. */
+  /* Metallic gold para títulos.
+     El gradiente dorado se queda ESTÁTICO y se aplica 1:1 al tamaño
+     del texto (sin background-size 200%) para que la franja clara no
+     caiga en una posición rara y haga parecer que la palabra está
+     cortada o duplicada.
+     La animación de barrido está apagada: distrae a los usuarios
+     del contenido. Para el resto de animaciones decorativas largas
+     (marvel-sweep, glow-drift, spin, scan), reduced-motion las apaga
+     como cortesía. */
   .text-shine {
     background: linear-gradient(110deg,
-      #C5A572 0%, #C5A572 35%,
-      #FFE699 50%, #FFE699 55%,
-      #C5A572 65%, #C5A572 100%);
-    background-size: 200% 100%;
+      #C5A572 0%,
+      #FFE699 50%,
+      #C5A572 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
-    background-position: 50% 0;
   }
 
   /* (animación de barrido removida a propósito:

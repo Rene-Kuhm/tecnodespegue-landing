@@ -19,7 +19,7 @@ import Icon from './Icon.astro';
 
       <h2 class="why-title font-display">
         <span class="why-title-line">Por qué</span>
-        <span class="why-title-line why-title-accent text-shine">TecnoDespegue</span>
+        <span class="why-title-line why-title-accent">TecnoDespegue</span>
       </h2>
 
       <p class="why-lead">
@@ -103,7 +103,7 @@ import Icon from './Icon.astro';
             </div>
             <div class="why-metric">
               <div class="why-metric-label">P95 LATENCY</div>
-              <div class="why-metric-num text-shine">87ms</div>
+              <div class="why-metric-num why-metric-num-gold">87ms</div>
             </div>
             <div class="why-metric">
               <div class="why-metric-label">ERROR RATE</div>
@@ -162,7 +162,11 @@ import Icon from './Icon.astro';
     overflow: visible;
   }
   .why-title-line { display: block; }
-  .why-title-accent { font-style: italic; }
+  .why-title-accent {
+    font-style: italic;
+    color: var(--color-marvel-gold);
+    text-shadow: 0 0 24px rgba(248, 180, 0, 0.25);
+  }
 
   .why-lead {
     font-size: clamp(1rem, 1.4vw, 1.125rem);
@@ -338,6 +342,10 @@ import Icon from './Icon.astro';
     font-weight: 900;
     line-height: 1;
     color: #FFFFFF;
+  }
+  .why-metric-num-gold {
+    color: var(--color-marvel-gold);
+    text-shadow: 0 0 12px rgba(248, 180, 0, 0.3);
   }
 
   .why-cursor {
