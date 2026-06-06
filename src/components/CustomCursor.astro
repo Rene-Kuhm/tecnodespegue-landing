@@ -1,8 +1,21 @@
 ---
+/**
+ * CustomCursor.astro
+ * Cursor estilo Marvel: anillo dorado + dot rojo, trail de 3 puntos,
+ * magnético en elementos interactivos, halo expansivo al click.
+ */
 ---
 
-<div id="custom-cursor" class="hidden lg:block" aria-hidden="true"></div>
-<div id="custom-cursor-dot" class="hidden lg:block" aria-hidden="true"></div>
+<div class="cursor-stack" aria-hidden="true">
+  <div id="cursor-trail-2" class="cursor-trail"></div>
+  <div id="cursor-trail-1" class="cursor-trail"></div>
+  <div id="cursor-trail-0" class="cursor-trail"></div>
+  <div id="cursor-ring" class="cursor-ring">
+    <div class="cursor-ring-inner"></div>
+  </div>
+  <div id="cursor-dot" class="cursor-dot"></div>
+  <div id="cursor-halo" class="cursor-halo"></div>
+</div>
 
 <style>
   @media (min-width: 1024px) and (pointer: fine) {
@@ -14,50 +27,115 @@
     :global(textarea),
     :global(select),
     :global(.card),
-    :global(.tech-badge) {
+    :global(.tech-badge),
+    :global([data-magnetic]) {
       cursor: none;
     }
   }
 
-  #custom-cursor {
+  .cursor-stack {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 40px;
-    height: 40px;
-    border: 2px solid rgba(193, 255, 254, 0.3);
-    border-radius: 50%;
+    inset: 0;
     pointer-events: none;
     z-index: 9999;
-    transition: width 0.2s ease-out, height 0.2s ease-out, border-color 0.2s ease-out, background 0.2s ease-out;
-    will-change: transform;
   }
 
-  #custom-cursor-dot {
+  .cursor-trail {
     position: fixed;
     top: 0;
     left: 0;
     width: 8px;
     height: 8px;
-    background: #c1fffe;
+    background: var(--color-marvel-red);
     border-radius: 50%;
     pointer-events: none;
-    z-index: 10000;
     will-change: transform;
+    mix-blend-mode: screen;
+    opacity: 0.5;
+    filter: blur(1px);
   }
 
-  #custom-cursor.hover {
+  #cursor-trail-1 { width: 6px; height: 6px; opacity: 0.35; }
+  #cursor-trail-2 { width: 4px; height: 4px; opacity: 0.2; }
+
+  .cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid var(--color-marvel-gold);
+    border-radius: 50%;
+    pointer-events: none;
+    will-change: transform;
+    box-shadow:
+      0 0 12px rgba(248, 180, 0, 0.4),
+      inset 0 0 4px rgba(248, 180, 0, 0.2);
+  }
+
+  .cursor-ring-inner {
+    position: absolute;
+    inset: 50%;
+    width: 4px;
+    height: 4px;
+    margin: -2px 0 0 -2px;
+    background: var(--color-marvel-gold-bright);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--color-marvel-gold-bright);
+  }
+
+  .cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 5px;
+    background: var(--color-marvel-red);
+    border-radius: 50%;
+    pointer-events: none;
+    will-change: transform;
+    box-shadow: 0 0 8px var(--color-marvel-red-glow);
+  }
+
+  .cursor-halo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    pointer-events: none;
+    will-change: transform, opacity;
+    background: radial-gradient(circle, rgba(237, 29, 36, 0.25) 0%, transparent 70%);
+    opacity: 0;
+  }
+
+  /* Hover state */
+  .cursor-ring.is-hover {
     width: 60px;
     height: 60px;
-    border-color: rgba(193, 255, 254, 0.6);
-    background: rgba(193, 255, 254, 0.05);
+    border-color: var(--color-marvel-red);
+    box-shadow:
+      0 0 24px rgba(237, 29, 36, 0.5),
+      inset 0 0 8px rgba(237, 29, 36, 0.3);
+  }
+
+  .cursor-dot.is-hover {
+    transform: translate(-50%, -50%) scale(2.5);
+  }
+
+  .cursor-halo.is-active {
+    opacity: 1;
+    animation: halo-pulse 0.6s ease-out;
+  }
+
+  @keyframes halo-pulse {
+    0% { transform: translate(-50%, -50%) scale(0.4); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    #custom-cursor,
-    #custom-cursor-dot {
-      display: none !important;
-    }
+    .cursor-stack { display: none !important; }
     :global(html),
     :global(body),
     :global(a),
@@ -72,46 +150,79 @@
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (supportsFinePointer && !prefersReducedMotion) {
-    let cursorX = 0, cursorY = 0;
-    let dotX = 0, dotY = 0;
-    let cursor: HTMLElement | null = null;
-    let dot: HTMLElement | null = null;
+    let mouseX = 0, mouseY = 0;
+    const trails: HTMLElement[] = [];
+    const trailPositions: Array<{ x: number; y: number }> = [
+      { x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 },
+    ];
+
+    const ring = document.getElementById('cursor-ring');
+    const dot = document.getElementById('cursor-dot');
+    const halo = document.getElementById('cursor-halo');
+    const trail0 = document.getElementById('cursor-trail-0');
+    const trail1 = document.getElementById('cursor-trail-1');
+    const trail2 = document.getElementById('cursor-trail-2');
+    if (trail0) trails.push(trail0);
+    if (trail1) trails.push(trail1);
+    if (trail2) trails.push(trail2);
 
     document.addEventListener('mousemove', (e) => {
-      cursorX = e.clientX;
-      cursorY = e.clientY;
+      mouseX = e.clientX;
+      mouseY = e.clientY;
     });
 
     function animateCursor() {
-      if (cursor && dot) {
-        dotX += (cursorX - dotX) * 0.3;
-        dotY += (cursorY - dotY) * 0.3;
-        cursor.style.transform = `translate(${cursorX - 20}px, ${cursorY - 20}px)`;
-        dot.style.transform = `translate(${dotX - 4}px, ${dotY - 4}px)`;
-      }
+      // Trail update con easing
+      trailPositions[0].x += (mouseX - trailPositions[0].x) * 0.35;
+      trailPositions[0].y += (mouseY - trailPositions[0].y) * 0.35;
+      trailPositions[1].x += (trailPositions[0].x - trailPositions[1].x) * 0.25;
+      trailPositions[1].y += (trailPositions[0].y - trailPositions[1].y) * 0.25;
+      trailPositions[2].x += (trailPositions[1].x - trailPositions[2].x) * 0.18;
+      trailPositions[2].y += (trailPositions[1].y - trailPositions[2].y) * 0.18;
+
+      if (ring) ring.style.transform = `translate(${mouseX - 18}px, ${mouseY - 18}px)`;
+      if (dot) dot.style.transform = `translate(${mouseX - 2.5}px, ${mouseY - 2.5}px)`;
+      if (halo) halo.style.transform = `translate(${mouseX - 40}px, ${mouseY - 40}px)`;
+      trails.forEach((t, i) => {
+        if (t) t.style.transform = `translate(${trailPositions[i].x - 4}px, ${trailPositions[i].y - 4}px)`;
+      });
+
       requestAnimationFrame(animateCursor);
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      cursor = document.getElementById('custom-cursor');
-      dot = document.getElementById('custom-cursor-dot');
       animateCursor();
 
-      const hoverElements = document.querySelectorAll('a, button, .card, .tech-badge');
-      hoverElements.forEach((el) => {
-        el.addEventListener('mouseenter', () => cursor?.classList.add('hover'));
-        el.addEventListener('mouseleave', () => cursor?.classList.remove('hover'));
+      const interactive = document.querySelectorAll('a, button, .card, .tech-badge, [data-magnetic]');
+      interactive.forEach((el) => {
+        el.addEventListener('mouseenter', () => {
+          ring?.classList.add('is-hover');
+          dot?.classList.add('is-hover');
+        });
+        el.addEventListener('mouseleave', () => {
+          ring?.classList.remove('is-hover');
+          dot?.classList.remove('is-hover');
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!halo) return;
+        halo.classList.remove('is-active');
+        // Re-trigger animation
+        void (halo as HTMLElement).offsetWidth;
+        halo.classList.add('is-active');
       });
     });
 
     document.addEventListener('mouseleave', () => {
-      if (cursor) cursor.style.opacity = '0';
-      if (dot) dot.style.opacity = '0';
+      [ring, dot, halo, ...trails].forEach((el) => {
+        if (el) el.style.opacity = '0';
+      });
     });
-
     document.addEventListener('mouseenter', () => {
-      if (cursor) cursor.style.opacity = '1';
-      if (dot) dot.style.opacity = '1';
+      [ring, dot, halo, ...trails].forEach((el) => {
+        if (el) el.style.opacity = '1';
+      });
     });
   }
 </script>

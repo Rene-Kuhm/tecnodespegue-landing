@@ -12,72 +12,68 @@ import Icon from '../components/Icon.astro';
 >
   <Nav />
 
-  <main id="contenido" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden">
-    <div class="absolute inset-0 grid-bg opacity-30"></div>
-    <div class="absolute inset-0 hero-gradient"></div>
+  <main id="contenido" class="error-page" data-error>
+    <div class="error-bg" aria-hidden="true">
+      <div class="error-grid"></div>
+      <div class="error-glow error-glow-1"></div>
+      <div class="error-glow error-glow-2"></div>
+    </div>
 
-    <div class="max-w-4xl mx-auto px-8 relative z-10 text-center">
+    <div class="error-content">
       <!-- Status badge -->
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-chip bg-surface-container border border-primary/20 mb-10">
-        <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
-        <span class="text-[0.6875rem] font-label text-primary uppercase tracking-widest">
-          Error 404 — Ruta Perdida
-        </span>
+      <div class="error-badge">
+        <span class="error-badge-dot"></span>
+        <span class="font-mono">Error 404 · Ruta Perdida</span>
       </div>
 
-      <!-- Animated 404 visual -->
-      <div class="relative w-64 h-64 md:w-72 md:h-72 mx-auto mb-12">
-        <div class="absolute inset-0 bg-primary/10 blur-[100px] rounded-full animate-pulse-slow"></div>
-
-        <div class="relative w-full h-full flex items-center justify-center">
-          <!-- Orbiting rings -->
-          <div class="absolute inset-0 border border-primary/20 rounded-full animate-spin-slow"></div>
-          <div class="absolute inset-6 border border-secondary/20 rounded-full animate-spin-reverse"></div>
-
-          <!-- Corner accents -->
-          <div class="absolute top-0 right-0 w-14 h-14 border-t-2 border-r-2 border-primary/40"></div>
-          <div class="absolute bottom-0 left-0 w-14 h-14 border-b-2 border-l-2 border-secondary/40"></div>
-
-          <!-- 404 text -->
-          <h1 class="relative font-headline text-[5.5rem] md:text-[7rem] font-bold tracking-tighter leading-none text-primary z-10">
-            404
-          </h1>
+      <!-- Big 404 con shine -->
+      <div class="error-404-wrap">
+        <h1 class="error-404 font-display text-shine">404</h1>
+        <div class="error-burst" aria-hidden="true">
+          <span class="onomatopeya error-burst-text">OOPS!</span>
+          <div class="error-burst-stars">★ ★ ★</div>
         </div>
       </div>
 
       <!-- Headline -->
-      <h2 class="font-headline text-[2rem] md:text-[3rem] font-bold tracking-tight mb-6 leading-tight text-on-surface">
-        Esta página <span class="italic underline decoration-primary decoration-4 underline-offset-8">despegó</span> sin avisar
+      <h2 class="error-headline font-display">
+        <span class="error-headline-line">Esta página</span>
+        <span class="error-headline-line">
+          <span class="error-underline-wrap">
+            <span>despegó</span>
+            <span class="error-underline-bar" aria-hidden="true"></span>
+          </span>
+        </span>
+        <span class="error-headline-line">sin avisar.</span>
       </h2>
 
       <!-- Description -->
-      <p class="text-on-surface-variant text-lg max-w-xl mx-auto mb-10 font-body leading-relaxed">
+      <p class="error-lead">
         La URL que buscás no existe, fue movida o nunca estuvo en nuestro radar. Tranqui, hay un montón de cosas más que podés explorar.
       </p>
 
-      <!-- Primary CTAs -->
-      <div class="flex flex-wrap gap-4 justify-center mb-16">
-        <a href="/" class="btn-primary inline-flex items-center gap-2">
+      <!-- CTAs -->
+      <div class="error-ctas">
+        <a href="/" class="btn-primary magnetic" data-magnetic>
           <Icon name="arrow_forward" class="w-4 h-4" />
-          Volver al Inicio
+          <span>Volver al Inicio</span>
         </a>
         <a
           href="https://wa.me/5492334409838?text=Hola,%20llegué%20a%20un%20404%20en%20www.tecnodespegue.com%20y%20quiero%20consultar"
           target="_blank"
           rel="noopener noreferrer"
-          class="btn-secondary inline-flex items-center gap-2"
+          class="btn-secondary magnetic"
+          data-magnetic
         >
           <Icon name="chat" class="w-4 h-4" />
-          Hablar por WhatsApp
+          <span>Hablar por WhatsApp</span>
         </a>
       </div>
 
-      <!-- Quick section links -->
-      <div class="pt-12 border-t border-white/5">
-        <p class="text-[10px] uppercase font-bold tracking-widest text-zinc-600 mb-6">
-          O explorá estas secciones
-        </p>
-        <div class="flex flex-wrap gap-3 justify-center">
+      <!-- Quick links -->
+      <div class="error-quick">
+        <p class="error-quick-label font-mono">O EXPLORÁ ESTAS SECCIONES</p>
+        <div class="error-quick-chips">
           <a href="/#soluciones" class="tech-badge">Soluciones</a>
           <a href="/#portfolio" class="tech-badge">Portfolio</a>
           <a href="/#stack" class="tech-badge">Stack</a>
@@ -90,3 +86,174 @@ import Icon from '../components/Icon.astro';
 
   <Footer />
 </Layout>
+
+<style>
+  .error-page {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8rem 1.5rem 4rem;
+    overflow: hidden;
+  }
+
+  .error-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .error-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(237, 29, 36, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(237, 29, 36, 0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+  }
+  .error-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.4;
+  }
+  .error-glow-1 {
+    width: 500px;
+    height: 500px;
+    background: var(--color-marvel-red);
+    top: 20%;
+    left: 10%;
+  }
+  .error-glow-2 {
+    width: 400px;
+    height: 400px;
+    background: var(--color-marvel-gold);
+    bottom: 20%;
+    right: 10%;
+    opacity: 0.25;
+  }
+
+  .error-content {
+    position: relative;
+    z-index: 2;
+    max-width: 56rem;
+    text-align: center;
+  }
+
+  .error-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--color-surface-1);
+    border: 1px solid rgba(237, 29, 36, 0.3);
+    border-radius: 999px;
+    color: var(--color-marvel-gold);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+  .error-badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-marvel-red);
+    box-shadow: 0 0 12px var(--color-marvel-red-glow);
+    animation: energy-pulse 1.4s ease-in-out infinite;
+  }
+
+  .error-404-wrap {
+    position: relative;
+    margin: 0 auto 2rem;
+    display: inline-block;
+  }
+
+  .error-404 {
+    font-weight: 900;
+    font-size: clamp(8rem, 22vw, 16rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    margin: 0;
+    text-shadow:
+      0 4px 0 rgba(0, 0, 0, 0.4),
+      0 0 60px rgba(237, 29, 36, 0.4);
+  }
+
+  .error-burst {
+    position: absolute;
+    top: 0.5em;
+    right: -1em;
+    transform: rotate(15deg);
+    pointer-events: none;
+  }
+  .error-burst-text {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 0.85;
+  }
+  .error-burst-stars {
+    color: var(--color-marvel-gold);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-align: center;
+    text-shadow: 0 0 8px rgba(248, 180, 0, 0.6);
+  }
+
+  .error-headline {
+    font-weight: 900;
+    font-size: clamp(2.25rem, 5.5vw, 4rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin: 0 0 1.5rem;
+  }
+  .error-headline-line { display: block; }
+
+  .error-underline-wrap { position: relative; display: inline-block; }
+  .error-underline-bar {
+    position: absolute;
+    left: -0.05em;
+    right: -0.05em;
+    bottom: 0.05em;
+    height: 0.15em;
+    background: linear-gradient(90deg, var(--color-marvel-red) 0%, var(--color-marvel-gold) 100%);
+    box-shadow: 0 0 24px rgba(237, 29, 36, 0.4);
+  }
+
+  .error-lead {
+    font-size: clamp(1rem, 1.4vw, 1.125rem);
+    line-height: 1.6;
+    color: var(--color-on-surface-variant);
+    max-width: 36rem;
+    margin: 0 auto 2.5rem;
+  }
+
+  .error-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 3rem;
+  }
+
+  .error-quick {
+    padding-top: 2.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .error-quick-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    color: var(--color-on-surface-variant);
+    margin: 0 0 1rem;
+  }
+  .error-quick-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+</style>

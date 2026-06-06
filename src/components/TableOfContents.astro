@@ -1,0 +1,172 @@
+---
+/**
+ * TableOfContents.astro
+ * Tabla de contenidos con scroll-spy (highlight del heading activo)
+ * Recibe `headings` array de {depth, slug, text}
+ */
+const { headings = [] } = Astro.props;
+
+// Filtrar solo h2 y h3
+const items = headings.filter((h: any) => h.depth === 2 || h.depth === 3);
+---
+
+{items.length > 0 && (
+  <aside class="toc" data-toc>
+    <div class="toc-header">
+      <span class="toc-label font-mono">
+        <span class="toc-icon">◆</span>
+        En esta página
+      </span>
+    </div>
+    <nav class="toc-nav">
+      <ol class="toc-list">
+        {items.map((heading: any) => (
+          <li class={`toc-item toc-depth-${heading.depth}`}>
+            <a href={`#${heading.slug}`} class="toc-link" data-toc-link={heading.slug}>
+              <span class="toc-marker" aria-hidden="true"></span>
+              <span class="toc-text">{heading.text}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  </aside>
+)}
+
+<style>
+  .toc {
+    position: sticky;
+    top: 6rem;
+    padding: 1.25rem;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.75rem;
+  }
+
+  .toc-header {
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .toc-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .toc-icon {
+    color: var(--color-marvel-gold);
+  }
+
+  .toc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .toc-item {
+    position: relative;
+  }
+
+  .toc-depth-3 {
+    padding-left: 1rem;
+  }
+
+  .toc-link {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.5rem 0.625rem;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    border-radius: 0.375rem;
+    transition: color 0.2s, background 0.2s;
+  }
+
+  .toc-link:hover {
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .toc-marker {
+    flex-shrink: 0;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .toc-link.is-active {
+    color: #FFFFFF;
+    background: rgba(248, 180, 0, 0.08);
+  }
+
+  .toc-link.is-active .toc-marker {
+    background: var(--color-marvel-gold);
+    box-shadow: 0 0 6px rgba(248, 180, 0, 0.6);
+    transform: scale(1.5);
+  }
+
+  .toc-depth-3 .toc-marker {
+    width: 3px;
+    height: 3px;
+  }
+
+  @media (max-width: 1023px) {
+    .toc {
+      position: relative;
+      top: 0;
+      margin-bottom: 2rem;
+    }
+  }
+</style>
+
+<script>
+  // Scroll-spy: highlight active section in TOC
+  function initTOC() {
+    const tocLinks = document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]');
+    if (tocLinks.length === 0) return;
+
+    const headings = Array.from(tocLinks)
+      .map(link => document.getElementById(link.dataset.tocLink || ''))
+      .filter(Boolean) as HTMLElement[];
+
+    if (headings.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const id = entry.target.id;
+          const link = document.querySelector(`[data-toc-link="${id}"]`);
+          if (entry.isIntersecting) {
+            // Clear all actives
+            tocLinks.forEach((l) => l.classList.remove('is-active'));
+            if (link) link.classList.add('is-active');
+          }
+        });
+      },
+      { rootMargin: '-20% 0px -75% 0px', threshold: 0 }
+    );
+
+    headings.forEach((h) => observer.observe(h));
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTOC);
+  } else {
+    initTOC();
+  }
+</script>

@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+/* ============================================================
+   MARVEL-STYLE TYPOGRAPHY
+   - Big Shoulders Display: titulares cinematográficos condensados
+   - Bangers: acentos cómic / onomatopeyas
+   - Space Grotesk Variable: subtítulos técnicos
+   - Inter Variable: body y UI
+   ============================================================ */
+
 @font-face {
   font-family: 'Space Grotesk Variable';
   font-style: normal;
@@ -16,53 +24,113 @@
   src: url('@fontsource-variable/inter/files/inter-latin-wght-normal.woff2') format('woff2-variations');
 }
 
+/* Google Fonts cargadas con display=swap para fallback rápido.
+   Si el usuario tiene red, las ve; si no, fallback a display local. */
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Bangers&family=Anton&display=swap');
+
 :root {
   --compile-delay-min: 200ms;
   --compile-delay-max: 600ms;
+
+  /* Easing curves cinemáticos */
+  --ease-marvel: cubic-bezier(0.16, 1, 0.3, 1);          /* expo out suave */
+  --ease-marvel-in: cubic-bezier(0.7, 0, 0.84, 0);        /* expo in */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);       /* spring back */
+  --ease-snap: cubic-bezier(0.87, 0, 0.13, 1);            /* snap agresivo */
 }
 
 @theme {
-  --color-background: #0e0e0e;
-  --color-surface: #0e0e0e;
-  --color-surface-dim: #0e0e0e;
+  /* ============================================================
+     PALETA MARVEL-STYLE
+     ============================================================ */
+  --color-background: #0A0A0A;
+  --color-surface: #0A0A0A;
+  --color-surface-1: #14141A;
+  --color-surface-2: #1C1C24;
+  --color-surface-3: #25252E;
+  --color-surface-dim: #050507;
   --color-surface-container-lowest: #000000;
-  --color-surface-container-low: #131313;
-  --color-surface-container: #1a1919;
-  --color-surface-container-high: #201f1f;
-  --color-surface-container-highest: #262626;
-  --color-surface-variant: #262626;
+  --color-surface-container-low: #0F0F15;
+  --color-surface-container: #14141A;
+  --color-surface-container-high: #1C1C24;
+  --color-surface-container-highest: #25252E;
+  --color-surface-variant: #1C1C24;
 
-  --color-primary: #c1fffe;
-  --color-primary-dim: #00e6e6;
-  --color-primary-container: #00ffff;
-  --color-on-primary-container: #005d5d;
+  /* Marvel core colors */
+  --color-marvel-red: #ED1D24;
+  --color-marvel-red-deep: #B01418;
+  --color-marvel-red-glow: #FF3B47;
+  --color-marvel-gold: #F8B400;
+  --color-marvel-gold-deep: #C5A572;
+  --color-marvel-gold-bright: #FFD75A;
+  --color-marvel-blue: #1B3A8B;
+  --color-marvel-cosmic: #6B2D8E;
+  --color-marvel-cosmic-bright: #B14EFF;
 
-  --color-secondary: #00fd87;
-  --color-secondary-fixed: #00fd87;
+  /* Neons (mantenidos del sistema anterior) */
+  --color-primary: #00FFFF;            /* cyan eléctrico */
+  --color-primary-dim: #00E6E6;
+  --color-primary-container: #00FFFF;
+  --color-on-primary-container: #003D3D;
+  --color-secondary: #00FF88;          /* verde neón */
+  --color-secondary-fixed: #00FF88;
 
-  --color-on-surface: #ffffff;
-  --color-on-surface-variant: #adaaaa;
+  --color-on-surface: #FFFFFF;
+  --color-on-surface-variant: #ADAABA;
+  --color-on-surface-dim: #6B6B7A;
 
   --color-outline: #777575;
-  --color-outline-variant: #494847;
+  --color-outline-variant: #3A3A45;
 
+  /* Tipografías */
+  --font-display: "Big Shoulders Display", "Anton", "Space Grotesk Variable", sans-serif;
+  --font-comic: "Bangers", "Anton", cursive;
   --font-headline: "Space Grotesk Variable", sans-serif;
   --font-body: "Inter Variable", sans-serif;
   --font-label: "Inter Variable", sans-serif;
+  --font-mono: "JetBrains Mono", "Courier New", monospace;
 
   --radius-chip: 0.125rem;
   --radius-card: 0.375rem;
+  --radius-marvel: 0.5rem;
 
   /* Compile reveal custom tokens */
   --color-compile-terminal: #131313;
-  --color-compile-progress: #00fd87;
-  --color-compile-badge-bg: #1a1919;
-  --color-compile-badge-text: #adaaaa;
+  --color-compile-progress: #00FF88;
+  --color-compile-badge-bg: #1A1919;
+  --color-compile-badge-text: #ADAABA;
   --duration-compile-min: 200ms;
   --duration-compile-max: 600ms;
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+/* ============================================================
+   LENIS SMOOTH SCROLL
+   ============================================================ */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
 @layer base {
   * {
     box-sizing: border-box;
@@ -70,7 +138,7 @@
 
   html {
     background-color: var(--color-background);
-    scroll-behavior: smooth;
+    scroll-behavior: auto; /* Lenis maneja el smooth */
   }
 
   body {
@@ -82,58 +150,172 @@
     margin: 0;
     padding: 0;
     min-height: 100vh;
+    overflow-x: hidden;
   }
 
   ::selection {
-    background-color: var(--color-primary);
-    color: var(--color-on-primary-container);
+    background-color: var(--color-marvel-red);
+    color: #FFFFFF;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
+    outline: 2px solid var(--color-marvel-gold);
+    outline-offset: 3px;
     border-radius: 2px;
   }
 }
 
+/* ============================================================
+   UTILITIES
+   ============================================================ */
 @layer utilities {
+  .font-display { font-family: var(--font-display); letter-spacing: -0.02em; }
+  .font-comic { font-family: var(--font-comic); letter-spacing: 0.02em; }
   .font-headline { font-family: var(--font-headline); }
   .font-body { font-family: var(--font-body); }
   .font-label { font-family: var(--font-label); }
+  .font-mono { font-family: var(--font-mono); }
 
+  /* Grid cyber background */
   .grid-bg {
     background-image:
-      linear-gradient(rgba(193, 255, 254, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(193, 255, 254, 0.03) 1px, transparent 1px);
+      linear-gradient(rgba(0, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 255, 0.04) 1px, transparent 1px);
     background-size: 40px 40px;
   }
 
+  /* Marvel grid con acento rojo */
+  .marvel-grid {
+    background-image:
+      linear-gradient(rgba(237, 29, 36, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(237, 29, 36, 0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
   .hero-gradient {
-    background: radial-gradient(circle at 50% 50%, rgba(0, 255, 255, 0.05) 0%, transparent 70%);
+    background: radial-gradient(ellipse at center, rgba(237, 29, 36, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
+  }
+
+  .cosmic-gradient {
+    background: radial-gradient(circle at 30% 50%, rgba(107, 45, 142, 0.15) 0%, transparent 60%),
+                radial-gradient(circle at 70% 50%, rgba(27, 58, 139, 0.15) 0%, transparent 60%);
   }
 
   .glass-effect {
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    background: rgba(20, 20, 26, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .marvel-glass {
+    backdrop-filter: blur(16px) saturate(200%);
+    -webkit-backdrop-filter: blur(16px) saturate(200%);
+    background: linear-gradient(135deg, rgba(237, 29, 36, 0.08) 0%, rgba(20, 20, 26, 0.85) 100%);
+    border: 1px solid rgba(237, 29, 36, 0.2);
   }
 
   .ambient-glow {
-    box-shadow: 0 0 20px rgba(193, 255, 254, 0.15);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
   }
 
-  .ambient-glow-hover:hover {
-    box-shadow: 0 0 25px rgba(193, 255, 254, 0.3);
+  .ambient-glow-marvel {
+    box-shadow: 0 0 24px rgba(237, 29, 36, 0.25);
   }
 
+  .ambient-glow-gold {
+    box-shadow: 0 0 24px rgba(248, 180, 0, 0.2);
+  }
+
+  /* Text gradients */
+  .text-gradient-marvel {
+    background: linear-gradient(135deg, #FFD75A 0%, #F8B400 30%, #ED1D24 60%, #B01418 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .text-gradient-cosmic {
+    background: linear-gradient(135deg, #00FFFF 0%, #B14EFF 50%, #ED1D24 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .text-gradient-gold {
+    background: linear-gradient(180deg, #FFE699 0%, #F8B400 50%, #C5A572 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* Metallic shine para títulos */
+  .text-shine {
+    background: linear-gradient(110deg,
+      #C5A572 0%, #C5A572 35%,
+      #FFE699 50%, #FFE699 55%,
+      #C5A572 65%, #C5A572 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: shine-sweep 4s linear infinite;
+  }
+
+  @keyframes shine-sweep {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* Halftone comic pattern (background) */
+  .halftone-overlay {
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1.5px);
+    background-size: 8px 8px;
+  }
+
+  .halftone-overlay-red {
+    background-image: radial-gradient(circle, rgba(237, 29, 36, 0.15) 1.2px, transparent 1.8px);
+    background-size: 10px 10px;
+  }
+
+  /* Chrome beveled text effect */
+  .text-chrome {
+    text-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.4),
+      0 2px 0 rgba(0, 0, 0, 0.3),
+      0 3px 0 rgba(0, 0, 0, 0.25),
+      0 4px 0 rgba(0, 0, 0, 0.2),
+      0 5px 10px rgba(0, 0, 0, 0.5),
+      0 0 20px rgba(237, 29, 36, 0.4);
+  }
+
+  /* Clip-path comic panel */
+  .clip-comic-panel {
+    clip-path: polygon(
+      2% 0%, 98% 1%, 100% 4%, 99% 96%,
+      97% 100%, 3% 99%, 0% 96%, 1% 4%
+    );
+  }
+
+  .clip-wipe-right {
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  }
+
+  /* Skip link */
   .skip-link {
     position: absolute;
     top: -100px;
     left: 1rem;
-    background: var(--color-primary);
-    color: var(--color-on-primary-container);
+    background: var(--color-marvel-gold);
+    color: #000;
     padding: 0.75rem 1rem;
     border-radius: var(--radius-card);
-    font-weight: 700;
+    font-weight: 800;
+    text-transform: uppercase;
     z-index: 10000;
     transition: top 0.2s;
   }
@@ -141,73 +323,216 @@
   .skip-link:focus {
     top: 1rem;
   }
+
+  /* Loading screen helpers */
+  .loading-curtain {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #0A0A0A 0%, #1C1C24 100%);
+    z-index: 99999;
+    pointer-events: none;
+  }
 }
 
+/* ============================================================
+   COMPONENTS
+   ============================================================ */
 @layer components {
+  /* Botón principal estilo Marvel (con borde biselado) */
   .btn-primary {
-    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dim));
-    color: var(--color-on-primary-container);
-    padding: 1rem 2rem;
-    border-radius: var(--radius-card);
-    font-weight: 700;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, var(--color-marvel-red) 0%, var(--color-marvel-red-deep) 100%);
+    color: #FFFFFF;
+    padding: 1rem 2.25rem;
+    border-radius: var(--radius-marvel);
+    font-weight: 800;
     text-transform: uppercase;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     letter-spacing: 0.1em;
-    transition: all 0.3s;
+    font-family: var(--font-display);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    box-shadow:
+      0 4px 0 0 var(--color-marvel-red-deep),
+      0 8px 24px -4px rgba(237, 29, 36, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    transition: transform 0.2s var(--ease-marvel), box-shadow 0.3s;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.3) 50%,
+      transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
   }
 
   .btn-primary:hover {
-    box-shadow: 0 0 25px rgba(193, 255, 254, 0.3);
+    transform: translateY(-2px);
+    box-shadow:
+      0 6px 0 0 var(--color-marvel-red-deep),
+      0 12px 32px -4px rgba(237, 29, 36, 0.7),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25),
+      0 0 40px rgba(237, 29, 36, 0.3);
   }
 
+  .btn-primary:hover::before {
+    transform: translateX(100%);
+  }
+
+  .btn-primary:active {
+    transform: translateY(2px);
+    box-shadow:
+      0 2px 0 0 var(--color-marvel-red-deep),
+      0 4px 12px -4px rgba(237, 29, 36, 0.5);
+  }
+
+  /* Botón secundario con borde dorado */
   .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     background: transparent;
-    border: 1px solid var(--color-outline-variant);
-    color: var(--color-on-surface);
-    padding: 1rem 2rem;
-    border-radius: var(--radius-card);
-    font-weight: 700;
+    border: 2px solid var(--color-marvel-gold);
+    color: var(--color-marvel-gold);
+    padding: 1rem 2.25rem;
+    border-radius: var(--radius-marvel);
+    font-weight: 800;
     text-transform: uppercase;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     letter-spacing: 0.1em;
-    transition: all 0.3s;
+    font-family: var(--font-display);
+    box-shadow: 0 0 0 0 rgba(248, 180, 0, 0);
+    transition: all 0.3s var(--ease-marvel);
+    cursor: pointer;
   }
 
   .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(248, 180, 0, 0.1);
+    box-shadow: 0 0 24px 0 rgba(248, 180, 0, 0.4);
+    color: #FFFFFF;
+    border-color: var(--color-marvel-gold-bright);
   }
 
+  /* Card base con borde sutil */
   .card {
     background-color: var(--color-surface-container);
-    border: 1px solid transparent;
+    border: 1px solid var(--color-outline-variant);
     border-radius: var(--radius-card);
     padding: 2rem;
-    transition: all 0.3s;
+    transition: all 0.3s var(--ease-marvel);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(237, 29, 36, 0) 0%, rgba(237, 29, 36, 0.04) 100%);
+    opacity: 0;
+    transition: opacity 0.3s;
   }
 
   .card:hover {
-    border-color: rgba(193, 255, 254, 0.2);
+    border-color: rgba(237, 29, 36, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.5);
   }
 
+  .card:hover::before {
+    opacity: 1;
+  }
+
+  /* Tech badge estilo Marvel */
   .tech-badge {
-    padding: 0.375rem 0.75rem;
+    padding: 0.5rem 0.875rem;
     background-color: var(--color-surface-variant);
-    border: 1px solid rgba(193, 255, 254, 0.2);
+    border: 1px solid rgba(248, 180, 0, 0.3);
     border-radius: var(--radius-chip);
-    color: var(--color-primary);
-    font-family: monospace;
+    color: var(--color-marvel-gold);
+    font-family: var(--font-mono);
     font-size: 0.75rem;
-    transition: all 0.3s;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    transition: all 0.3s var(--ease-marvel);
     cursor: default;
+    text-transform: uppercase;
   }
 
   .tech-badge:hover {
-    border-color: var(--color-primary);
-    transform: scale(1.05);
+    border-color: var(--color-marvel-gold);
+    background-color: rgba(248, 180, 0, 0.08);
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 0 20px rgba(248, 180, 0, 0.3);
+  }
+
+  /* Onomatopeya estilo cómic */
+  .onomatopeya {
+    font-family: var(--font-comic);
+    text-transform: uppercase;
+    color: var(--color-marvel-gold-bright);
+    text-shadow:
+      -2px -2px 0 #000,
+      2px -2px 0 #000,
+      -2px 2px 0 #000,
+      2px 2px 0 #000,
+      -3px 0 0 #000,
+      3px 0 0 #000,
+      0 -3px 0 #000,
+      0 3px 0 #000,
+      0 0 24px rgba(248, 180, 0, 0.6);
+    transform: rotate(-8deg);
+    display: inline-block;
+    line-height: 0.85;
+    letter-spacing: 0.02em;
+  }
+
+  .onomatopeya-red {
+    color: var(--color-marvel-red-glow);
+    text-shadow:
+      -2px -2px 0 #000,
+      2px -2px 0 #000,
+      -2px 2px 0 #000,
+      2px 2px 0 #000,
+      -3px 0 0 #000,
+      3px 0 0 #000,
+      0 -3px 0 #000,
+      0 3px 0 #000,
+      0 0 24px rgba(237, 29, 36, 0.7);
+  }
+
+  /* Panel de cómic con borde biselado */
+  .comic-panel {
+    position: relative;
+    background: var(--color-surface-1);
+    border: 3px solid #000;
+    box-shadow:
+      0 0 0 3px var(--color-marvel-red),
+      8px 8px 0 0 #000;
+  }
+
+  /* Box biselado clásico Marvel */
+  .bevel-box {
+    background: var(--color-surface-2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.3);
   }
 }
 
-/* Animations */
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
 @keyframes float {
   0%, 100% {
     transform: translate(-50%, -50%) translateY(0px);
@@ -244,53 +569,92 @@
 }
 
 @keyframes compile-progress {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
 }
 
 @keyframes badge-pop {
-  0% {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 @keyframes terminal-scroll {
-  0% {
-    transform: translateY(0);
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+/* Marvel opening sweep */
+@keyframes marvel-sweep {
+  0% { transform: translateX(-110%) skewX(-20deg); }
+  100% { transform: translateX(250%) skewX(-20deg); }
+}
+
+@keyframes marvel-sweep-slow {
+  0% { transform: translateX(-110%) skewX(-15deg); }
+  100% { transform: translateX(250%) skewX(-15deg); }
+}
+
+/* Energy core pulse */
+@keyframes energy-pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1) drop-shadow(0 0 8px currentColor);
   }
-  100% {
-    transform: translateY(-50%);
+  50% {
+    transform: scale(1.08);
+    filter: brightness(1.3) drop-shadow(0 0 24px currentColor);
   }
 }
 
-.animate-float {
-  animation: float 6s ease-in-out infinite;
+/* Comic burst rotation */
+@keyframes comic-rotate {
+  from { transform: rotate(-8deg) scale(1); }
+  to { transform: rotate(352deg) scale(1); }
 }
 
-.animate-spin-slow {
-  animation: spin-slow 20s linear infinite;
+@keyframes comic-jiggle {
+  0%, 100% { transform: rotate(-8deg) scale(1); }
+  25% { transform: rotate(-10deg) scale(1.04); }
+  50% { transform: rotate(-6deg) scale(0.98); }
+  75% { transform: rotate(-9deg) scale(1.02); }
 }
 
-.animate-spin-reverse {
-  animation: spin-reverse 15s linear infinite;
+/* Speed lines */
+@keyframes speed-line {
+  0% { transform: translateX(0) scaleX(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(-200px) scaleX(1); opacity: 0; }
 }
 
-.animate-scan {
-  animation: scan 4s linear infinite;
+@keyframes shake {
+  0%, 100% { transform: translate(0, 0); }
+  10%, 30%, 50%, 70%, 90% { transform: translate(-2px, 0); }
+  20%, 40%, 60%, 80% { transform: translate(2px, 0); }
 }
 
-.animate-pulse-slow {
-  animation: pulse-slow 4s ease-in-out infinite;
+@keyframes glow-burst {
+  0% { box-shadow: 0 0 0 0 currentColor; opacity: 1; }
+  100% { box-shadow: 0 0 0 30px transparent; opacity: 0; }
 }
+
+@keyframes loading-bar {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-spin-slow { animation: spin-slow 20s linear infinite; }
+.animate-spin-reverse { animation: spin-reverse 15s linear infinite; }
+.animate-scan { animation: scan 4s linear infinite; }
+.animate-pulse-slow { animation: pulse-slow 4s ease-in-out infinite; }
+.animate-marvel-sweep { animation: marvel-sweep 2.4s var(--ease-marvel) infinite; }
+.animate-marvel-sweep-slow { animation: marvel-sweep-slow 4s var(--ease-marvel) infinite; }
+.animate-energy-pulse { animation: energy-pulse 2.5s ease-in-out infinite; }
+.animate-comic-rotate { animation: comic-rotate 12s linear infinite; transform-origin: center; }
+.animate-comic-jiggle { animation: comic-jiggle 0.6s ease-in-out infinite; }
+.animate-shake { animation: shake 0.4s ease-in-out; }
+.animate-glow-burst { animation: glow-burst 1.2s ease-out forwards; }
+.animate-loading-bar { animation: loading-bar 1.4s ease-in-out infinite; }
 
 .compile-fade-out {
   opacity: 1;
@@ -301,6 +665,9 @@
   opacity: 0;
 }
 
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -315,7 +682,15 @@
   .animate-spin-slow,
   .animate-spin-reverse,
   .animate-scan,
-  .animate-pulse-slow {
+  .animate-pulse-slow,
+  .animate-marvel-sweep,
+  .animate-marvel-sweep-slow,
+  .animate-energy-pulse,
+  .animate-comic-rotate,
+  .animate-comic-jiggle,
+  .animate-shake,
+  .animate-glow-burst,
+  .animate-loading-bar {
     animation: none !important;
   }
 }
