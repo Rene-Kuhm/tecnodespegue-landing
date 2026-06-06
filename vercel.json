@@ -1,11 +1,33 @@
 {
-  "routes": [
-    { "src": "/index\\.html", "headers": { "Location": "/" }, "status": 301 },
-    { "src": "/work", "dest": "/404.html", "status": 410 },
-    { "src": "/about", "dest": "/404.html", "status": 410 },
-    { "src": "/terms", "dest": "/404.html", "status": 410 },
-    { "src": "/sitemap\\.xml", "dest": "/sitemap-index.xml" },
-    { "handle": "filesystem" },
-    { "src": "/([^./]+)", "dest": "/404.html", "status": 404 }
-  ]
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "X-DNS-Prefetch-Control", "value": "off" },
+        { "key": "Permissions-Policy", "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()" },
+        { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains; preload" }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://*.tiktok.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://plausible.io https://*.tiktok.com https://*.analytics.tiktok.com; frame-src 'self' https://*.tiktok.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://formspree.io; object-src 'none'"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    { "source": "/index\\.html", "destination": "/", "statusCode": 301 },
+    { "source": "/work", "destination": "/404.html", "statusCode": 410 },
+    { "source": "/about", "destination": "/404.html", "statusCode": 410 },
+    { "source": "/terms", "destination": "/404.html", "statusCode": 410 },
+    { "source": "/sitemap\\.xml", "destination": "/sitemap-index.xml", "statusCode": 301 }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
 }

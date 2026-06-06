@@ -1,150 +1,151 @@
 ---
+/**
+ * Refactor.astro - Versión Marvel
+ * Header con kicker, pilares con iconos bevel rojo/dorado/cósmico,
+ * simulador consola con scan line dorada
+ */
+
 import Icon from './Icon.astro';
 ---
 
-<section class="py-32 bg-surface relative overflow-hidden" id="optimizacion">
-  <div class="absolute inset-0 grid-bg opacity-10"></div>
-  
-  <div class="max-w-7xl mx-auto px-8 relative z-10 grid lg:grid-cols-12 gap-16 items-center">
-    
-    <!-- Left Column: Copy and Pillars -->
+<section class="py-32 relative overflow-hidden" id="optimizacion" data-refactor>
+  <div class="refactor-bg" aria-hidden="true"></div>
+
+  <div class="max-w-7xl mx-auto px-6 md:px-8 relative z-10 grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+    <!-- Left column -->
     <div class="lg:col-span-6 space-y-8">
       <div>
-        <span class="text-xs font-mono text-secondary uppercase tracking-[0.4em] mb-4 block">
-          Auditoría & Refactor
+        <span class="kicker">
+          <span class="kicker-dot"></span>
+          <span class="kicker-text font-mono">REFACTOR · 05</span>
         </span>
-        <h2 class="font-headline text-3xl md:text-4xl font-bold tracking-tight text-on-surface mb-6 leading-tight">
-          Arreglamos tu sistema. Lo mejoramos. Lo hacemos <span class="text-primary italic">seguro, rápido y eficiente</span>.
+        <h2 class="refactor-title font-display">
+          <span class="refactor-title-line">Arreglamos tu sistema.</span>
+          <span class="refactor-title-line">Lo mejoramos.</span>
+          <span class="refactor-title-line text-shine">Lo hacemos a prueba de balas.</span>
         </h2>
-        <p class="text-on-surface-variant font-body leading-relaxed text-base">
+        <p class="refactor-lead">
           No tires tu código a la basura. Analizamos tu infraestructura digital existente para diagnosticar fugas de memoria, parchar vulnerabilidades críticas y modernizar tu arquitectura al stack más veloz de la industria.
         </p>
       </div>
-      
-      <div class="grid sm:grid-cols-2 gap-6">
-        <!-- Pillar 1: Reparación -->
-        <div class="space-y-3 group">
-          <div class="w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 group-hover:bg-red-500/20 transition-colors">
+
+      <div class="refactor-grid">
+        <div class="refactor-pillar" data-refactor-pillar>
+          <div class="refactor-pillar-icon refactor-pillar-icon-red">
             <Icon name="bug_report" class="w-5 h-5" />
           </div>
-          <h3 class="font-headline font-bold text-sm text-on-surface uppercase tracking-wider">
-            Diagnóstico & Reparación
-          </h3>
-          <p class="text-xs text-on-surface-variant leading-relaxed">
-            Eliminamos leaks de memoria, bugs heredados y fallos lógicos que interrumpen tu servicio.
-          </p>
+          <h3 class="refactor-pillar-title">Diagnóstico &amp; Reparación</h3>
+          <p class="refactor-pillar-desc">Eliminamos leaks de memoria, bugs heredados y fallos lógicos que interrumpen tu servicio.</p>
         </div>
 
-        <!-- Pillar 2: Optimización -->
-        <div class="space-y-3 group">
-          <div class="w-10 h-10 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center text-secondary group-hover:bg-secondary/20 transition-colors">
+        <div class="refactor-pillar" data-refactor-pillar>
+          <div class="refactor-pillar-icon refactor-pillar-icon-gold">
             <Icon name="speed" class="w-5 h-5" />
           </div>
-          <h3 class="font-headline font-bold text-sm text-on-surface uppercase tracking-wider">
-            Aceleración Extrema
-          </h3>
-          <p class="text-xs text-on-surface-variant leading-relaxed">
-            Reducimos tiempos de carga y respuesta (LCP/TTFB) optimizando algoritmos, bases de datos y caching.
-          </p>
+          <h3 class="refactor-pillar-title">Aceleración Extrema</h3>
+          <p class="refactor-pillar-desc">Reducimos tiempos de carga y respuesta (LCP/TTFB) optimizando algoritmos, bases de datos y caching.</p>
         </div>
 
-        <!-- Pillar 3: Seguridad -->
-        <div class="space-y-3 group">
-          <div class="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary group-hover:bg-primary/20 transition-colors">
+        <div class="refactor-pillar" data-refactor-pillar>
+          <div class="refactor-pillar-icon refactor-pillar-icon-cosmic">
             <Icon name="lock" class="w-5 h-5" />
           </div>
-          <h3 class="font-headline font-bold text-sm text-on-surface uppercase tracking-wider">
-            Blindaje & Seguridad
-          </h3>
-          <p class="text-xs text-on-surface-variant leading-relaxed">
-            Sanitizamos inputs, auditamos fallos de inyección y ciframos datos sensibles de extremo a extremo.
-          </p>
+          <h3 class="refactor-pillar-title">Blindaje &amp; Seguridad</h3>
+          <p class="refactor-pillar-desc">Sanitizamos inputs, auditamos fallos de inyección y ciframos datos sensibles de extremo a extremo.</p>
         </div>
 
-        <!-- Pillar 4: Modernización -->
-        <div class="space-y-3 group">
-          <div class="w-10 h-10 rounded-lg bg-[rgb(234,179,8)]/10 border border-[rgb(234,179,8)]/20 flex items-center justify-center text-[rgb(234,179,8)] group-hover:bg-[rgb(234,179,8)]/20 transition-colors">
+        <div class="refactor-pillar" data-refactor-pillar>
+          <div class="refactor-pillar-icon refactor-pillar-icon-mixed">
             <Icon name="deployed_code" class="w-5 h-5" />
           </div>
-          <h3 class="font-headline font-bold text-sm text-on-surface uppercase tracking-wider">
-            Modernización Stack
-          </h3>
-          <p class="text-xs text-on-surface-variant leading-relaxed">
-            Reemplazamos frameworks legacy obsoletos por tecnologías reactivas, escalables y orientadas al cloud.
-          </p>
+          <h3 class="refactor-pillar-title">Modernización Stack</h3>
+          <p class="refactor-pillar-desc">Reemplazamos frameworks legacy obsoletos por tecnologías reactivas, escalables y orientadas al cloud.</p>
         </div>
       </div>
     </div>
-    
-    <!-- Right Column: Interactive Diagnostic Refactor Simulator -->
-    <div class="lg:col-span-6 relative">
-      <div class="absolute -inset-4 bg-gradient-to-br from-secondary/5 via-primary/5 to-transparent blur-2xl rounded-full"></div>
-      
-      <div class="relative rounded-card border border-white/10 bg-surface-container-lowest shadow-2xl overflow-hidden flex flex-col min-h-[380px]">
-        <!-- Terminal Header -->
-        <div class="flex items-center justify-between px-4 py-3 bg-surface-container-high border-b border-white/5 font-mono text-[11px] text-on-surface-variant">
-          <div class="flex items-center gap-1.5">
-            <span class="w-2.5 h-2.5 rounded-full bg-red-500/70"></span>
-            <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/70"></span>
-            <span class="w-2.5 h-2.5 rounded-full bg-green-500/70"></span>
-          </div>
-          <span>RefactorAudit.tsx · system analyzer</span>
-          <span class="text-secondary tracking-widest text-[9px] animate-pulse uppercase">active_scanner</span>
-        </div>
-        
-        <!-- Console Body -->
-        <div class="p-6 font-mono text-xs leading-relaxed flex-1 flex flex-col justify-between relative">
-          <!-- Continuous Scanner Sweep Laser -->
-          <div class="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-secondary to-transparent opacity-60 animate-sweep z-10 pointer-events-none"></div>
 
-          <!-- Comparison Grid -->
-          <div class="grid grid-cols-2 gap-4 divide-x divide-white/5 flex-1 items-stretch">
-            
-            <!-- Legacy metrics (Red State) -->
-            <div class="pr-4 flex flex-col justify-between space-y-4">
-              <div>
-                <div class="text-[9px] uppercase tracking-widest text-red-400 font-bold mb-2 flex items-center gap-1">
-                  <Icon name="error" class="w-3.5 h-3.5 text-red-500 animate-pulse" /> Legacy system
-                </div>
-                <div class="space-y-2 text-on-surface-variant text-[11px]">
-                  <div>T. respuesta: <span class="text-red-400 font-bold">1,842ms</span></div>
-                  <div>Seguridad: <span class="text-red-400">Crítica (XSS/SQLi)</span></div>
-                  <div>Fugas RAM: <span class="text-red-400">8 detectadas</span></div>
-                  <div>LCP Core: <span class="text-red-400">5.4s (Pobre)</span></div>
-                </div>
+    <!-- Right: Simulator -->
+    <div class="lg:col-span-6 relative">
+      <div class="refactor-sim-wrap" aria-hidden="true"></div>
+
+      <div class="refactor-sim">
+        <div class="refactor-sim-bar">
+          <div class="refactor-sim-dots">
+            <span class="refactor-sim-dot refactor-sim-dot-red"></span>
+            <span class="refactor-sim-dot refactor-sim-dot-yellow"></span>
+            <span class="refactor-sim-dot refactor-sim-dot-green"></span>
+          </div>
+          <span class="refactor-sim-title font-mono">RefactorAudit.tsx</span>
+          <span class="refactor-sim-status font-mono">
+            <span class="refactor-sim-pulse"></span>
+            SCANNING
+          </span>
+        </div>
+
+        <div class="refactor-sim-body">
+          <!-- Scan line animada -->
+          <div class="refactor-sim-scan" aria-hidden="true"></div>
+
+          <!-- Comparison grid -->
+          <div class="refactor-sim-compare">
+            <div class="refactor-sim-col refactor-sim-col-legacy">
+              <div class="refactor-sim-col-head">
+                <Icon name="error" class="w-4 h-4" />
+                <span>LEGACY SYSTEM</span>
               </div>
-              <div class="p-2.5 bg-red-950/20 border border-red-900/30 rounded text-[10px] text-red-300">
+              <div class="refactor-sim-row">
+                <span class="refactor-sim-key">T. respuesta</span>
+                <span class="refactor-sim-val refactor-sim-val-bad">1,842ms</span>
+              </div>
+              <div class="refactor-sim-row">
+                <span class="refactor-sim-key">Seguridad</span>
+                <span class="refactor-sim-val refactor-sim-val-bad">Crítica</span>
+              </div>
+              <div class="refactor-sim-row">
+                <span class="refactor-sim-key">Fugas RAM</span>
+                <span class="refactor-sim-val refactor-sim-val-bad">8 detectadas</span>
+              </div>
+              <div class="refactor-sim-row">
+                <span class="refactor-sim-key">LCP Core</span>
+                <span class="refactor-sim-val refactor-sim-val-bad">5.4s · Pobre</span>
+              </div>
+              <div class="refactor-sim-foot refactor-sim-foot-bad">
                 ✗ Sistema obsoleto, vulnerable y lento.
               </div>
             </div>
-            
-            <!-- Upgraded metrics (Green State) -->
-            <div class="pl-6 flex flex-col justify-between space-y-4">
-              <div>
-                <div class="text-[9px] uppercase tracking-widest text-secondary font-bold mb-2 flex items-center gap-1">
-                  <Icon name="verified" class="w-3.5 h-3.5 text-secondary animate-pulse" /> TecnoDespegue Core
-                </div>
-                <div class="space-y-2 text-on-surface-variant text-[11px]">
-                  <div>T. respuesta: <span class="text-secondary font-bold">72ms</span></div>
-                  <div>Seguridad: <span class="text-secondary">AES-256 / Sanitized</span></div>
-                  <div>Fugas RAM: <span class="text-secondary">0 (Lógica depurada)</span></div>
-                  <div>LCP Core: <span class="text-secondary">0.9s (Excelente)</span></div>
-                </div>
+
+            <div class="refactor-sim-col refactor-sim-col-upgrade">
+              <div class="refactor-sim-col-head refactor-sim-col-head-good">
+                <Icon name="verified" class="w-4 h-4" />
+                <span>TECNODESPEGUE</span>
               </div>
-              <div class="p-2.5 bg-emerald-950/20 border border-emerald-900/30 rounded text-[10px] text-emerald-300 relative flex items-center justify-between overflow-hidden">
-                <span>✓ Optimizado y modernizado.</span>
+              <div class="refactor-sim-row">
+                <span class="refactor-sim-key">T. respuesta</span>
+                <span class="refactor-sim-val refactor-sim-val-good">72ms</span>
+              </div>
+              <div class="refactor-sim-row">
+                <span class="refactor-sim-key">Seguridad</span>
+                <span class="refactor-sim-val refactor-sim-val-good">AES-256</span>
+              </div>
+              <div class="refactor-sim-row">
+                <span class="refactor-sim-key">Fugas RAM</span>
+                <span class="refactor-sim-val refactor-sim-val-good">0</span>
+              </div>
+              <div class="refactor-sim-row">
+                <span class="refactor-sim-key">LCP Core</span>
+                <span class="refactor-sim-val refactor-sim-val-good">0.9s · Excelente</span>
+              </div>
+              <div class="refactor-sim-foot refactor-sim-foot-good">
+                ✓ Optimizado y modernizado.
               </div>
             </div>
           </div>
-          
-          <!-- Modernization badge popper at bottom -->
-          <div class="mt-6 pt-4 border-t border-white/5 flex justify-center">
-            <div class="compile-badge relative overflow-hidden group">
-              <span class="compile-text text-secondary flex items-center gap-1.5">
-                <Icon name="verified" class="w-4 h-4" />
-                ✓ +94% RENDIMIENTO & CÓDIGO INMUNIZADO
-              </span>
-            </div>
+
+          <!-- Bottom badge -->
+          <div class="refactor-badge">
+            <Icon name="verified" class="w-4 h-4" />
+            <span class="font-mono">+94% RENDIMIENTO &amp; CÓDIGO INMUNIZADO</span>
           </div>
         </div>
       </div>
@@ -153,37 +154,275 @@ import Icon from './Icon.astro';
 </section>
 
 <style>
-@keyframes sweep {
-  0% {
-    top: 0%;
+  .refactor-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 80% 30%, rgba(237, 29, 36, 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 20% 70%, rgba(248, 180, 0, 0.04) 0%, transparent 50%);
+    pointer-events: none;
   }
-  50% {
-    top: 100%;
+
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
   }
-  100% {
-    top: 0%;
+  .kicker-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-marvel-red);
+    box-shadow: 0 0 12px var(--color-marvel-red-glow);
+    animation: energy-pulse 2s ease-in-out infinite;
   }
-}
+  .kicker-text {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    color: var(--color-marvel-gold);
+  }
 
-.animate-sweep {
-  animation: sweep 4s ease-in-out infinite;
-}
+  .refactor-title {
+    font-weight: 900;
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin: 0 0 1.5rem;
+  }
+  .refactor-title-line { display: block; }
 
-/* Custom premium glow effects */
-.compile-badge {
-  display: inline-flex;
-  padding: 0.5rem 1rem;
-  background-color: var(--color-surface-container);
-  border: 1px solid rgba(0, 253, 135, 0.25);
-  border-radius: 0.5rem;
-  box-shadow: 0 0 20px rgba(0, 253, 135, 0.1);
-  transform-origin: center;
-  transition: all 0.3s;
-}
+  .refactor-lead {
+    font-size: clamp(1rem, 1.4vw, 1.125rem);
+    line-height: 1.6;
+    color: var(--color-on-surface-variant);
+    max-width: 38rem;
+    margin: 0;
+  }
 
-.compile-badge:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 25px rgba(0, 253, 135, 0.25);
-  border-color: rgba(0, 253, 135, 0.5);
-}
+  /* Pillars */
+  .refactor-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  @media (min-width: 640px) { .refactor-grid { grid-template-columns: 1fr 1fr; } }
+
+  .refactor-pillar {
+    padding: 1.5rem;
+    background: var(--color-surface-1);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 0.5rem;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+  }
+  .refactor-pillar:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-marvel-gold);
+    box-shadow: 0 16px 32px -8px rgba(248, 180, 0, 0.3);
+  }
+
+  .refactor-pillar-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+    border: 1.5px solid;
+  }
+  .refactor-pillar-icon-red {
+    background: rgba(237, 29, 36, 0.1);
+    border-color: var(--color-marvel-red);
+    color: var(--color-marvel-red-glow);
+  }
+  .refactor-pillar-icon-gold {
+    background: rgba(248, 180, 0, 0.1);
+    border-color: var(--color-marvel-gold);
+    color: var(--color-marvel-gold-bright);
+  }
+  .refactor-pillar-icon-cosmic {
+    background: rgba(107, 45, 142, 0.15);
+    border-color: var(--color-marvel-cosmic-bright);
+    color: var(--color-marvel-cosmic-bright);
+  }
+  .refactor-pillar-icon-mixed {
+    background: linear-gradient(135deg, rgba(237, 29, 36, 0.1) 0%, rgba(248, 180, 0, 0.1) 100%);
+    border-color: var(--color-marvel-gold);
+    color: var(--color-marvel-gold-bright);
+  }
+
+  .refactor-pillar-title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin: 0 0 0.5rem;
+  }
+  .refactor-pillar-desc {
+    font-size: 0.825rem;
+    line-height: 1.55;
+    color: var(--color-on-surface-variant);
+    margin: 0;
+  }
+
+  /* Simulator */
+  .refactor-sim-wrap {
+    position: absolute;
+    inset: -1.5rem;
+    background: radial-gradient(circle, rgba(237, 29, 36, 0.12) 0%, transparent 70%);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+
+  .refactor-sim {
+    position: relative;
+    background: var(--color-surface-1);
+    border: 2px solid #000;
+    border-radius: 0.75rem;
+    box-shadow:
+      0 0 0 1px var(--color-marvel-red),
+      0 32px 64px -16px rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+  }
+
+  .refactor-sim-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    background: var(--color-surface-2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .refactor-sim-dots { display: flex; gap: 0.375rem; }
+  .refactor-sim-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .refactor-sim-dot-red { background: #ef4444; }
+  .refactor-sim-dot-yellow { background: #eab308; }
+  .refactor-sim-dot-green { background: #22c55e; }
+
+  .refactor-sim-title { font-size: 0.7rem; color: var(--color-on-surface-variant); }
+
+  .refactor-sim-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.6rem;
+    color: var(--color-marvel-gold);
+    letter-spacing: 0.2em;
+  }
+  .refactor-sim-pulse {
+    width: 6px;
+    height: 6px;
+    background: var(--color-marvel-gold);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--color-marvel-gold);
+    animation: energy-pulse 1.4s ease-in-out infinite;
+  }
+
+  .refactor-sim-body { padding: 1.5rem; position: relative; }
+
+  .refactor-sim-scan {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--color-marvel-gold) 50%, transparent 100%);
+    box-shadow: 0 0 16px var(--color-marvel-gold);
+    top: 0;
+    z-index: 5;
+    pointer-events: none;
+    animation: scan-sweep-v 2.5s ease-in-out infinite;
+  }
+  @keyframes scan-sweep-v {
+    0%, 100% { top: 0; }
+    50% { top: 100%; }
+  }
+
+  .refactor-sim-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    position: relative;
+  }
+  .refactor-sim-compare::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 10%;
+    bottom: 10%;
+    width: 1px;
+    background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+  }
+
+  .refactor-sim-col { display: flex; flex-direction: column; gap: 0.625rem; }
+
+  .refactor-sim-col-head {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    color: #ef4444;
+    margin-bottom: 0.5rem;
+  }
+  .refactor-sim-col-head-good { color: var(--color-secondary); }
+
+  .refactor-sim-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+  }
+
+  .refactor-sim-key { color: var(--color-on-surface-variant); }
+  .refactor-sim-val { font-family: var(--font-mono); font-weight: 700; font-size: 0.8rem; }
+  .refactor-sim-val-bad { color: #ef4444; }
+  .refactor-sim-val-good { color: var(--color-secondary); }
+
+  .refactor-sim-foot {
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.625rem;
+    font-size: 0.7rem;
+    font-family: var(--font-mono);
+    border-radius: 0.25rem;
+  }
+  .refactor-sim-foot-bad {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+  }
+  .refactor-sim-foot-good {
+    background: rgba(0, 255, 136, 0.08);
+    border: 1px solid rgba(0, 255, 136, 0.25);
+    color: var(--color-secondary);
+  }
+
+  .refactor-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1.5rem auto 0;
+    padding: 0.625rem 1.25rem;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-secondary);
+    border-radius: 0.5rem;
+    color: var(--color-secondary);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    box-shadow: 0 0 24px rgba(0, 255, 136, 0.2);
+    text-align: center;
+    width: fit-content;
+  }
+  .refactor-badge { display: flex; }
+  .refactor-badge { justify-content: center; }
 </style>

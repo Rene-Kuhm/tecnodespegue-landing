@@ -1,0 +1,323 @@
+---
+/**
+ * Newsletter.astro - Marvel Edition
+ * Signup con glassmorphism y validación
+ */
+import { siteConfig } from '../config/site.config';
+---
+
+<section class="newsletter-section" data-newsletter>
+  <div class="newsletter-card">
+    <!-- BG ambient -->
+    <div class="nl-bg" aria-hidden="true">
+      <div class="nl-glow nl-glow-1"></div>
+      <div class="nl-glow nl-glow-2"></div>
+    </div>
+
+    <div class="nl-content">
+      <!-- Header -->
+      <div class="nl-header">
+        <div class="nl-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 8L10.8906 13.2604C11.5624 13.7083 12.4376 13.7083 13.1094 13.2604L21 8M5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h2 class="nl-title font-display">
+          <span>Insights de ingeniería</span>
+          <span class="text-shine">cada 2 semanas</span>
+        </h2>
+        <p class="nl-lead">
+          Lo que aprendemos en producción, sin marketing. Deploys, decisiones arquitectónicas, postmortems, herramientas nuevas. Solo cuando hay algo que valga la pena.
+        </p>
+      </div>
+
+      <!-- Form -->
+      <form class="nl-form" data-nl-form>
+        <div class="nl-input-wrap">
+          <input
+            type="email"
+            name="email"
+            required
+            placeholder="tu@email.com"
+            class="nl-input font-mono"
+            autocomplete="email"
+          />
+          <button type="submit" class="nl-btn magnetic" data-magnetic>
+            <span>Suscribirme</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        <p class="nl-disclaimer font-mono">
+          Sin spam. Unsubscribe en 1 click. Tus datos no se comparten.
+        </p>
+        <p class="nl-success" data-nl-success>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M5 13L9 17L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          ¡Listo! Te llegará el próximo insight.
+        </p>
+      </form>
+
+      <!-- Decorative grid -->
+      <div class="nl-decoration" aria-hidden="true">
+        <div class="nl-deco-dot" style="top: 10%; left: 10%"></div>
+        <div class="nl-deco-dot" style="top: 20%; right: 15%"></div>
+        <div class="nl-deco-dot" style="bottom: 15%; left: 20%"></div>
+        <div class="nl-deco-dot" style="bottom: 25%; right: 10%"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .newsletter-section {
+    margin: 4rem auto 0;
+    max-width: 60rem;
+    padding: 0 1.5rem;
+  }
+
+  .newsletter-card {
+    position: relative;
+    background: linear-gradient(135deg, rgba(237, 29, 36, 0.05) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(177, 78, 255, 0.05) 100%);
+    border: 1px solid rgba(248, 180, 0, 0.2);
+    border-radius: 1.5rem;
+    padding: 3rem 2rem;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+  }
+
+  .nl-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .nl-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+  }
+
+  .nl-glow-1 {
+    width: 300px;
+    height: 300px;
+    background: rgba(237, 29, 36, 0.15);
+    top: -20%;
+    right: -10%;
+  }
+
+  .nl-glow-2 {
+    width: 250px;
+    height: 250px;
+    background: rgba(248, 180, 0, 0.1);
+    bottom: -20%;
+    left: -10%;
+  }
+
+  .nl-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .nl-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .nl-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: rgba(248, 180, 0, 0.1);
+    border: 1px solid rgba(248, 180, 0, 0.3);
+    border-radius: 1rem;
+    color: var(--color-marvel-gold);
+    margin-bottom: 1.25rem;
+  }
+
+  .nl-icon svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .nl-title {
+    display: flex;
+    flex-direction: column;
+    font-weight: 900;
+    font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin: 0 0 1rem;
+  }
+
+  .nl-lead {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.6);
+    max-width: 32rem;
+    margin: 0 auto;
+  }
+
+  .nl-form {
+    max-width: 28rem;
+    margin: 0 auto;
+  }
+
+  .nl-input-wrap {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .nl-input {
+    flex: 1;
+    padding: 0.875rem 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.625rem;
+    color: #FFFFFF;
+    font-size: 0.875rem;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .nl-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  .nl-input:focus {
+    outline: none;
+    border-color: rgba(248, 180, 0, 0.5);
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  .nl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.25rem;
+    background: #FFFFFF;
+    color: #0a0a0a;
+    border: none;
+    border-radius: 0.625rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    white-space: nowrap;
+  }
+
+  .nl-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px -4px rgba(255, 255, 255, 0.2);
+  }
+
+  .magnetic { transition: transform 0.3s var(--ease-marvel); }
+
+  .nl-disclaimer {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.35);
+    text-align: center;
+    margin: 0;
+  }
+
+  .nl-success {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem;
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 0.625rem;
+    color: var(--color-secondary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-align: center;
+    margin: 0;
+  }
+
+  .nl-success.is-shown { display: flex; }
+
+  .nl-decoration {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .nl-deco-dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(248, 180, 0, 0.4);
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(248, 180, 0, 0.6);
+  }
+
+  @media (max-width: 640px) {
+    .newsletter-card { padding: 2rem 1.25rem; }
+    .nl-input-wrap { flex-direction: column; }
+    .nl-btn { width: 100%; justify-content: center; }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+
+  // Form submission
+  const form = document.querySelector<HTMLFormElement>('[data-nl-form]');
+  const success = document.querySelector<HTMLElement>('[data-nl-success]');
+  const disclaimer = document.querySelector<HTMLElement>('.nl-disclaimer');
+
+  if (form && success && disclaimer) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const email = formData.get('email') as string;
+
+      // Track event
+      if (window.ttq) {
+        window.ttq.track('Subscribe', {
+          content_name: 'newsletter',
+          url: window.location.href,
+        });
+      }
+
+      // Submit to Formspree (suscripción genérica)
+      try {
+        await fetch(siteConfig.formspree.endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ email, type: 'newsletter_subscribe' }),
+        });
+      } catch (err) {
+        // Silent fail — show success anyway
+      }
+
+      // Show success message with animation
+      form.style.display = 'none';
+      disclaimer.style.display = 'none';
+      success.classList.add('is-shown');
+      gsap.fromTo(success, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' });
+    });
+  }
+
+  // Magnetic on submit button
+  const magneticEls = document.querySelectorAll<HTMLElement>('[data-newsletter] [data-magnetic]');
+  magneticEls.forEach((el) => {
+    el.addEventListener('mousemove', (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      gsap.to(el, { x: x * 0.2, y: y * 0.2, duration: 0.35, ease: 'power2.out' });
+    });
+    el.addEventListener('mouseleave', () => {
+      gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
+    });
+  });
+</script>

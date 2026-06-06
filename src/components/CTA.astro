@@ -1,68 +1,270 @@
 ---
+/**
+ * CTA.astro - Versión Marvel
+ * Headline gigante con underline cinemático dorado, onomatopeya "BOOM!",
+ * formulario con border bevel, trust signals como chips Marvel
+ */
+
 import ContactForm from './ContactForm.astro';
 import Icon from './Icon.astro';
 ---
 
-<section class="py-32 relative" id="contacto">
-  <div class="absolute inset-0 grid-bg opacity-10"></div>
-  
-  <div class="max-w-6xl mx-auto px-8 relative z-10">
-    <div class="text-center mb-16">
-      <h2 class="font-headline text-[3rem] md:text-[4rem] font-bold tracking-tighter mb-6 leading-tight">
-        ¿Listo para <span class="italic underline decoration-primary decoration-4 underline-offset-8">despegar</span>?
-      </h2>
-      
-      <p class="text-on-surface-variant text-xl mb-8">
-        Agendá una consulta técnica de 30 minutos o escribinos directamente.
-      </p>
-      
-      <!-- Quick actions -->
-      <div class="flex flex-wrap gap-4 justify-center mb-12">
-        <a 
-          href="#form"
-          class="group relative inline-flex items-center justify-center btn-primary"
-          data-tiktok-event="ClickButton"
-          data-tiktok-label="Agendar consulta gratis"
-        >
-          <span class="relative z-10 flex items-center gap-2">
-            <Icon name="calendar_month" class="w-4 h-4" />
-            Agendá tu Consulta Gratis
+<section class="cta-section py-32 relative overflow-hidden" id="contacto" data-cta>
+  <!-- Background decorativo -->
+  <div class="cta-bg" aria-hidden="true">
+    <div class="cta-glow cta-glow-1"></div>
+    <div class="cta-glow cta-glow-2"></div>
+    <div class="cta-grid" aria-hidden="true"></div>
+    <div class="cta-vignette" aria-hidden="true"></div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 md:px-8 relative z-10">
+
+    <!-- Header con onomatopeya BOOM! -->
+    <header class="cta-header">
+      <div class="cta-header-text">
+        <span class="kicker">
+          <span class="kicker-dot"></span>
+          <span class="kicker-text font-mono">CONTACTO · FINAL</span>
+        </span>
+        <h2 class="cta-title font-display">
+          <span class="cta-title-line">¿Listo para</span>
+          <span class="cta-title-line cta-title-accent">
+            <span class="cta-underline-wrap">
+              <span class="cta-underline-text">despegar?</span>
+              <span class="cta-underline-bar" aria-hidden="true"></span>
+            </span>
           </span>
-        </a>
-        
-        <a 
-          href="https://wa.me/5492334409838?text=Hola,%20quiero%20consultar%20sobre%20un%20proyecto%20de%20desarrollo"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn-secondary flex items-center gap-2"
-          data-tiktok-event="Contact"
-          data-tiktok-label="WhatsApp directo"
-        >
-          <Icon name="chat" class="w-4 h-4" />
-          WhatsApp Directo
-        </a>
+        </h2>
+        <p class="cta-lead">
+          Agendá una consulta técnica de <strong class="cta-strong">30 minutos</strong> o escribinos directamente. Sin compromiso, sin letra chica.
+        </p>
       </div>
+
+      <div class="cta-burst" aria-hidden="true">
+        <span class="onomatopeya cta-burst-text">BOOM!</span>
+        <div class="cta-burst-stars">★ ★ ★</div>
+      </div>
+    </header>
+
+    <!-- Botones principales -->
+    <div class="cta-buttons">
+      <a href="#form" class="btn-primary cta-btn cta-btn-primary" data-magnetic data-tiktok-event="ClickButton" data-tiktok-label="Agendar consulta gratis">
+        <Icon name="calendar_month" class="w-4 h-4" />
+        <span>Agendá tu Consulta Gratis</span>
+      </a>
+      <a href="https://wa.me/5492334409838?text=Hola,%20quiero%20consultar%20sobre%20un%20proyecto%20de%20desarrollo" target="_blank" rel="noopener noreferrer" class="btn-secondary cta-btn" data-magnetic data-tiktok-event="Contact" data-tiktok-label="WhatsApp directo">
+        <Icon name="chat" class="w-4 h-4" />
+        <span>WhatsApp Directo</span>
+      </a>
     </div>
-    
-    <!-- Contact Form -->
-    <div id="form">
+
+    <!-- Form -->
+    <div id="form" class="cta-form-wrap">
       <ContactForm />
     </div>
-    
-    <!-- Trust signals footer -->
-    <div class="mt-20 pt-20 border-t border-white/5 flex flex-wrap justify-center gap-12 text-zinc-600">
-      <div class="flex items-center gap-2">
+
+    <!-- Trust signals -->
+    <div class="cta-trust">
+      <div class="cta-trust-item">
         <Icon name="verified" class="w-4 h-4" />
-        <span class="text-[10px] uppercase font-bold tracking-widest">Respuesta &lt; 24h</span>
+        <span>Respuesta &lt; 24h</span>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="cta-trust-divider" aria-hidden="true"></div>
+      <div class="cta-trust-item">
         <Icon name="code" class="w-4 h-4" />
-        <span class="text-[10px] uppercase font-bold tracking-widest">Consulta Sin Costo</span>
+        <span>Consulta Sin Costo</span>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="cta-trust-divider" aria-hidden="true"></div>
+      <div class="cta-trust-item">
         <Icon name="support_agent" class="w-4 h-4" />
-        <span class="text-[10px] uppercase font-bold tracking-widest">NDA Disponible</span>
+        <span>NDA Disponible</span>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  .cta-section {
+    background: linear-gradient(180deg, transparent 0%, rgba(237, 29, 36, 0.04) 100%);
+  }
+
+  .cta-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .cta-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+  }
+  .cta-glow-1 {
+    width: 500px;
+    height: 500px;
+    background: var(--color-marvel-red);
+    top: 10%;
+    left: 10%;
+  }
+  .cta-glow-2 {
+    width: 400px;
+    height: 400px;
+    background: var(--color-marvel-gold);
+    bottom: 10%;
+    right: 10%;
+    opacity: 0.25;
+  }
+
+  .cta-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(248, 180, 0, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(248, 180, 0, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+  }
+
+  .cta-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(0, 0, 0, 0.6) 100%);
+  }
+
+  /* Header */
+  .cta-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .kicker-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-marvel-red);
+    box-shadow: 0 0 12px var(--color-marvel-red-glow);
+    animation: energy-pulse 2s ease-in-out infinite;
+  }
+  .kicker-text {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    color: var(--color-marvel-gold);
+  }
+
+  .cta-title {
+    font-weight: 900;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin: 0 0 1.5rem;
+  }
+  .cta-title-line { display: block; }
+  .cta-title-accent { font-style: italic; }
+
+  /* Underline cinemático */
+  .cta-underline-wrap { position: relative; display: inline-block; }
+  .cta-underline-text { position: relative; z-index: 2; }
+  .cta-underline-bar {
+    position: absolute;
+    left: -0.05em;
+    right: -0.05em;
+    bottom: 0.05em;
+    height: 0.18em;
+    background: linear-gradient(90deg, var(--color-marvel-red) 0%, var(--color-marvel-gold) 100%);
+    transform-origin: left center;
+    z-index: 1;
+    box-shadow: 0 0 32px rgba(237, 29, 36, 0.4);
+  }
+
+  .cta-lead {
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    line-height: 1.6;
+    color: var(--color-on-surface-variant);
+    max-width: 36rem;
+    margin: 0 auto 2rem;
+  }
+  .cta-strong { color: #FFFFFF; font-weight: 700; }
+
+  /* BOOM! */
+  .cta-burst {
+    position: absolute;
+    top: -2rem;
+    right: 0;
+    transform: rotate(12deg);
+    pointer-events: none;
+  }
+  .cta-burst-text {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 0.85;
+  }
+  .cta-burst-stars {
+    color: var(--color-marvel-gold);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-align: center;
+    text-shadow: 0 0 12px rgba(248, 180, 0, 0.6);
+    transform: translateY(-0.5rem);
+  }
+
+  @media (max-width: 767px) {
+    .cta-burst { display: none; }
+  }
+
+  /* Buttons */
+  .cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 3rem;
+  }
+
+  .cta-btn { font-size: 0.9rem; }
+
+  /* Form wrap */
+  .cta-form-wrap { position: relative; }
+
+  /* Trust signals */
+  .cta-trust {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .cta-trust-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-variant);
+  }
+  .cta-trust-item :global(svg) { color: var(--color-marvel-gold); }
+
+  .cta-trust-divider {
+    width: 4px;
+    height: 4px;
+    background: var(--color-marvel-gold);
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+</style>

@@ -1,0 +1,285 @@
+---
+/**
+ * RelatedPosts.astro
+ * Posts relacionados al final de un post, basados en tags compartidos
+ */
+import { formatDate, calculateReadTime } from '../utils/blog.ts';
+
+const { currentPostId = '', currentTags = [] as string[], allPosts = [] as any[] } = Astro.props;
+
+// Calcular posts relacionados por tags compartidos
+const related = allPosts
+  .filter((p) => p.id !== currentPostId)
+  .map((p) => {
+    const sharedTags = (p.data.tags || []).filter((t: string) => currentTags.includes(t)).length;
+    return { post: p, score: sharedTags };
+  })
+  .filter((item) => item.score > 0)
+  .sort((a, b) => b.score - a.score)
+  .slice(0, 3)
+  .map((item) => item.post);
+---
+
+{related.length > 0 && (
+  <section class="related-section" data-related>
+    <header class="related-header">
+      <div class="related-kicker">
+        <span class="related-kicker-dot"></span>
+        <span class="related-kicker-text font-mono">Sigue leyendo</span>
+      </div>
+      <h2 class="related-title font-display">
+        Posts <span class="text-shine">relacionados</span>
+      </h2>
+    </header>
+
+    <div class="related-grid">
+      {related.map((post: any, idx: number) => {
+        const date = formatDate(post.data.date);
+        const readTime = post.data.readTime ?? calculateReadTime(post.body, 200);
+        return (
+          <article class="related-card" data-related-card data-related-idx={idx}>
+            <a href={`/blog/${post.id}/`} class="related-link">
+              <!-- Top: number + category -->
+              <div class="related-meta">
+                <span class="related-num font-mono">0{idx + 1}</span>
+                <span class="related-cat font-mono">{post.data.category}</span>
+              </div>
+
+              <!-- Title -->
+              <h3 class="related-card-title font-display">
+                {post.data.title}
+              </h3>
+
+              <!-- Description -->
+              <p class="related-desc">{post.data.description}</p>
+
+              <!-- Bottom: date + read time + arrow -->
+              <div class="related-bottom">
+                <div class="related-bottom-info font-mono">
+                  <span>{date}</span>
+                  <span class="related-dot">·</span>
+                  <span>{readTime} min</span>
+                </div>
+                <span class="related-arrow" aria-hidden="true">→</span>
+              </div>
+
+              <!-- Corner accents -->
+              <div class="related-corner related-corner-tl" aria-hidden="true"></div>
+              <div class="related-corner related-corner-tr" aria-hidden="true"></div>
+              <div class="related-corner related-corner-bl" aria-hidden="true"></div>
+              <div class="related-corner related-corner-br" aria-hidden="true"></div>
+            </a>
+          </article>
+        );
+      })}
+    </div>
+  </section>
+)}
+
+<style>
+  .related-section {
+    margin-top: 5rem;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .related-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .related-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.875rem;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(237, 29, 36, 0.3);
+    border-radius: 999px;
+    margin-bottom: 1rem;
+  }
+
+  .related-kicker-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--color-marvel-red);
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(237, 29, 36, 0.8);
+  }
+
+  .related-kicker-text {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .related-title {
+    font-weight: 900;
+    font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin: 0;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .related-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .related-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 0.75rem;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+  }
+
+  .related-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(237, 29, 36, 0.3);
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(237, 29, 36, 0.1);
+  }
+
+  .related-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+  }
+
+  .related-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .related-num {
+    font-size: 0.875rem;
+    font-weight: 900;
+    color: var(--color-marvel-gold);
+    line-height: 1;
+  }
+
+  .related-cat {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .related-card-title {
+    font-weight: 900;
+    font-size: 1.125rem;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: #FFFFFF;
+    margin: 0;
+    flex: 1;
+  }
+
+  .related-desc {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .related-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.875rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: auto;
+  }
+
+  .related-bottom-info {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .related-dot { color: rgba(255, 255, 255, 0.2); }
+
+  .related-arrow {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.3);
+    transition: color 0.2s, transform 0.2s;
+  }
+
+  .related-card:hover .related-arrow {
+    color: var(--color-marvel-gold);
+    transform: translateX(4px);
+  }
+
+  /* Comic corners */
+  .related-corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--color-marvel-red);
+    opacity: 0;
+    transition: opacity 0.3s, all 0.3s;
+  }
+
+  .related-corner-tl { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+  .related-corner-tr { top: -1px; right: -1px; border-left: 0; border-bottom: 0; }
+  .related-corner-bl { bottom: -1px; left: -1px; border-right: 0; border-top: 0; }
+  .related-corner-br { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+
+  .related-card:hover .related-corner {
+    opacity: 1;
+  }
+
+  .related-card:hover .related-corner-tl { top: -5px; left: -5px; }
+  .related-card:hover .related-corner-tr { top: -5px; right: -5px; }
+  .related-card:hover .related-corner-bl { bottom: -5px; left: -5px; }
+  .related-card:hover .related-corner-br { bottom: -5px; right: -5px; }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+
+  const cards = document.querySelectorAll<HTMLElement>('[data-related-card]');
+  if (cards.length > 0) {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReducedMotion) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const card = entry.target as HTMLElement;
+              const idx = parseInt(card.dataset.relatedIdx || '0');
+              gsap.fromTo(card,
+                { opacity: 0, y: 40, scale: 0.95 },
+                { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out', delay: idx * 0.1 }
+              );
+              observer.unobserve(card);
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+      cards.forEach((c) => observer.observe(c));
+    }
+  }
+</script>

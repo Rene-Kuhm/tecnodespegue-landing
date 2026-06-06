@@ -1,122 +1,361 @@
 ---
+/**
+ * Why.astro - Versión Marvel
+ * Header con kicker, lista con iconos bevel, consola con border dorado
+ */
+
 import Icon from './Icon.astro';
 ---
 
-<section class="py-32" id="proceso">
-  <div class="max-w-7xl mx-auto px-8 grid lg:grid-cols-2 gap-20">
-    <div>
-      <h2 class="font-headline text-4xl font-bold mb-8">
-        Por qué <span class="text-primary italic">TecnoDespegue</span>
+<section class="py-32 relative" id="proceso" data-why>
+  <div class="max-w-7xl mx-auto px-6 md:px-8 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+    <!-- Left column -->
+    <div class="why-left">
+      <span class="kicker">
+        <span class="kicker-dot"></span>
+        <span class="kicker-text font-mono">PROCESO · 04</span>
+      </span>
+
+      <h2 class="why-title font-display">
+        <span class="why-title-line">Por qué</span>
+        <span class="why-title-line why-title-accent text-shine">TecnoDespegue</span>
       </h2>
-      <p class="text-on-surface-variant text-lg mb-12">
-        No somos solo desarrolladores; somos socios estratégicos en la evolución técnica de tu negocio.
+
+      <p class="why-lead">
+        No somos solo desarrolladores; somos <strong class="why-strong">socios estratégicos</strong> en la evolución técnica de tu negocio. La diferencia no se ve solo en el código — se ve en los resultados.
       </p>
-      
-      <ul class="space-y-10">
-        <li class="flex gap-6 group">
-          <div class="w-12 h-12 flex-shrink-0 rounded-full border border-primary/30 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary-container transition-all duration-300">
+
+      <ul class="why-list">
+        <li class="why-item" data-why-item>
+          <div class="why-item-icon why-item-icon-red">
             <Icon name="bolt" class="w-5 h-5" />
           </div>
           <div>
-            <h3 class="font-headline font-bold text-on-surface mb-1 uppercase tracking-wider text-sm">
-              Foco Técnico
-            </h3>
-            <p class="text-on-surface-variant text-sm">
-              Hardware-level mindset aplicado al desarrollo web.
-            </p>
+            <h3 class="why-item-title">Foco Técnico</h3>
+            <p class="why-item-desc">Hardware-level mindset aplicado al desarrollo web. Optimizamos hasta el ciclo de CPU.</p>
           </div>
         </li>
-        
-        <li class="flex gap-6 group">
-          <div class="w-12 h-12 flex-shrink-0 rounded-full border border-primary/30 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary-container transition-all duration-300">
+
+        <li class="why-item" data-why-item>
+          <div class="why-item-icon why-item-icon-gold">
             <Icon name="terminal" class="w-5 h-5" />
           </div>
           <div>
-            <h3 class="font-headline font-bold text-on-surface mb-1 uppercase tracking-wider text-sm">
-              Código Limpio
-            </h3>
-            <p class="text-on-surface-variant text-sm">
-              Documentación rigurosa y patrones de diseño modernos.
-            </p>
+            <h3 class="why-item-title">Código Limpio</h3>
+            <p class="why-item-desc">Documentación rigurosa y patrones de diseño modernos. Sin deuda técnica oculta.</p>
           </div>
         </li>
-        
-        <li class="flex gap-6 group">
-          <div class="w-12 h-12 flex-shrink-0 rounded-full border border-primary/30 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary-container transition-all duration-300">
+
+        <li class="why-item" data-why-item>
+          <div class="why-item-icon why-item-icon-cosmic">
             <Icon name="forum" class="w-5 h-5" />
           </div>
           <div>
-            <h3 class="font-headline font-bold text-on-surface mb-1 uppercase tracking-wider text-sm">
-              Comunicación Transparente
-            </h3>
-            <p class="text-on-surface-variant text-sm">
-              Acceso directo a los ingenieros, sin intermediarios.
-            </p>
+            <h3 class="why-item-title">Comunicación Transparente</h3>
+            <p class="why-item-desc">Acceso directo a los ingenieros, sin intermediarios ni tickets de soporte eternos.</p>
           </div>
         </li>
       </ul>
     </div>
-    
-    <div class="relative">
-      <div class="absolute -inset-4 bg-gradient-to-tr from-primary/10 via-secondary/5 to-transparent blur-2xl"></div>
 
-      <div class="relative bg-surface-container-lowest border border-white/10 h-full flex flex-col overflow-hidden rounded-card shadow-2xl">
-        <div class="flex items-center gap-2 px-4 py-3 bg-surface-container-high border-b border-white/5">
-          <span class="w-3 h-3 rounded-full bg-red-500/70"></span>
-          <span class="w-3 h-3 rounded-full bg-yellow-500/70"></span>
-          <span class="w-3 h-3 rounded-full bg-green-500/70"></span>
-          <span class="ml-3 text-xs font-mono text-on-surface-variant">~/tecnodespegue · deploy.sh</span>
+    <!-- Right column: Console -->
+    <div class="why-right">
+      <div class="why-console-wrap" aria-hidden="true"></div>
+
+      <div class="why-console">
+        <div class="why-console-bar">
+          <div class="why-console-dots">
+            <span class="why-dot why-dot-red"></span>
+            <span class="why-dot why-dot-yellow"></span>
+            <span class="why-dot why-dot-green"></span>
+          </div>
+          <span class="why-console-title font-mono">~/tecnodespegue · deploy.sh</span>
+          <span class="why-console-status font-mono">
+            <span class="why-console-pulse"></span>
+            ACTIVE
+          </span>
         </div>
 
-        <div class="p-6 font-mono text-[13px] leading-relaxed space-y-2 flex-1">
-          <div class="flex gap-3">
-            <span class="text-secondary">$</span>
-            <span class="text-on-surface">pnpm test:all && pytest</span>
+        <div class="why-console-body font-mono">
+          <div class="why-console-line">
+            <span class="why-prompt">$</span>
+            <span>pnpm test:all &amp;&amp; pytest</span>
           </div>
-          <div class="text-on-surface-variant pl-5 space-y-1">
-            <div><span class="text-primary">→</span> running vitest suite <span class="text-secondary">✓ 84 passed</span></div>
-            <div><span class="text-primary">→</span> running python pytest <span class="text-secondary">✓ 53 passed</span></div>
-            <div><span class="text-primary">→</span> building optimized images <span class="text-secondary">✓ 4.2s</span></div>
-            <div><span class="text-primary">→</span> deploying node & python apis <span class="text-secondary">✓</span></div>
-            <div><span class="text-primary">→</span> rolling update (0 downtime) <span class="text-secondary">✓</span></div>
-            <div><span class="text-primary">→</span> system health check <span class="text-secondary">200 OK</span></div>
-          </div>
-          <div class="flex gap-3 pt-2">
-            <span class="text-secondary">$</span>
-            <span class="text-on-surface">monitor --since 30d</span>
+          <div class="why-console-output">
+            <div><span class="why-arrow">→</span> running vitest suite <span class="why-ok">✓ 84 passed</span></div>
+            <div><span class="why-arrow">→</span> running python pytest <span class="why-ok">✓ 53 passed</span></div>
+            <div><span class="why-arrow">→</span> building optimized images <span class="why-ok">✓ 4.2s</span></div>
+            <div><span class="why-arrow">→</span> deploying node &amp; python apis <span class="why-ok">✓</span></div>
+            <div><span class="why-arrow">→</span> rolling update (0 downtime) <span class="why-ok">✓</span></div>
+            <div><span class="why-arrow">→</span> system health check <span class="why-ok">200 OK</span></div>
           </div>
 
-          <div class="grid grid-cols-2 gap-3 pt-3">
-            <div class="bg-surface-container border border-white/5 rounded-chip p-3">
-              <div class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">uptime</div>
-              <div class="text-xl font-bold text-primary">99.94%</div>
+          <div class="why-console-line">
+            <span class="why-prompt">$</span>
+            <span>monitor --since 30d</span>
+          </div>
+
+          <div class="why-metrics">
+            <div class="why-metric">
+              <div class="why-metric-label">UPTIME</div>
+              <div class="why-metric-num">99.94%</div>
             </div>
-            <div class="bg-surface-container border border-white/5 rounded-chip p-3">
-              <div class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">p95 latency</div>
-              <div class="text-xl font-bold text-primary">87ms</div>
+            <div class="why-metric">
+              <div class="why-metric-label">P95 LATENCY</div>
+              <div class="why-metric-num text-shine">87ms</div>
             </div>
-            <div class="bg-surface-container border border-white/5 rounded-chip p-3">
-              <div class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">error rate</div>
-              <div class="text-xl font-bold text-secondary">0.02%</div>
+            <div class="why-metric">
+              <div class="why-metric-label">ERROR RATE</div>
+              <div class="why-metric-num why-ok-num">0.02%</div>
             </div>
-            <div class="bg-surface-container border border-white/5 rounded-chip p-3">
-              <div class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">deploys/mes</div>
-              <div class="text-xl font-bold text-secondary">38</div>
+            <div class="why-metric">
+              <div class="why-metric-label">DEPLOYS/MES</div>
+              <div class="why-metric-num">38</div>
             </div>
           </div>
 
-          <div class="flex gap-3 pt-3">
-            <span class="text-secondary">$</span>
-            <span class="text-on-surface-variant animate-pulse">_</span>
+          <div class="why-console-line">
+            <span class="why-prompt">$</span>
+            <span class="why-cursor">_</span>
           </div>
         </div>
 
-        <div class="px-6 py-4 border-t border-white/5 bg-surface-container-low">
-          <p class="text-xs text-on-surface-variant leading-relaxed">
-            Entregamos resultados medibles, no promesas vacías. Métricas reales sobre proyectos en producción.
-          </p>
+        <div class="why-console-foot">
+          <p>Entregamos resultados <strong>medibles</strong>, no promesas vacías. Métricas reales sobre proyectos en producción.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .kicker-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-marvel-red);
+    box-shadow: 0 0 12px var(--color-marvel-red-glow);
+    animation: energy-pulse 2s ease-in-out infinite;
+  }
+  .kicker-text {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    color: var(--color-marvel-gold);
+  }
+
+  .why-title {
+    font-weight: 900;
+    font-size: clamp(2.5rem, 5.5vw, 4.25rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin: 0 0 1.5rem;
+    overflow: visible;
+  }
+  .why-title-line { display: block; }
+  .why-title-accent { font-style: italic; }
+
+  .why-lead {
+    font-size: clamp(1rem, 1.4vw, 1.125rem);
+    line-height: 1.6;
+    color: var(--color-on-surface-variant);
+    margin: 0 0 2.5rem;
+  }
+  .why-strong { color: #FFFFFF; font-weight: 600; }
+
+  .why-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .why-item {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+
+  .why-item-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 0.5rem;
+    flex-shrink: 0;
+    border: 1.5px solid;
+    transition: transform 0.3s var(--ease-marvel);
+  }
+  .why-item-icon-red {
+    background: rgba(237, 29, 36, 0.1);
+    border-color: var(--color-marvel-red);
+    color: var(--color-marvel-red-glow);
+    box-shadow: 0 0 20px rgba(237, 29, 36, 0.2);
+  }
+  .why-item-icon-gold {
+    background: rgba(248, 180, 0, 0.1);
+    border-color: var(--color-marvel-gold);
+    color: var(--color-marvel-gold-bright);
+    box-shadow: 0 0 20px rgba(248, 180, 0, 0.2);
+  }
+  .why-item-icon-cosmic {
+    background: rgba(107, 45, 142, 0.15);
+    border-color: var(--color-marvel-cosmic-bright);
+    color: var(--color-marvel-cosmic-bright);
+    box-shadow: 0 0 20px rgba(107, 45, 142, 0.3);
+  }
+  .why-item:hover .why-item-icon { transform: rotate(-8deg) scale(1.1); }
+
+  .why-item-title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin: 0 0 0.375rem;
+  }
+  .why-item-desc {
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--color-on-surface-variant);
+    margin: 0;
+  }
+
+  /* Console */
+  .why-right { position: relative; }
+
+  .why-console-wrap {
+    position: absolute;
+    inset: -1.5rem;
+    background: radial-gradient(circle at center, rgba(248, 180, 0, 0.15) 0%, transparent 70%);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+
+  .why-console {
+    position: relative;
+    background: var(--color-surface-1);
+    border: 2px solid #000;
+    border-radius: 0.75rem;
+    box-shadow:
+      0 0 0 1px var(--color-marvel-gold),
+      0 32px 64px -16px rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+  }
+
+  .why-console-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    background: var(--color-surface-2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .why-console-dots { display: flex; gap: 0.375rem; }
+  .why-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .why-dot-red { background: #ef4444; }
+  .why-dot-yellow { background: #eab308; }
+  .why-dot-green { background: #22c55e; }
+
+  .why-console-title { font-size: 0.7rem; color: var(--color-on-surface-variant); }
+
+  .why-console-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.6rem;
+    color: var(--color-secondary);
+    letter-spacing: 0.15em;
+  }
+  .why-console-pulse {
+    width: 6px;
+    height: 6px;
+    background: var(--color-secondary);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--color-secondary);
+    animation: energy-pulse 1.4s ease-in-out infinite;
+  }
+
+  .why-console-body { padding: 1.25rem; font-size: 0.8rem; line-height: 1.6; }
+
+  .why-console-line {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .why-prompt { color: var(--color-secondary); }
+  .why-arrow { color: var(--color-primary); margin-right: 0.375rem; }
+  .why-ok { color: var(--color-secondary); font-weight: 600; }
+  .why-ok-num { color: var(--color-secondary); }
+
+  .why-console-output {
+    color: var(--color-on-surface-variant);
+    padding: 0.5rem 0 0.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    font-size: 0.75rem;
+  }
+
+  .why-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.625rem;
+    margin: 1rem 0;
+  }
+
+  .why-metric {
+    background: var(--color-surface-2);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 0.375rem;
+    padding: 0.625rem 0.75rem;
+  }
+  .why-metric-label {
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--color-on-surface-variant);
+    margin-bottom: 0.25rem;
+  }
+  .why-metric-num {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 900;
+    line-height: 1;
+    color: #FFFFFF;
+  }
+
+  .why-cursor {
+    display: inline-block;
+    color: var(--color-secondary);
+    animation: blink-cursor 1s step-end infinite;
+  }
+  @keyframes blink-cursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+  .why-console-foot {
+    padding: 0.875rem 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(0, 0, 0, 0.3);
+  }
+  .why-console-foot p {
+    font-size: 0.75rem;
+    color: var(--color-on-surface-variant);
+    line-height: 1.5;
+    margin: 0;
+  }
+</style>

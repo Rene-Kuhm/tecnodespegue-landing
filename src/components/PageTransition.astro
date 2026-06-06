@@ -1,0 +1,86 @@
+---
+/**
+ * PageTransition.astro
+ * Componente visual reutilizable para transiciones de página.
+ * Se muestra/oculta manualmente desde la navegación.
+ * Por ahora lo dejamos como curtain reusable; las transiciones reales
+ * se orquestan desde Lenis + un wrapper de View Transitions API.
+ */
+---
+
+<div id="page-transition" class="page-transition" aria-hidden="true">
+  <div class="page-transition-curtain page-transition-curtain-top"></div>
+  <div class="page-transition-curtain page-transition-curtain-bottom"></div>
+  <div class="page-transition-flash"></div>
+</div>
+
+<style>
+  .page-transition {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9998;
+  }
+
+  .page-transition-curtain {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, #0A0A0A 0%, #1C1C24 100%);
+    transform: translateY(-100%);
+    transition: transform 0.7s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+
+  .page-transition-curtain-top {
+    top: 0;
+  }
+
+  .page-transition-curtain-bottom {
+    bottom: 0;
+    transform: translateY(100%);
+  }
+
+  .page-transition-flash {
+    position: absolute;
+    inset: 0;
+    background: var(--color-marvel-red);
+    opacity: 0;
+    mix-blend-mode: screen;
+  }
+
+  /* Estados activos */
+  .page-transition.is-active .page-transition-curtain-top {
+    transform: translateY(0);
+  }
+
+  .page-transition.is-active .page-transition-curtain-bottom {
+    transform: translateY(0);
+  }
+
+  .page-transition.is-flash .page-transition-flash {
+    opacity: 0.4;
+    transition: opacity 0.15s ease-out;
+  }
+</style>
+
+<script>
+  /**
+   * API pública para disparar transiciones:
+   *   window.dispatchEvent(new CustomEvent('td:page-transition', { detail: { direction: 'in' | 'out' } }));
+   */
+  const transition = document.getElementById('page-transition');
+  if (transition) {
+    window.addEventListener('td:page-transition', (e) => {
+      const direction = (e as CustomEvent).detail?.direction ?? 'in';
+      if (direction === 'in') {
+        transition.classList.add('is-active');
+        setTimeout(() => transition.classList.add('is-flash'), 350);
+        setTimeout(() => transition.classList.remove('is-flash'), 500);
+      } else {
+        transition.classList.remove('is-active');
+        transition.classList.remove('is-flash');
+      }
+    });
+  }
+</script>

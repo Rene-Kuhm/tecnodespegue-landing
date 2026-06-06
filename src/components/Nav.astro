@@ -1,149 +1,351 @@
 ---
+/**
+ * Nav.astro - Versión Marvel
+ * Logo con sello rojo, glassmorphism dorado, CTA magnético
+ */
 ---
 
-<nav class="fixed top-0 w-full z-50 glass-effect bg-surface-variant/10 border-b border-white/5">
-  <div class="flex justify-between items-center px-4 md:px-8 py-3 md:py-4 max-w-7xl mx-auto">
-    <a href="#" class="text-lg md:text-xl font-bold tracking-tighter text-primary font-headline uppercase">
-      TecnoDespegue
+<nav class="nav-fixed" data-nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" data-magnetic aria-label="TecnoDespegue - Inicio">
+      <span class="nav-logo-mark" aria-hidden="true">
+        <span class="nav-logo-mark-letter">T</span>
+        <span class="nav-logo-mark-letter">D</span>
+      </span>
+      <span class="nav-logo-text font-display">TECNODESPEGUE</span>
     </a>
-    
-     <!-- Desktop Menu -->
-    <div class="hidden md:flex gap-8">
-      <a href="/#soluciones" class="text-zinc-400 font-medium hover:text-primary transition-colors text-sm font-label">
-        Soluciones
+
+    <div class="nav-menu" data-nav-menu>
+      <a href="/#soluciones" class="nav-link" data-magnetic>
+        <span class="nav-link-text">Soluciones</span>
+        <span class="nav-link-underline" aria-hidden="true"></span>
       </a>
-      <a href="/blog" class="text-zinc-400 font-medium hover:text-primary transition-colors text-sm font-label" aria-current={Astro.url.pathname.startsWith('/blog') ? 'page' : undefined}>
-        Blog
+      <a href="/templates" class="nav-link" data-magnetic>
+        <span class="nav-link-text">Templates</span>
+        <span class="nav-link-underline" aria-hidden="true"></span>
       </a>
-      <a href="/#portfolio" class="text-zinc-400 font-medium hover:text-primary transition-colors text-sm font-label">
-        Portfolio
+      <a href="/blog" class="nav-link" data-magnetic>
+        <span class="nav-link-text">Blog</span>
+        <span class="nav-link-underline" aria-hidden="true"></span>
       </a>
-      <a href="/#stack" class="text-zinc-400 font-medium hover:text-primary transition-colors text-sm font-label">
-        Stack
+      <a href="/#portfolio" class="nav-link" data-magnetic>
+        <span class="nav-link-text">Portfolio</span>
+        <span class="nav-link-underline" aria-hidden="true"></span>
       </a>
-      <a href="/#proceso" class="text-zinc-400 font-medium hover:text-primary transition-colors text-sm font-label">
-        Proceso
+      <a href="/#stack" class="nav-link" data-magnetic>
+        <span class="nav-link-text">Stack</span>
+        <span class="nav-link-underline" aria-hidden="true"></span>
       </a>
-      <a href="/#contacto" class="text-zinc-400 font-medium hover:text-primary transition-colors text-sm font-label">
-        Contacto
+      <a href="/#proceso" class="nav-link" data-magnetic>
+        <span class="nav-link-text">Proceso</span>
+        <span class="nav-link-underline" aria-hidden="true"></span>
+      </a>
+      <a href="/#contacto" class="nav-link" data-magnetic>
+        <span class="nav-link-text">Contacto</span>
+        <span class="nav-link-underline" aria-hidden="true"></span>
       </a>
     </div>
-    
-    <!-- Desktop CTA -->
-    <a 
-      href="#contacto" 
-      class="hidden md:inline-flex bg-primary hover:bg-primary-dim text-on-primary-container px-5 py-2 font-bold tracking-tight text-sm rounded-card transition-all duration-300 active:scale-95 ambient-glow"
-      data-tiktok-event="ClickButton"
-      data-tiktok-label="Iniciar proyecto nav desktop"
-    >
-      Iniciá tu Proyecto
+
+    <a href="#contacto" class="nav-cta" data-magnetic data-tiktok-event="ClickButton" data-tiktok-label="Iniciar proyecto nav desktop">
+      <span>Iniciá tu Proyecto</span>
+      <span class="nav-cta-arrow" aria-hidden="true">→</span>
     </a>
-    
-    <!-- Mobile Hamburger Button -->
-    <button 
-      id="mobile-menu-btn"
-      class="md:hidden flex flex-col gap-1.5 p-2"
-      aria-label="Abrir menú"
-      aria-controls="mobile-menu"
-      aria-expanded="false"
-    >
-      <span class="w-6 h-0.5 bg-zinc-400 transition-transform"></span>
-      <span class="w-6 h-0.5 bg-zinc-400 transition-opacity"></span>
-      <span class="w-6 h-0.5 bg-zinc-400 transition-transform"></span>
+
+    <button class="nav-burger" data-nav-burger aria-label="Abrir menú" aria-controls="mobile-menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
     </button>
   </div>
-  
-  <!-- Mobile Menu Overlay -->
-  <div 
-    id="mobile-menu"
-    class="md:hidden fixed inset-0 top-[60px] bg-surface/95 backdrop-blur-xl z-40 transform translate-x-full transition-transform duration-300 ease-in-out"
-    aria-hidden="true"
-  >
-    <div class="flex flex-col items-center justify-center min-h-screen gap-8 p-8">
-      <a href="/#soluciones" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors">
-        Soluciones
-      </a>
-      <a href="/blog" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors">
-        Blog
-      </a>
-      <a href="/#portfolio" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors">
-        Portfolio
-      </a>
-      <a href="/#stack" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors">
-        Stack
-      </a>
-      <a href="/#proceso" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors">
-        Proceso
-      </a>
-      <a href="/#contacto" class="text-2xl font-bold text-zinc-300 hover:text-primary transition-colors">
-        Contacto
-      </a>
-      <a
-        href="#contacto"
-        class="mt-4 bg-primary hover:bg-primary-dim text-on-primary-container px-8 py-3 font-bold tracking-tight text-lg rounded-card transition-all ambient-glow"
-        data-tiktok-event="ClickButton"
-        data-tiktok-label="Iniciar proyecto nav mobile"
-      >
+
+  <div class="nav-mobile" id="mobile-menu" data-nav-mobile aria-hidden="true">
+    <div class="nav-mobile-inner">
+      <a href="/#soluciones" class="nav-mobile-link font-display">Soluciones</a>
+      <a href="/blog" class="nav-mobile-link font-display">Blog</a>
+      <a href="/templates" class="nav-mobile-link font-display">Templates</a>
+      <a href="/#portfolio" class="nav-mobile-link font-display">Portfolio</a>
+      <a href="/#stack" class="nav-mobile-link font-display">Stack</a>
+      <a href="/#proceso" class="nav-mobile-link font-display">Proceso</a>
+      <a href="/#contacto" class="nav-mobile-link font-display">Contacto</a>
+      <a href="#contacto" class="btn-primary nav-mobile-cta" data-tiktok-event="ClickButton" data-tiktok-label="Iniciar proyecto nav mobile">
         Iniciá tu Proyecto
       </a>
     </div>
   </div>
 </nav>
 
-<script>
-  function toggleMobileMenu() {
-    const menu = document.getElementById('mobile-menu');
-    const btn = document.getElementById('mobile-menu-btn');
-    const spans = btn?.querySelectorAll('span');
-    if (!menu || !spans) return;
-    const isClosed = menu?.classList.contains('translate-x-full');
-    
-    if (isClosed) {
-      menu.classList.remove('translate-x-full');
-      menu.classList.add('translate-x-0');
-      menu.setAttribute('aria-hidden', 'false');
-      btn?.setAttribute('aria-expanded', 'true');
-      // Animate hamburger to X
-      spans[0]?.classList.add('rotate-45', 'translate-y-2');
-      spans[1]?.classList.add('opacity-0');
-      spans[2]?.classList.add('-rotate-45', '-translate-y-2');
-      document.body.style.overflow = 'hidden';
-    } else {
-      menu.classList.add('translate-x-full');
-      menu.classList.remove('translate-x-0');
-      menu.setAttribute('aria-hidden', 'true');
-      btn?.setAttribute('aria-expanded', 'false');
-      // Reset hamburger
-      spans[0]?.classList.remove('rotate-45', 'translate-y-2');
-      spans[1]?.classList.remove('opacity-0');
-      spans[2]?.classList.remove('-rotate-45', '-translate-y-2');
-      document.body.style.overflow = '';
-    }
+<style>
+  .nav-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: linear-gradient(180deg, rgba(10, 10, 10, 0.95) 0%, rgba(10, 10, 10, 0.85) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(248, 180, 0, 0.18);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    transition: background 0.3s ease, border-color 0.3s ease;
   }
 
-  document.getElementById('mobile-menu-btn')?.addEventListener('click', toggleMobileMenu);
+  .nav-fixed::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--color-marvel-gold) 50%, transparent 100%);
+    opacity: 0.4;
+  }
 
-  // Close menu when any link inside it is tapped
-  document.getElementById('mobile-menu')?.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', toggleMobileMenu);
-  });
+  .nav-inner {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0.875rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
 
-  // Close menu on escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      const menu = document.getElementById('mobile-menu');
-      if (!menu?.classList.contains('translate-x-full')) {
-        toggleMobileMenu();
-      }
-    }
-  });
-</script>
+  @media (min-width: 768px) {
+    .nav-inner { padding: 1rem 2rem; }
+  }
 
-<style>
-  @media (max-width: 767px) {
-    nav {
-      padding-left: 1rem !important;
-      padding-right: 1rem !important;
-    }
+  /* Logo */
+  .nav-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    text-decoration: none;
+    color: #FFFFFF;
+  }
+
+  .nav-logo-mark {
+    display: inline-flex;
+    gap: 2px;
+    font-family: var(--font-display);
+    font-weight: 900;
+    line-height: 0.8;
+  }
+
+  .nav-logo-mark-letter {
+    color: var(--color-marvel-red);
+    font-size: 1.5rem;
+    text-shadow:
+      1px 1px 0 #000,
+      2px 2px 0 var(--color-marvel-red-deep),
+      0 0 12px rgba(237, 29, 36, 0.3);
+    transition: transform 0.3s var(--ease-marvel);
+  }
+
+  .nav-logo:hover .nav-logo-mark-letter:first-child { transform: translateY(-2px) rotate(-4deg); }
+  .nav-logo:hover .nav-logo-mark-letter:last-child { transform: translateY(2px) rotate(4deg); }
+
+  .nav-logo-text {
+    font-size: 0.875rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    color: #FFFFFF;
+  }
+
+  @media (min-width: 768px) {
+    .nav-logo-text { font-size: 0.95rem; }
+  }
+
+  /* Menu desktop */
+  .nav-menu {
+    display: none;
+    align-items: center;
+    gap: 1.75rem;
+  }
+
+  @media (min-width: 768px) {
+    .nav-menu { display: flex; }
+  }
+
+  .nav-link {
+    position: relative;
+    color: var(--color-on-surface-variant);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.5rem 0;
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover { color: var(--color-marvel-gold-bright); }
+
+  .nav-link-underline {
+    position: absolute;
+    left: 50%;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background: var(--color-marvel-red);
+    transform: translateX(-50%);
+    transition: width 0.3s var(--ease-marvel);
+  }
+
+  .nav-link:hover .nav-link-underline { width: 100%; }
+
+  /* CTA desktop */
+  .nav-cta {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background: linear-gradient(135deg, var(--color-marvel-red) 0%, var(--color-marvel-red-deep) 100%);
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 0.5rem;
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 0 rgba(237, 29, 36, 0);
+    transition: box-shadow 0.3s, transform 0.2s;
+    font-family: var(--font-display);
+  }
+
+  @media (min-width: 768px) {
+    .nav-cta { display: inline-flex; }
+  }
+
+  .nav-cta:hover {
+    box-shadow: 0 0 24px 0 rgba(237, 29, 36, 0.6);
+    transform: translateY(-1px);
+  }
+
+  .nav-cta-arrow {
+    transition: transform 0.3s;
+  }
+
+  .nav-cta:hover .nav-cta-arrow { transform: translateX(4px); }
+
+  /* Burger */
+  .nav-burger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  @media (min-width: 768px) {
+    .nav-burger { display: none; }
+  }
+
+  .nav-burger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--color-marvel-gold);
+    transition: transform 0.3s, opacity 0.3s;
+  }
+
+  .nav-burger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-burger.is-open span:nth-child(2) { opacity: 0; }
+  .nav-burger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* Mobile menu — slide-down desde el navbar */
+  .nav-mobile {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 65px;
+    background: linear-gradient(180deg, #0A0A0A 0%, #14141A 100%);
+    z-index: 45;
+    transform: translateY(-110%);
+    transition: transform 0.4s var(--ease-marvel);
+    overflow-y: auto;
+    max-height: calc(100vh - 65px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+  }
+
+  .nav-mobile.is-open {
+    transform: translateY(0);
+  }
+
+  .nav-mobile-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 2rem 1.5rem calc(2rem + env(safe-area-inset-bottom));
+    gap: 1.25rem;
+  }
+
+  .nav-mobile-link {
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    transition: color 0.2s, transform 0.2s;
+  }
+
+  .nav-mobile-link:hover {
+    color: var(--color-marvel-gold-bright);
+    transform: translateX(8px);
+  }
+
+  .nav-mobile-cta {
+    margin-top: 1.5rem;
   }
 </style>
+
+<script>
+  // Magnetic nav links (desktop)
+  const magneticLinks = document.querySelectorAll<HTMLElement>('.nav-link, .nav-cta, .nav-logo');
+  magneticLinks.forEach((el) => {
+    el.addEventListener('mousemove', (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      el.style.transform = `translate(${x * 0.15}px, ${y * 0.25}px)`;
+    });
+    el.addEventListener('mouseleave', () => {
+      el.style.transform = '';
+    });
+  });
+
+  // Mobile menu toggle
+  const burger = document.querySelector<HTMLElement>('[data-nav-burger]');
+  const mobile = document.querySelector<HTMLElement>('[data-nav-mobile]');
+  if (burger && mobile) {
+    const toggle = () => {
+      const open = mobile.classList.contains('is-open');
+      if (open) {
+        mobile.classList.remove('is-open');
+        burger.classList.remove('is-open');
+        mobile.setAttribute('aria-hidden', 'true');
+        burger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      } else {
+        mobile.classList.add('is-open');
+        burger.classList.add('is-open');
+        mobile.setAttribute('aria-hidden', 'false');
+        burger.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+      }
+    };
+    burger.addEventListener('click', toggle);
+    mobile.querySelectorAll('a').forEach((a) => a.addEventListener('click', toggle));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobile.classList.contains('is-open')) toggle();
+    });
+  }
+</script>

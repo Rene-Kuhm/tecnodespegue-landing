@@ -1,98 +1,425 @@
 ---
+/**
+ * Services.astro - Versión Marvel
+ * Header con sello rojo + onomatopeya POW
+ * Tarjetas bevel rojo, hover lift, badges con glow
+ */
+
 import Icon from './Icon.astro';
 ---
 
-<section class="py-32 bg-surface-container-lowest" id="soluciones">
-  <div class="max-w-7xl mx-auto px-8">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-      <div class="max-w-2xl">
-        <h2 class="font-headline text-3xl font-bold tracking-tight text-on-surface mb-4">
-          Soluciones de Ingeniería
+<section class="py-32 relative overflow-hidden" id="soluciones" data-services>
+  <!-- Background ambient -->
+  <div class="services-bg" aria-hidden="true"></div>
+
+  <div class="max-w-7xl mx-auto px-6 md:px-8 relative z-10">
+
+    <!-- Header -->
+    <header class="services-header">
+      <div class="services-header-text">
+        <span class="kicker">
+          <span class="kicker-dot"></span>
+          <span class="kicker-text font-mono">SERVICIOS · 01</span>
+        </span>
+        <h2 class="services-title font-display">
+          <span class="services-title-line">Soluciones de</span>
+          <span class="services-title-line text-shine">Ingeniería</span>
         </h2>
-        <p class="text-on-surface-variant font-body">
-          Infraestructura digital diseñada para la eficiencia absoluta.
+        <p class="services-lead">
+          Infraestructura digital diseñada para la eficiencia absoluta. Cuatro frentes, una sola doctrina: <span class="text-gold">código que rinde.</span>
         </p>
       </div>
-      <div class="h-px bg-outline-variant flex-grow mx-8 hidden md:block"></div>
-    </div>
-    
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-      <!-- AI Automations - Large Card -->
-      <div class="md:col-span-8 group cursor-pointer card relative overflow-hidden">
-        <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-100 transition-opacity">
-          <Icon name="psychology" class="w-16 h-16 text-primary" />
-        </div>
-        
-        <h3 class="text-2xl font-headline font-bold text-primary mb-4">
-          Automatizaciones con IA
-        </h3>
-        <p class="text-on-surface-variant text-sm leading-relaxed max-w-md mb-4">
-          Integramos agentes inteligentes que procesan datos, atienden clientes y optimizan decisiones en tiempo real. No solo IA generativa, sino lógica autónoma.
-        </p>
-        <div class="text-primary text-2xl font-bold mb-4">
-          <span class="text-4xl">-70%</span>
-          <p class="text-xs text-on-surface-variant uppercase tracking-wider mt-1">Reducción en tickets de soporte</p>
-        </div>
-        
-        <div class="flex gap-4">
-          <span class="px-2 py-1 bg-surface-container-high rounded-chip text-[10px] font-mono text-secondary border border-secondary/10">
-            LLM OPS
-          </span>
-          <span class="px-2 py-1 bg-surface-container-high rounded-chip text-[10px] font-mono text-secondary border border-secondary/10">
-            NATURAL LANGUAGE
-          </span>
-        </div>
+
+      <!-- Onomatopeya POW decorativa -->
+      <div class="services-burst" aria-hidden="true">
+        <span class="onomatopeya services-burst-text">POW!</span>
+        <span class="services-burst-stars">★ ★ ★</span>
       </div>
-      
-      <!-- Web & Mobile Development -->
-      <div class="md:col-span-4 card group">
-        <Icon name="layers" class="w-10 h-10 text-secondary mb-6" />
-        <h3 class="text-xl font-headline font-bold text-on-surface mb-4">
-          Web & Mobile
-        </h3>
-        <p class="text-on-surface-variant text-sm leading-relaxed mb-4">
-          Interfaces web ultra-rápidas y aplicaciones móviles nativas multiplataforma (Flutter/Dart). Arquitecturas escalables de punta a punta.
-        </p>
-        <div class="text-secondary font-mono text-xs mt-4 pt-4 border-t border-white/5">
-          <span class="block">&lt; 100ms</span>
-          <span class="text-on-surface-variant">tiempo de respuesta</span>
+    </header>
+
+    <!-- Grid -->
+    <div class="services-grid">
+      <!-- AI Automations - Large -->
+      <article class="svc-card svc-card-lg" data-svc-card>
+        <div class="svc-card-bg" aria-hidden="true"></div>
+        <div class="svc-card-corner svc-card-corner-tl" aria-hidden="true"></div>
+        <div class="svc-card-corner svc-card-corner-tr" aria-hidden="true"></div>
+        <div class="svc-card-corner svc-card-corner-bl" aria-hidden="true"></div>
+        <div class="svc-card-corner svc-card-corner-br" aria-hidden="true"></div>
+
+        <div class="svc-card-icon-wrap">
+          <Icon name="psychology" class="svc-card-icon" />
         </div>
-      </div>
-      
+
+        <div class="svc-card-body">
+          <span class="svc-card-tag">SISTEMAS AUTÓNOMOS</span>
+          <h3 class="svc-card-title">Automatizaciones con IA</h3>
+          <p class="svc-card-desc">
+            Integramos agentes inteligentes que procesan datos, atienden clientes y optimizan decisiones en tiempo real. No solo IA generativa, sino <strong class="svc-strong">lógica autónoma</strong>.
+          </p>
+          <div class="svc-card-metric">
+            <span class="svc-metric-num font-display">-70%</span>
+            <span class="svc-metric-label">Reducción en tickets de soporte</span>
+          </div>
+          <div class="svc-card-tags">
+            <span class="svc-tag-chip">LLM OPS</span>
+            <span class="svc-tag-chip">NATURAL LANGUAGE</span>
+            <span class="svc-tag-chip">RAG</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Web & Mobile -->
+      <article class="svc-card" data-svc-card>
+        <div class="svc-card-corner svc-card-corner-tl" aria-hidden="true"></div>
+        <div class="svc-card-corner svc-card-corner-tr" aria-hidden="true"></div>
+        <div class="svc-card-corner svc-card-corner-bl" aria-hidden="true"></div>
+        <div class="svc-card-corner svc-card-corner-br" aria-hidden="true"></div>
+
+        <div class="svc-card-icon-wrap svc-card-icon-wrap-gold">
+          <Icon name="layers" class="svc-card-icon" />
+        </div>
+        <h3 class="svc-card-title">Web &amp; Mobile</h3>
+        <p class="svc-card-desc">
+          Interfaces web ultra-rápidas y apps móviles nativas multiplataforma (Flutter/Dart). Arquitecturas escalables de punta a punta.
+        </p>
+        <div class="svc-card-metric svc-card-metric-mini">
+          <span class="svc-metric-num font-display text-shine">&lt; 100ms</span>
+          <span class="svc-metric-label">tiempo de respuesta</span>
+        </div>
+      </article>
+
       <!-- Process Optimization -->
-      <div class="md:col-span-4 card group">
-        <Icon name="account_tree" class="w-10 h-10 text-primary mb-6" />
-        <h3 class="text-xl font-headline font-bold text-on-surface mb-4">
-          Optimización de Procesos
-        </h3>
-        <p class="text-on-surface-variant text-sm leading-relaxed">
+      <article class="svc-card" data-svc-card>
+        <div class="svc-card-corner svc-card-corner-tl" aria-hidden="true"></div>
+        <div class="svc-card-corner svc-card-corner-tr" aria-hidden="true"></div>
+        <div class="svc-card-corner svc-card-corner-bl" aria-hidden="true"></div>
+        <div class="svc-card-corner svc-card-corner-br" aria-hidden="true"></div>
+
+        <div class="svc-card-icon-wrap svc-card-icon-wrap-red">
+          <Icon name="account_tree" class="svc-card-icon" />
+        </div>
+        <h3 class="svc-card-title">Optimización de Procesos</h3>
+        <p class="svc-card-desc">
           Conectamos tus sistemas de negocio para eliminar tareas manuales repetitivas y cuellos de botella mediante automatización de flujos con n8n y Python.
         </p>
-      </div>
-      
-      <!-- Custom Software & APIs -->
-      <div class="md:col-span-8 card flex flex-col md:flex-row gap-8 items-center">
-        <div class="flex-1">
-          <h3 class="text-xl font-headline font-bold text-on-surface mb-4">
-            Software a Medida & APIs
-          </h3>
-          <p class="text-on-surface-variant text-sm leading-relaxed">
+      </article>
+
+      <!-- Software & APIs -->
+      <article class="svc-card svc-card-wide" data-svc-card>
+        <div class="svc-card-corner svc-card-corner-tl" aria-hidden="true"></div>
+        <div class="svc-card-corner svc-card-corner-tr" aria-hidden="true"></div>
+        <div class="svc-card-corner svc-card-corner-bl" aria-hidden="true"></div>
+        <div class="svc-card-corner svc-card-corner-br" aria-hidden="true"></div>
+
+        <div class="svc-card-body">
+          <span class="svc-card-tag">BACKEND CORE</span>
+          <h3 class="svc-card-title">Software a Medida &amp; APIs</h3>
+          <p class="svc-card-desc">
             Ingeniería de software en general. Desarrollo de backends robustos, APIs de alto rendimiento, bases de datos estructuradas, integraciones lógicas y scripts a medida.
           </p>
         </div>
-        
-        <div class="flex-shrink-0 grid grid-cols-3 gap-2">
-          <div class="w-12 h-12 bg-surface-container-high rounded-chip border border-white/5 flex items-center justify-center">
-            <Icon name="api" class="w-5 h-5 text-primary/40" />
-          </div>
-          <div class="w-12 h-12 bg-surface-container-high rounded-chip border border-white/5 flex items-center justify-center">
-            <Icon name="database" class="w-5 h-5 text-primary/40" />
-          </div>
-          <div class="w-12 h-12 bg-surface-container-high rounded-chip border border-white/5 flex items-center justify-center">
-            <Icon name="code" class="w-5 h-5 text-primary/40" />
-          </div>
+        <div class="svc-card-icons">
+          <div class="svc-mini-icon"><Icon name="api" class="w-5 h-5" /></div>
+          <div class="svc-mini-icon"><Icon name="database" class="w-5 h-5" /></div>
+          <div class="svc-mini-icon"><Icon name="code" class="w-5 h-5" /></div>
         </div>
-      </div>
+      </article>
     </div>
   </div>
 </section>
+
+<style>
+  .services-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 30%, rgba(237, 29, 36, 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 70%, rgba(248, 180, 0, 0.04) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  /* Header */
+  .services-header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: end;
+    margin-bottom: 4rem;
+  }
+
+  @media (min-width: 1024px) {
+    .services-header {
+      grid-template-columns: 1fr auto;
+      gap: 3rem;
+    }
+  }
+
+  .services-header-text { max-width: 48rem; }
+
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .kicker-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-marvel-red);
+    box-shadow: 0 0 12px var(--color-marvel-red-glow);
+    animation: energy-pulse 2s ease-in-out infinite;
+  }
+
+  .kicker-text {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    color: var(--color-marvel-gold);
+  }
+
+  .services-title {
+    font-weight: 900;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin: 0 0 1.5rem;
+  }
+
+  .services-title-line { display: block; }
+
+  .services-lead {
+    font-size: clamp(1rem, 1.4vw, 1.125rem);
+    line-height: 1.6;
+    color: var(--color-on-surface-variant);
+    max-width: 38rem;
+  }
+
+  .text-gold {
+    color: var(--color-marvel-gold-bright);
+    font-weight: 600;
+  }
+
+  /* Onomatopeya POW! */
+  .services-burst {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    position: relative;
+  }
+
+  .services-burst-text {
+    font-size: clamp(3rem, 6vw, 5rem);
+    line-height: 0.85;
+  }
+
+  .services-burst-stars {
+    color: var(--color-marvel-gold);
+    letter-spacing: 0.2em;
+    font-size: 0.875rem;
+    text-shadow: 0 0 12px rgba(248, 180, 0, 0.6);
+    transform: translateY(-0.5rem);
+  }
+
+  /* Grid */
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .services-grid {
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
+  /* Cards */
+  .svc-card {
+    position: relative;
+    background: var(--color-surface-1);
+    border: 2px solid #000;
+    border-radius: 0.75rem;
+    padding: 2rem;
+    box-shadow:
+      0 0 0 1px rgba(248, 180, 0, 0.15),
+      0 0 0 4px transparent,
+      0 24px 48px -16px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+    transition: transform 0.4s var(--ease-marvel), box-shadow 0.4s;
+    isolation: isolate;
+  }
+
+  @media (min-width: 768px) {
+    .svc-card-lg { grid-column: span 8; }
+    .svc-card:not(.svc-card-lg):not(.svc-card-wide) { grid-column: span 4; }
+    .svc-card-wide { grid-column: span 8; }
+  }
+
+  .svc-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(237, 29, 36, 0.08) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    z-index: -1;
+  }
+
+  .svc-card:hover {
+    transform: translateY(-6px);
+    box-shadow:
+      0 0 0 1px var(--color-marvel-red),
+      0 0 0 4px rgba(237, 29, 36, 0.2),
+      0 32px 64px -12px rgba(237, 29, 36, 0.4);
+  }
+
+  .svc-card:hover::before { opacity: 1; }
+
+  /* Esquinero comic */
+  .svc-card-corner {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--color-marvel-red);
+    transition: all 0.4s var(--ease-marvel);
+  }
+
+  .svc-card-corner-tl { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+  .svc-card-corner-tr { top: -1px; right: -1px; border-left: 0; border-bottom: 0; }
+  .svc-card-corner-bl { bottom: -1px; left: -1px; border-right: 0; border-top: 0; }
+  .svc-card-corner-br { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+
+  .svc-card:hover .svc-card-corner-tl { top: -6px; left: -6px; }
+  .svc-card:hover .svc-card-corner-tr { top: -6px; right: -6px; }
+  .svc-card:hover .svc-card-corner-bl { bottom: -6px; left: -6px; }
+  .svc-card:hover .svc-card-corner-br { bottom: -6px; right: -6px; }
+
+  /* Icon */
+  .svc-card-icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 0.5rem;
+    background: var(--color-surface-2);
+    border: 1px solid rgba(248, 180, 0, 0.3);
+    color: var(--color-marvel-gold);
+    margin-bottom: 1.25rem;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  .svc-card-icon-wrap-gold { color: var(--color-marvel-gold-bright); }
+  .svc-card-icon-wrap-red {
+    background: rgba(237, 29, 36, 0.1);
+    border-color: rgba(237, 29, 36, 0.4);
+    color: var(--color-marvel-red-glow);
+  }
+
+  .svc-card-icon { width: 28px; height: 28px; }
+
+  /* Tag */
+  .svc-card-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    color: var(--color-marvel-gold);
+    background: rgba(248, 180, 0, 0.08);
+    border: 1px solid rgba(248, 180, 0, 0.25);
+    padding: 0.25rem 0.625rem;
+    border-radius: 0.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .svc-card-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(1.5rem, 2.2vw, 1.875rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: #FFFFFF;
+    margin: 0 0 0.875rem;
+    text-transform: uppercase;
+  }
+
+  .svc-card-desc {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-on-surface-variant);
+    margin: 0 0 1.25rem;
+  }
+
+  .svc-strong { color: #FFFFFF; font-weight: 600; }
+
+  /* Metric */
+  .svc-card-metric {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: linear-gradient(135deg, rgba(237, 29, 36, 0.1) 0%, rgba(237, 29, 36, 0.02) 100%);
+    border: 1px solid rgba(237, 29, 36, 0.25);
+    border-radius: 0.5rem;
+    margin: 1.25rem 0;
+  }
+
+  .svc-metric-num {
+    font-size: 2.5rem;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--color-marvel-red-glow);
+    text-shadow: 0 0 24px rgba(237, 29, 36, 0.4);
+  }
+
+  .svc-metric-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-on-surface-variant);
+  }
+
+  .svc-card-metric-mini { padding: 0.75rem 1rem; }
+  .svc-card-metric-mini .svc-metric-num { font-size: 1.75rem; }
+
+  /* Tags */
+  .svc-card-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+  .svc-tag-chip {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 0.375rem 0.75rem;
+    background: var(--color-surface-2);
+    color: var(--color-secondary);
+    border: 1px solid rgba(0, 255, 136, 0.25);
+    border-radius: 0.25rem;
+  }
+
+  /* Wide variant */
+  .svc-card-wide { display: flex; flex-direction: column; gap: 1.5rem; }
+  @media (min-width: 768px) { .svc-card-wide { flex-direction: row; align-items: center; } }
+
+  .svc-card-icons { display: flex; gap: 0.5rem; }
+
+  .svc-mini-icon {
+    width: 48px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-surface-2);
+    border: 1px solid rgba(248, 180, 0, 0.2);
+    border-radius: 0.25rem;
+    color: var(--color-marvel-gold);
+  }
+</style>

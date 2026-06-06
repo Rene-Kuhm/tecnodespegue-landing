@@ -12,16 +12,20 @@ const lastUpdated = "24 de abril de 2026";
 >
   <Nav />
 
-  <main id="contenido" class="pt-24 pb-20">
-    <div class="max-w-3xl mx-auto px-8">
+  <main id="contenido" class="priv-page">
+    <div class="max-w-3xl mx-auto px-6 md:px-8">
 
       <!-- Header -->
-      <div class="mb-12">
-        <span class="text-xs font-mono text-secondary uppercase tracking-[0.4em] mb-4 block">Legal</span>
-        <h1 class="font-headline text-4xl font-bold text-on-surface mb-4">
-          Política de Privacidad
+      <div class="priv-header">
+        <span class="kicker">
+          <span class="kicker-dot"></span>
+          <span class="kicker-text font-mono">LEGAL · POLÍTICA</span>
+        </span>
+        <h1 class="priv-title font-display">
+          <span class="priv-title-line">Política de</span>
+          <span class="priv-title-line text-shine">Privacidad</span>
         </h1>
-        <p class="text-on-surface-variant text-sm font-mono">
+        <p class="priv-meta font-mono">
           Última actualización: {lastUpdated}
         </p>
       </div>
@@ -265,3 +269,54 @@ const lastUpdated = "24 de abril de 2026";
 
   <Footer />
 </Layout>
+
+<style>
+  .priv-page {
+    padding-top: 9rem;
+    padding-bottom: 5rem;
+    position: relative;
+    background: radial-gradient(ellipse at 50% 0%, rgba(237, 29, 36, 0.04) 0%, transparent 50%);
+  }
+
+  .priv-header {
+    margin-bottom: 3.5rem;
+  }
+
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .kicker-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-marvel-red);
+    box-shadow: 0 0 12px var(--color-marvel-red-glow);
+    animation: energy-pulse 2s ease-in-out infinite;
+  }
+  .kicker-text {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    color: var(--color-marvel-gold);
+  }
+
+  .priv-title {
+    font-weight: 900;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin: 0 0 1.5rem;
+  }
+  .priv-title-line { display: block; }
+
+  .priv-meta {
+    font-size: 0.75rem;
+    color: var(--color-on-surface-dim);
+    letter-spacing: 0.05em;
+  }
+</style>

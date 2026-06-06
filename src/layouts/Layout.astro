@@ -1,54 +1,57 @@
 ---
 import '../styles/global.css';
+import { siteConfig } from '../config/site.config';
 
 interface Props {
   title: string;
   description?: string;
   noindex?: boolean;
+  ogImage?: string;
 }
 
 const {
   title,
-  description = "Desarrollo fullstack, automatizaciones con IA y flujos de trabajo inteligentes. Arquitecturas escalables para empresas que buscan crecer sin límites.",
-  noindex = false
+  description = siteConfig.description,
+  noindex = false,
+  ogImage: customOgImage,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL('/og-image.png', Astro.site);
-const plausibleDomain = Astro.site?.hostname ?? canonicalURL.hostname;
-const tiktokPixelId = 'D8AARK3C77U6KT5BPNHG';
+const ogImage = new URL(customOgImage || siteConfig.ogImage, Astro.site);
+const plausibleDomain = siteConfig.plausible.domain || Astro.site?.hostname || canonicalURL.hostname;
+const tiktokPixelId = siteConfig.tiktokPixel.id;
 
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "TecnoDespegue",
-  "url": Astro.site?.toString(),
-  "logo": new URL('/favicon.svg', Astro.site).toString(),
+  "name": siteConfig.name,
+  "url": siteConfig.url,
+  "logo": new URL('/favicon.svg', siteConfig.url).toString(),
   "description": description,
-  "email": "renekuhm2@gmail.com",
-  "telephone": "+54-9-2334-409838",
+  "email": siteConfig.email,
+  "telephone": siteConfig.phone,
   "founder": {
     "@type": "Person",
     "name": "René Kuhm",
     "jobTitle": "Senior Fullstack Engineer",
-    "url": "https://github.com/Rene-Kuhm"
+    "url": siteConfig.social.github
   },
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "Eduardo Castex",
-    "addressRegion": "La Pampa",
-    "addressCountry": "AR"
+    "streetAddress": siteConfig.location.street,
+    "addressRegion": siteConfig.location.region,
+    "addressCountry": siteConfig.location.country
   },
   "areaServed": {
     "@type": "Country",
     "name": "Argentina"
   },
   "sameAs": [
-    "https://github.com/Rene-Kuhm",
-    "https://instagram.com/renekuhm",
-    "https://tiktok.com/@kuhmdev",
-    "https://youtube.com/@tecnodespegue",
-    "https://linkedin.com/in/renekuhm"
+    siteConfig.social.github,
+    siteConfig.social.instagram,
+    siteConfig.social.tiktok,
+    siteConfig.social.youtube,
+    siteConfig.social.linkedin
   ],
   "knowsAbout": [
     "Fullstack Development",
@@ -66,16 +69,17 @@ const organizationSchema = {
 const professionalServiceSchema = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
-  "name": "TecnoDespegue",
+  "name": siteConfig.name,
   "image": ogImage.toString(),
   "priceRange": "USD 5K - 50K+",
-  "url": Astro.site?.toString(),
-  "telephone": "+54-9-2334-409838",
+  "url": siteConfig.url,
+  "telephone": siteConfig.phone,
+  "email": siteConfig.email,
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "Eduardo Castex",
-    "addressRegion": "La Pampa",
-    "addressCountry": "AR"
+    "streetAddress": siteConfig.location.street,
+    "addressRegion": siteConfig.location.region,
+    "addressCountry": siteConfig.location.country
   }
 };
 ---
@@ -95,9 +99,10 @@ const professionalServiceSchema = {
     <meta name="apple-mobile-web-app-title" content="TecnoDespegue" />
     <link rel="manifest" href="/site.webmanifest" />
     
-    <!-- Preload critical fonts -->
-    <link rel="preload" href="/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- Preconnect Google Fonts (Big Shoulders / Bangers / Anton) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Local @fontsource-variable fonts cargan vía @font-face (no necesitan preload) -->
 
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
@@ -129,50 +134,51 @@ const professionalServiceSchema = {
     <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(professionalServiceSchema)} />
 
-    <script is:inline define:vars={{ tiktokPixelId }}>
-      !function (w, d, t) {
-        w.TiktokAnalyticsObject = t;
-        var ttq = w[t] = w[t] || [];
-        ttq.methods = [
-          'page', 'track', 'identify', 'instances', 'debug', 'on', 'off',
-          'once', 'ready', 'alias', 'group', 'enableCookie', 'disableCookie',
-          'holdConsent', 'revokeConsent', 'grantConsent'
-        ];
-        ttq.setAndDefer = function (target, method) {
-          target[method] = function () {
-            target.push([method].concat(Array.prototype.slice.call(arguments, 0)));
+    {siteConfig.tiktokPixel.enabled && (
+      <script is:inline define:vars={{ tiktokPixelId }}>
+        !function (w, d, t) {
+          w.TiktokAnalyticsObject = t;
+          var ttq = w[t] = w[t] || [];
+          ttq.methods = [
+            'page', 'track', 'identify', 'instances', 'debug', 'on', 'off',
+            'once', 'ready', 'alias', 'group', 'enableCookie', 'disableCookie',
+            'holdConsent', 'revokeConsent', 'grantConsent'
+          ];
+          ttq.setAndDefer = function (target, method) {
+            target[method] = function () {
+              target.push([method].concat(Array.prototype.slice.call(arguments, 0)));
+            };
           };
-        };
-        for (var i = 0; i < ttq.methods.length; i++) {
-          ttq.setAndDefer(ttq, ttq.methods[i]);
-        }
-        ttq.instance = function (id) {
-          var instance = ttq._i[id] || [];
           for (var i = 0; i < ttq.methods.length; i++) {
-            ttq.setAndDefer(instance, ttq.methods[i]);
+            ttq.setAndDefer(ttq, ttq.methods[i]);
           }
-          return instance;
-        };
-        ttq.load = function (id, opts) {
-          var url = 'https://analytics.tiktok.com/i18n/pixel/events.js';
-          ttq._i = ttq._i || {};
-          ttq._i[id] = [];
-          ttq._i[id]._u = url;
-          ttq._t = ttq._t || {};
-          ttq._t[id] = +new Date();
-          ttq._o = ttq._o || {};
-          ttq._o[id] = opts || {};
-          var script = d.createElement('script');
-          script.type = 'text/javascript';
-          script.async = true;
-          script.src = url + '?sdkid=' + id + '&lib=' + t;
-          var firstScript = d.getElementsByTagName('script')[0];
-          firstScript.parentNode.insertBefore(script, firstScript);
-        };
+          ttq.instance = function (id) {
+            var instance = ttq._i[id] || [];
+            for (var i = 0; i < ttq.methods.length; i++) {
+              ttq.setAndDefer(instance, ttq.methods[i]);
+            }
+            return instance;
+          };
+          ttq.load = function (id, opts) {
+            var url = 'https://analytics.tiktok.com/i18n/pixel/events.js';
+            ttq._i = ttq._i || {};
+            ttq._i[id] = [];
+            ttq._i[id]._u = url;
+            ttq._t = ttq._t || {};
+            ttq._t[id] = +new Date();
+            ttq._o = ttq._o || {};
+            ttq._o[id] = opts || {};
+            var script = d.createElement('script');
+            script.type = 'text/javascript';
+            script.async = true;
+            script.src = url + '?sdkid=' + id + '&lib=' + t;
+            var firstScript = d.getElementsByTagName('script')[0];
+            firstScript.parentNode.insertBefore(script, firstScript);
+          };
 
-        ttq.load(tiktokPixelId);
-        ttq.page();
-      }(window, document, 'ttq');
+          ttq.load(tiktokPixelId);
+          ttq.page();
+        }(window, document, 'ttq');
 
       window.tdTikTokEventId = function () {
         if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
@@ -227,8 +233,9 @@ const professionalServiceSchema = {
         });
       });
     </script>
+    )}
 
-    {import.meta.env.PROD && (
+    {siteConfig.plausible.enabled && import.meta.env.PROD && (
       <script is:inline define:vars={{ plausibleDomain }}>
         window.addEventListener('load', function () {
           var load = function () {
@@ -249,6 +256,35 @@ const professionalServiceSchema = {
   </head>
   <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+    <!-- Lenis + Scroll animations bootstrap -->
+    <script>
+      import { initLenis } from '../scripts/animations/lenis';
+      import { initScrollAnimations } from '../scripts/animations/scrollAnimations';
+
+      const startLenis = () => {
+        initLenis();
+        // Scroll animations se disparan cuando Lenis está corriendo
+        initScrollAnimations();
+      };
+
+      const observer = new MutationObserver(() => {
+        if (document.documentElement.classList.contains('is-loaded')) {
+          startLenis();
+          observer.disconnect();
+        }
+      });
+      observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+      // Fallback
+      setTimeout(() => {
+        if (!document.documentElement.classList.contains('is-loaded')) {
+          document.documentElement.classList.add('is-loaded');
+        }
+        startLenis();
+        observer.disconnect();
+      }, 5000);
+    </script>
+
     <slot />
   </body>
 </html>
