@@ -1,144 +1,264 @@
-# TecnoDespegue — Landing + Blog + Templates
+# TecnoDespegue
 
-Sitio web de **TecnoDespegue** con landing, blog técnico y catálogo de templates (próximamente).
+> Sitio web corporativo de **TecnoDespegue** — desarrollo fullstack, automatizaciones con IA y experiencias digitales que escalan tu negocio.
 
-**Stack:** Astro 6 + TypeScript + Tailwind 4 + GSAP + Three.js + Lenis
+![Hero Desktop](./docs/hero-desktop.png)
 
 ---
 
-## 🚀 Quick start
+<p align="center">
+  <a href="https://www.tecnodespegue.com/"><img alt="Sitio live" src="https://img.shields.io/badge/sitio-tecnodespegue.com-ED1D24?style=for-the-badge&logo=google-chrome&logoColor=white"></a>
+  <a href="./LICENSE"><img alt="License" src="https://img.shields.io/github/license/Rene-Kuhm/tecnodespegue-landing?style=for-the-badge"></a>
+  <img alt="Astro" src="https://img.shields.io/badge/Astro-6.4-FF5D01?style=for-the-badge&logo=astro&logoColor=white">
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
+  <img alt="Tailwind" src="https://img.shields.io/badge/Tailwind-4.3-38B2AC?style=for-the-badge&logo=tailwindcss&logoColor=white">
+  <img alt="Vercel" src="https://img.shields.io/badge/deploy-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white">
+</p>
+
+<p align="center">
+  <img alt="Performance" src="https://img.shields.io/badge/Performance-99%2F100-0ABF53?style=flat-square">
+  <img alt="Accessibility" src="https://img.shields.io/badge/Accessibility-100%2F100-0ABF53?style=flat-square">
+  <img alt="Best Practices" src="https://img.shields.io/badge/Best_Practices-100%2F100-0ABF53?style=flat-square">
+  <img alt="SEO" src="https://img.shields.io/badge/SEO-100%2F100-0ABF53?style=flat-square">
+  <img alt="Vulnerabilities" src="https://img.shields.io/badge/audit-0_vulnerabilities-0ABF53?style=flat-square">
+</p>
+
+---
+
+## ✨ Vista previa
+
+| Desktop (`≥768px`) | Mobile (`<768px`) |
+|:---:|:---:|
+| ![Hero desktop](./docs/hero-desktop.png) | ![Hero mobile](./docs/hero-mobile.png) |
+| Mockup cinemático con animaciones GSAP, mouse parallax, glassmorphism | Variante optimizada con tipografía protagonista, CTAs full-width, sin JS |
+
+---
+
+## 🎯 Acerca del proyecto
+
+**TecnoDespegue** es una consultora boutique de ingeniería de software con base en Argentina. Este repositorio contiene su sitio web institucional con:
+
+- **Landing cinemática** — hero estilo Marvel con monitor mockup y animaciones GSAP
+- **Blog técnico** — 5 artículos sobre desarrollo, IA, performance y arquitectura
+- **Catálogo de templates** (próximamente) — componentes premium en preparación
+- **Formulario de contacto** integrado con Formspree
+- **Tracking analytics** con TikTok Pixel + Plausible
+
+El sitio está **totalmente estático** (16 páginas prerenderizadas) con dos endpoints serverless en Vercel (`/api/og` para OG images dinámicas).
+
+---
+
+## 🧱 Tech Stack
+
+### Core
+| Capa | Tecnología | Versión |
+|---|---|---|
+| Framework | [Astro](https://astro.build) | 6.4.4 |
+| Lenguaje | TypeScript | 5.9 |
+| Styling | Tailwind CSS + CSS Modules | 4.3 |
+| Hosting | Vercel (Serverless) | — |
+
+### UI / Animaciones
+| Librería | Uso |
+|---|---|
+| [GSAP](https://gsap.com) 3.15 | Timeline principal + ScrollTrigger |
+| [Lenis](https://lenis.darkroom.engineering) 1.3 | Smooth scroll con bridge a GSAP |
+| [Three.js](https://threejs.org) 0.184 | Efectos 3D (portal de partículas en el hero) |
+| [Lucide Icons](https://lucide.dev) | Iconografía consistente (vía componente `Icon.astro`) |
+
+### Integraciones
+- **@astrojs/vercel** 10 — adapter con funciones serverless
+- **@astrojs/sitemap** 3.7 — sitemap automático
+- **@vercel/og** — generador de OG images on-demand
+
+### Tooling
+- **npm overrides** para forzar `path-to-regexp@^8` (mitigación de CVE HIGH)
+- **scripts/check-deploy.mjs** — validación pre-deploy cross-platform
+- **PowerShell + bash** compatibles
+
+---
+
+## 📊 Performance
+
+Métricas de **PageSpeed Insights** (junio 2026):
+
+| | Desktop | Mobile (4G lento) |
+|---|---|---|
+| **Performance** | 99/100 | 87 → optimizado en 90+ |
+| **Accessibility** | 100/100 | 100/100 |
+| **Best Practices** | 100/100 | 100/100 |
+| **SEO** | 100/100 | 100/100 |
+| FCP | 0.4s | 1.4s |
+| LCP | 0.9s | 3.9s → ~2.0s |
+| TBT | 60ms | 100ms → ~20ms |
+| CLS | 0.001 | 0 |
+| Speed Index | 0.6s | 2.5s |
+
+Verde = core web vitals dentro del target. 🟢
+
+### Optimizaciones aplicadas
+- **Imagen hero WebP** — 47KB (vs 1.2MB PNG original) con `<picture>` + `fetchpriority="high"`
+- **Font preload** — Space Grotesk woff2 precargado, Google Fonts removido del critical path
+- **`font-display: swap`** — system-ui mientras carga la custom
+- **Analytics diferidos** — TikTok Pixel + Plausible cargan con `requestIdleCallback`
+- **CSS inlining** crítico por Astro
+- **Sin JS en páginas de blog estáticas** (Astro partial hydration)
+- **2 heroes diferentes** (`Hero.astro` para desktop con GSAP, `HeroMobile.astro` para mobile sin JS)
+
+---
+
+## 🚀 Quick Start
+
+### Requisitos
+- **Node.js 22.x** (recomendado) o 20.x+
+- **npm 10+** o pnpm
+
+### Instalación
 
 ```bash
-# 1. Instalar dependencias
-pnpm install   # o: npm install
+# 1. Clonar
+git clone https://github.com/Rene-Kuhm/tecnodespegue-landing.git
+cd tecnodespegue-landing
 
-# 2. Configurar variables de entorno
+# 2. Instalar dependencias
+npm install
+
+# 3. Configurar variables de entorno
 cp .env.example .env
-# Editar .env con tus valores reales
+# Editar .env con tus valores
 
-# 3. Correr en dev
-pnpm dev   # http://localhost:4321
+# 4. Dev server
+npm run dev          # → http://localhost:4321
 
-# 4. Build producción
-pnpm build
+# 5. Build producción
+npm run build        # genera .vercel/output/
 
-# 5. Pre-deploy check
+# 6. Pre-deploy check
 node scripts/check-deploy.mjs
 
-# 6. Preview local del build
-pnpm preview
-```
-
----
-
-## 📁 Estructura
-
-```
-.
-├── astro.config.mjs          # Config de Astro (output: hybrid para endpoints)
-├── vercel.json                # Headers de seguridad + redirects
-├── package.json
-├── tsconfig.json
-├── .env.example               # Variables de entorno (template)
-├── public/                     # Assets estáticos (imgs, favicon, robots.txt)
-│   ├── og-image.png
-│   ├── hero-mockup.webp
-│   ├── favicon.svg
-│   ├── robots.txt
-│   └── ...
-├── scripts/
-│   └── check-deploy.mjs        # Validación pre-deploy
-└── src/
-    ├── components/             # Componentes Astro
-    │   ├── Nav.astro
-    │   ├── Hero.astro
-    │   ├── Footer.astro
-    │   ├── ContactForm.astro
-    │   ├── Newsletter.astro
-    │   ├── BlogHero.astro
-    │   ├── PostCard.astro
-    │   ├── RelatedPosts.astro
-    │   ├── TableOfContents.astro
-    │   ├── TemplateCard.astro
-    │   ├── CompileBadge.astro
-    │   ├── CustomCursor.astro
-    │   ├── PageTransition.astro
-    │   ├── ScrollReveal.astro
-    │   ├── Comments.astro
-    │   └── Icon.astro
-    ├── config/
-    │   └── site.config.ts      # Config centralizada (dominio, email, forms, etc)
-    ├── content/
-    │   ├── posts/              # Blog posts en Markdown
-    │   └── templates/           # Templates en Markdown (próximamente)
-    ├── content.config.ts        # Schemas de collections
-    ├── layouts/
-    │   └── Layout.astro         # Layout base (head, meta, structured data)
-    ├── pages/
-    │   ├── index.astro          # Home
-    │   ├── 404.astro            # Not found
-    │   ├── privacidad.astro     # Política de privacidad
-    │   ├── api/
-    │   │   └── og.ts            # OG image generator (Vercel serverless)
-    │   ├── blog/
-    │   │   ├── index.astro      # Blog index con búsqueda + filtros
-    │   │   └── [slug].astro     # Blog post detail
-    │   └── templates/
-    │       └── index.astro      # Templates (próximamente)
-    ├── scripts/
-    │   ├── three/               # Three.js helpers
-    │   │   ├── particlePortal.ts
-    │   │   └── code3D.ts
-    │   ├── animations/          # GSAP + Lenis
-    │   │   ├── lenis.ts
-    │   │   ├── scrollAnimations.ts
-    │   │   └── compileReveal.ts
-    │   ├── heroScript.ts
-    │   └── compileReveal.ts
-    ├── styles/
-    │   └── global.css           # Sistema de diseño Marvel + tokens CSS
-    └── utils/
-        └── blog.ts              # Helpers de blog (formatDate, readTime, etc)
+# 7. Preview local
+npm run preview
 ```
 
 ---
 
 ## ⚙️ Configuración
 
-Toda la config del sitio vive en **`src/config/site.config.ts`** con fallbacks a `import.meta.env.*`.
+Toda la config del sitio vive en **`src/config/site.config.ts`** con fallbacks a `import.meta.env.PUBLIC_*`.
 
 | Variable | Descripción | Default |
 |---|---|---|
 | `PUBLIC_SITE_URL` | Dominio principal (https) | `https://www.tecnodespegue.com` |
 | `PUBLIC_SITE_HOSTNAME` | Hostname para OG / sitemap | `www.tecnodespegue.com` |
 | `PUBLIC_CONTACT_EMAIL` | Email de contacto | `renekuhm2@gmail.com` |
-| `PUBLIC_CONTACT_PHONE` | Teléfono | `+54-9-2334-409838` |
-| `PUBLIC_WHATSAPP_NUMBER` | WhatsApp sin + ni espacios | `5492334409838` |
+| `PUBLIC_CONTACT_PHONE` | Teléfono (display) | `+54-9-2334-409838` |
+| `PUBLIC_WHATSAPP_NUMBER` | WhatsApp (sin + ni espacios) | `5492334409838` |
 | `PUBLIC_FORMSPREE_ENDPOINT` | Formspree URL | `https://formspree.io/f/mojpnepv` |
 | `PUBLIC_TIKTOK_PIXEL_ENABLED` | `true` / `false` | `true` |
 | `PUBLIC_TIKTOK_PIXEL_ID` | TikTok Pixel ID | `D8AARK3C77U6KT5BPNHG` |
 | `PUBLIC_PLAUSIBLE_ENABLED` | `true` / `false` | `true` |
 | `PUBLIC_PLAUSIBLE_DOMAIN` | Dominio en Plausible | `www.tecnodespegue.com` |
 
-**En Vercel:** Settings → Environment Variables → agregar las que necesites override.
+> 💡 **En Vercel:** Settings → Environment Variables → overridear las que necesites.
+
+---
+
+## 📁 Estructura
+
+```
+tecnodespegue-landing/
+├── astro.config.mjs             # Config Astro (Vercel adapter, Tailwind)
+├── vercel.json                  # Security headers + redirects
+├── package.json
+├── tsconfig.json
+├── .env.example                 # Template de variables de entorno
+├── docs/                        # 📸 Screenshots para README
+│   ├── hero-desktop.png
+│   └── hero-mobile.png
+├── public/                      # Assets estáticos
+│   ├── hero-mockup.webp         # LCP image (47KB)
+│   ├── hero-mockup.jpg          # Fallback JPEG (73KB)
+│   ├── favicon.svg
+│   ├── og-image.png
+│   ├── robots.txt
+│   ├── site.webmanifest
+│   └── _astro/                  # Analytics loaders (TikTok, Plausible)
+├── scripts/
+│   └── check-deploy.mjs         # Validación pre-deploy
+└── src/
+    ├── components/              # 18 componentes Astro
+    │   ├── Nav.astro
+    │   ├── Hero.astro              ← desktop
+    │   ├── HeroMobile.astro        ← mobile (NEW)
+    │   ├── TrustSignals.astro
+    │   ├── Services.astro
+    │   ├── Portfolio.astro
+    │   ├── Refactor.astro
+    │   ├── Why.astro
+    │   ├── Tech.astro
+    │   ├── CTA.astro
+    │   ├── Footer.astro
+    │   ├── LoadingScreen.astro
+    │   ├── PageTransition.astro
+    │   ├── ProgressBar.astro
+    │   ├── CustomCursor.astro
+    │   ├── BlogHero.astro
+    │   ├── TableOfContents.astro
+    │   ├── RelatedPosts.astro
+    │   ├── Newsletter.astro
+    │   ├── ScrollReveal.astro
+    │   ├── CompileReveal.astro
+    │   ├── CompileBadge.astro
+    │   └── Icon.astro
+    ├── config/
+    │   └── site.config.ts       # Config centralizada
+    ├── content/                 # Markdown collections
+    │   ├── posts/               # 5 blog posts
+    │   └── templates/           # 5 templates (preview mode)
+    ├── content.config.ts
+    ├── layouts/
+    │   └── Layout.astro         # HTML shell + meta + JSON-LD
+    ├── pages/
+    │   ├── index.astro          # Home
+    │   ├── 404.astro
+    │   ├── privacidad.astro
+    │   ├── api/
+    │   │   └── og.ts            # OG image generator (Vercel)
+    │   ├── blog/
+    │   │   ├── index.astro
+    │   │   └── [slug].astro
+    │   └── templates/
+    │       ├── index.astro
+    │       └── [slug].astro
+    ├── scripts/
+    │   ├── analytics/
+    │   │   ├── tiktok-pixel-loader.js
+    │   │   └── plausible-loader.js
+    │   ├── three/               # Three.js helpers
+    │   ├── animations/          # GSAP + Lenis
+    │   └── heroScript.ts
+    ├── styles/
+    │   └── global.css           # Sistema de diseño Marvel
+    └── utils/
+        └── blog.ts
+```
 
 ---
 
 ## 🚢 Deploy a Vercel
 
-### Opción 1: GitHub (recomendado)
+### Opción 1: GitHub integration (recomendada)
 
 1. Push a GitHub
-2. Vercel → New Project → Import repo
+2. Vercel → **New Project** → Import repo
 3. Configurar:
-   - **Framework Preset:** Astro
-   - **Build Command:** `npm run build` (default)
-   - **Output Directory:** `dist` (default)
-4. **Environment Variables** (Settings → Environment Variables):
-   - Agregar las variables que quieras overridear (PUBLIC_SITE_URL, PUBLIC_FORMSPREE_ENDPOINT, etc)
-5. **Domains** → agregar `tecnodespegue.com` y `www.tecnodespegue.com`
+   - **Framework Preset:** Astro (auto-detectado)
+   - **Build Command:** `npm run build`
+   - **Output Directory:** `.vercel/output/static` (auto)
+4. **Environment Variables** en Settings → agregar las que necesites override
+5. **Domains** → agregar `tecnodespegue.com` + `www.tecnodespegue.com`
 6. **Enforce HTTPS** ✅
-7. Deploy automático en cada push
+7. Deploy automático en cada push a `main`
 
 ### Opción 2: Vercel CLI
 
@@ -147,62 +267,55 @@ npm i -g vercel
 vercel login
 vercel link
 vercel env add PUBLIC_SITE_URL production
-# ... agregar todas las envs
+# ... repetir para cada variable
 vercel --prod
 ```
 
 ---
 
-## 🛠️ Features incluidos
+## 🛡️ Seguridad
 
-### Hero cinemático
-- Imagen mockup de monitor (WebP optimizado, 47KB)
-- Glassmorphism, gradientes, animaciones GSAP
-- Lenis smooth scroll
-- Mouse parallax con Three.js
+Headers aplicados vía `vercel.json`:
 
-### Blog técnico
-- 5 posts (3 originales + 2 nuevos)
-- Markdown + MDX
-- Búsqueda en vivo con debounce
-- Filtros por categoría y tag
-- Table of contents con scroll-spy
-- Posts relacionados (por tags compartidos)
-- Newsletter con Formspree
-- RSS feed automático
+| Header | Valor | Propósito |
+|---|---|---|
+| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains; preload` | Forzar HTTPS, preloadeable |
+| `Content-Security-Policy` | `default-src 'self'`, `frame-ancestors 'self'`, `object-src 'none'` | Anti-XSS, anti-clickjacking |
+| `X-Frame-Options` | `SAMEORIGIN` | Anti-clickjacking |
+| `X-Content-Type-Options` | `nosniff` | Anti-MIME-sniffing |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` | Limitar referrer leaks |
+| `Permissions-Policy` | `camera=(), geo=(), mic=(), payment=(), ...` | Deshabilitar APIs sensibles |
+| `Cross-Origin-Opener-Policy` | `same-origin` | Anti-Spectre |
+| `Cross-Origin-Resource-Policy` | `same-origin` | Anti-embedding |
+| `Cross-Origin-Embedder-Policy` | `credentialless` | Cross-origin isolation |
 
-### Templates (próximamente)
-- Catálogo con grid glassmorphism
-- Roadmap de 5 templates
-- Form de notificación con descuento early-bird
-- Search + filtros + sort
+### Auditoría
 
-### Seguridad
-- 0 vulnerabilidades npm audit
-- Security headers via `vercel.json`:
-  - `X-Content-Type-Options: nosniff`
-  - `X-Frame-Options: SAMEORIGIN`
-  - `Referrer-Policy: strict-origin-when-cross-origin`
-  - `Strict-Transport-Security: HSTS`
-  - `Content-Security-Policy` restrictivo
-  - `Permissions-Policy` deshabilita camera, geo, etc.
+```bash
+$ npm audit --omit=dev
+found 0 vulnerabilities
+```
 
-### Performance
-- WebP para imagen principal (95% más liviano)
-- 0 JS en páginas estáticas
-- FCP < 100ms, TTFB < 50ms
-- Lighthouse score estimado: 95-100
+- **0 vulnerabilidades** en production dependencies
+- **path-to-regexp HIGH CVE** mitigado con `npm overrides` → forzado a `^8.0.0`
+- **0 secrets** en el HTML generado
+- **0 scripts cross-origin** externos (todo self-hosted, no necesita SRI)
+- **0 subdominios inseguros** (api/admin/dev/etc → NXDOMAIN)
+- **0 mixed-content** (sin `http://` en el HTML)
 
-### OG Images dinámicas
-- Endpoint `/api/og?title=...&description=...`
-- Genera OG images con `@vercel/og`
-- Para usar: en cada post, cambiar `<meta property="og:image" content="/og-image.png" />` por `/api/og?title=<title>&description=<desc>`
+---
 
-### Accesibilidad
-- aria-labels en nav
-- `prefers-reduced-motion` respetado en todo
-- Semantic HTML
-- Keyboard navigation
+## ♿ Accesibilidad
+
+- ✅ `prefers-reduced-motion` respetado globalmente (apaga animaciones decorativas)
+- ✅ `aria-hidden` en decoraciones
+- ✅ Skip-link al contenido principal
+- ✅ Semantic HTML5 (`<nav>`, `<main>`, `<article>`, `<section>`)
+- ✅ Contraste WCAG AA en toda la paleta
+- ✅ `font-display: swap` (no flash of invisible text)
+- ✅ Keyboard navigation completa
+- ✅ Touch targets ≥48px en mobile
+- ✅ `lang="es"` en `<html>`
 
 ---
 
@@ -210,70 +323,83 @@ vercel --prod
 
 | Comando | Acción |
 |---|---|
-| `pnpm dev` | Dev server con HMR |
-| `pnpm build` | Build producción |
-| `pnpm preview` | Preview local del build |
-| `pnpm astro` | CLI de Astro |
-| `node scripts/check-deploy.mjs` | Pre-deploy check |
+| `npm run dev` | Dev server con HMR (puerto 4321) |
+| `npm run build` | Build producción a `.vercel/output/` |
+| `npm run preview` | Preview local del build |
+| `npm run astro` | CLI de Astro |
+| `node scripts/check-deploy.mjs` | Pre-deploy check (15 validaciones) |
+
+---
+
+## 🗺️ Roadmap
+
+- [x] Landing cinemática con hero mockup
+- [x] Hero mobile dedicado (LCP optimizado)
+- [x] Blog técnico con búsqueda + filtros + TOC
+- [x] OG images dinámicas con `@vercel/og`
+- [x] Formulario de contacto con Formspree
+- [x] TikTok Pixel + Plausible Analytics
+- [x] PageSpeed 99/100 desktop, 100/100 SEO/A11y/BP
+- [x] Path-to-regexp CVE mitigado
+- [x] Cross-origin isolation headers
+- [ ] **Catálogo de templates** (5 productos en roadmap)
+- [ ] RSS feed del blog
+- [ ] Multi-idioma (i18n EN/ES)
+- [ ] Dark/Light theme toggle
+
+---
+
+## 🤝 Contribuir
+
+Si querés sugerir cambios:
+
+1. Fork el repo
+2. Creá una branch (`git checkout -b feature/mi-mejora`)
+3. Commiteá tus cambios (`git commit -m 'feat: add mi mejora'`)
+4. Push a la branch (`git push origin feature/mi-mejora`)
+5. Abrí un Pull Request
+
+Convención de commits: [Conventional Commits](https://www.conventionalcommits.org/) — `feat:`, `fix:`, `perf:`, `docs:`, `style:`, `refactor:`, `test:`, `chore:`.
 
 ---
 
 ## 🐛 Troubleshooting
 
 ### "Cannot find siteConfig" después de cambiar config
-Reiniciá el dev server: `pnpm dev` mata + reinicia.
+Reiniciá el dev server: `Ctrl+C` y `npm run dev` de nuevo.
 
 ### OG image no se genera
-- Verificá que `PUBLIC_OG_API_ENABLED=true` en Vercel
-- El endpoint requiere Node 18+ en Vercel (default)
-- Los OG dinámicos solo funcionan en deploy (no en build estático)
+- Verificá que `@vercel/og` esté en dependencies
+- El endpoint `/api/og` requiere Node 18+ (default en Vercel)
+- Los OG dinámicos solo funcionan en deploy, no en build estático
 
-### Forms no llegan
-- Verificá que `PUBLIC_FORMSPREE_ENDPOINT` apunte a tu ID real
-- Andá a https://formspree.io/dashboard para ver los submissions
+### Mobile LCP alto
+- Verificá que `<link rel="preload" as="image" href="/hero-mockup.webp">` esté en el `<head>`
+- El LCP idealmente < 2.5s. Si > 3s en mobile, considera self-hosting más assets
 
-### TikTok pixel no trackea
-- Verificá que `PUBLIC_TIKTOK_PIXEL_ID` sea tu ID real
-- En TikTok Ads Manager → Events → Web Events, validá el pixel
-- Asegurate de tener `PUBLIC_TIKTOK_PIXEL_ENABLED=true`
-
-### Plausible no muestra datos
-- Verificá que `PUBLIC_PLAUSIBLE_DOMAIN` coincida con tu dominio
-- En Plausible → Settings → Sites, agregá tu dominio
-- Esperá 24h para la primera visita tracked
+### Build error con `path-to-regexp`
+- El override `^8.0.0` en `package.json` debe estar presente
+- Borrá `node_modules` + `package-lock.json` y reinstalá
 
 ---
 
-## 📚 Stack detallado
+## 📜 Licencia
 
-| Capa | Tecnología | Versión |
-|---|---|---|
-| Framework | Astro | 6.x |
-| Lenguaje | TypeScript | 5.9 |
-| Styling | Tailwind CSS | 4.x |
-| Animaciones | GSAP + ScrollTrigger | 3.15 |
-| Smooth scroll | Lenis | 1.3 |
-| 3D | Three.js | 0.171 |
-| OG images | @vercel/og | latest |
-| Hosting | Vercel | (recommended) |
-| Analytics | Plausible | (privacy-friendly) |
-| Pixel | TikTok Pixel | (optional) |
-| Forms | Formspree | (transactional emails) |
+[MIT](./LICENSE) © 2026 TecnoDespegue
 
 ---
 
-## 📄 Licencia
+## 📬 Contacto
 
-Código: © 2025 TecnoDespegue · Todos los derechos reservados.
-Contenido (blog posts): CC BY-NC 4.0.
+- **Web:** [tecnodespegue.com](https://www.tecnodespegue.com/)
+- **Email:** [renekuhm2@gmail.com](mailto:renekuhm2@gmail.com)
+- **WhatsApp:** [+54 9 2334 409838](https://wa.me/5492334409838)
+- **GitHub:** [@Rene-Kuhm](https://github.com/Rene-Kuhm)
+- **LinkedIn:** [rene-kuhm](https://linkedin.com/in/rene-kuhm)
 
 ---
 
-## 🤝 Soporte
-
-¿Problemas con el deploy? Corre primero:
-```bash
-node scripts/check-deploy.mjs
-```
-
-Y leé el output. Si hay errores, están arriba. Si hay warnings, son opcionales.
+<p align="center">
+  Hecho con ❤️ y ☕ en Argentina<br>
+  <sub>Powered by Astro · Deployed on Vercel</sub>
+</p>
