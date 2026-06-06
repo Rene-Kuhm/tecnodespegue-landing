@@ -29,5 +29,8 @@
     "@types/three": "^0.171.0",
     "@vercel/og": "^0.11.1",
     "typescript": "^5.9.3"
+  },
+  "overrides": {
+    "path-to-regexp": "^8.0.0"
   }
 }
