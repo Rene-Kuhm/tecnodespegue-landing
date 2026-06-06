@@ -252,7 +252,9 @@ html.lenis body {
     color: transparent;
   }
 
-  /* Metallic shine para títulos */
+  /* Metallic shine para títulos.
+     Solo se anima si el usuario NO pidió reduced-motion
+     (respeta WCAG 2.3.3 + accesibilidad vestibular). */
   .text-shine {
     background: linear-gradient(110deg,
       #C5A572 0%, #C5A572 35%,
@@ -263,12 +265,43 @@ html.lenis body {
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
-    animation: shine-sweep 4s linear infinite;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .text-shine {
+      animation: shine-sweep 4s linear infinite;
+    }
   }
 
   @keyframes shine-sweep {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
+  }
+
+  /* Respeto global: reduced-motion apaga TODAS las animaciones
+     decorativas largas (marquees, shines, drifts, sweeps, spins).
+     Las micro-interacciones (pulse, blink) se mantienen porque
+     no causan molestia vestibular. */
+  @media (prefers-reduced-motion: reduce) {
+    .text-shine,
+    .animate-marvel-sweep,
+    .animate-marvel-sweep-slow,
+    .animate-spin-slow,
+    .animate-spin-reverse,
+    .animate-scan,
+    .animate-pulse-slow,
+    .animate-comic-rotate,
+    .animate-comic-jiggle,
+    .animate-loading-bar,
+    .animate-float,
+    .glow-drift-1,
+    .glow-drift-2,
+    .glow-drift-3,
+    .shine-sweep,
+    .marvel-sweep,
+    .marvel-sweep-slow {
+      animation: none !important;
+    }
   }
 
   /* Halftone comic pattern (background) */
@@ -576,11 +609,6 @@ html.lenis body {
 @keyframes badge-pop {
   0% { transform: scale(0.8); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
-}
-
-@keyframes terminal-scroll {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-50%); }
 }
 
 /* Marvel opening sweep */
