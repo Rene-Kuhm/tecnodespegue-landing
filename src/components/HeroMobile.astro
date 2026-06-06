@@ -1,0 +1,344 @@
+---
+/**
+ * HeroMobile.astro
+ *
+ * Variante del hero optimizada para mobile (≤768px).
+ * El Hero principal (Hero.astro) tiene la imagen mockup de 1264x848
+ * pensada para desktop — en mobile se ve mal y lastra el LCP.
+ *
+ * Esta versión es mobile-first:
+ *  - Mockup con aspect-ratio 4:3 (no full bleed)
+ *  - Texto vertical apilado, protagonista
+ *  - CTAs full-width
+ *  - Stats en grid 2x2 compacto
+ *  - Sin GSAP / sin mouse effects / sin animaciones 3D
+ *
+ * Show/hide controlado por media query (display: none/block).
+ * El Hero desktop sigue intacto en Hero.astro.
+ */
+
+import Icon from './Icon.astro';
+---
+
+<section class="hero-mobile" data-hero-mobile>
+  <div class="hero-mobile-inner">
+    <!-- Kicker tag -->
+    <span class="hm-kicker">
+      <span class="hm-kicker-dot"></span>
+      <span class="hm-kicker-text font-mono">SISTEMAS AUTÓNOMOS · 01</span>
+    </span>
+
+    <!-- H1 protagonista -->
+    <h1 class="hm-title font-display">
+      <span class="hm-line">Construí</span>
+      <span class="hm-line hm-accent">el futuro</span>
+      <span class="hm-line">digital</span>
+    </h1>
+
+    <p class="hm-lead">
+      Software a medida, automatizaciones con IA y experiencias digitales que escalan tu negocio.
+    </p>
+
+    <!-- CTAs stacked -->
+    <div class="hm-ctas">
+      <a href="#contacto" class="hm-btn-primary" data-tiktok-event="Lead" data-tiktok-label="Iniciá tu Proyecto (mobile)">
+        <Icon name="bolt" class="w-4 h-4" />
+        <span>Iniciá tu Proyecto</span>
+      </a>
+      <a href="#portfolio" class="hm-btn-ghost" data-tiktok-event="ClickPortfolio" data-tiktok-label="Ver Portfolio (mobile)">
+        <span>Ver Portfolio</span>
+        <Icon name="arrow_forward" class="w-4 h-4" />
+      </a>
+    </div>
+
+    <!-- Mockup image -->
+    <div class="hm-mockup-wrap">
+      <picture class="hm-mockup" aria-hidden="true">
+        <source srcset="/hero-mockup.webp" type="image/webp" />
+        <source srcset="/hero-mockup.jpg" type="image/jpeg" />
+        <img
+          src="/hero-mockup.jpg"
+          alt=""
+          class="hm-mockup-img"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+          width="1264"
+          height="848"
+        />
+      </picture>
+      <div class="hm-mockup-glow" aria-hidden="true"></div>
+    </div>
+
+    <!-- Stats 2x2 -->
+    <div class="hm-stats">
+      <div class="hm-stat">
+        <div class="hm-stat-num font-display">15<span class="hm-stat-plus">+</span></div>
+        <div class="hm-stat-label">Proyectos Entregados</div>
+      </div>
+      <div class="hm-stat">
+        <div class="hm-stat-num font-display">3<span class="hm-stat-plus">+</span></div>
+        <div class="hm-stat-label">Clientes en Producción</div>
+      </div>
+      <div class="hm-stat">
+        <div class="hm-stat-num font-display">&lt;24<span class="hm-stat-unit">h</span></div>
+        <div class="hm-stat-label">Tiempo de Respuesta</div>
+      </div>
+      <div class="hm-stat">
+        <div class="hm-stat-num font-display">20<span class="hm-stat-plus">+</span></div>
+        <div class="hm-stat-label">Tecnologías Dominadas</div>
+      </div>
+    </div>
+
+    <!-- Trust chips -->
+    <div class="hm-chips">
+      <div class="hm-chip">
+        <Icon name="code" class="w-4 h-4" />
+        <span>Open Source</span>
+      </div>
+      <div class="hm-chip">
+        <Icon name="deployed_code" class="w-4 h-4" />
+        <span>CI/CD Automático</span>
+      </div>
+      <div class="hm-chip">
+        <Icon name="cloud" class="w-4 h-4" />
+        <span>Cloud &amp; Self-Hosted</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Hidden en desktop, visible en mobile */
+  .hero-mobile {
+    display: block;
+  }
+  @media (min-width: 768px) {
+    .hero-mobile {
+      display: none;
+    }
+  }
+
+  .hero-mobile {
+    position: relative;
+    padding: 6rem 1.25rem 3rem;
+    background: var(--color-background);
+    overflow: hidden;
+  }
+
+  /* Background accent: gradiente sutil rojo/dorado */
+  .hero-mobile::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140%;
+    height: 60%;
+    background: radial-gradient(ellipse at 50% 0%,
+      rgba(237, 29, 36, 0.18) 0%,
+      transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-mobile-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 32rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* Kicker */
+  .hm-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    align-self: flex-start;
+    padding: 0.4rem 0.75rem;
+    background: rgba(237, 29, 36, 0.1);
+    border: 1px solid rgba(237, 29, 36, 0.3);
+    border-radius: 999px;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: #FFC0C2;
+  }
+  .hm-kicker-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-marvel-red);
+    box-shadow: 0 0 8px var(--color-marvel-red);
+    animation: hm-pulse 2s ease-in-out infinite;
+  }
+  @keyframes hm-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* Title */
+  .hm-title {
+    font-size: clamp(2.5rem, 11vw, 3.5rem);
+    line-height: 0.95;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin: 0;
+  }
+  .hm-line {
+    display: block;
+  }
+  .hm-accent {
+    color: var(--color-marvel-gold);
+    font-style: italic;
+    text-shadow: 0 0 24px rgba(248, 180, 0, 0.25);
+  }
+
+  /* Lead */
+  .hm-lead {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--color-on-surface-variant);
+    margin: 0;
+  }
+
+  /* CTAs */
+  .hm-ctas {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .hm-btn-primary,
+  .hm-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.95rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: transform 0.2s var(--ease-marvel), box-shadow 0.2s var(--ease-marvel);
+    min-height: 48px; /* touch target */
+  }
+  .hm-btn-primary {
+    background: var(--color-marvel-red);
+    color: #FFFFFF;
+    box-shadow: 0 4px 16px rgba(237, 29, 36, 0.35);
+  }
+  .hm-btn-primary:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 8px rgba(237, 29, 36, 0.25);
+  }
+  .hm-btn-ghost {
+    background: rgba(255, 255, 255, 0.04);
+    color: #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  .hm-btn-ghost:active {
+    background: rgba(255, 255, 255, 0.08);
+    transform: scale(0.98);
+  }
+
+  /* Mockup */
+  .hm-mockup-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid rgba(237, 29, 36, 0.25);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.05),
+      0 12px 40px rgba(0, 0, 0, 0.5),
+      0 0 60px rgba(237, 29, 36, 0.15);
+  }
+  .hm-mockup {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .hm-mockup-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  /* Subtle top fade so the title above doesn't clash with image top */
+  .hm-mockup-glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(180deg,
+      rgba(10, 10, 10, 0.25) 0%,
+      transparent 25%,
+      transparent 75%,
+      rgba(10, 10, 10, 0.4) 100%);
+  }
+
+  /* Stats grid 2x2 */
+  .hm-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 0.75rem;
+    padding: 1.25rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .hm-stat {
+    text-align: center;
+  }
+  .hm-stat-num {
+    font-size: 1.75rem;
+    line-height: 1;
+    color: var(--color-marvel-gold);
+    font-weight: 900;
+    margin-bottom: 0.4rem;
+    text-shadow: 0 0 16px rgba(248, 180, 0, 0.25);
+  }
+  .hm-stat-plus,
+  .hm-stat-unit {
+    color: var(--color-marvel-gold);
+    font-size: 0.85em;
+  }
+  .hm-stat-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-variant);
+    line-height: 1.3;
+  }
+
+  /* Trust chips */
+  .hm-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+  .hm-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.75rem;
+    background: var(--color-surface-1);
+    border: 1px solid rgba(248, 180, 0, 0.2);
+    border-radius: 999px;
+    color: var(--color-on-surface-variant);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+  .hm-chip :global(svg) {
+    color: var(--color-marvel-gold);
+  }
+</style>

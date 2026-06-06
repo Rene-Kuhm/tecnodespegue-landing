@@ -6,6 +6,7 @@ import CustomCursor from '../components/CustomCursor.astro';
 import LoadingScreen from '../components/LoadingScreen.astro';
 import PageTransition from '../components/PageTransition.astro';
 import Hero from '../components/Hero.astro';
+import HeroMobile from '../components/HeroMobile.astro';
 import TrustSignals from '../components/TrustSignals.astro';
 import Services from '../components/Services.astro';
 import Portfolio from '../components/Portfolio.astro';
@@ -26,7 +27,12 @@ import CompileReveal from '../components/CompileReveal.astro';
   <Nav />
   
   <main id="contenido">
-    <Hero />
+    {/* Mobile-only hero (≤768px) — más rápido de cargar y mejor LCP */}
+    <HeroMobile />
+    {/* Desktop-only hero (≥768px) — mockup full-bleed + animaciones */}
+    <div class="hero-desktop-wrap">
+      <Hero />
+    </div>
     
     <!-- Above fold TrustSignals gets standard subtle scroll reveal -->
     <ScrollReveal>
@@ -65,5 +71,16 @@ import CompileReveal from '../components/CompileReveal.astro';
 <style>
   html {
     scroll-behavior: smooth;
+  }
+
+  /* Hero desktop wrapper: oculto en mobile, visible ≥768px.
+     El HeroMobile se muestra a sí mismo via su propio media query. */
+  .hero-desktop-wrap {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .hero-desktop-wrap {
+      display: block;
+    }
   }
 </style>
