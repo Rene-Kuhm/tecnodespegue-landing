@@ -2,16 +2,19 @@
 
 /* ============================================================
    MARVEL-STYLE TYPOGRAPHY
-   - Big Shoulders Display: titulares cinematográficos condensados
-   - Bangers: acentos cómic / onomatopeyas
-   - Space Grotesk Variable: subtítulos técnicos
-   - Inter Variable: body y UI
+   - Space Grotesk Variable: titulares + body técnico condensado
+   - Inter Variable: UI y microcopy
+   - Big Shoulders / Bangers / Anton caían a Google Fonts (round-trips
+     extra en mobile 4G). Removidas del @import para mejorar LCP/FCP.
+     Las clases .font-display y .font-comic ahora resuelven a
+     Space Grotesk en bold/uppercase/italic, manteniendo el look
+     condensado cinematográfico sin la dependencia externa.
    ============================================================ */
 
 @font-face {
   font-family: 'Space Grotesk Variable';
   font-style: normal;
-  font-display: optional;
+  font-display: swap;
   font-weight: 300 700;
   src: url('@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2') format('woff2-variations');
 }
@@ -19,14 +22,10 @@
 @font-face {
   font-family: 'Inter Variable';
   font-style: normal;
-  font-display: optional;
+  font-display: swap;
   font-weight: 100 900;
   src: url('@fontsource-variable/inter/files/inter-latin-wght-normal.woff2') format('woff2-variations');
 }
-
-/* Google Fonts cargadas con display=swap para fallback rápido.
-   Si el usuario tiene red, las ve; si no, fallback a display local. */
-@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Bangers&family=Anton&display=swap');
 
 :root {
   --compile-delay-min: 200ms;
@@ -82,12 +81,12 @@
   --color-outline: #777575;
   --color-outline-variant: #3A3A45;
 
-  /* Tipografías */
-  --font-display: "Big Shoulders Display", "Anton", "Space Grotesk Variable", sans-serif;
-  --font-comic: "Bangers", "Anton", cursive;
+  /* Tipografías (self-hosted, sin dependencias de Google Fonts en critical path) */
+  --font-display: "Space Grotesk Variable", "Inter Variable", system-ui, sans-serif;
+  --font-comic: "Space Grotesk Variable", "Inter Variable", system-ui, sans-serif;
   --font-headline: "Space Grotesk Variable", sans-serif;
-  --font-body: "Inter Variable", sans-serif;
-  --font-label: "Inter Variable", sans-serif;
+  --font-body: "Inter Variable", system-ui, -apple-system, sans-serif;
+  --font-label: "Inter Variable", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", "Courier New", monospace;
 
   --radius-chip: 0.125rem;
