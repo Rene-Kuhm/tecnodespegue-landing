@@ -99,13 +99,16 @@ const professionalServiceSchema = {
     <meta name="apple-mobile-web-app-title" content="TecnoDespegue" />
     <link rel="manifest" href="/site.webmanifest" />
     
-    <!-- Preconnect Google Fonts (Big Shoulders / Bangers / Anton) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Local @fontsource-variable fonts cargan vía @font-face (no necesitan preload) -->
+    <!-- Local @fontsource-variable fonts cargan vía @font-face (no necesitan preconnect a gstatic/googleapis)
+         Solo pre-cargamos la fuente crítica: Space Grotesk (la usa el body + 90% de la UI).
+         Inter y las display fonts (Big Shoulders / Bangers) solo se usan en títulos grandes
+         y pueden esperar a FCP sin impactar LCP. -->
 
     <!-- Preload LCP image (Hero mockup) for fastest paint -->
     <link rel="preload" as="image" href="/hero-mockup.webp" type="image/webp" fetchpriority="high" />
+
+    <!-- Preload critical body font (Space Grotesk variable) — single woff2, no extra RTTs -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/space-grotesk-latin-wght-normal.woff2" crossorigin />
 
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
@@ -279,32 +282,34 @@ const professionalServiceSchema = {
   <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-    <!-- Lenis + Scroll animations bootstrap -->
+    <!-- Lenis + Scroll animations bootstrap. Deferido al primer idle
+         para no competir con el critical path. -->
     <script>
-      import { initLenis } from '../scripts/animations/lenis';
-      import { initScrollAnimations } from '../scripts/animations/scrollAnimations';
-
-      const startLenis = () => {
+      const startLenisAndAnimations = async () => {
+        const [{ initLenis }, { initScrollAnimations }] = await Promise.all([
+          import('../scripts/animations/lenis'),
+          import('../scripts/animations/scrollAnimations'),
+        ]);
         initLenis();
-        // Scroll animations se disparan cuando Lenis está corriendo
         initScrollAnimations();
       };
 
-      const observer = new MutationObserver(() => {
-        if (document.documentElement.classList.contains('is-loaded')) {
-          startLenis();
-          observer.disconnect();
+      const schedule = () => {
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(startLenisAndAnimations, { timeout: 2000 });
+        } else {
+          setTimeout(startLenisAndAnimations, 1500);
         }
-      });
-      observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-      // Fallback
-      setTimeout(() => {
-        if (!document.documentElement.classList.contains('is-loaded')) {
-          document.documentElement.classList.add('is-loaded');
-        }
-        startLenis();
-        observer.disconnect();
-      }, 5000);
+      };
+
+      if (document.readyState === 'complete') {
+        schedule();
+      } else {
+        window.addEventListener('load', schedule, { once: true });
+      }
+      // Safety net: si la página lleva 6s sin cargar por algo raro,
+      // arrancamos igual.
+      setTimeout(schedule, 6000);
     </script>
 
     <slot />

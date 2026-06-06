@@ -187,6 +187,13 @@
       animation: none !important;
     }
   }
+
+  /* Block scroll only while loading screen is active.
+     Pure CSS (no JS layout thrash) — el .is-loading se setea via JS
+     pero NO seteamos body.style.overflow en el critical path. */
+  :global(html.is-loading) body {
+    overflow: hidden;
+  }
 </style>
 
 <script>
@@ -293,9 +300,8 @@
     });
   }
 
-  // Bloquear scroll mientras carga
+  // Bloquear scroll mientras carga (CSS, no JS — evita reflow forzado)
   document.documentElement.classList.add('is-loading');
-  document.body.style.overflow = 'hidden';
 
   function start() {
     runLoadingSequence().catch((err) => {
@@ -305,7 +311,6 @@
       document.documentElement.classList.add('is-loaded');
     }).finally(() => {
       document.documentElement.classList.remove('is-loading');
-      document.body.style.overflow = '';
     });
   }
 
