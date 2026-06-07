@@ -1,13 +1,25 @@
 ---
 /**
- * Nav.astro - Versión Marvel
- * Logo con sello rojo, glassmorphism dorado, CTA magnético
+ * Nav.astro - Marvel Edition
+ * Logo con sello rojo, glassmorphism dorado, CTA magnético, language switcher
  */
+import { useTranslations, localizedPath, languageToggleHref, type Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale: Locale = Astro.props.locale ?? 'es';
+const t = useTranslations(locale);
+const currentPath = Astro.url.pathname;
+
+const toggleHref = languageToggleHref(locale, currentPath);
+const toggleLabel = locale === 'es' ? 'EN' : 'ES';
 ---
 
 <nav class="nav-fixed" data-nav>
   <div class="nav-inner">
-    <a href="#" class="nav-logo" data-magnetic aria-label="TecnoDespegue - Inicio">
+    <a href={locale === 'es' ? '/' : '/en'} class="nav-logo" data-magnetic aria-label="TecnoDespegue - Inicio">
       <span class="nav-logo-mark" aria-hidden="true">
         <span class="nav-logo-mark-letter">T</span>
         <span class="nav-logo-mark-letter">D</span>
@@ -16,42 +28,49 @@
     </a>
 
     <div class="nav-menu" data-nav-menu>
-      <a href="/#soluciones" class="nav-link" data-magnetic>
-        <span class="nav-link-text">Soluciones</span>
+      <a href={localizedPath('/#soluciones', locale)} class="nav-link" data-magnetic>
+        <span class="nav-link-text">{t.nav.solutions}</span>
         <span class="nav-link-underline" aria-hidden="true"></span>
       </a>
-      <a href="/templates" class="nav-link" data-magnetic>
-        <span class="nav-link-text">Templates</span>
+      <a href={localizedPath('/templates', locale)} class="nav-link" data-magnetic>
+        <span class="nav-link-text">{t.nav.templates}</span>
         <span class="nav-link-underline" aria-hidden="true"></span>
       </a>
-      <a href="/blog" class="nav-link" data-magnetic>
-        <span class="nav-link-text">Blog</span>
+      <a href={localizedPath('/blog', locale)} class="nav-link" data-magnetic>
+        <span class="nav-link-text">{t.nav.blog}</span>
         <span class="nav-link-underline" aria-hidden="true"></span>
       </a>
-      <a href="/#portfolio" class="nav-link" data-magnetic>
-        <span class="nav-link-text">Portfolio</span>
+      <a href={localizedPath('/#portfolio', locale)} class="nav-link" data-magnetic>
+        <span class="nav-link-text">{t.nav.portfolio}</span>
         <span class="nav-link-underline" aria-hidden="true"></span>
       </a>
-      <a href="/#stack" class="nav-link" data-magnetic>
-        <span class="nav-link-text">Stack</span>
+      <a href={localizedPath('/#stack', locale)} class="nav-link" data-magnetic>
+        <span class="nav-link-text">{t.nav.stack}</span>
         <span class="nav-link-underline" aria-hidden="true"></span>
       </a>
-      <a href="/#proceso" class="nav-link" data-magnetic>
-        <span class="nav-link-text">Proceso</span>
+      <a href={localizedPath('/#proceso', locale)} class="nav-link" data-magnetic>
+        <span class="nav-link-text">{t.nav.process}</span>
         <span class="nav-link-underline" aria-hidden="true"></span>
       </a>
-      <a href="/#contacto" class="nav-link" data-magnetic>
-        <span class="nav-link-text">Contacto</span>
+      <a href={localizedPath('/#contacto', locale)} class="nav-link" data-magnetic>
+        <span class="nav-link-text">{t.nav.contact}</span>
         <span class="nav-link-underline" aria-hidden="true"></span>
       </a>
     </div>
 
-    <a href="#contacto" class="nav-cta" data-magnetic data-tiktok-event="ClickButton" data-tiktok-label="Iniciar proyecto nav desktop">
-      <span>Iniciá tu Proyecto</span>
-      <span class="nav-cta-arrow" aria-hidden="true">→</span>
-    </a>
+    <!-- Language switcher + CTA -->
+    <div class="nav-actions">
+      <a href={toggleHref} class="nav-lang" aria-label={`Switch to ${toggleLabel}`}>
+        {toggleLabel}
+      </a>
 
-    <button class="nav-burger" data-nav-burger aria-label="Abrir menú" aria-controls="mobile-menu" aria-expanded="false">
+      <a href={localizedPath('/#contacto', locale)} class="nav-cta" data-magnetic data-tiktok-event="ClickButton" data-tiktok-label="Iniciar proyecto nav desktop">
+        <span>{t.nav.cta}</span>
+        <span class="nav-cta-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <button class="nav-burger" data-nav-burger aria-label={t.nav.mobileMenuOpen} aria-controls="mobile-menu" aria-expanded="false">
       <span></span>
       <span></span>
       <span></span>
@@ -60,16 +79,20 @@
 
   <div class="nav-mobile" id="mobile-menu" data-nav-mobile aria-hidden="true">
     <div class="nav-mobile-inner">
-      <a href="/#soluciones" class="nav-mobile-link font-display">Soluciones</a>
-      <a href="/blog" class="nav-mobile-link font-display">Blog</a>
-      <a href="/templates" class="nav-mobile-link font-display">Templates</a>
-      <a href="/#portfolio" class="nav-mobile-link font-display">Portfolio</a>
-      <a href="/#stack" class="nav-mobile-link font-display">Stack</a>
-      <a href="/#proceso" class="nav-mobile-link font-display">Proceso</a>
-      <a href="/#contacto" class="nav-mobile-link font-display">Contacto</a>
-      <a href="#contacto" class="btn-primary nav-mobile-cta" data-tiktok-event="ClickButton" data-tiktok-label="Iniciar proyecto nav mobile">
-        Iniciá tu Proyecto
-      </a>
+      <a href={localizedPath('/#soluciones', locale)} class="nav-mobile-link font-display">{t.nav.solutions}</a>
+      <a href={localizedPath('/templates', locale)} class="nav-mobile-link font-display">{t.nav.templates}</a>
+      <a href={localizedPath('/blog', locale)} class="nav-mobile-link font-display">{t.nav.blog}</a>
+      <a href={localizedPath('/#portfolio', locale)} class="nav-mobile-link font-display">{t.nav.portfolio}</a>
+      <a href={localizedPath('/#stack', locale)} class="nav-mobile-link font-display">{t.nav.stack}</a>
+      <a href={localizedPath('/#proceso', locale)} class="nav-mobile-link font-display">{t.nav.process}</a>
+      <a href={localizedPath('/#contacto', locale)} class="nav-mobile-link font-display">{t.nav.contact}</a>
+
+      <div class="nav-mobile-actions">
+        <a href={toggleHref} class="nav-lang nav-lang-mobile">{toggleLabel}</a>
+        <a href={localizedPath('/#contacto', locale)} class="btn-primary nav-mobile-cta" data-tiktok-event="ClickButton" data-tiktok-label="Iniciar proyecto nav mobile">
+          {t.nav.cta}
+        </a>
+      </div>
     </div>
   </div>
 </nav>
@@ -193,6 +216,42 @@
 
   .nav-link:hover .nav-link-underline { width: 100%; }
 
+  /* Nav actions (lang + CTA) */
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  /* Language switcher */
+  .nav-lang {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.25rem;
+    height: 2.25rem;
+    padding: 0 0.5rem;
+    border: 1.5px solid rgba(248, 180, 0, 0.35);
+    border-radius: 0.375rem;
+    color: var(--color-marvel-gold);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    font-family: var(--font-display);
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+
+  @media (min-width: 768px) {
+    .nav-lang { display: inline-flex; }
+  }
+
+  .nav-lang:hover {
+    border-color: var(--color-marvel-gold-bright);
+    color: var(--color-marvel-gold-bright);
+    background: rgba(248, 180, 0, 0.08);
+  }
+
   /* CTA desktop */
   .nav-cta {
     display: none;
@@ -302,8 +361,40 @@
     transform: translateX(8px);
   }
 
-  .nav-mobile-cta {
+  /* Mobile actions row */
+  .nav-mobile-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     margin-top: 1.5rem;
+  }
+
+  .nav-lang-mobile {
+    display: inline-flex;
+    min-width: 3rem;
+    height: 3rem;
+    padding: 0 1rem;
+    border: 1.5px solid rgba(248, 180, 0, 0.35);
+    border-radius: 0.5rem;
+    color: var(--color-marvel-gold);
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    font-family: var(--font-display);
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+
+  .nav-lang-mobile:hover {
+    border-color: var(--color-marvel-gold-bright);
+    color: var(--color-marvel-gold-bright);
+    background: rgba(248, 180, 0, 0.08);
+  }
+
+  .nav-mobile-cta {
+    /* inherits .btn-primary from global.css */
   }
 </style>
 

@@ -1,10 +1,17 @@
 ---
 /**
- * Footer.astro - Versión Marvel
+ * Footer.astro - Marvel Edition
  * Logo con sello, divider cinemático dorado, redes con glow, location chip
  */
-
+import { useTranslations, localizedPath, type Locale } from '../i18n';
 import Icon from './Icon.astro';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale: Locale = Astro.props.locale ?? 'es';
+const t = useTranslations(locale);
 
 const socials = [
   {
@@ -55,13 +62,13 @@ const socials = [
           <span class="footer-logo-text font-display">TECNODESPEGUE</span>
         </div>
         <p class="footer-tagline">
-          Desarrollo fullstack, automatizaciones con IA y soluciones a medida. <span class="text-gold">Despegamos tu próxima iteración.</span>
+          {t.footer.tagline}
         </p>
       </div>
 
       <!-- Contacto -->
       <div class="footer-col">
-        <span class="footer-col-label font-mono">CONTACTO</span>
+        <span class="footer-col-label font-mono">{t.footer.contact.toUpperCase()}</span>
         <a href="mailto:renekuhm2@gmail.com" class="footer-link" data-tiktok-event="Contact" data-tiktok-label="Email footer">
           <Icon name="email" class="w-4 h-4" />
           <span>renekuhm2@gmail.com</span>
@@ -74,7 +81,7 @@ const socials = [
 
       <!-- Redes -->
       <div class="footer-col">
-        <span class="footer-col-label font-mono">REDES</span>
+        <span class="footer-col-label font-mono">{t.footer.socials.toUpperCase()}</span>
         <div class="footer-socials">
           {socials.map((social) => (
             <a
@@ -104,15 +111,15 @@ const socials = [
     <!-- Bottom bar -->
     <div class="footer-bottom">
       <div class="footer-copy font-body">
-        © {new Date().getFullYear()} TecnoDespegue. Todos los derechos reservados.
+        © {new Date().getFullYear()} TecnoDespegue. {t.footer.rights}
       </div>
       <div class="footer-meta">
         <span class="footer-location">
           <Icon name="place" class="w-3.5 h-3.5" />
-          <span>Eduardo Castex, La Pampa, Argentina</span>
+          <span>{t.footer.location}</span>
         </span>
         <span class="footer-meta-divider" aria-hidden="true">·</span>
-        <a href="/privacidad" class="footer-meta-link">Privacidad</a>
+        <a href={localizedPath('/privacidad', locale)} class="footer-meta-link">{t.footer.privacy}</a>
       </div>
     </div>
   </div>

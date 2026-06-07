@@ -8,6 +8,7 @@ tags: ["astro", "performance", "seo", "pagespeed", "frontend"]
 readTime: 5
 featured: true
 image: "/og-image.png"
+locale: es
 seo:
   title: "Astro vs Next.js: por qué elegimos Astro para landing pages de alto rendimiento"
   description: "Datos técnicos de por qué Astro da 98/100 en PageSpeed. Zero JS by default, islands architecture, y optimizaciones que aplicamos en producción."

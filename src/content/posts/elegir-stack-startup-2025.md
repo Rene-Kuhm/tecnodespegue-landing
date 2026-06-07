@@ -8,6 +8,7 @@ tags: ["startup", "stack", "typescript", "nextjs", "decisiones"]
 readTime: 8
 featured: true
 image: "/og-image.png"
+locale: es
 seo:
   title: "Elegir stack tecnológico para tu startup 2025 — Guía práctica"
   description: "Evita errores costosos al elegir tu stack. Análisis de frameworks, bases de datos y arquitecturas para startups que escalan."
