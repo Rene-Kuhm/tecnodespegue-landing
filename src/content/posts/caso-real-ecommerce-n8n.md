@@ -7,6 +7,7 @@ category: "Automatización"
 tags: ["n8n", "automation", "ia", "workflow", "ecommerce", "caso-real"]
 readTime: 8
 image: "/og-image.png"
+locale: es
 seo:
   title: "Caso real: automatizar e-commerce con n8n + IA (ahorro de 4h/día)"
   description: "Cómo automatizamos un e-commerce de moda con n8n, GPT-4 y APIs custom. Stack, errores, métricas y lecciones aprendidas."

@@ -1,0 +1,367 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/Footer.astro';
+import Comments from '../../../components/Comments.astro';
+import TableOfContents from '../../../components/TableOfContents.astro';
+import RelatedPosts from '../../../components/RelatedPosts.astro';
+import { formatDate, calculateReadTime } from '../../../utils/blog.ts';
+import { useTranslations, localizedPath, localeConfig, type Locale } from '../../../i18n';
+
+const locale: Locale = 'en';
+const t = useTranslations(locale);
+const cfg = localeConfig[locale];
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('posts', ({ data }) => data.locale === 'en');
+  return allPosts
+    .filter(p => !p.data.draft)
+    .map(post => ({
+      params: { slug: post.id.replace(/^en\//, '') },
+      props: { post, allPosts: allPosts.filter(p => !p.data.draft) },
+    }));
+}
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+  allPosts: CollectionEntry<'posts'>[];
+}
+
+const { post, allPosts } = Astro.props;
+const { Content, headings } = await render(post);
+
+const date = formatDate(post.data.date, cfg.dateLocale);
+const readTime = post.data.readTime ?? calculateReadTime(post.body);
+const title = post.data.seo?.title ?? post.data.title;
+const description = post.data.seo?.description ?? post.data.description;
+const ogImage = post.data.seo?.image
+  ? new URL(post.data.seo.image, Astro.site)
+  : new URL('/og-image.png', Astro.site);
+
+const canonicalURL = new URL(localizedPath(`/blog/${post.id}/`, locale), Astro.site);
+
+const authorInitials = post.data.author
+  .split(' ')
+  .map(n => n[0])
+  .join('')
+  .slice(0, 2)
+  .toUpperCase();
+
+const blogPostingSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  author: { '@type': 'Person', name: post.data.author, url: 'https://github.com/Rene-Kuhm' },
+  datePublished: post.data.date.toISOString(),
+  dateModified: post.data.date.toISOString(),
+  url: canonicalURL.toString(),
+  image: ogImage.toString(),
+  publisher: {
+    '@type': 'Organization',
+    name: 'TecnoDespegue',
+    logo: { '@type': 'ImageObject', url: new URL('/favicon.svg', Astro.site).toString() },
+  },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalURL.toString() },
+  articleSection: post.data.category,
+  keywords: (post.data.tags ?? []).join(', '),
+  inLanguage: 'en',
+};
+---
+
+<Layout title={`${title} — TecnoDespegue`} description={description} path={localizedPath(`/blog/${post.id}/`, locale)} locale={locale}>
+  <script is:inline type="application/ld+json" slot="head" set:html={JSON.stringify(blogPostingSchema)} />
+  <Fragment slot="head">
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="article:published_time" content={post.data.date.toISOString()} />
+    <meta property="article:section" content={post.data.category} />
+    <meta property="article:author" content={post.data.author} />
+    {post.data.tags?.map(tag => (<meta property="article:tag" content={tag} />))}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+  </Fragment>
+
+  <Nav locale={locale} />
+
+  <main id="contenido" class="post-page">
+    <div class="post-container">
+      <aside class="post-sidebar">
+        <TableOfContents headings={headings} />
+      </aside>
+
+      <article class="post-article">
+        <a href={localizedPath('/blog', locale)} class="post-back" data-post-back>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Back to blog</span>
+        </a>
+
+        <header class="post-header" data-post-header>
+          <div class="post-cat-row">
+            <span class="post-cat" data-post-cat>{post.data.category}</span>
+            <span class="post-cat-sep" aria-hidden="true">·</span>
+            <time class="post-date font-mono" datetime={post.data.date.toISOString()} data-post-date>{date}</time>
+            <span class="post-cat-sep" aria-hidden="true">·</span>
+            <span class="post-read font-mono" data-post-read>{readTime} min</span>
+          </div>
+
+          <h1 class="post-title font-display" data-post-title>{post.data.title}</h1>
+
+          <p class="post-lead" data-post-lead>{post.data.description}</p>
+
+          <div class="post-author" data-post-author>
+            <div class="post-author-avatar">{authorInitials}</div>
+            <div>
+              <p class="post-author-name">{post.data.author}</p>
+              <p class="post-author-role font-mono">TecnoDespegue · {date}</p>
+            </div>
+          </div>
+
+          <div class="post-divider" aria-hidden="true">
+            <div class="post-divider-bar"></div>
+            <span class="post-divider-diamond">◆</span>
+            <div class="post-divider-bar"></div>
+          </div>
+        </header>
+
+        <div class="post-content">
+          <Content />
+        </div>
+
+        {post.data.tags && post.data.tags.length > 0 && (
+          <div class="post-tags" data-post-tags>
+            <span class="post-tags-label font-mono">Tags:</span>
+            {post.data.tags.map(tag => (
+              <a href={localizedPath(`/blog?tag=${tag}`, locale)} class="post-tag font-mono">#{tag}</a>
+            ))}
+          </div>
+        )}
+
+        <aside class="post-cta" data-post-cta>
+          <div class="post-cta-bg" aria-hidden="true"></div>
+          <div class="post-cta-content">
+            <h3 class="post-cta-title font-display">
+              {t.blog.relatedCta}
+            </h3>
+            <p class="post-cta-desc">{t.blog.relatedCtaDesc}</p>
+            <div class="post-cta-buttons">
+              <a href={localizedPath('/#contacto', locale)} class="post-cta-btn-primary magnetic" data-magnetic>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M21 15C21 15.5523 20.5523 16 20 16H4C3.44772 16 3 15.5523 3 15V8C3 7.44772 3.44772 7 4 7H13L15 5H20C20.5523 5 21 5.44772 21 6V15Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  <circle cx="12" cy="11" r="2" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>{t.blog.relatedCtaBtn}</span>
+              </a>
+              <a href={localizedPath('/blog', locale)} class="post-cta-btn-ghost">
+                <span>More articles</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </aside>
+
+        <Comments />
+      </article>
+    </div>
+
+    <div class="post-related-wrap">
+      <RelatedPosts
+        currentPostId={post.id}
+        currentTags={post.data.tags || []}
+        allPosts={allPosts}
+      />
+    </div>
+  </main>
+
+  <Footer locale={locale} />
+</Layout>
+
+<style is:global>
+  .post-content {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1.0625rem;
+    line-height: 1.8;
+  }
+
+  .post-content > * + * { margin-top: 1.25rem; }
+
+  .post-content h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.4vw, 1.875rem);
+    font-weight: 900;
+    line-height: 1.1;
+    color: #FFFFFF;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    letter-spacing: -0.015em;
+    scroll-margin-top: 6rem;
+    position: relative;
+    padding-left: 1rem;
+  }
+
+  .post-content h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.3em;
+    bottom: 0.3em;
+    width: 3px;
+    background: linear-gradient(180deg, var(--color-marvel-red) 0%, var(--color-marvel-gold) 100%);
+    border-radius: 2px;
+  }
+
+  .post-content h3 {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 1.8vw, 1.5rem);
+    font-weight: 900;
+    line-height: 1.15;
+    color: #FFFFFF;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+    scroll-margin-top: 6rem;
+  }
+
+  .post-content p { font-size: 1.0625rem; line-height: 1.8; color: rgba(255, 255, 255, 0.7); }
+  .post-content strong { color: #FFFFFF; font-weight: 700; }
+  .post-content em { color: rgba(255, 255, 255, 0.85); font-style: italic; }
+
+  .post-content a { color: var(--color-marvel-gold); text-decoration: none; border-bottom: 1px solid rgba(248, 180, 0, 0.3); transition: border-color 0.2s, color 0.2s; }
+  .post-content a:hover { color: var(--color-marvel-gold-bright); border-bottom-color: var(--color-marvel-gold); }
+
+  .post-content ul, .post-content ol { padding-left: 1.5rem; margin: 1.25rem 0; }
+  .post-content li { line-height: 1.75; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem; }
+  .post-content li::marker { color: var(--color-marvel-red); font-weight: 700; }
+
+  .post-content blockquote { position: relative; margin: 2rem 0; padding: 1.25rem 1.5rem 1.25rem 2rem; border-left: 3px solid var(--color-marvel-red); background: rgba(237, 29, 36, 0.05); border-radius: 0 0.5rem 0.5rem 0; font-style: italic; color: rgba(255, 255, 255, 0.85); line-height: 1.7; }
+  .post-content blockquote p { margin: 0; color: inherit; }
+
+  .post-content code { font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size: 0.875em; padding: 0.125rem 0.375rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 0.25rem; color: var(--color-marvel-gold); }
+
+  .post-content pre { background: #000000; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0.625rem; padding: 1.25rem 1.5rem; overflow-x: auto; margin: 1.5rem 0; line-height: 1.6; font-size: 0.875rem; }
+  .post-content pre code { background: transparent; padding: 0; border: none; color: rgba(255, 255, 255, 0.85); }
+
+  .post-content table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9375rem; background: rgba(0, 0, 0, 0.3); border-radius: 0.5rem; overflow: hidden; }
+  .post-content th { text-align: left; padding: 0.75rem 1rem; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-marvel-gold); background: rgba(248, 180, 0, 0.05); border-bottom: 1px solid rgba(248, 180, 0, 0.2); }
+  .post-content td { padding: 0.75rem 1rem; color: rgba(255, 255, 255, 0.7); border-bottom: 1px solid rgba(255, 255, 255, 0.06); line-height: 1.5; }
+  .post-content tr:last-child td { border-bottom: none; }
+  .post-content tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+  .post-content img { max-width: 100%; height: auto; border-radius: 0.625rem; margin: 1.5rem 0; border: 1px solid rgba(255, 255, 255, 0.08); }
+  .post-content hr { border: none; height: 1px; background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.15) 50%, transparent 100%); margin: 2.5rem 0; }
+</style>
+
+<style>
+  .post-page { max-width: 80rem; margin: 0 auto; padding: 8rem 1.5rem 4rem; }
+  @media (min-width: 768px) { .post-page { padding: 8rem 2rem 4rem; } }
+
+  .post-container { display: grid; grid-template-columns: 1fr; gap: 3rem; }
+  @media (min-width: 1280px) { .post-container { grid-template-columns: 260px minmax(0, 1fr); gap: 4rem; } }
+  .post-sidebar { order: 2; }
+  @media (min-width: 1280px) { .post-sidebar { order: 1; } }
+  .post-article { order: 1; max-width: 48rem; }
+  @media (min-width: 1280px) { .post-article { order: 2; } }
+  .post-related-wrap { max-width: 60rem; margin: 4rem auto 0; }
+
+  .post-back { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 0.875rem; margin-bottom: 2rem; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 999px; color: rgba(255, 255, 255, 0.6); font-size: 0.75rem; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+  .post-back:hover { color: var(--color-marvel-gold); border-color: rgba(248, 180, 0, 0.4); background: rgba(248, 180, 0, 0.08); }
+
+  .post-cat-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.75rem; }
+  .post-cat { padding: 0.25rem 0.75rem; background: rgba(248, 180, 0, 0.1); border: 1px solid rgba(248, 180, 0, 0.3); border-radius: 999px; color: var(--color-marvel-gold); font-family: var(--font-mono); font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
+  .post-cat-sep { color: rgba(255, 255, 255, 0.2); }
+  .post-date, .post-read { color: rgba(255, 255, 255, 0.4); font-size: 0.7rem; }
+
+  .post-title { font-weight: 900; font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1; letter-spacing: -0.025em; color: #FFFFFF; margin: 0 0 1.25rem; }
+  .post-lead { font-size: clamp(1.05rem, 1.4vw, 1.25rem); line-height: 1.6; color: rgba(255, 255, 255, 0.6); margin: 0 0 2rem; }
+
+  .post-author { display: flex; align-items: center; gap: 0.875rem; margin-bottom: 2rem; }
+  .post-author-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--color-marvel-red) 0%, var(--color-marvel-cosmic-bright) 100%); display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-weight: 900; font-size: 0.875rem; box-shadow: 0 8px 16px -4px rgba(237, 29, 36, 0.4); }
+  .post-author-name { font-size: 0.9375rem; font-weight: 600; color: #FFFFFF; margin: 0; }
+  .post-author-role { font-size: 0.7rem; color: rgba(255, 255, 255, 0.4); margin: 0; }
+
+  .post-divider { display: flex; align-items: center; gap: 0.75rem; margin: 2rem 0; }
+  .post-divider-bar { flex: 1; height: 1px; background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.15) 50%, transparent 100%); }
+  .post-divider-diamond { color: var(--color-marvel-gold); font-size: 0.625rem; }
+
+  .post-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin: 2.5rem 0; padding: 1rem 1.25rem; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 0.625rem; }
+  .post-tags-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; margin-right: 0.5rem; }
+  .post-tag { padding: 0.25rem 0.625rem; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 999px; color: rgba(255, 255, 255, 0.55); font-size: 0.7rem; text-decoration: none; transition: all 0.2s; }
+  .post-tag:hover { background: rgba(248, 180, 0, 0.1); border-color: rgba(248, 180, 0, 0.3); color: var(--color-marvel-gold); }
+
+  .post-cta { position: relative; margin: 3rem 0; padding: 0; border-radius: 1rem; overflow: hidden; background: linear-gradient(135deg, rgba(237, 29, 36, 0.08) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(248, 180, 0, 0.08) 100%); border: 1px solid rgba(237, 29, 36, 0.25); }
+  .post-cta-bg { position: absolute; inset: 0; background: radial-gradient(circle at 20% 30%, rgba(237, 29, 36, 0.12) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(248, 180, 0, 0.1) 0%, transparent 50%); pointer-events: none; }
+  .post-cta-content { position: relative; z-index: 1; padding: 2.5rem 2rem; text-align: center; }
+  .post-cta-title { font-weight: 900; font-size: clamp(1.5rem, 2.5vw, 2rem); line-height: 1.05; color: #FFFFFF; margin: 0 0 1rem; letter-spacing: -0.015em; }
+  .post-cta-desc { font-size: 1rem; line-height: 1.5; color: rgba(255, 255, 255, 0.6); max-width: 32rem; margin: 0 auto 1.5rem; }
+  .post-cta-buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
+  .post-cta-btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 1.5rem; background: #FFFFFF; color: #0a0a0a; border: none; border-radius: 999px; font-size: 0.875rem; font-weight: 600; text-decoration: none; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+  .post-cta-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 12px 24px -4px rgba(255, 255, 255, 0.2); }
+  .post-cta-btn-ghost { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 1.5rem; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(12px); color: #FFFFFF; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 999px; font-size: 0.875rem; font-weight: 500; text-decoration: none; transition: background 0.2s, border-color 0.2s; }
+  .post-cta-btn-ghost:hover { background: rgba(0, 0, 0, 0.6); border-color: rgba(255, 255, 255, 0.3); }
+  .magnetic { transition: transform 0.3s var(--ease-marvel); }
+
+  @media (max-width: 1279px) { .post-sidebar { order: 1; max-width: 100%; } .post-article { order: 2; max-width: 100%; } }
+  @media (max-width: 640px) { .post-page { padding: 7rem 1rem 2rem; } .post-cta-content { padding: 2rem 1.25rem; } }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+
+  const magneticEls = document.querySelectorAll<HTMLElement>('.post-cta [data-magnetic]');
+  magneticEls.forEach((el) => {
+    el.addEventListener('mousemove', (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      gsap.to(el, { x: x * 0.2, y: y * 0.2, duration: 0.35, ease: 'power2.out' });
+    });
+    el.addEventListener('mouseleave', () => {
+      gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
+    });
+  });
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const header = document.querySelector<HTMLElement>('[data-post-header]');
+  const cta = document.querySelector<HTMLElement>('[data-post-cta]');
+  const tags = document.querySelector<HTMLElement>('[data-post-tags]');
+
+  if (prefersReducedMotion) {
+    if (header) gsap.set(header, { opacity: 1, y: 0 });
+    if (cta) gsap.set(cta, { opacity: 1, y: 0 });
+    if (tags) gsap.set(tags, { opacity: 1, y: 0 });
+  } else {
+    if (header) {
+      gsap.fromTo('[data-post-cat]', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, delay: 0.1 });
+      gsap.fromTo('[data-post-date]', { opacity: 0 }, { opacity: 1, duration: 0.5, delay: 0.2 });
+      gsap.fromTo('[data-post-read]', { opacity: 0 }, { opacity: 1, duration: 0.5, delay: 0.3 });
+      gsap.fromTo('[data-post-title]', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, delay: 0.3, ease: 'expo.out' });
+      gsap.fromTo('[data-post-lead]', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, delay: 0.5 });
+      gsap.fromTo('[data-post-author]', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, delay: 0.6 });
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            gsap.fromTo(entry.target, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    if (cta) observer.observe(cta);
+    if (tags) observer.observe(tags);
+  }
+</script>

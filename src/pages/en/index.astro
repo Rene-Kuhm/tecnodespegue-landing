@@ -1,0 +1,85 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import ProgressBar from '../../components/ProgressBar.astro';
+import CustomCursor from '../../components/CustomCursor.astro';
+import LoadingScreen from '../../components/LoadingScreen.astro';
+import PageTransition from '../../components/PageTransition.astro';
+import Hero from '../../components/Hero.astro';
+import HeroMobile from '../../components/HeroMobile.astro';
+import TrustSignals from '../../components/TrustSignals.astro';
+import Services from '../../components/Services.astro';
+import Portfolio from '../../components/Portfolio.astro';
+import Refactor from '../../components/Refactor.astro';
+import Why from '../../components/Why.astro';
+import Tech from '../../components/Tech.astro';
+import CTA from '../../components/CTA.astro';
+import Footer from '../../components/Footer.astro';
+import ScrollReveal from '../../components/ScrollReveal.astro';
+import CompileReveal from '../../components/CompileReveal.astro';
+---
+
+<Layout
+  title="TecnoDespegue | Fullstack Development & AI Automation"
+  description="Custom software engineering, AI automation, and scalable solutions. We build high-performance web apps, cross-platform mobile apps, and intelligent workflows."
+  path="/"
+  locale="en"
+>
+  <LoadingScreen />
+  <PageTransition />
+  <ProgressBar />
+  <CustomCursor />
+  <Nav locale="en" />
+
+  <main id="contenido">
+    <HeroMobile />
+    <div class="hero-desktop-wrap">
+      <Hero />
+    </div>
+
+    <ScrollReveal>
+      <TrustSignals />
+    </ScrollReveal>
+
+    <CompileReveal sectionName="Servicios" importPath="@components/Services.astro">
+      <Services />
+    </CompileReveal>
+
+    <CompileReveal sectionName="Portafolio" importPath="@components/Portfolio.astro">
+      <Portfolio />
+    </CompileReveal>
+
+    <CompileReveal sectionName="Optimización" importPath="@components/Refactor.astro">
+      <Refactor />
+    </CompileReveal>
+
+    <CompileReveal sectionName="PorQué" importPath="@components/Why.astro">
+      <Why />
+    </CompileReveal>
+
+    <CompileReveal sectionName="Tecnologías" importPath="@components/Tech.astro">
+      <Tech />
+    </CompileReveal>
+
+    <CompileReveal sectionName="Contacto" importPath="@components/CTA.astro">
+      <CTA />
+    </CompileReveal>
+  </main>
+
+  <Footer locale="en" />
+</Layout>
+
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .hero-desktop-wrap {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .hero-desktop-wrap {
+      display: block;
+    }
+  }
+</style>

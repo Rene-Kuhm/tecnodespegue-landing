@@ -1,0 +1,192 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import { useTranslations, localizedPath, type Locale } from '../../i18n';
+
+const locale: Locale = 'en';
+const t = useTranslations(locale);
+const lastUpdated = "April 24, 2026";
+---
+
+<Layout
+  title="Privacy Policy | TecnoDespegue"
+  description="Privacy policy and personal data handling of TecnoDespegue, in compliance with Argentina's Personal Data Protection Law 25.326."
+  path="/en/privacidad"
+  locale={locale}
+>
+  <Nav locale={locale} />
+
+  <main id="contenido" class="pt-24 pb-20">
+    <div class="max-w-3xl mx-auto px-8">
+
+      <div class="mb-12">
+        <span class="text-xs font-mono text-[var(--color-marvel-gold)] uppercase tracking-[0.4em] mb-4 block">{t.privacy.badge}</span>
+        <h1 class="font-display text-4xl font-black text-white mb-4">
+          {t.privacy.title}
+        </h1>
+        <p class="text-[rgba(255,255,255,0.5)] text-sm font-mono">
+          {t.privacy.lastUpdated}{lastUpdated}
+        </p>
+      </div>
+
+      <div class="space-y-10 text-[rgba(255,255,255,0.7)] leading-relaxed text-[1.0625rem]">
+
+        <section>
+          <h2 class="font-display text-xl font-black text-white mb-3">1. Data Controller</h2>
+          <p>
+            The data controller for personal data collected through this website is:
+          </p>
+          <ul class="mt-3 space-y-1 text-sm font-mono border-l-2 border-[rgba(237,29,36,0.3)] pl-4">
+            <li><span class="text-[var(--color-marvel-gold)]">Owner:</span> René Kuhm</li>
+            <li><span class="text-[var(--color-marvel-gold)]">Brand:</span> TecnoDespegue</li>
+            <li><span class="text-[var(--color-marvel-gold)]">Address:</span> Eduardo Castex, La Pampa, Argentina</li>
+            <li><span class="text-[var(--color-marvel-gold)]">Email:</span> renekuhm2@gmail.com</li>
+            <li><span class="text-[var(--color-marvel-gold)]">Website:</span> https://www.tecnodespegue.com</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-black text-white mb-3">2. Applicable Legal Framework</h2>
+          <p>
+            This policy is governed by <strong class="text-white">Argentina's Personal Data Protection Law No. 25.326</strong> and its regulatory decree 1558/2001, as well as the provisions of the Agency for Access to Public Information (AAIP). To the extent applicable, the principles of the EU General Data Protection Regulation (GDPR) are also considered.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-black text-white mb-3">3. Data We Collect</h2>
+          <p class="mb-4">We only collect data that you voluntarily provide through our contact form:</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm border border-white/10 rounded-[0.625rem]">
+              <thead>
+                <tr class="bg-[rgba(255,255,255,0.04)]">
+                  <th class="text-left px-4 py-3 text-white font-bold">Data</th>
+                  <th class="text-left px-4 py-3 text-white font-bold">Required</th>
+                  <th class="text-left px-4 py-3 text-white font-bold">Purpose</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/5">
+                <tr><td class="px-4 py-3 font-mono text-xs text-[var(--color-marvel-gold)]">Name</td><td class="px-4 py-3">Yes</td><td class="px-4 py-3">Identification for response</td></tr>
+                <tr><td class="px-4 py-3 font-mono text-xs text-[var(--color-marvel-gold)]">Email</td><td class="px-4 py-3">Yes</td><td class="px-4 py-3">Reply channel for inquiries</td></tr>
+                <tr><td class="px-4 py-3 font-mono text-xs text-[var(--color-marvel-gold)]">Company</td><td class="px-4 py-3">No</td><td class="px-4 py-3">Project context</td></tr>
+                <tr><td class="px-4 py-3 font-mono text-xs text-[var(--color-marvel-gold)]">Project description</td><td class="px-4 py-3">Yes</td><td class="px-4 py-3">Inquiry evaluation</td></tr>
+                <tr><td class="px-4 py-3 font-mono text-xs text-[var(--color-marvel-gold)]">Estimated budget</td><td class="px-4 py-3">No</td><td class="px-4 py-3">Proposal orientation</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mt-4 text-sm">
+            We do not collect sensitive data (health, ethnicity, religion, sexual orientation, biometric data, or criminal records).
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-black text-white mb-3">4. Purpose and Legal Basis for Processing</h2>
+          <p>
+            The data collected is used exclusively to <strong class="text-white">respond to your commercial inquiry</strong> and evaluate the possibility of initiating a service relationship. The legal basis for processing is the <strong class="text-white">data subject's consent</strong>, provided by completing and submitting the contact form.
+          </p>
+          <p class="mt-3">
+            We do not use your data for unsolicited advertising, automated profiling, nor do we share it with third parties for commercial purposes.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-black text-white mb-3">5. Data Recipients</h2>
+          <p class="mb-3">Form data is processed by the following services:</p>
+          <ul class="space-y-2 text-sm">
+            <li class="flex gap-3"><span class="text-[var(--color-marvel-gold)] font-mono shrink-0">Formspree</span><span>Form provider (US). Policy: <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener noreferrer" class="text-[var(--color-marvel-gold)] hover:underline">formspree.io/legal/privacy-policy</a></span></li>
+            <li class="flex gap-3"><span class="text-[var(--color-marvel-gold)] font-mono shrink-0">Vercel</span><span>Website hosting (US). Policy: <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" class="text-[var(--color-marvel-gold)] hover:underline">vercel.com/legal/privacy-policy</a></span></li>
+            <li class="flex gap-3"><span class="text-[var(--color-marvel-gold)] font-mono shrink-0">Plausible Analytics</span><span>Web analytics without cookies, servers in the EU. Policy: <a href="https://plausible.io/privacy" target="_blank" rel="noopener noreferrer" class="text-[var(--color-marvel-gold)] hover:underline">plausible.io/privacy</a></span></li>
+          </ul>
+          <p class="mt-4 text-sm">
+            We do not sell, rent, or share your data with third parties for purposes other than those indicated.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-black text-white mb-3">6. Data Retention</h2>
+          <p>
+            Contact form data is retained for the time necessary to manage the inquiry and, if a commercial relationship begins, for the duration of that relationship plus the applicable legal prescription periods in Argentina (<strong class="text-white">up to 5 years</strong>). Once the purpose is fulfilled, data is securely deleted.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-black text-white mb-3">7. Data Subject Rights (ARCO Rights)</h2>
+          <p class="mb-4">Under Law 25.326, you have the right to:</p>
+          <div class="grid sm:grid-cols-2 gap-3">
+            {[
+              { letra: "A", nombre: "Access", desc: "Know what data we have stored about you." },
+              { letra: "R", nombre: "Rectification", desc: "Correct inaccurate or incomplete data." },
+              { letra: "C", nombre: "Cancellation", desc: "Request deletion of your data." },
+              { letra: "O", nombre: "Opposition", desc: "Object to processing under certain circumstances." },
+            ].map(({ letra, nombre, desc }) => (
+              <div class="flex gap-3 bg-[rgba(255,255,255,0.02)] p-4 rounded-[0.625rem] border border-white/5">
+                <span class="text-2xl font-display font-black text-[var(--color-marvel-gold)] shrink-0">{letra}</span>
+                <div>
+                  <p class="font-bold text-white text-sm">{nombre}</p>
+                  <p class="text-xs mt-1">{desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p class="mt-4 text-sm">
+            To exercise any of these rights, send an email to <a href="mailto:renekuhm2@gmail.com" class="text-[var(--color-marvel-gold)] hover:underline">renekuhm2@gmail.com</a> stating your name, the right you wish to exercise, and the data concerned. We will respond within a maximum of <strong class="text-white">10 business days</strong>.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-black text-white mb-3">8. Cookies and Analytics</h2>
+          <p>
+            This site uses <strong class="text-white">Plausible Analytics</strong>, which <strong class="text-white">does not use cookies</strong>, does not track users across sites, and does not store personally identifiable data. As it does not use tracking or advertising cookies, this site does not require a consent banner under applicable regulations.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-black text-white mb-3">9. Security</h2>
+          <p>
+            We adopt technical and organizational measures to protect your data. Communication between your browser and this site is encrypted via <strong class="text-white">HTTPS/TLS</strong>. Form data is transmitted securely through Formspree.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-black text-white mb-3">10. International Transfers</h2>
+          <p>
+            Some providers (Formspree, Vercel) operate from the United States. Plausible Analytics processes data on servers located within the European Union.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-black text-white mb-3">11. Minors</h2>
+          <p>
+            This website is aimed at businesses and professionals. We do not knowingly collect personal data from minors under 18 years of age.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-black text-white mb-3">12. Policy Updates</h2>
+          <p>
+            We may occasionally update this policy. The last updated date will always be indicated at the top of this document.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-black text-white mb-3">13. Contact</h2>
+          <p>For any questions related to this policy:</p>
+          <div class="mt-3 font-mono text-sm border-l-2 border-[rgba(237,29,36,0.3)] pl-4 space-y-1">
+            <p><span class="text-[var(--color-marvel-gold)]">Email:</span> renekuhm2@gmail.com</p>
+            <p><span class="text-[var(--color-marvel-gold)]">WhatsApp:</span> <a href="https://wa.me/5492334409838" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-marvel-gold)] transition-colors">+54 9 2334 409838</a></p>
+          </div>
+        </section>
+
+      </div>
+
+      <div class="mt-16 pt-8 border-t border-white/5">
+        <a href={localizedPath('/', locale)} class="inline-flex items-center gap-2 text-sm text-[rgba(255,255,255,0.5)] hover:text-[var(--color-marvel-gold)] transition-colors font-mono">
+          {t.privacy.back}
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <Footer locale={locale} />
+</Layout>

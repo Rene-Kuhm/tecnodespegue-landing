@@ -7,6 +7,7 @@ category: "Desarrollo"
 tags: ["typescript", "javascript", "patterns", "best-practices", "frontend"]
 readTime: 7
 image: "/og-image.png"
+locale: es
 seo:
   title: "TypeScript tips reales de producción (no son los típicos)"
   description: "Patrones de TypeScript que aplico en proyectos reales. Discriminated unions, utility types, exhaustive checks y refactors seguros."

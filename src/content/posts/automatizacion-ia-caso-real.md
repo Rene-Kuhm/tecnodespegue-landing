@@ -8,6 +8,7 @@ tags: ["ia", "automatización", "n8n", "python", "productividad"]
 readTime: 6
 featured: false
 image: "/og-image.png"
+locale: es
 seo:
   title: "Automatización IA: de 40 a 4 horas semanales — Caso real"
   description: "Cómo construí un pipeline con IA que procesa leads, responde emails y genera reportes automáticamente. Ahorro real de 36 horas semanales."

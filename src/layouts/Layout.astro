@@ -1,12 +1,17 @@
 ---
 import '../styles/global.css';
 import { siteConfig } from '../config/site.config';
+import { useTranslations, localeConfig, type Locale } from '../i18n';
 
 interface Props {
   title: string;
   description?: string;
   noindex?: boolean;
   ogImage?: string;
+  /** Locale de la página: 'es' (default) o 'en' */
+  locale?: Locale;
+  /** URL path para generar hreflang alternates. Ej: '/blog', '/privacidad' */
+  path?: string;
 }
 
 const {
@@ -14,12 +19,23 @@ const {
   description = siteConfig.description,
   noindex = false,
   ogImage: customOgImage,
+  locale = 'es',
+  path = Astro.url.pathname,
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const t = useTranslations(locale);
+const cfg = localeConfig[locale];
+
+const canonicalURL = new URL(path, Astro.site);
 const ogImage = new URL(customOgImage || siteConfig.ogImage, Astro.site);
 const plausibleDomain = siteConfig.plausible.domain || Astro.site?.hostname || canonicalURL.hostname;
-const tiktokPixelId = siteConfig.tiktokPixel.id;
+
+// Generate alternate URL for the other locale
+const alternateLocale: Locale = locale === 'es' ? 'en' : 'es';
+const alternatePath = locale === 'es'
+  ? `/en${path}`
+  : (path.startsWith('/en') ? path.replace(/^\/en/, '') || '/' : path);
+const alternateURL = new URL(alternatePath, Astro.site).toString();
 
 const organizationSchema = {
   "@context": "https://schema.org",
@@ -85,12 +101,12 @@ const professionalServiceSchema = {
 ---
 
 <!doctype html>
-<html lang="es" class="dark" data-tt-pixel={siteConfig.tiktokPixel.enabled ? siteConfig.tiktokPixel.id : undefined} data-plausible-domain={siteConfig.plausible.enabled && import.meta.env.PROD ? plausibleDomain : undefined}>
+<html lang={cfg.htmlLang} class="dark" data-tt-pixel={siteConfig.tiktokPixel.enabled ? siteConfig.tiktokPixel.id : undefined} data-plausible-domain={siteConfig.plausible.enabled && import.meta.env.PROD ? plausibleDomain : undefined}>
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -98,7 +114,7 @@ const professionalServiceSchema = {
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="TecnoDespegue" />
     <link rel="manifest" href="/site.webmanifest" />
-    
+
     <!-- Local @fontsource-variable fonts cargan vía @font-face (no necesitan preconnect a gstatic/googleapis)
          Solo pre-cargamos la fuente crítica: Space Grotesk (la usa el body + 90% de la UI).
          Inter y las display fonts (Big Shoulders / Bangers) solo se usan en títulos grandes
@@ -112,27 +128,33 @@ const professionalServiceSchema = {
 
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
+
+    <!-- Hreflang alternates for i18n -->
+    <link rel="alternate" hreflang="es-AR" href={canonicalURL} />
+    <link rel="alternate" hreflang="en-US" href={alternateURL} />
+    <link rel="alternate" hreflang="x-default" href={canonicalURL} />
+
     {noindex && <meta name="robots" content="noindex, nofollow" />}
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:locale" content="es_AR" />
-    
+    <meta property="og:locale" content={cfg.ogLocale} />
+
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
-    
+
     <!-- Keywords -->
     <meta name="keywords" content="desarrollo web, automatización IA, fullstack, typescript, react, node.js, inteligencia artificial, flujos de trabajo, argentina" />
     <meta name="author" content="TecnoDespegue" />
-    
+
     <!-- Generator -->
     <meta name="generator" content={Astro.generator} />
 
@@ -152,7 +174,7 @@ const professionalServiceSchema = {
     <slot name="head" />
   </head>
   <body>
-    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <a class="skip-link" href="#contenido">{t.meta.skipToContent}</a>
 
     <!-- Lenis + Scroll animations bootstrap. Deferido al primer idle
          para no competir con el critical path. -->

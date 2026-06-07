@@ -4,6 +4,9 @@ import { glob } from 'astro/loaders';
 const posts = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/posts' }),
   schema: z.object({
+    // Locale del post. Posts en `src/content/posts/*.md` son 'es';
+    // posts en `src/content/posts/en/*.md` son 'en'.
+    locale: z.enum(['es', 'en']).default('es'),
     title: z.string().max(100, 'El título no puede exceder 100 caracteres'),
     description: z.string().max(200, 'La descripción no puede exceder 200 caracteres'),
     date: z.coerce.date(),

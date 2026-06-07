@@ -8,20 +8,37 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: process.env.PUBLIC_SITE_URL || 'https://www.tecnodespegue.com',
-  // output: 'static' es el default en Astro 6 — los endpoints con `prerender = false`
-  // se sirven como serverless functions en Vercel automáticamente
   adapter: vercel({
     imageService: true,
     webAnalytics: { enabled: false },
   }),
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      i18n: {
+        defaultLocale: 'es',
+        locales: {
+          es: 'es-AR',
+          en: 'en-US',
+        },
+      },
+    }),
+  ],
+  // i18n — ES en raíz, EN bajo /en/. El defaultLocale NO se prefija para
+  // preservar el SEO de las URLs ya indexadas en Google.
+  i18n: {
+    locales: ['es', 'en'],
+    defaultLocale: 'es',
+    routing: {
+      prefixDefaultLocale: false,
+      redirectToDefaultLocale: false,
+    },
+  },
   build: {
     compressHTML: true,
   },
   vite: {
     plugins: [
       tailwindcss(),
-      // Inject security headers in dev server
       {
         name: 'security-headers',
         configureServer(server) {
