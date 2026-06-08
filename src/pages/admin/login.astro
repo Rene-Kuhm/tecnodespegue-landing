@@ -1,0 +1,163 @@
+---
+/**
+ * /admin/login
+ * Pagina de login. Publica (no requiere sesion), pero si ya hay sesion
+ * redirige a /admin/.
+ */
+export const prerender = false;
+
+import { isAdminEnabled, isAdminPasswordConfigured } from '../../lib/auth';
+
+// Si admin no esta habilitado, el middleware ya dio 404. Esto es por si
+// alguien lo accede sin pasar por el middleware (caso edge).
+if (!isAdminEnabled() || !isAdminPasswordConfigured()) {
+  return Astro.redirect('/');
+}
+
+const url = Astro.url;
+const next = url.searchParams.get('next') ?? '/admin/';
+---
+
+<!doctype html>
+<html lang="es" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin — TecnoDespegue</title>
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style is:global>
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0; padding: 0;
+        background: #0a0a0a;
+        color: #fff;
+        font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+        min-height: 100vh;
+        display: flex; align-items: center; justify-content: center;
+      }
+      .login-wrap {
+        width: 100%; max-width: 22rem;
+        padding: 2rem;
+      }
+      .login-card {
+        background: rgba(20, 20, 20, 0.8);
+        border: 1px solid rgba(248, 180, 0, 0.2);
+        border-radius: 0.75rem;
+        padding: 2rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      }
+      .login-mark {
+        display: flex; align-items: center; gap: 0.4rem;
+        margin-bottom: 1.5rem;
+        font-weight: 800; letter-spacing: 0.15em; font-size: 0.9rem;
+      }
+      .login-mark span:first-child { color: #ED1D24; }
+      .login-mark span:last-child { color: #F8B400; }
+      h1 { font-size: 1.25rem; margin: 0 0 0.5rem; }
+      .sub { color: rgba(255,255,255,0.5); font-size: 0.8rem; margin: 0 0 1.5rem; }
+      label { display: block; font-size: 0.7rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+      input {
+        width: 100%; padding: 0.75rem 0.875rem;
+        background: rgba(0,0,0,0.5);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 0.5rem;
+        color: #fff; font-size: 0.9rem;
+        font-family: ui-monospace, SFMono-Regular, monospace;
+      }
+      input:focus { outline: none; border-color: rgba(248, 180, 0, 0.5); }
+      button {
+        width: 100%; margin-top: 1.25rem;
+        padding: 0.75rem 1rem;
+        background: linear-gradient(135deg, #ED1D24 0%, #B91C1C 100%);
+        color: #fff; font-weight: 700; font-size: 0.85rem;
+        letter-spacing: 0.05em; text-transform: uppercase;
+        border: none; border-radius: 0.5rem;
+        cursor: pointer;
+        font-family: inherit;
+      }
+      button:hover:not(:disabled) { box-shadow: 0 0 24px rgba(237, 29, 36, 0.4); }
+      button:disabled { opacity: 0.5; cursor: not-allowed; }
+      .err {
+        margin-top: 1rem; padding: 0.75rem;
+        background: rgba(237, 29, 36, 0.1);
+        border: 1px solid rgba(237, 29, 36, 0.3);
+        border-radius: 0.5rem;
+        color: #FFC0C2; font-size: 0.8rem;
+        display: none;
+      }
+      .err.shown { display: block; }
+    </style>
+  </head>
+  <body>
+    <div class="login-wrap">
+      <div class="login-card">
+        <div class="login-mark">
+          <span>TD</span>
+          <span style="color: #fff; margin-left: 0.5rem;">ADMIN</span>
+        </div>
+        <h1>Acceso al dashboard</h1>
+        <p class="sub">Iniciá sesión para gestionar los posts del blog.</p>
+        <form id="login-form">
+          <label for="password">Contraseña</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            autocomplete="current-password"
+            autofocus
+            required
+            minlength="8"
+          />
+          <button type="submit" id="submit-btn">Ingresar</button>
+          <div class="err" id="error" role="alert"></div>
+        </form>
+      </div>
+    </div>
+    <script define:vars={{ next }}>
+      const form = document.getElementById('login-form');
+      const btn = document.getElementById('submit-btn');
+      const err = document.getElementById('error');
+      const input = document.getElementById('password');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        err.classList.remove('shown');
+        err.textContent = '';
+        btn.disabled = true;
+        btn.textContent = 'Verificando...';
+        try {
+          const res = await fetch('/admin/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: input.value, next }),
+          });
+          if (res.status === 429) {
+            err.textContent = 'Demasiados intentos. Esperá 15 minutos.';
+            err.classList.add('shown');
+            return;
+          }
+          if (res.status === 401) {
+            err.textContent = 'Contraseña incorrecta.';
+            err.classList.add('shown');
+            input.select();
+            return;
+          }
+          if (!res.ok) {
+            err.textContent = 'Error. Intentá de nuevo.';
+            err.classList.add('shown');
+            return;
+          }
+          const data = await res.json();
+          window.location.href = data.next || '/admin/';
+        } catch {
+          err.textContent = 'Error de red. Intentá de nuevo.';
+          err.classList.add('shown');
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Ingresar';
+        }
+      });
+    </script>
+  </body>
+</html>

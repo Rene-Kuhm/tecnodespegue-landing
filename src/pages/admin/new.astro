@@ -1,0 +1,29 @@
+---
+/**
+ * /admin/new — Form para crear un nuevo post.
+ */
+export const prerender = false;
+
+import { getCollection } from 'astro:content';
+import PostEditor from '../../components/admin/PostEditor.astro';
+import AdminLayout from '../../layouts/admin/AdminLayout.astro';
+
+const csrfToken = Array.from(crypto.getRandomValues(new Uint8Array(24)))
+  .map(b => b.toString(16).padStart(2, '0')).join('');
+
+const all = await getCollection('posts');
+const categories = [...new Set(all.map(p => p.data.category))].sort();
+const tags = [...new Set(all.flatMap(p => p.data.tags ?? []))].sort();
+---
+
+<AdminLayout title="Nuevo post" csrfToken={csrfToken}>
+  <header class="page-head">
+    <h1>Nuevo post</h1>
+  </header>
+  <PostEditor post={null} categories={categories} tags={tags} csrfToken={csrfToken} />
+</AdminLayout>
+
+<style>
+  .page-head { margin-bottom: 1.5rem; }
+  .page-head h1 { margin: 0; font-size: 1.5rem; }
+</style>

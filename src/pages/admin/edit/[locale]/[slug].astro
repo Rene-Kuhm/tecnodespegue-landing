@@ -1,0 +1,82 @@
+---
+/**
+ * /admin/edit/[locale]/[slug] — Editar un post existente.
+ */
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import PostEditor from '../../../../components/admin/PostEditor.astro';
+import AdminLayout from '../../../../layouts/admin/AdminLayout.astro';
+
+export const prerender = false;
+
+const { locale, slug } = Astro.params;
+if (!locale || !slug || (locale !== 'es' && locale !== 'en')) {
+  return new Response('Not found', { status: 404 });
+}
+
+const all = await getCollection('posts');
+const post = all.find(p => {
+  const pSlug = p.id.replace(/^en\//, '');
+  return pSlug === slug && (p.data.locale ?? 'es') === locale;
+});
+
+if (!post) {
+  return new Response('Not found', { status: 404 });
+}
+
+// Leer el archivo raw para extraer el body (sin frontmatter)
+const dir = locale === 'en' ? 'src/content/posts/en' : 'src/content/posts';
+const filePath = join(process.cwd(), dir, `${slug}.md`);
+let rawContent = '';
+try {
+  rawContent = await readFile(filePath, 'utf-8');
+} catch (err) {
+  return new Response(`Failed to read post: ${err}`, { status: 500 });
+}
+
+// Separar frontmatter del body
+const fmMatch = rawContent.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+const body = fmMatch ? fmMatch[2].trim() : rawContent;
+
+const categories = [...new Set(all.map(p => p.data.category))].sort();
+const tags = [...new Set(all.flatMap(p => p.data.tags ?? []))].sort();
+
+const csrfToken = Array.from(crypto.getRandomValues(new Uint8Array(24)))
+  .map(b => b.toString(16).padStart(2, '0')).join('');
+
+const postData = {
+  id: post.id,
+  slug: post.id.replace(/^en\//, ''),
+  locale: (post.data.locale ?? 'es') as 'es' | 'en',
+  title: post.data.title,
+  description: post.data.description,
+  date: post.data.date,
+  author: post.data.author ?? 'René Kuhm',
+  category: post.data.category,
+  tags: post.data.tags ?? [],
+  readTime: post.data.readTime,
+  featured: post.data.featured ?? false,
+  draft: post.data.draft ?? false,
+  image: post.data.image,
+  seoTitle: post.data.seo?.title,
+  seoDescription: post.data.seo?.description,
+  body,
+};
+---
+
+<AdminLayout title={`Editar: ${post.data.title}`} csrfToken={csrfToken}>
+  <header class="page-head">
+    <a href="/admin/" class="back">← Volver a la lista</a>
+    <h1>Editar post</h1>
+  </header>
+  <PostEditor post={postData} categories={categories} tags={tags} csrfToken={csrfToken} />
+</AdminLayout>
+
+<style>
+  .page-head { margin-bottom: 1.5rem; }
+  .back { display: inline-block; color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.8rem; margin-bottom: 0.5rem; }
+  .back:hover { color: #fff; }
+  .page-head h1 { margin: 0; font-size: 1.5rem; }
+</style>

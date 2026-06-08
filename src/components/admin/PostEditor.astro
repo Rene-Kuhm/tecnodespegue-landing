@@ -1,0 +1,299 @@
+---
+/**
+ * src/components/admin/PostEditor.astro
+ * Form compartido para crear/editar posts.
+ * Props: post (null para nuevo, objeto con data para editar), categories, tags, csrfToken
+ */
+interface Props {
+  post?: {
+    id: string;
+    locale: 'es' | 'en';
+    title: string;
+    description: string;
+    date: string;
+    author: string;
+    category: string;
+    tags: string[];
+    readTime?: number;
+    featured: boolean;
+    draft: boolean;
+    image?: string;
+    seoTitle?: string;
+    seoDescription?: string;
+    body: string;
+  } | null;
+  categories: string[];
+  tags: string[];
+  csrfToken: string;
+}
+
+const { post, categories, tags, csrfToken } = Astro.props;
+const isEdit = !!post;
+const today = new Date().toISOString().slice(0, 10);
+---
+
+<form id="post-form" class="post-form" data-mode={isEdit ? 'edit' : 'new'}>
+  <input type="hidden" name="csrfToken" value={csrfToken} />
+  {isEdit && <input type="hidden" name="id" value={post!.slug} />}
+
+  <div class="grid-2">
+    <div class="field">
+      <label for="locale">Idioma</label>
+      <select id="locale" name="locale" required>
+        <option value="es" selected={post?.locale === 'es' || (!post)}>Español</option>
+        <option value="en" selected={post?.locale === 'en'}>English</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="date">Fecha</label>
+      <input type="date" id="date" name="date" required
+        value={post?.date.slice(0, 10) ?? today}
+      />
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="title">Título *</label>
+    <input type="text" id="title" name="title" required minlength="4" maxlength="100"
+      value={post?.title ?? ''}
+      placeholder="Cómo automatizar X con IA"
+    />
+    <span class="hint" id="slug-hint"></span>
+  </div>
+
+  <div class="field">
+    <label for="description">Descripción (para SEO y cards) *</label>
+    <textarea id="description" name="description" required minlength="20" maxlength="200" rows="2"
+      placeholder="Resumen de 1-2 oraciones. Aparece en la card del blog y en Google.">{post?.description ?? ''}</textarea>
+    <span class="hint"><span id="desc-count">0</span>/200</span>
+  </div>
+
+  <div class="grid-2">
+    <div class="field">
+      <label for="category">Categoría *</label>
+      <input type="text" id="category" name="category" required list="categories-list"
+        value={post?.category ?? ''}
+        placeholder="Estrategia / Automation / Development"
+      />
+      <datalist id="categories-list">
+        {categories.map(c => <option value={c} />)}
+      </datalist>
+    </div>
+    <div class="field">
+      <label for="readTime">Read time (min)</label>
+      <input type="number" id="readTime" name="readTime" min="1" max="60"
+        value={post?.readTime ?? ''}
+        placeholder="Auto si vacío"
+      />
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="tags">Tags (separados por coma)</label>
+    <input type="text" id="tags" name="tags"
+      value={post?.tags?.join(', ') ?? ''}
+      list="tags-list"
+      placeholder="typescript, patterns, best-practices"
+    />
+    <datalist id="tags-list">
+      {tags.map(t => <option value={t} />)}
+    </datalist>
+  </div>
+
+  <div class="field">
+    <label for="image">Imagen (path absoluto o vacío)</label>
+    <input type="text" id="image" name="image"
+      value={post?.image ?? ''}
+      placeholder="/og-image.png o /og-image-en.png"
+    />
+  </div>
+
+  <details class="seo-block">
+    <summary>SEO avanzado (opcional)</summary>
+    <div class="field">
+      <label for="seoTitle">SEO title (si querés override del título)</label>
+      <input type="text" id="seoTitle" name="seoTitle" maxlength="100"
+        value={post?.seoTitle ?? ''}
+      />
+    </div>
+    <div class="field">
+      <label for="seoDescription">SEO description (Google snippet)</label>
+      <textarea id="seoDescription" name="seoDescription" maxlength="200" rows="2"
+        placeholder="Si vacío, usa el campo description">{post?.seoDescription ?? ''}</textarea>
+    </div>
+  </details>
+
+  <div class="field">
+    <label for="body">Contenido (Markdown) *</label>
+    <textarea id="body" name="body" required minlength="50" rows="20"
+      placeholder="# Mi post&#10;&#10;Intro...">{post?.body ?? ''}</textarea>
+    <span class="hint"><span id="body-stats">0 palabras · 0 min lectura</span></span>
+  </div>
+
+  <div class="row">
+    <label class="check">
+      <input type="checkbox" id="featured" name="featured" checked={post?.featured ?? false} />
+      Destacado
+    </label>
+    <label class="check">
+      <input type="checkbox" id="draft" name="draft" checked={post?.draft ?? false} />
+      Borrador (no se publica)
+    </label>
+  </div>
+
+  <div class="actions">
+    <button type="submit" class="btn-primary" id="submit-btn">
+      {isEdit ? 'Guardar cambios' : 'Crear post'}
+    </button>
+    <a href="/admin/" class="btn-secondary">Cancelar</a>
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+  </div>
+</form>
+
+<style>
+  .post-form { display: flex; flex-direction: column; gap: 1.25rem; }
+  .field { display: flex; flex-direction: column; gap: 0.4rem; }
+  .field label { font-size: 0.7rem; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.1em; }
+  .field input, .field textarea, .field select {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 0.5rem;
+    color: #fff; font-size: 0.9rem;
+    padding: 0.625rem 0.75rem;
+    font-family: inherit;
+  }
+  .field textarea { font-family: ui-monospace, monospace; line-height: 1.5; resize: vertical; }
+  .field input:focus, .field textarea:focus, .field select:focus {
+    outline: none; border-color: rgba(248, 180, 0, 0.5);
+  }
+  .hint { font-size: 0.7rem; color: rgba(255,255,255,0.4); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+  .row { display: flex; gap: 1.5rem; align-items: center; }
+  .check { display: inline-flex; gap: 0.5rem; align-items: center; font-size: 0.85rem; color: rgba(255,255,255,0.7); cursor: pointer; }
+  .check input { width: auto; }
+  .seo-block {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+  }
+  .seo-block summary { cursor: pointer; font-size: 0.8rem; color: rgba(248, 180, 0, 0.8); }
+  .seo-block[open] { padding: 1rem; }
+  .seo-block[open] summary { margin-bottom: 1rem; }
+  .seo-block .field { margin-top: 0.75rem; }
+  .actions { display: flex; gap: 1rem; align-items: center; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.06); }
+  .btn-primary {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #ED1D24 0%, #B91C1C 100%);
+    color: #fff; font-weight: 700; font-size: 0.85rem;
+    border: none; border-radius: 0.5rem;
+    cursor: pointer; font-family: inherit;
+  }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-primary:hover:not(:disabled) { box-shadow: 0 0 24px rgba(237, 29, 36, 0.4); }
+  .btn-secondary {
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.7);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-size: 0.85rem;
+  }
+  .status { flex: 1; font-size: 0.8rem; color: rgba(255,255,255,0.6); }
+  .status.error { color: #FCA5A5; }
+  .status.success { color: #86EFAC; }
+</style>
+
+<script>
+  // Stats: desc count + body word count
+  const desc = document.getElementById('description');
+  const descCount = document.getElementById('desc-count');
+  if (desc && descCount) {
+    const update = () => { descCount.textContent = String(desc.value.length); };
+    desc.addEventListener('input', update);
+    update();
+  }
+
+  const body = document.getElementById('body');
+  const bodyStats = document.getElementById('body-stats');
+  if (body && bodyStats) {
+    const update = () => {
+      const words = body.value.trim().split(/\s+/).filter(Boolean).length;
+      const mins = Math.max(1, Math.ceil(words / 200));
+      bodyStats.textContent = `${words} palabras · ${mins} min lectura`;
+    };
+    body.addEventListener('input', update);
+    update();
+  }
+
+  // Slug preview
+  const title = document.getElementById('title');
+  const slugHint = document.getElementById('slug-hint');
+  if (title && slugHint) {
+    const update = () => {
+      const slug = title.value.toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9\s-]/g, '').trim()
+        .replace(/\s+/g, '-').replace(/-+/g, '-').slice(0, 80);
+      slugHint.textContent = slug ? `→ /${slug}` : '';
+    };
+    title.addEventListener('input', update);
+    update();
+  }
+
+  // Submit
+  const form = document.getElementById('post-form') as HTMLFormElement;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+  const status = document.getElementById('status');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!status) return;
+    status.className = 'status';
+    status.textContent = 'Guardando...';
+    submitBtn.disabled = true;
+
+    const fd = new FormData(form);
+    const body = {
+      id: fd.get('id') || undefined,
+      locale: fd.get('locale') as 'es' | 'en',
+      title: fd.get('title') as string,
+      description: fd.get('description') as string,
+      date: fd.get('date') as string,
+      author: 'René Kuhm',
+      category: fd.get('category') as string,
+      tags: ((fd.get('tags') as string) || '').split(',').map(s => s.trim()).filter(Boolean),
+      readTime: fd.get('readTime') ? Number(fd.get('readTime')) : undefined,
+      featured: fd.get('featured') === 'on',
+      draft: fd.get('draft') === 'on',
+      image: (fd.get('image') as string) || undefined,
+      seoTitle: (fd.get('seoTitle') as string) || undefined,
+      seoDescription: (fd.get('seoDescription') as string) || undefined,
+      body: fd.get('body') as string,
+      csrfToken: fd.get('csrfToken') as string,
+    };
+
+    try {
+      const res = await fetch('/admin/api/save-post', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        status.className = 'status error';
+        status.textContent = data.error || 'Error al guardar';
+        return;
+      }
+      status.className = 'status success';
+      status.innerHTML = `Guardado en <code>${data.filePath}</code>. ${data.detail || 'Ahora hacé git add/commit/push desde tu shell.'}`;
+    } catch (err) {
+      status.className = 'status error';
+      status.textContent = 'Error de red';
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+</script>
