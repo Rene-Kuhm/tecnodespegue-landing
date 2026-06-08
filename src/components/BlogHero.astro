@@ -3,7 +3,37 @@
  * BlogHero.astro - Marvel Edition
  * Hero cinemático del blog con glassmorphism, gradiente Marvel, y stats
  */
-const { featuredCount = 0, postCount = 0, categoryCount = 0 } = Astro.props;
+import type { Locale } from '../i18n';
+import { localeConfig } from '../i18n';
+
+interface Props {
+  featuredCount?: number;
+  postCount?: number;
+  categoryCount?: number;
+  locale?: Locale;
+}
+
+const { featuredCount = 0, postCount = 0, categoryCount = 0, locale = 'es' } = Astro.props;
+const copy = {
+  es: {
+    title: ['Pensamientos', 'técnicos', 'sin humo'],
+    subtitle: 'Experiencia real en desarrollo fullstack, automatización con IA y arquitectura de software. Sin teoría vacía, solo lo que funciona en producción.',
+    articles: 'artículos',
+    categories: 'categorías',
+    topics: 'temas',
+    updated: 'Actualizado',
+  },
+  en: {
+    title: ['Technical', 'thinking', 'no fluff'],
+    subtitle: 'Real experience in fullstack development, AI automation, and software architecture. No empty theory, only what works in production.',
+    articles: 'articles',
+    categories: 'categories',
+    topics: 'topics',
+    updated: 'Updated',
+  },
+}[locale];
+
+const month = new Date().toLocaleDateString(localeConfig[locale].dateLocale, { month: 'long', year: 'numeric' });
 ---
 
 <section class="blog-hero" data-blog-hero>
@@ -24,40 +54,39 @@ const { featuredCount = 0, postCount = 0, categoryCount = 0 } = Astro.props;
     <!-- Headline -->
     <h1 class="hero-title font-display" data-hero-title>
       <span class="title-line" data-title-line>
-        <span class="title-word">Pensamientos</span>
+        <span class="title-word">{copy.title[0]}</span>
       </span>
       <span class="title-line" data-title-line>
-        <span class="title-word title-accent">técnicos</span>
-        <span class="title-word title-muted">sin humo</span>
+        <span class="title-word title-accent">{copy.title[1]}</span>
+        <span class="title-word title-muted">{copy.title[2]}</span>
       </span>
     </h1>
 
     <!-- Subtitle -->
     <p class="hero-sub" data-hero-sub>
-      Experiencia real en desarrollo fullstack, automatización con IA y arquitectura de software.
-      Sin teoría vacía — solo lo que funciona en producción.
+      {copy.subtitle}
     </p>
 
     <!-- Stats bar -->
     <div class="hero-stats" data-hero-stats>
       <div class="stat-item">
         <span class="stat-num font-display">{postCount}</span>
-        <span class="stat-label">artículos</span>
+        <span class="stat-label">{copy.articles}</span>
       </div>
       <div class="stat-divider"></div>
       <div class="stat-item">
         <span class="stat-num font-display text-shine">{categoryCount}</span>
-        <span class="stat-label">categorías</span>
+        <span class="stat-label">{copy.categories}</span>
       </div>
       <div class="stat-divider"></div>
       <div class="stat-item stat-item-stack">
         <span class="stat-num font-display">4+</span>
-        <span class="stat-label">temas</span>
+        <span class="stat-label">{copy.topics}</span>
       </div>
       <div class="stat-divider"></div>
       <div class="stat-item stat-item-update">
-        <span class="stat-label">Actualizado</span>
-        <span class="stat-month">{new Date().toLocaleDateString('es-AR', { month: 'long', year: 'numeric' })}</span>
+        <span class="stat-label">{copy.updated}</span>
+        <span class="stat-month">{month}</span>
       </div>
     </div>
   </div>

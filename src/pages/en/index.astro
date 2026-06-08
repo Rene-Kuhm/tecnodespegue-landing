@@ -25,44 +25,44 @@ import CompileReveal from '../../components/CompileReveal.astro';
   path="/"
   locale="en"
 >
-  <LoadingScreen />
+  <LoadingScreen locale="en" />
   <PageTransition />
   <ProgressBar />
   <CustomCursor />
   <Nav locale="en" />
 
   <main id="contenido">
-    <HeroMobile />
+    <HeroMobile locale="en" />
     <div class="hero-desktop-wrap">
-      <Hero />
+      <Hero locale="en" />
     </div>
 
     <ScrollReveal>
-      <TrustSignals />
+      <TrustSignals locale="en" />
     </ScrollReveal>
 
-    <CompileReveal sectionName="Servicios" importPath="@components/Services.astro">
-      <Services />
+    <CompileReveal sectionName="Services" importPath="@components/Services.astro" locale="en">
+      <Services locale="en" />
     </CompileReveal>
 
-    <CompileReveal sectionName="Portafolio" importPath="@components/Portfolio.astro">
-      <Portfolio />
+    <CompileReveal sectionName="Portfolio" importPath="@components/Portfolio.astro" locale="en">
+      <Portfolio locale="en" />
     </CompileReveal>
 
-    <CompileReveal sectionName="Optimización" importPath="@components/Refactor.astro">
-      <Refactor />
+    <CompileReveal sectionName="Optimization" importPath="@components/Refactor.astro" locale="en">
+      <Refactor locale="en" />
     </CompileReveal>
 
-    <CompileReveal sectionName="PorQué" importPath="@components/Why.astro">
-      <Why />
+    <CompileReveal sectionName="Process" importPath="@components/Why.astro" locale="en">
+      <Why locale="en" />
     </CompileReveal>
 
-    <CompileReveal sectionName="Tecnologías" importPath="@components/Tech.astro">
-      <Tech />
+    <CompileReveal sectionName="Technologies" importPath="@components/Tech.astro" locale="en">
+      <Tech locale="en" />
     </CompileReveal>
 
-    <CompileReveal sectionName="Contacto" importPath="@components/CTA.astro">
-      <CTA />
+    <CompileReveal sectionName="Contact" importPath="@components/CTA.astro" locale="en">
+      <CTA locale="en" />
     </CompileReveal>
   </main>
 

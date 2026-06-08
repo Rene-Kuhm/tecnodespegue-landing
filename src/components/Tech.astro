@@ -5,6 +5,27 @@
  */
 
 import Icon from './Icon.astro';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale: Locale = Astro.props.locale ?? 'es';
+const copy = {
+  es: {
+    kicker: 'ARSENAL · 03',
+    title: ['Tecnologías', 'que Dominamos'],
+    lead: 'El stack que sostiene cada despegue. Las mismas herramientas que usan Netflix, Stripe y los equipos de elite — seleccionadas, dominadas, listas para producción.',
+    callout: 'Y seguimos sumando. Si tu stack no está, lo aprendemos.',
+  },
+  en: {
+    kicker: 'ARSENAL · 03',
+    title: ['Technologies', 'We Master'],
+    lead: 'The stack behind every launch. The same tools used by Netflix, Stripe, and elite teams, selected, mastered, and ready for production.',
+    callout: "And we keep adding more. If your stack is not here, we'll learn it.",
+  },
+}[locale];
 
 const technologies = [
   { name: 'React',        icon: '/tech/react.svg' },
@@ -34,14 +55,14 @@ const technologies = [
     <header class="tech-header">
       <span class="kicker">
         <span class="kicker-dot"></span>
-        <span class="kicker-text font-mono">ARSENAL · 03</span>
+        <span class="kicker-text font-mono">{copy.kicker}</span>
       </span>
       <h2 class="tech-title font-display">
-        <span class="tech-title-line">Tecnologías</span>
-        <span class="tech-title-line text-shine">que Dominamos</span>
+        <span class="tech-title-line">{copy.title[0]}</span>
+        <span class="tech-title-line text-shine">{copy.title[1]}</span>
       </h2>
       <p class="tech-lead">
-        El stack que sostiene cada despegue. Las mismas herramientas que usan Netflix, Stripe y los equipos de elite — seleccionadas, dominadas, listas para producción.
+        {copy.lead}
       </p>
     </header>
 
@@ -76,7 +97,7 @@ const technologies = [
     <div class="tech-callout-wrap">
       <div class="tech-callout">
         <span class="tech-callout-icon" aria-hidden="true">✦</span>
-        <span class="tech-callout-text font-mono">Y seguimos sumando. Si tu stack no está, lo aprendemos.</span>
+        <span class="tech-callout-text font-mono">{copy.callout}</span>
       </div>
     </div>
   </div>

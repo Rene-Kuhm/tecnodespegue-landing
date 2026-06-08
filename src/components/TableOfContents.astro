@@ -4,7 +4,8 @@
  * Tabla de contenidos con scroll-spy (highlight del heading activo)
  * Recibe `headings` array de {depth, slug, text}
  */
-const { headings = [] } = Astro.props;
+const { headings = [], locale = 'es' } = Astro.props;
+const label = locale === 'en' ? 'On this page' : 'En esta página';
 
 // Filtrar solo h2 y h3
 const items = headings.filter((h: any) => h.depth === 2 || h.depth === 3);
@@ -15,7 +16,7 @@ const items = headings.filter((h: any) => h.depth === 2 || h.depth === 3);
     <div class="toc-header">
       <span class="toc-label font-mono">
         <span class="toc-icon">◆</span>
-        En esta página
+        {label}
       </span>
     </div>
     <nav class="toc-nav">

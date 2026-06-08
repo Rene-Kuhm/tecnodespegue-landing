@@ -4,9 +4,33 @@
  * Signup con glassmorphism y validación
  */
 import { siteConfig } from '../config/site.config';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale: Locale = Astro.props.locale ?? 'es';
+const formspreeEndpoint = siteConfig.formspree.endpoint;
+const copy = {
+  es: {
+    title: ['Insights de ingeniería', 'cada 2 semanas'],
+    lead: 'Lo que aprendemos en producción, sin marketing. Deploys, decisiones arquitectónicas, postmortems, herramientas nuevas. Solo cuando hay algo que valga la pena.',
+    submit: 'Suscribirme',
+    disclaimer: 'Sin spam. Unsubscribe en 1 click. Tus datos no se comparten.',
+    success: '¡Listo! Te llegará el próximo insight.',
+  },
+  en: {
+    title: ['Engineering insights', 'every 2 weeks'],
+    lead: 'What we learn in production, without marketing fluff. Deploys, architecture decisions, postmortems, and new tools. Only when there is something worth sharing.',
+    submit: 'Subscribe',
+    disclaimer: 'No spam. One-click unsubscribe. Your data is never shared.',
+    success: 'Done. The next insight will reach your inbox.',
+  },
+}[locale];
 ---
 
-<section class="newsletter-section" data-newsletter>
+<section class="newsletter-section" data-newsletter data-formspree-endpoint={formspreeEndpoint}>
   <div class="newsletter-card">
     <!-- BG ambient -->
     <div class="nl-bg" aria-hidden="true">
@@ -23,11 +47,11 @@ import { siteConfig } from '../config/site.config';
           </svg>
         </div>
         <h2 class="nl-title font-display">
-          <span>Insights de ingeniería</span>
-          <span class="text-shine">cada 2 semanas</span>
+          <span>{copy.title[0]}</span>
+          <span class="text-shine">{copy.title[1]}</span>
         </h2>
         <p class="nl-lead">
-          Lo que aprendemos en producción, sin marketing. Deploys, decisiones arquitectónicas, postmortems, herramientas nuevas. Solo cuando hay algo que valga la pena.
+          {copy.lead}
         </p>
       </div>
 
@@ -43,20 +67,20 @@ import { siteConfig } from '../config/site.config';
             autocomplete="email"
           />
           <button type="submit" class="nl-btn magnetic" data-magnetic>
-            <span>Suscribirme</span>
+            <span>{copy.submit}</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>
         </div>
         <p class="nl-disclaimer font-mono">
-          Sin spam. Unsubscribe en 1 click. Tus datos no se comparten.
+          {copy.disclaimer}
         </p>
         <p class="nl-success" data-nl-success>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
             <path d="M5 13L9 17L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          ¡Listo! Te llegará el próximo insight.
+          {copy.success}
         </p>
       </form>
 
@@ -268,6 +292,8 @@ import { siteConfig } from '../config/site.config';
 
 <script>
   import { gsap } from 'gsap';
+  const newsletter = document.querySelector<HTMLElement>('[data-newsletter]');
+  const formspreeEndpoint = newsletter?.dataset.formspreeEndpoint || '';
 
   // Form submission
   const form = document.querySelector<HTMLFormElement>('[data-nl-form]');
@@ -290,7 +316,7 @@ import { siteConfig } from '../config/site.config';
 
       // Submit to Formspree (suscripción genérica)
       try {
-        await fetch(siteConfig.formspree.endpoint, {
+        await fetch(formspreeEndpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify({ email, type: 'newsletter_subscribe' }),

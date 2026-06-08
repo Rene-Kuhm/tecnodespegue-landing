@@ -56,9 +56,13 @@ const es = {
     lastUpdated: 'Última actualización: ',
     back: '← Volver al inicio',
   },
-} as const;
+};
 
-type UIDict = typeof es;
+type UIDict = {
+  [Section in keyof typeof es]: {
+    [Key in keyof typeof es[Section]]: string;
+  };
+};
 
 const en: UIDict = {
   nav: {

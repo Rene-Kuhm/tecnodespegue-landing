@@ -1,9 +1,9 @@
 /**
- * Format date to Spanish long format
+ * Format date to localized long format
  */
-export function formatDate(date: Date | string): string {
+export function formatDate(date: Date | string, locale = 'es-AR'): string {
   const d = typeof date === 'string' ? new Date(date) : date;
-  return new Intl.DateTimeFormat('es-AR', {
+  return new Intl.DateTimeFormat(locale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',

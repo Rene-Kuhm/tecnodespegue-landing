@@ -7,6 +7,37 @@
  */
 
 import Icon from './Icon.astro';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale: Locale = Astro.props.locale ?? 'es';
+const copy = {
+  es: {
+    kicker: 'SISTEMAS AUTÓNOMOS · 01',
+    title: ['Construí', 'el futuro', 'digital'],
+    lead: 'Software a medida, automatizaciones con IA y experiencias digitales que escalan tu negocio.',
+    primary: 'Iniciá tu Proyecto',
+    secondary: 'Ver Portfolio',
+    stats: ['Proyectos', 'PageSpeed', 'Uptime', 'Deploys/mes'],
+    status: 'SISTEMAS EN ÓRBITA',
+    contactHref: '#contacto',
+    portfolioHref: '#portfolio',
+  },
+  en: {
+    kicker: 'AUTONOMOUS SYSTEMS · 01',
+    title: ['Build', 'the digital', 'future'],
+    lead: 'Custom software, AI automation, and digital experiences that scale your business.',
+    primary: 'Start your Project',
+    secondary: 'View Portfolio',
+    stats: ['Projects', 'PageSpeed', 'Uptime', 'Deploys/mo'],
+    status: 'SYSTEMS IN ORBIT',
+    contactHref: '/en#contacto',
+    portfolioHref: '/en#portfolio',
+  },
+}[locale];
 ---
 
 <section class="hero-section" data-hero>
@@ -22,32 +53,32 @@ import Icon from './Icon.astro';
   <div class="hero-side" data-hero-side>
     <span class="side-kicker" data-hero-kicker>
       <span class="side-kicker-dot"></span>
-      <span class="side-kicker-text font-mono">SISTEMAS AUTÓNOMOS · 01</span>
+      <span class="side-kicker-text font-mono">{copy.kicker}</span>
     </span>
 
     <h1 class="side-title font-display" data-hero-title>
       <span class="side-line" data-side-line>
-        <span class="side-word">Construí</span>
+        <span class="side-word">{copy.title[0]}</span>
       </span>
       <span class="side-line" data-side-line>
-        <span class="side-word side-accent">el futuro</span>
+        <span class="side-word side-accent">{copy.title[1]}</span>
       </span>
       <span class="side-line" data-side-line>
-        <span class="side-word">digital</span>
+        <span class="side-word">{copy.title[2]}</span>
       </span>
     </h1>
 
     <p class="side-lead" data-hero-lead>
-      Software a medida, automatizaciones con IA y experiencias digitales que escalan tu negocio.
+      {copy.lead}
     </p>
 
     <div class="side-ctas" data-hero-ctas>
-      <a href="#contacto" class="side-btn-primary magnetic" data-magnetic>
+      <a href={copy.contactHref} class="side-btn-primary magnetic" data-magnetic>
         <Icon name="bolt" class="w-4 h-4" />
-        <span>Iniciá tu Proyecto</span>
+        <span>{copy.primary}</span>
       </a>
-      <a href="#portfolio" class="side-btn-ghost magnetic" data-magnetic>
-        <span>Ver Portfolio</span>
+      <a href={copy.portfolioHref} class="side-btn-ghost magnetic" data-magnetic>
+        <span>{copy.secondary}</span>
         <Icon name="arrow_forward" class="w-4 h-4" />
       </a>
     </div>
@@ -58,28 +89,28 @@ import Icon from './Icon.astro';
     <div class="bb-stats">
       <div class="bb-stat">
         <div class="bb-stat-num font-display">15<span class="bb-stat-plus">+</span></div>
-        <div class="bb-stat-label">Proyectos</div>
+        <div class="bb-stat-label">{copy.stats[0]}</div>
       </div>
       <div class="bb-divider"></div>
       <div class="bb-stat">
         <div class="bb-stat-num font-display text-shine">99<span class="bb-stat-suffix">/100</span></div>
-        <div class="bb-stat-label">PageSpeed</div>
+        <div class="bb-stat-label">{copy.stats[1]}</div>
       </div>
       <div class="bb-divider"></div>
       <div class="bb-stat">
         <div class="bb-stat-num font-display">99.9<span class="bb-stat-suffix">%</span></div>
-        <div class="bb-stat-label">Uptime</div>
+        <div class="bb-stat-label">{copy.stats[2]}</div>
       </div>
       <div class="bb-divider"></div>
       <div class="bb-stat">
         <div class="bb-stat-num font-display">38</div>
-        <div class="bb-stat-label">Deploys/mes</div>
+        <div class="bb-stat-label">{copy.stats[3]}</div>
       </div>
     </div>
     <div class="bb-cta-wrap">
       <span class="bb-status font-mono">
         <span class="bb-pulse"></span>
-        SISTEMAS EN ÓRBITA
+        {copy.status}
       </span>
     </div>
   </div>

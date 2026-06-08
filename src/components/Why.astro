@@ -5,6 +5,37 @@
  */
 
 import Icon from './Icon.astro';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale: Locale = Astro.props.locale ?? 'es';
+const copy = {
+  es: {
+    kicker: 'PROCESO · 04',
+    title: ['Por qué', 'TecnoDespegue'],
+    lead: 'No somos solo desarrolladores; somos socios estratégicos en la evolución técnica de tu negocio. La diferencia no se ve solo en el código — se ve en los resultados.',
+    items: [
+      ['Foco Técnico', 'Hardware-level mindset aplicado al desarrollo web. Optimizamos hasta el ciclo de CPU.'],
+      ['Código Limpio', 'Documentación rigurosa y patrones de diseño modernos. Sin deuda técnica oculta.'],
+      ['Comunicación Transparente', 'Acceso directo a los ingenieros, sin intermediarios ni tickets de soporte eternos.'],
+    ],
+    footer: 'Entregamos resultados medibles, no promesas vacías. Métricas reales sobre proyectos en producción.',
+  },
+  en: {
+    kicker: 'PROCESS · 04',
+    title: ['Why', 'TecnoDespegue'],
+    lead: 'We are not just developers; we are strategic partners in the technical evolution of your business. The difference is not only in the code, it shows up in the results.',
+    items: [
+      ['Technical Focus', 'A hardware-level mindset applied to web development. We optimize down to the CPU cycle.'],
+      ['Clean Code', 'Rigorous documentation and modern design patterns. No hidden technical debt.'],
+      ['Transparent Communication', 'Direct access to engineers, with no middlemen or endless support tickets.'],
+    ],
+    footer: 'We deliver measurable results, not empty promises. Real metrics from production projects.',
+  },
+}[locale];
 ---
 
 <section class="py-32 relative" id="proceso" data-why>
@@ -14,16 +45,16 @@ import Icon from './Icon.astro';
     <div class="why-left">
       <span class="kicker">
         <span class="kicker-dot"></span>
-        <span class="kicker-text font-mono">PROCESO · 04</span>
+        <span class="kicker-text font-mono">{copy.kicker}</span>
       </span>
 
       <h2 class="why-title font-display">
-        <span class="why-title-line">Por qué</span>
-        <span class="why-title-line why-title-accent">TecnoDespegue</span>
+        <span class="why-title-line">{copy.title[0]}</span>
+        <span class="why-title-line why-title-accent">{copy.title[1]}</span>
       </h2>
 
       <p class="why-lead">
-        No somos solo desarrolladores; somos <strong class="why-strong">socios estratégicos</strong> en la evolución técnica de tu negocio. La diferencia no se ve solo en el código — se ve en los resultados.
+        {copy.lead}
       </p>
 
       <ul class="why-list">
@@ -32,8 +63,8 @@ import Icon from './Icon.astro';
             <Icon name="bolt" class="w-5 h-5" />
           </div>
           <div>
-            <h3 class="why-item-title">Foco Técnico</h3>
-            <p class="why-item-desc">Hardware-level mindset aplicado al desarrollo web. Optimizamos hasta el ciclo de CPU.</p>
+            <h3 class="why-item-title">{copy.items[0][0]}</h3>
+            <p class="why-item-desc">{copy.items[0][1]}</p>
           </div>
         </li>
 
@@ -42,8 +73,8 @@ import Icon from './Icon.astro';
             <Icon name="terminal" class="w-5 h-5" />
           </div>
           <div>
-            <h3 class="why-item-title">Código Limpio</h3>
-            <p class="why-item-desc">Documentación rigurosa y patrones de diseño modernos. Sin deuda técnica oculta.</p>
+            <h3 class="why-item-title">{copy.items[1][0]}</h3>
+            <p class="why-item-desc">{copy.items[1][1]}</p>
           </div>
         </li>
 
@@ -52,8 +83,8 @@ import Icon from './Icon.astro';
             <Icon name="forum" class="w-5 h-5" />
           </div>
           <div>
-            <h3 class="why-item-title">Comunicación Transparente</h3>
-            <p class="why-item-desc">Acceso directo a los ingenieros, sin intermediarios ni tickets de soporte eternos.</p>
+            <h3 class="why-item-title">{copy.items[2][0]}</h3>
+            <p class="why-item-desc">{copy.items[2][1]}</p>
           </div>
         </li>
       </ul>
@@ -122,7 +153,7 @@ import Icon from './Icon.astro';
         </div>
 
         <div class="why-console-foot">
-          <p>Entregamos resultados <strong>medibles</strong>, no promesas vacías. Métricas reales sobre proyectos en producción.</p>
+          <p>{copy.footer}</p>
         </div>
       </div>
     </div>

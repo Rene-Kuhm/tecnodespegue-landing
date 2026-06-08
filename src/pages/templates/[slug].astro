@@ -10,6 +10,9 @@ import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import TemplateCard from '../../components/TemplateCard.astro';
 import { formatDate } from '../../utils/blog.ts';
+import type { Locale } from '../../i18n';
+
+const locale: Locale = 'es';
 
 export async function getStaticPaths() {
   const templates = await getCollection('templates');
@@ -65,8 +68,8 @@ const title = `${template.data.title} — Templates TecnoDespegue`;
 const description = template.data.description;
 ---
 
-<Layout title={title} description={description}>
-  <Nav />
+<Layout title={title} description={description} locale={locale}>
+  <Nav locale={locale} />
 
   <main id="contenido" class="tpl-detail-page">
     <!-- Back link -->
@@ -313,14 +316,14 @@ const description = template.data.description;
         </h2>
         <div class="tpl-related-grid">
           {related.map((tpl, idx) => (
-            <TemplateCard template={tpl} idx={idx} />
+            <TemplateCard template={tpl} idx={idx} locale={locale} />
           ))}
         </div>
       </section>
     )}
   </main>
 
-  <Footer />
+  <Footer locale={locale} />
 </Layout>
 
 <style is:global>

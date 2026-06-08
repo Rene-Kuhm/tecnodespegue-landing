@@ -60,7 +60,7 @@ const toggleLabel = locale === 'es' ? 'EN' : 'ES';
 
     <!-- Language switcher + CTA -->
     <div class="nav-actions">
-      <a href={toggleHref} class="nav-lang" aria-label={`Switch to ${toggleLabel}`}>
+      <a href={toggleHref} class="nav-lang" data-lang-toggle aria-label={`Switch to ${toggleLabel}`}>
         {toggleLabel}
       </a>
 
@@ -88,7 +88,7 @@ const toggleLabel = locale === 'es' ? 'EN' : 'ES';
       <a href={localizedPath('/#contacto', locale)} class="nav-mobile-link font-display">{t.nav.contact}</a>
 
       <div class="nav-mobile-actions">
-        <a href={toggleHref} class="nav-lang nav-lang-mobile">{toggleLabel}</a>
+        <a href={toggleHref} class="nav-lang nav-lang-mobile" data-lang-toggle>{toggleLabel}</a>
         <a href={localizedPath('/#contacto', locale)} class="btn-primary nav-mobile-cta" data-tiktok-event="ClickButton" data-tiktok-label="Iniciar proyecto nav mobile">
           {t.nav.cta}
         </a>
@@ -420,6 +420,10 @@ const toggleLabel = locale === 'es' ? 'EN' : 'ES';
     const toggle = () => {
       const open = mobile.classList.contains('is-open');
       if (open) {
+        if (mobile.contains(document.activeElement)) {
+          (document.activeElement as HTMLElement | null)?.blur();
+          burger.focus();
+        }
         mobile.classList.remove('is-open');
         burger.classList.remove('is-open');
         mobile.setAttribute('aria-hidden', 'true');
@@ -439,4 +443,15 @@ const toggleLabel = locale === 'es' ? 'EN' : 'ES';
       if (e.key === 'Escape' && mobile.classList.contains('is-open')) toggle();
     });
   }
+
+  document.querySelectorAll<HTMLAnchorElement>('[data-lang-toggle]').forEach((link) => {
+    link.addEventListener('click', () => {
+      try {
+        sessionStorage.setItem('td-skip-loading-once', '1');
+        sessionStorage.setItem('td-loading-seen', '1');
+      } catch {
+        // Storage can be unavailable in privacy modes; navigation still works.
+      }
+    });
+  });
 </script>

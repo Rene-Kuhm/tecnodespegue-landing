@@ -7,13 +7,58 @@ import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import { siteConfig } from '../../config/site.config';
+import type { Locale } from '../../i18n';
 
-const title = 'Templates — TecnoDespegue';
-const description = 'Próximamente: templates premium para landings, e-commerce, dashboards, blogs y componentes. Landings cinemáticas, e-commerce full-stack con Stripe, dashboards con IA, y más.';
+const locale: Locale = Astro.props.locale ?? 'es';
+const copy = {
+  es: {
+    title: 'Templates — TecnoDespegue',
+    description: 'Próximamente: templates premium para landings, e-commerce, dashboards, blogs y componentes. Landings cinemáticas, e-commerce full-stack con Stripe, dashboards con IA, y más.',
+    badge: 'Templates · En preparación',
+    pill: 'PRÓXIMAMENTE',
+    heading: ['Templates', 'premium', 'en camino'],
+    lead: 'Estamos preparando una colección de templates copy-paste ready: landings cinemáticas, e-commerce full-stack, dashboards con IA, blogs con MDX y bundles de componentes premium. Todos con TypeScript estricto y la calidad que ya conocés.',
+    statusDev: 'En desarrollo',
+    interest: '¿Te interesa?',
+    notifyLead: 'Dejanos tu email y te avisamos cuando lancemos el primero, con descuento de early-bird del 30%.',
+    notifyButton: 'Notificarme',
+    success: '¡Listo! Te avisaremos cuando esté disponible.',
+    roadmap: [
+      ['Aurora — Landing cinemática', 'Landing premium para SaaS con portal 3D, animaciones GSAP, glassmorphism.', 'En desarrollo'],
+      ['Forge — Dashboard con IA', 'Admin dashboard con auth, charts, reportes AI, real-time updates.', 'Q3 2025'],
+      ['TiendaNube Pro — E-commerce', 'E-commerce headless con Stripe, multi-idioma, multi-moneda.', 'Q3 2025'],
+      ['Inkwell — Blog con MDX', 'Blog estático con content collections, search, RSS, i18n.', 'Q4 2025'],
+      ['Marvel Bundle — 40+ componentes', 'Botones, cards, modales, navbars premium copy-paste ready.', 'Q4 2025'],
+    ],
+  },
+  en: {
+    title: 'Templates — TecnoDespegue',
+    description: 'Coming soon: premium templates for landing pages, e-commerce, dashboards, blogs, and components. Cinematic landings, full-stack e-commerce with Stripe, AI dashboards, and more.',
+    badge: 'Templates · In progress',
+    pill: 'COMING SOON',
+    heading: ['Premium', 'templates', 'on the way'],
+    lead: 'We are preparing a copy-paste-ready collection of cinematic landing pages, full-stack e-commerce builds, AI dashboards, MDX blogs, and premium component bundles. All with strict TypeScript and the quality you already know.',
+    statusDev: 'In development',
+    interest: 'Interested?',
+    notifyLead: 'Leave your email and we will let you know when the first one launches, with a 30% early-bird discount.',
+    notifyButton: 'Notify me',
+    success: 'Done. We will let you know when it is available.',
+    roadmap: [
+      ['Aurora — Cinematic landing page', 'Premium SaaS landing with a 3D portal, GSAP animations, and glassmorphism.', 'In development'],
+      ['Forge — AI dashboard', 'Admin dashboard with auth, charts, AI reports, and real-time updates.', 'Q3 2025'],
+      ['TiendaNube Pro — E-commerce', 'Headless e-commerce with Stripe, multi-language, and multi-currency support.', 'Q3 2025'],
+      ['Inkwell — MDX blog', 'Static blog with content collections, search, RSS, and i18n.', 'Q4 2025'],
+      ['Marvel Bundle — 40+ components', 'Premium copy-paste-ready buttons, cards, modals, and navbars.', 'Q4 2025'],
+    ],
+  },
+}[locale];
+const title = copy.title;
+const description = copy.description;
+const formspreeEndpoint = siteConfig.formspree.endpoint;
 ---
 
-<Layout title={title} description={description}>
-  <Nav />
+<Layout title={title} description={description} path={locale === 'en' ? '/en/templates' : '/templates'} locale={locale}>
+  <Nav locale={locale} />
 
   <main id="contenido" class="tpl-soon-page">
     <div class="tpl-soon-bg" aria-hidden="true">
@@ -27,33 +72,30 @@ const description = 'Próximamente: templates premium para landings, e-commerce,
       <!-- Top badge -->
       <div class="tpl-soon-badge" data-tpl-soon-badge>
         <span class="tpl-soon-dot"></span>
-        <span class="tpl-soon-badge-text font-mono">Templates · En preparación</span>
+        <span class="tpl-soon-badge-text font-mono">{copy.badge}</span>
       </div>
 
       <!-- Soon badge cinemático -->
       <div class="tpl-soon-pill" data-tpl-soon-pill>
         <span class="tpl-soon-pill-icon">◈</span>
-        <span class="tpl-soon-pill-text font-mono">PRÓXIMAMENTE</span>
+        <span class="tpl-soon-pill-text font-mono">{copy.pill}</span>
         <span class="tpl-soon-pill-icon">◈</span>
       </div>
 
       <!-- Headline -->
       <h1 class="tpl-soon-title font-display" data-tpl-soon-title>
         <span class="tpl-soon-line" data-tpl-soon-line>
-          <span class="tpl-soon-word">Templates</span>
-          <span class="tpl-soon-word tpl-soon-accent">premium</span>
+          <span class="tpl-soon-word">{copy.heading[0]}</span>
+          <span class="tpl-soon-word tpl-soon-accent">{copy.heading[1]}</span>
         </span>
         <span class="tpl-soon-line" data-tpl-soon-line>
-          <span class="tpl-soon-word tpl-soon-muted">en camino</span>
+          <span class="tpl-soon-word tpl-soon-muted">{copy.heading[2]}</span>
         </span>
       </h1>
 
       <!-- Subtitle -->
       <p class="tpl-soon-sub" data-tpl-soon-sub>
-        Estamos preparando una colección de templates copy-paste ready:
-        landings cinemáticas, e-commerce full-stack, dashboards con IA,
-        blogs con MDX y bundles de componentes premium. Todos con TypeScript estricto
-        y la calidad que ya conocés.
+        {copy.lead}
       </p>
 
       <!-- Roadmap / Lo que viene -->
@@ -61,51 +103,51 @@ const description = 'Próximamente: templates premium para landings, e-commerce,
         <div class="roadmap-item">
           <div class="roadmap-num font-mono">01</div>
           <div class="roadmap-content">
-            <h3 class="roadmap-title font-display">Aurora — Landing cinemática</h3>
-            <p class="roadmap-desc">Landing premium para SaaS con portal 3D, animaciones GSAP, glassmorphism.</p>
+            <h3 class="roadmap-title font-display">{copy.roadmap[0][0]}</h3>
+            <p class="roadmap-desc">{copy.roadmap[0][1]}</p>
           </div>
-          <div class="roadmap-status font-mono">En desarrollo</div>
+          <div class="roadmap-status font-mono">{copy.roadmap[0][2]}</div>
         </div>
 
         <div class="roadmap-item">
           <div class="roadmap-num font-mono">02</div>
           <div class="roadmap-content">
-            <h3 class="roadmap-title font-display">Forge — Dashboard con IA</h3>
-            <p class="roadmap-desc">Admin dashboard con auth, charts, reportes AI, real-time updates.</p>
+            <h3 class="roadmap-title font-display">{copy.roadmap[1][0]}</h3>
+            <p class="roadmap-desc">{copy.roadmap[1][1]}</p>
           </div>
-          <div class="roadmap-status font-mono">Q3 2025</div>
+          <div class="roadmap-status font-mono">{copy.roadmap[1][2]}</div>
         </div>
 
         <div class="roadmap-item">
           <div class="roadmap-num font-mono">03</div>
           <div class="roadmap-content">
-            <h3 class="roadmap-title font-display">TiendaNube Pro — E-commerce</h3>
-            <p class="roadmap-desc">E-commerce headless con Stripe, multi-idioma, multi-moneda.</p>
+            <h3 class="roadmap-title font-display">{copy.roadmap[2][0]}</h3>
+            <p class="roadmap-desc">{copy.roadmap[2][1]}</p>
           </div>
-          <div class="roadmap-status font-mono">Q3 2025</div>
+          <div class="roadmap-status font-mono">{copy.roadmap[2][2]}</div>
         </div>
 
         <div class="roadmap-item">
           <div class="roadmap-num font-mono">04</div>
           <div class="roadmap-content">
-            <h3 class="roadmap-title font-display">Inkwell — Blog con MDX</h3>
-            <p class="roadmap-desc">Blog estático con content collections, search, RSS, i18n.</p>
+            <h3 class="roadmap-title font-display">{copy.roadmap[3][0]}</h3>
+            <p class="roadmap-desc">{copy.roadmap[3][1]}</p>
           </div>
-          <div class="roadmap-status font-mono">Q4 2025</div>
+          <div class="roadmap-status font-mono">{copy.roadmap[3][2]}</div>
         </div>
 
         <div class="roadmap-item">
           <div class="roadmap-num font-mono">05</div>
           <div class="roadmap-content">
-            <h3 class="roadmap-title font-display">Marvel Bundle — 40+ componentes</h3>
-            <p class="roadmap-desc">Botones, cards, modales, navbars premium copy-paste ready.</p>
+            <h3 class="roadmap-title font-display">{copy.roadmap[4][0]}</h3>
+            <p class="roadmap-desc">{copy.roadmap[4][1]}</p>
           </div>
-          <div class="roadmap-status font-mono">Q4 2025</div>
+          <div class="roadmap-status font-mono">{copy.roadmap[4][2]}</div>
         </div>
       </div>
 
       <!-- Notification signup -->
-      <div class="tpl-soon-notify" data-tpl-soon-notify>
+      <div class="tpl-soon-notify" data-tpl-soon-notify data-formspree-endpoint={formspreeEndpoint}>
         <div class="notify-card">
           <div class="notify-header">
             <div class="notify-icon">
@@ -113,9 +155,9 @@ const description = 'Próximamente: templates premium para landings, e-commerce,
                 <path d="M15 17H20L18.5951 12.7619C18.2141 11.6767 17.2624 10.8798 16.1301 10.6689L9.86986 9.13108C8.73759 8.92014 7.76244 9.83925 7.76244 10.9967V17M15 17V18C15 19.6569 13.6569 21 12 21C10.3431 21 9 19.6569 9 18V17M15 17H9M3 8C3 6.89543 3.89543 6 5 6C6.10457 6 7 6.89543 7 8V13C7 14.1046 6.10457 15 5 15C3.89543 15 3 14.1046 3 13V8Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
-            <h3 class="notify-title font-display">¿Te interesa?</h3>
+            <h3 class="notify-title font-display">{copy.interest}</h3>
             <p class="notify-lead">
-              Dejanos tu email y te avisamos cuando lancemos el primero, con descuento de early-bird del 30%.
+              {copy.notifyLead}
             </p>
           </div>
           <form class="notify-form" data-notify-form>
@@ -124,12 +166,12 @@ const description = 'Próximamente: templates premium para landings, e-commerce,
                 type="email"
                 name="email"
                 required
-                placeholder="tu@email.com"
+                placeholder={locale === 'en' ? 'you@email.com' : 'tu@email.com'}
                 class="notify-input font-mono"
                 autocomplete="email"
               />
               <button type="submit" class="notify-btn">
-                <span>Notificarme</span>
+                <span>{copy.notifyButton}</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                   <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -139,7 +181,7 @@ const description = 'Próximamente: templates premium para landings, e-commerce,
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <path d="M5 13L9 17L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-              ¡Listo! Te avisaremos cuando esté disponible.
+              {copy.success}
             </p>
           </form>
         </div>
@@ -157,7 +199,7 @@ const description = 'Próximamente: templates premium para landings, e-commerce,
     </div>
   </main>
 
-  <Footer />
+  <Footer locale={locale} />
 </Layout>
 
 <style>
@@ -628,6 +670,8 @@ const description = 'Próximamente: templates premium para landings, e-commerce,
   // Notify form
   const form = document.querySelector<HTMLFormElement>('[data-notify-form]');
   const success = document.querySelector<HTMLElement>('[data-notify-success]');
+  const notify = document.querySelector<HTMLElement>('[data-tpl-soon-notify]');
+  const formspreeEndpoint = notify?.dataset.formspreeEndpoint || '';
 
   if (form && success) {
     form.addEventListener('submit', async (e) => {
@@ -645,7 +689,7 @@ const description = 'Próximamente: templates premium para landings, e-commerce,
 
       // Submit to Formspree
       try {
-        await fetch(siteConfig.formspree.endpoint, {
+        await fetch(formspreeEndpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify({ email, type: 'templates_coming_soon' }),

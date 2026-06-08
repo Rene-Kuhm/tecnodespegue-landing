@@ -94,7 +94,7 @@ const blogPostingSchema = {
   <main id="contenido" class="post-page">
     <div class="post-container">
       <aside class="post-sidebar">
-        <TableOfContents headings={headings} />
+        <TableOfContents headings={headings} locale={locale} />
       </aside>
 
       <article class="post-article">
@@ -180,6 +180,7 @@ const blogPostingSchema = {
         currentPostId={post.id}
         currentTags={post.data.tags || []}
         allPosts={allPosts}
+        locale={locale}
       />
     </div>
   </main>

@@ -6,9 +6,17 @@
  * - Al completar, se levanta como una cortina con un wipe
  * - Respeta prefers-reduced-motion (skip inmediato)
  */
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale: Locale = Astro.props.locale ?? 'es';
+const initialStatus = locale === 'en' ? 'Initializing system' : 'Inicializando sistema';
 ---
 
-<div id="loading-screen" class="loading-curtain" data-loading-screen aria-hidden="false">
+<div id="loading-screen" class="loading-curtain" data-loading-screen data-loading-locale={locale} aria-hidden="false">
   <div class="loading-inner">
     <!-- Logo / brand -->
     <div class="loading-brand">
@@ -27,7 +35,7 @@
 
     <!-- Status text (mecánico) -->
     <div class="loading-status font-mono" data-loading-status>
-      <span data-loading-status-text>Inicializando sistema</span>
+      <span data-loading-status-text>{initialStatus}</span>
       <span class="loading-percent" data-loading-percent>0%</span>
     </div>
   </div>
@@ -200,16 +208,38 @@
   import { gsap } from 'gsap';
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const loadingScreen = document.querySelector<HTMLElement>('[data-loading-screen]');
+  const locale = loadingScreen?.dataset.loadingLocale || 'es';
+  const shouldSkipLoading = (() => {
+    try {
+      const skipOnce = sessionStorage.getItem('td-skip-loading-once') === '1';
+      const seen = sessionStorage.getItem('td-loading-seen') === '1';
+      if (skipOnce) sessionStorage.removeItem('td-skip-loading-once');
+      return skipOnce || seen;
+    } catch {
+      return false;
+    }
+  })();
 
-  const STATUS_MESSAGES = [
-    'Inicializando sistema',
-    'Cargando núcleo cinemático',
-    'Compilando shaders',
-    'Sincronizando órbita',
-    'Calibrando telar de partículas',
-    'Activando interfaz',
-    'Bienvenido al despegue',
-  ];
+  const STATUS_MESSAGES = locale === 'en'
+    ? [
+      'Initializing system',
+      'Loading cinematic core',
+      'Compiling shaders',
+      'Synchronizing orbit',
+      'Calibrating particle loom',
+      'Activating interface',
+      'Welcome to launch',
+    ]
+    : [
+      'Inicializando sistema',
+      'Cargando núcleo cinemático',
+      'Compilando shaders',
+      'Sincronizando órbita',
+      'Calibrando telar de partículas',
+      'Activando interfaz',
+      'Bienvenido al despegue',
+    ];
 
   function runLoadingSequence(): Promise<void> {
     return new Promise((resolve) => {
@@ -304,12 +334,29 @@
   document.documentElement.classList.add('is-loading');
 
   function start() {
+    if (shouldSkipLoading) {
+      const screen = document.querySelector<HTMLElement>('[data-loading-screen]');
+      if (screen) {
+        screen.classList.add('is-done');
+        screen.setAttribute('aria-hidden', 'true');
+        screen.style.display = 'none';
+      }
+      document.documentElement.classList.add('is-loaded');
+      document.documentElement.classList.remove('is-loading');
+      return;
+    }
+
     runLoadingSequence().catch((err) => {
       console.error('Loading sequence error', err);
       const screen = document.querySelector<HTMLElement>('[data-loading-screen]');
       if (screen) screen.style.display = 'none';
       document.documentElement.classList.add('is-loaded');
     }).finally(() => {
+      try {
+        sessionStorage.setItem('td-loading-seen', '1');
+      } catch {
+        // Ignore storage failures; the loading sequence already completed.
+      }
       document.documentElement.classList.remove('is-loading');
     });
   }
