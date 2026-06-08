@@ -167,7 +167,7 @@ const formspreeEndpoint = siteConfig.formspree.endpoint;
                 name="email"
                 required
                 placeholder={locale === 'en' ? 'you@email.com' : 'tu@email.com'}
-                class="notify-input font-mono"
+                class="notify-input"
                 autocomplete="email"
               />
               <button type="submit" class="notify-btn">
@@ -557,28 +557,9 @@ const formspreeEndpoint = siteConfig.formspree.endpoint;
     width: 100%;
   }
 
-  .notify-input-wrap {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .notify-input {
-    flex: 1;
-    padding: 0.75rem 1rem;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 0.5rem;
-    color: #FFFFFF;
-    font-size: 0.8125rem;
-    transition: border-color 0.2s;
-  }
-
-  .notify-input::placeholder { color: rgba(255, 255, 255, 0.3); }
-  .notify-input:focus {
-    outline: none;
-    border-color: rgba(248, 180, 0, 0.4);
-  }
+  /* .notify-input-wrap y .notify-input ahora viven en global.css
+     para evitar el bug de <style is:global> de Astro que no se bundlea
+     en produccion. Mismo fix que el newsletter: grid 1fr + auto. */
 
   .notify-btn {
     display: inline-flex;
@@ -619,7 +600,6 @@ const formspreeEndpoint = siteConfig.formspree.endpoint;
   .notify-success.is-shown { display: flex; }
 
   @media (max-width: 480px) {
-    .notify-input-wrap { flex-direction: column; }
     .notify-btn { width: 100%; justify-content: center; }
   }
 
