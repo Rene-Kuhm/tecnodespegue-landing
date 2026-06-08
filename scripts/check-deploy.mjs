@@ -182,14 +182,16 @@ if (!existsSync(buildPath)) {
 // === 5. Assets críticos ===
 console.log('\n📋 5. Validando assets críticos');
 const publicPath = join(root, 'public');
-const requiredAssets = [
+// robots.txt ahora se genera dinámicamente desde src/pages/robots.txt.ts,
+// así que validamos que exista en el build output, no en public/.
+const buildOutputPath = existsSync(vercelStaticPath) ? vercelStaticPath : distPath;
+const requiredPublicAssets = [
   'og-image.png',
   'favicon.svg',
   'favicon.ico',
-  'robots.txt',
   'hero-mockup.webp',
 ];
-for (const asset of requiredAssets) {
+for (const asset of requiredPublicAssets) {
   const path = join(publicPath, asset);
   if (existsSync(path)) {
     const size = statSync(path).size;
@@ -200,6 +202,14 @@ for (const asset of requiredAssets) {
   } else {
     fail(`Asset faltante: public/${asset}`);
   }
+}
+// Validar robots.txt en el build output (generado dinámicamente)
+const builtRobotsPath = join(buildOutputPath, 'robots.txt');
+if (existsSync(builtRobotsPath)) {
+  const size = statSync(builtRobotsPath).size;
+  info(`robots.txt (build output): ${(size / 1024).toFixed(1)} KB`);
+} else {
+  fail('robots.txt no generado en build output (chequear src/pages/robots.txt.ts)');
 }
 
 // === 6. Build size summary ===
