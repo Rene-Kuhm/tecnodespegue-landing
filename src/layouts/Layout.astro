@@ -27,7 +27,7 @@ const t = useTranslations(locale);
 const cfg = localeConfig[locale];
 
 const canonicalURL = new URL(path, Astro.site);
-const ogImage = new URL(customOgImage || siteConfig.ogImage, Astro.site);
+const ogImage = new URL(customOgImage || (locale === 'en' ? siteConfig.ogImageEn : siteConfig.ogImage), Astro.site);
 const plausibleDomain = siteConfig.plausible.domain || Astro.site?.hostname || canonicalURL.hostname;
 
 // Generate alternate URL for the other locale
@@ -120,8 +120,17 @@ const professionalServiceSchema = {
          Inter y las display fonts (Big Shoulders / Bangers) solo se usan en títulos grandes
          y pueden esperar a FCP sin impactar LCP. -->
 
-    <!-- Preload LCP image (Hero mockup) for fastest paint -->
-    <link rel="preload" as="image" href="/hero-mockup.webp" type="image/webp" fetchpriority="high" />
+    <!-- LCP image: solo preload en desktop. En mobile HeroMobile usa loading="eager"
+         fetchpriority="high" directamente en el <img> — el preload duplicado compite
+         con otros recursos críticos. -->
+    <link
+      rel="preload"
+      as="image"
+      href="/hero-mockup.webp"
+      type="image/webp"
+      fetchpriority="high"
+      media="(min-width: 768px)"
+    />
 
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
@@ -148,8 +157,10 @@ const professionalServiceSchema = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Keywords -->
-    <meta name="keywords" content="desarrollo web, automatización IA, fullstack, typescript, react, node.js, inteligencia artificial, flujos de trabajo, argentina" />
+    <!-- Keywords — locale-aware -->
+    <meta name="keywords" content={locale === 'en'
+      ? 'custom software, AI automation, fullstack development, typescript, react, node.js, machine learning workflows, web development'
+      : 'desarrollo web, automatización IA, fullstack, typescript, react, node.js, inteligencia artificial, flujos de trabajo, argentina'} />
     <meta name="author" content="TecnoDespegue" />
 
     <!-- Generator -->
