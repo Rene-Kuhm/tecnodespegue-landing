@@ -2,7 +2,6 @@
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import ProgressBar from '../components/ProgressBar.astro';
-import CustomCursor from '../components/CustomCursor.astro';
 import LoadingScreen from '../components/LoadingScreen.astro';
 import PageTransition from '../components/PageTransition.astro';
 import Hero from '../components/Hero.astro';
@@ -24,7 +23,6 @@ const locale: Locale = 'es';
   <LoadingScreen locale={locale} />
   <PageTransition />
   <ProgressBar />
-  <CustomCursor />
   <Nav locale={locale} />
   
   <main id="contenido">
