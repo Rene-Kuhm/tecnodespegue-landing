@@ -185,16 +185,12 @@ const professionalServiceSchema = {
   <body>
     <a class="skip-link" href="#contenido">{t.meta.skipToContent}</a>
 
-    <!-- Lenis + Scroll animations bootstrap. Deferido al primer idle
-         para no competir con el critical path. -->
+    <!-- Lenis bootstrap. Las secciones son visibles por defecto; las animaciones
+         no deben ser requisito para que la landing se renderice correctamente. -->
     <script>
       const startLenisAndAnimations = async () => {
-        const [{ initLenis }, { initScrollAnimations }] = await Promise.all([
-          import('../scripts/animations/lenis'),
-          import('../scripts/animations/scrollAnimations'),
-        ]);
+        const { initLenis } = await import('../scripts/animations/lenis');
         initLenis();
-        initScrollAnimations();
       };
 
       const schedule = () => {
