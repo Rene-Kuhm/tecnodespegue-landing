@@ -41,8 +41,10 @@ const copy = {
 ---
 
 <section class="hero-section" data-hero>
-  <!-- Background full bleed — WebP con fallback -->
+  <!-- Background full bleed — versión 21:9 (ultrawide) cuando el viewport es ancho,
+       versión 3:2 estándar en el resto. object-fit: cover mantiene aspect ratio. -->
   <picture class="hero-bg" aria-hidden="true">
+    <source media="(min-aspect-ratio: 17/9)" srcset="/hero-mockup-ultrawide.png" type="image/png" />
     <source srcset="/hero-mockup.webp" type="image/webp" />
     <source srcset="/hero-mockup.jpg" type="image/jpeg" />
     <img src="/hero-mockup.jpg" alt="" class="hero-bg-img" loading="eager" decoding="async" fetchpriority="high" width="1264" height="848" />
@@ -122,8 +124,6 @@ const copy = {
     height: 100vh;
     min-height: 700px;
     width: 100%;
-    max-width: 1920px; /* limita el ancho: en ultrawide evita que la imagen se recorte demasiado */
-    margin-inline: auto; /* centra en viewports > 1920px */
     overflow: hidden;
     background: #0a0508;
   }
