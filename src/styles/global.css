@@ -136,11 +136,13 @@ html.lenis body {
   }
 
   html {
+    display: block !important;
     background-color: var(--color-background);
     scroll-behavior: auto; /* Lenis maneja el smooth */
   }
 
   body {
+    display: block !important;
     background-color: var(--color-background);
     color: var(--color-on-surface);
     font-family: var(--font-body);
@@ -150,6 +152,14 @@ html.lenis body {
     padding: 0;
     min-height: 100vh;
     overflow-x: hidden;
+  }
+
+  body > main,
+  body > footer {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    flex: none;
   }
 
   ::selection {

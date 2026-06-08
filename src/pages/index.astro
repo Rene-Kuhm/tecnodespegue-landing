@@ -15,8 +15,6 @@ import Why from '../components/Why.astro';
 import Tech from '../components/Tech.astro';
 import CTA from '../components/CTA.astro';
 import Footer from '../components/Footer.astro';
-import ScrollReveal from '../components/ScrollReveal.astro';
-import CompileReveal from '../components/CompileReveal.astro';
 import type { Locale } from '../i18n';
 
 const locale: Locale = 'es';
@@ -37,35 +35,13 @@ const locale: Locale = 'es';
       <Hero />
     </div>
     
-    <!-- Above fold TrustSignals gets standard subtle scroll reveal -->
-    <ScrollReveal>
-      <TrustSignals />
-    </ScrollReveal>
-    
-    <!-- Dynamic terminal compile reveals for principal sections -->
-    <CompileReveal sectionName="Servicios" importPath="@components/Services.astro">
-      <Services />
-    </CompileReveal>
-    
-    <CompileReveal sectionName="Portafolio" importPath="@components/Portfolio.astro">
-      <Portfolio />
-    </CompileReveal>
-    
-    <CompileReveal sectionName="Optimización" importPath="@components/Refactor.astro">
-      <Refactor />
-    </CompileReveal>
-    
-    <CompileReveal sectionName="PorQué" importPath="@components/Why.astro">
-      <Why />
-    </CompileReveal>
-
-    <CompileReveal sectionName="Tecnologías" importPath="@components/Tech.astro">
-      <Tech />
-    </CompileReveal>
-    
-    <CompileReveal sectionName="Contacto" importPath="@components/CTA.astro">
-      <CTA />
-    </CompileReveal>
+    <TrustSignals />
+    <Services />
+    <Portfolio />
+    <Refactor />
+    <Why />
+    <Tech />
+    <CTA />
   </main>
   
   <Footer locale={locale} />
