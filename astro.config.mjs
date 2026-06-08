@@ -56,7 +56,38 @@ export default defineConfig({
             res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
             res.setHeader('X-XSS-Protection', '0');
             res.setHeader('X-DNS-Prefetch-Control', 'off');
-            res.setHeader('Permissions-Policy', 'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()');
+            res.setHeader(
+              'Permissions-Policy',
+              'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'
+            );
+            res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+            res.setHeader(
+              'Content-Security-Policy',
+              [
+                "default-src 'self'",
+                "base-uri 'self'",
+                "object-src 'none'",
+                "frame-ancestors 'none'",
+                // Scripts: self + Plausible analytics inline. Tailwind v4 y Astro
+                // no necesitan 'unsafe-inline' gracias a sus nonces; pero mantenemos
+                // 'unsafe-inline' como fallback para los inline scripts que Astro
+                // emite para los styles scoped. TODO: migrar a nonces cuando Astro
+                // lo soporte nativamente para reducir el riesgo XSS.
+                "script-src 'self' 'unsafe-inline' https://plausible.io",
+                "style-src 'self' 'unsafe-inline'",
+                "img-src 'self' data: https:",
+                "font-src 'self' data:",
+                'connect-src ' +
+                  "'self' " +
+                  'https://plausible.io ' +
+                  'https://api.web3forms.com ' +
+                  'https://formspree.io',
+                'frame-src https://www.youtube.com https://player.vimeo.com',
+                'media-src https:',
+                'worker-src ' + "'self'",
+                'manifest-src ' + "'self'",
+              ].join('; ')
+            );
             next();
           });
         },

@@ -153,9 +153,10 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       message: 'Post guardado en GitHub. Vercel va a redeployar automaticamente (~1-2 min).',
     });
   } catch (err) {
+    // Log interno para debug, pero no exponer al cliente
+    console.error('save-post error:', err);
     return jsonRes({
-      error: 'Failed to save to GitHub',
-      detail: String((err as Error).message),
+      error: 'Failed to save to GitHub. Check server logs.',
     }, 500);
   }
 };
