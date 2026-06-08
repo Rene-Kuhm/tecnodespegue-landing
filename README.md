@@ -438,6 +438,9 @@ Reiniciá el dev server: `Ctrl+C` y `npm run dev` de nuevo.
 ---
 
 <p align="center">
-  Hecho con ❤️ y ☕ en Argentina<br>
-  <sub>Powered by Astro · Deployed on Vercel</sub>
+  <strong>Hecho por <a href="https://www.tecnodespegue.com/">René Kuhm</a></strong>, creador de <a href="https://www.tecnodespegue.com/">www.tecnodespegue.com</a>
+  <br><br>
+  Hecho con ❤️ y ☕ en Argentina
+  <br>
+  <sub>Powered by <a href="https://astro.build">Astro</a> · Deployed on <a href="https://vercel.com">Vercel</a></sub>
 </p>
