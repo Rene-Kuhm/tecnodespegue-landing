@@ -107,16 +107,19 @@ export const GET: APIRoute = async ({ url }) => {
                     props: {
                       style: {
                         display: 'flex',
-                        gap: 22,
-                        alignItems: 'flex-end',
+                        flexDirection: 'column',
+                        gap: 28,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '100%',
                       },
                       children: [
                         {
                           type: 'div',
                           props: {
                             style: {
-                              width: 210,
-                              height: 210,
+                              width: 250,
+                              height: 250,
                               border: '18px solid #ED1D24',
                               borderRightColor: '#F8B400',
                             },
@@ -126,10 +129,9 @@ export const GET: APIRoute = async ({ url }) => {
                           type: 'div',
                           props: {
                             style: {
-                              flex: 1,
+                              width: 420,
                               height: 18,
                               background: 'linear-gradient(90deg, #F8B400, #ED1D24, transparent)',
-                              marginBottom: 28,
                             },
                           },
                         },
