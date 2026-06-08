@@ -66,6 +66,7 @@ export function getPostCoverImage(post: {
     category: post.data.category,
     author: post.data.author ?? 'René Kuhm',
     variant,
+    v: '3',
   });
 
   return `/api/og?${params.toString()}`;
