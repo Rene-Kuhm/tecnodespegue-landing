@@ -53,11 +53,10 @@ const locale: Locale = 'es';
   }
 
   /* Hero desktop wrapper: oculto en mobile, visible ≥768px.
-     El HeroMobile se muestra a sí mismo via su propio media query.
-     En ultrawide (>1920px) se ve el gradiente a los costados del hero limitado. */
+     El HeroMobile se muestra a sí mismo via su propio media query. */
   .hero-desktop-wrap {
     display: none;
-    background: radial-gradient(ellipse 90% 100% at 50% 50%, #0a0508 0%, #1a0a14 45%, #0a0508 100%);
+    background: #0a0508;
   }
   @media (min-width: 768px) {
     .hero-desktop-wrap {
