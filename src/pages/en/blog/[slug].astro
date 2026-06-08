@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import Layout from '../../../layouts/Layout.astro';
 import Nav from '../../../components/Nav.astro';
+import CustomCursor from '../../../components/CustomCursor.astro';
 import Footer from '../../../components/Footer.astro';
 import Comments from '../../../components/Comments.astro';
 import TableOfContents from '../../../components/TableOfContents.astro';
@@ -74,6 +75,7 @@ const blogPostingSchema = {
 ---
 
 <Layout title={`${title} — TecnoDespegue`} description={description} path={localizedPath(`/blog/${postSlug}/`, locale)} locale={locale}>
+  <CustomCursor />
   <script is:inline type="application/ld+json" slot="head" set:html={JSON.stringify(blogPostingSchema)} />
   <Fragment slot="head">
     <meta property="og:type" content="article" />
