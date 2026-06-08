@@ -97,7 +97,7 @@ const copy = {
   </div>
 </section>
 
-<style>
+<style is:global>
   .newsletter-section {
     margin: 4rem auto 0;
     max-width: 60rem;
@@ -235,31 +235,40 @@ const copy = {
     display: flex;
     gap: 0.5rem;
     margin-bottom: 0.75rem;
+  }.newsletter-section .nl-input-wrap {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
   }
-
-  .nl-input {
-    flex: 1;
+  .newsletter-section .nl-input {
+    flex: 1 1 0%;
     min-width: 0;
-    padding: 0.875rem 1rem;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 0.625rem;
-    color: #FFFFFF;
-    font-size: 0.9375rem;
-    font-family: inherit;
-    -webkit-appearance: none;
-    appearance: none;
+    width: 100%;
+    padding: 0.875rem 1rem !important;
+    background: rgba(0, 0, 0, 0.65) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 0.625rem !important;
+    color: #FFFFFF !important;
+    font-size: 0.9375rem !important;
+    font-family: inherit !important;
+    line-height: 1.4;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    box-shadow: none !important;
     transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
   }
 
-  .nl-input::placeholder {
-    color: rgba(255, 255, 255, 0.3);
+  .newsletter-section .nl-input::placeholder {
+    color: rgba(255, 255, 255, 0.45) !important;
+    opacity: 1 !important;
   }
 
-  .nl-input:focus {
-    outline: none;
-    border-color: rgba(248, 180, 0, 0.5);
-    background: rgba(0, 0, 0, 0.7);
+  .newsletter-section .nl-input:focus {
+    outline: none !important;
+    border-color: rgba(248, 180, 0, 0.6) !important;
+    background: rgba(0, 0, 0, 0.85) !important;
+    box-shadow: 0 0 0 3px rgba(248, 180, 0, 0.15) !important;
   }
 
   .nl-btn {
