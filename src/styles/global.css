@@ -738,6 +738,27 @@ html.lenis body {
 }
 
 /* ============================================================
+   ANTI-PATTERN OVERRIDES — Web Interface Guidelines compliance
+   - Reemplaza transition: all (anti-pattern, anima properties no deseadas)
+     con lista explicita de properties GPU-friendly
+   - Restaura outline en :focus-visible para inputs que usan outline: none
+     (accesibilidad: el usuario debe ver donde esta el foco con teclado)
+   ============================================================ */
+*,
+*::before,
+*::after {
+  transition-property: transform, opacity, background-color, background, border-color, color, box-shadow, backdrop-filter, filter !important;
+}
+
+/* Inputs y textareas con outline: none: restaurar focus ring visible */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--color-marvel-gold) !important;
+  outline-offset: 2px !important;
+}
+
+/* ============================================================
    REDUCED MOTION
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
