@@ -122,6 +122,8 @@ const copy = {
     height: 100vh;
     min-height: 700px;
     width: 100%;
+    max-width: 1920px; /* limita el ancho: en ultrawide evita que la imagen se recorte demasiado */
+    margin-inline: auto; /* centra en viewports > 1920px */
     overflow: hidden;
     background: #0a0508;
   }
