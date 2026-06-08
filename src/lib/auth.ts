@@ -98,7 +98,7 @@ export function createSession(cookies: AstroCookies, userId: string): void {
     path: '/',
     httpOnly: true,
     secure: !import.meta.env.DEV,
-    sameSite: 'lax',
+    sameSite: 'strict',
     maxAge: SESSION_TTL_MS / 1000,
   });
 }

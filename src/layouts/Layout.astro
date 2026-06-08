@@ -131,6 +131,10 @@ const professionalServiceSchema = {
       media="(min-width: 768px)"
     />
 
+    <!-- Font (Space Grotesk Variable) se carga via @font-face en global.css
+         con font-display: swap. Astro+Vite lo bundlea con hash, asi que
+         no podemos hacer preload estatico de un path fijo. -->
+
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
 
