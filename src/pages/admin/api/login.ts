@@ -60,15 +60,8 @@ export const POST: APIRoute = async ({ request, cookies, clientAddress }) => {
   }
 
   const stored = import.meta.env.ADMIN_PASSWORD_HASH;
-  // DEBUG: helps diagnose env var issues
-  const debug = {
-    hasStored: Boolean(stored),
-    storedLength: stored?.length ?? 0,
-    storedPrefix: stored ? String(stored).slice(0, 5) : null,
-    storedHasColon: stored?.includes(':') ?? false,
-  };
   if (!verifyPassword(password, stored)) {
-    return new Response(JSON.stringify({ error: 'Invalid credentials', debug }), {
+    return new Response(JSON.stringify({ error: 'Invalid credentials' }), {
       status: 401,
       headers: { 'Content-Type': 'application/json' },
     });
