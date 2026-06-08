@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/Nav.astro';
+import CustomCursor from '../../components/CustomCursor.astro';
 import BlogHero from '../../components/BlogHero.astro';
 import BlogIndex from '../../components/BlogIndex.astro';
 import Footer from '../../components/Footer.astro';
@@ -22,6 +23,7 @@ const description = 'Artículos sobre desarrollo fullstack, automatización con 
 ---
 
 <Layout title={title} description={description} path="/blog" locale={locale}>
+  <CustomCursor />
   <Nav locale={locale} />
   <BlogHero postCount={posts.length} categoryCount={categories.length} locale={locale} />
   <BlogIndex posts={posts} categories={categories} topTags={topTags} locale={locale} />
