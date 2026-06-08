@@ -160,7 +160,7 @@ const description = 'Articles on fullstack development, AI automation, software 
     max-width: none;
     margin: 0;
     padding: 0 1.5rem 7rem;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .blog-main::before {
@@ -168,6 +168,7 @@ const description = 'Articles on fullstack development, AI automation, software 
     position: absolute;
     inset: 0;
     pointer-events: none;
+    z-index: 0;
     background:
       radial-gradient(circle at 15% 20%, rgba(237, 29, 36, 0.08), transparent 28rem),
       radial-gradient(circle at 85% 40%, rgba(248, 180, 0, 0.05), transparent 30rem);
@@ -176,8 +177,10 @@ const description = 'Articles on fullstack development, AI automation, software 
   .blog-shell {
     position: relative;
     z-index: 1;
-    width: min(100%, 76rem);
+    max-width: 76rem;
+    width: 100%;
     margin: 0 auto;
+    box-sizing: border-box;
   }
 
   @media (min-width: 768px) {
