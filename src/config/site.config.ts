@@ -59,7 +59,7 @@ export const siteConfig = {
 
   // OG images por locale (crear /og-image-en.png cuando esté disponible)
   ogImage: '/og-image.png',
-  ogImageEn: '/og-image.png', // TODO: crear versión EN con texto "Custom Software · AI Automation"
+  ogImageEn: '/og-image-en.png',
   ogImageWidth: 1200,
   ogImageHeight: 630,
 } as const;
