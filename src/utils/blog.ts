@@ -41,3 +41,32 @@ export function getTopTags(posts: { data: { tags?: string[] } }[], limit = 10): 
     .slice(0, limit)
     .map(([tag]) => tag);
 }
+
+/**
+ * Cover image for blog cards and article heroes.
+ * Generic social images are replaced with a per-post OG render so every article
+ * gets its own visual identity without storing duplicated bitmap assets.
+ */
+export function getPostCoverImage(post: {
+  data: {
+    title: string;
+    description: string;
+    category: string;
+    author?: string;
+    image?: string;
+    seo?: { image?: string };
+  };
+}, variant: 'cover' | 'social' = 'cover'): string {
+  const explicit = post.data.seo?.image ?? post.data.image;
+  if (explicit && !/\/og-image(?:-en)?\.png$/.test(explicit)) return explicit;
+
+  const params = new URLSearchParams({
+    title: post.data.title,
+    description: post.data.description,
+    category: post.data.category,
+    author: post.data.author ?? 'René Kuhm',
+    variant,
+  });
+
+  return `/api/og?${params.toString()}`;
+}

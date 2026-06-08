@@ -3,7 +3,7 @@
  * RelatedPosts.astro
  * Posts relacionados al final de un post, basados en tags compartidos
  */
-import { formatDate, calculateReadTime } from '../utils/blog.ts';
+import { formatDate, calculateReadTime, getPostCoverImage } from '../utils/blog.ts';
 import { localizedPath, localeConfig, type Locale } from '../i18n';
 
 const { currentPostId = '', currentTags = [] as string[], allPosts = [] as any[], locale = 'es' } = Astro.props as {
@@ -46,9 +46,14 @@ const related = allPosts
       {related.map((post: any, idx: number) => {
         const date = formatDate(post.data.date, localeConfig[locale].dateLocale);
         const readTime = post.data.readTime ?? calculateReadTime(post.body, 200);
+        const cover = getPostCoverImage(post);
         return (
           <article class="related-card" data-related-card data-related-idx={idx}>
             <a href={localizedPath(`/blog/${post.id.replace(/^en\//, '')}/`, locale)} class="related-link">
+              <figure class="related-cover">
+                <img src={cover} alt="" class="related-cover-img" loading="lazy" decoding="async" />
+              </figure>
+
               <!-- Top: number + category -->
               <div class="related-meta">
                 <span class="related-num font-mono">0{idx + 1}</span>
@@ -134,6 +139,10 @@ const related = allPosts
     margin: 0;
   }
 
+  .related-title .text-shine {
+    margin-left: 0.25em;
+  }
+
   .related-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -163,10 +172,39 @@ const related = allPosts
     display: flex;
     flex-direction: column;
     gap: 0.875rem;
-    padding: 1.5rem;
+    padding: 0;
     text-decoration: none;
     color: inherit;
     height: 100%;
+  }
+
+  .related-cover {
+    margin: 0;
+    overflow: hidden;
+    background: #070707;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .related-cover-img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1200 / 630;
+    object-fit: cover;
+    filter: saturate(0.9) contrast(1.05);
+    transition: transform 0.45s, filter 0.45s;
+  }
+
+  .related-card:hover .related-cover-img {
+    transform: scale(1.035);
+    filter: saturate(1.05) contrast(1.1);
+  }
+
+  .related-meta,
+  .related-card-title,
+  .related-desc,
+  .related-bottom {
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
   }
 
   .related-meta {
@@ -218,6 +256,7 @@ const related = allPosts
     padding-top: 0.875rem;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     margin-top: auto;
+    margin-bottom: 1.25rem;
   }
 
   .related-bottom-info {
