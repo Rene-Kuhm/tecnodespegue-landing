@@ -93,25 +93,12 @@ export const GET: APIRoute = async ({ url }) => {
                     props: {
                       style: {
                         display: 'flex',
-                        alignItems: 'center',
-                        color: '#fff',
-                        fontSize: 24,
-                        fontWeight: 900,
-                        letterSpacing: '0.22em',
-                      },
-                      children: 'TD TECNODESPEGUE',
-                    },
-                  },
-                  {
-                    type: 'div',
-                    props: {
-                      style: {
-                        display: 'flex',
                         flexDirection: 'column',
                         gap: 28,
                         alignItems: 'center',
                         justifyContent: 'center',
                         width: '100%',
+                        height: '100%',
                       },
                       children: [
                         {
