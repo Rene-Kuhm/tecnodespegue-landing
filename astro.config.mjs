@@ -17,6 +17,11 @@ export default defineConfig({
   }),
   integrations: [
     sitemap({
+      filter: (page) =>
+        !page.includes('/admin/') &&
+        !page.includes('/404') &&
+        !page.includes('/en/404') &&
+        !page.includes('/en/admin/'),
       i18n: {
         defaultLocale: 'es',
         locales: {

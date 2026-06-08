@@ -1,0 +1,40 @@
+# TecnoDespegue
+
+> Software a medida, automatizaciones con IA y experiencias digitales escalables. René Kuhm — Senior Fullstack Engineer radicado en La Pampa, Argentina.
+
+## Empresa
+
+- [Sobre nosotros](https://www.tecnodespegue.com/#soluciones): qué hacemos y para quién
+- [Portfolio](https://www.tecnodespegue.com/#portfolio): proyectos reales en producción
+- [Stack tecnológico](https://www.tecnodespegue.com/#stack): React, Next.js, Astro, TypeScript, Node.js, Python, PostgreSQL
+- [Proceso de trabajo](https://www.tecnodespegue.com/#proceso): cómo abordamos cada proyecto
+- [Contacto](https://www.tecnodespegue.com/#contacto): agendar consulta de 30 minutos
+
+## Servicios principales
+
+- [Software a medida y APIs](https://www.tecnodespegue.com/#soluciones): backends robustos, APIs de alto rendimiento
+- [Automatizaciones con IA](https://www.tecnodespegue.com/#soluciones): pipelines con Python, n8n, OpenAI
+- [Landing pages cinemáticas](https://www.tecnodespegue.com/#soluciones): sitios de alto rendimiento con Astro/Next.js
+- [Apps móviles y desktop](https://www.tecnodespegue.com/#soluciones): Flutter, React Native
+- [Refactor y modernización](https://www.tecnodespegue.com/#optimizacion): diagnóstico y mejora de código legacy
+
+## Templates
+
+- [Catálogo de templates](https://www.tecnodespegue.com/templates): landings, e-commerce, dashboards, blogs
+
+## Blog técnico
+
+- [Blog](https://www.tecnodespegue.com/blog): artículos sobre fullstack, IA, arquitectura
+- [Engineering Blog (EN)](https://www.tecnodespegue.com/en/blog): same content in English
+
+## Contacto
+
+- Email: renekuhm2@gmail.com
+- WhatsApp: +54 9 2334 409838
+- GitHub: https://github.com/Rene-Kuhm
+- LinkedIn: https://linkedin.com/in/renekuhm
+
+## Idiomas
+
+- Español (default): https://www.tecnodespegue.com/
+- English: https://www.tecnodespegue.com/en/
