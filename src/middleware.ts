@@ -42,12 +42,14 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   // /admin/api/* requiere sesión. Las API routes validan CSRF token internamente.
-  const isApiRoute = pathname.startsWith('/admin/api/');
-  const isPage = !isApiRoute;
+  // Excepción: endpoints de debug que necesitan inspeccionar env vars.
+  const isDebugEndpoint = pathname === '/admin/api/debug-env';
+  const isApiRoute = pathname.startsWith('/admin/api/') && !isDebugEndpoint;
+  const isPage = !isApiRoute && !isDebugEndpoint;
 
-  // Validar sesión
+  // Validar sesión (solo si es ruta protegida, NO debug)
   const user = getSessionUser(context.cookies);
-  if (!user) {
+  if (!user && !isDebugEndpoint) {
     if (isApiRoute) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
         status: 401,
