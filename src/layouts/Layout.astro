@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import CustomCursor from '../components/CustomCursor.astro';
 import { siteConfig } from '../config/site.config';
 import { useTranslations, localeConfig, type Locale } from '../i18n';
 
@@ -183,6 +184,7 @@ const professionalServiceSchema = {
     <slot name="head" />
   </head>
   <body>
+    <CustomCursor />
     <a class="skip-link" href="#contenido">{t.meta.skipToContent}</a>
 
     <!-- Lenis bootstrap. Las secciones son visibles por defecto; las animaciones
