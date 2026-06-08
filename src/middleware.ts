@@ -33,9 +33,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   // /admin/login es público (necesita acceso para que se pueda loguear)
-  if (pathname === '/admin/login') {
-    // Si ya tiene sesión válida, redirigir al dashboard
-    if (getSessionUser(context.cookies)) {
+  if (pathname === '/admin/login' || pathname === '/admin/api/login') {
+    // Si ya tiene sesión válida, redirigir al dashboard (solo en /admin/login, no en /api/login)
+    if (pathname === '/admin/login' && getSessionUser(context.cookies)) {
       return context.redirect('/admin/');
     }
     return next();
