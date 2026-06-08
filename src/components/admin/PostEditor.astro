@@ -285,10 +285,16 @@ const today = new Date().toISOString().slice(0, 10);
       if (!res.ok) {
         status.className = 'status error';
         status.textContent = data.error || 'Error al guardar';
+        if (data.detail) {
+          status.innerHTML += `<br><small>${data.detail}</small>`;
+        }
         return;
       }
       status.className = 'status success';
-      status.innerHTML = `Guardado en <code>${data.filePath}</code>. ${data.detail || 'Ahora hacé git add/commit/push desde tu shell.'}`;
+      const commitLink = data.commitUrl
+        ? `<a href="${data.commitUrl}" target="_blank">Ver commit en GitHub ↗</a>`
+        : '';
+      status.innerHTML = `Guardado en <code>${data.filePath}</code>. ${data.message || ''} ${commitLink}`;
     } catch (err) {
       status.className = 'status error';
       status.textContent = 'Error de red';

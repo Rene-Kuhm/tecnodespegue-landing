@@ -142,6 +142,40 @@ if (!adminHeaders) {
   }
 }
 
+// === 7. Verificar GitHub integration ===
+console.log('\n📋 7. Verificando integración GitHub');
+const githubLib = existsSync(join(root, 'src', 'lib', 'github.ts'));
+if (!githubLib) {
+  fail('src/lib/github.ts no existe');
+} else {
+  const content = readFileSync(join(root, 'src', 'lib', 'github.ts'), 'utf-8');
+  if (!content.includes('createAppJwt') || !content.includes('RS256')) {
+    fail('github.ts no implementa JWT con RS256');
+  } else {
+    ok('github.ts implementa JWT con RS256 (correcto para GitHub Apps)');
+  }
+  if (!content.includes('installation') || !content.includes('access_tokens')) {
+    fail('github.ts no implementa installation token flow');
+  } else {
+    ok('github.ts implementa installation token flow');
+  }
+  if (!content.includes('getInstallationToken') || !content.includes('cache')) {
+    fail('github.ts no cachea installation tokens');
+  } else {
+    ok('github.ts cachea installation tokens (60s antes de expirar)');
+  }
+}
+
+const savePostApi = existsSync(join(root, 'src', 'pages', 'admin', 'api', 'save-post.ts'));
+if (savePostApi) {
+  const content = readFileSync(join(root, 'src', 'pages', 'admin', 'api', 'save-post.ts'), 'utf-8');
+  if (content.includes('createOrUpdateFile')) {
+    ok('save-post.ts usa GitHub Contents API (no filesystem directo)');
+  } else {
+    fail('save-post.ts no usa GitHub Contents API');
+  }
+}
+
 // === Resumen ===
 console.log('\n' + '='.repeat(50));
 console.log(`Errors: ${errors.length}`);

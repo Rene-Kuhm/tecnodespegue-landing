@@ -1,21 +1,20 @@
 /**
  * src/pages/admin/api/save-post.ts
- * POST — crea o actualiza un post.
- * - Valida sesión (middleware) + CSRF
- * - Valida campos requeridos
- * - Slug del archivo a partir del titulo (slugify)
- * - Escribe en src/content/posts/{locale}/{slug}.md o src/content/posts/{slug}.md
+ * POST — crea o actualiza un post en GitHub via Contents API.
  *
- * IMPORTANTE: Este endpoint escribe al filesystem de la funcion serverless.
- * En Vercel, los cambios NO persisten despues del cold start. En desarrollo local
- * (npm run dev) si. Esto es por diseño: el deploy real se hace via git push
- * desde tu shell local, o mediante un script que se ejecute post-save.
+ * Flujo:
+ * 1. Valida sesion (middleware) + CSRF
+ * 2. Valida campos
+ * 3. Slug del archivo a partir del titulo (slugify)
+ * 4. Llama a GitHub Contents API con el archivo generado
+ * 5. Devuelve URL del commit para que el usuario pueda verificar
+ *
+ * El commit dispara un redeploy automatico de Vercel (porque esta en main).
  */
 
 import type { APIRoute } from 'astro';
-import { writeFile, readFile, mkdir } from 'node:fs/promises';
-import { join, dirname } from 'node:path';
 import { getSessionUser } from '../../../lib/auth';
+import { createOrUpdateFile, isGitHubConfigured } from '../../../lib/github';
 
 export const prerender = false;
 
@@ -51,11 +50,10 @@ function slugify(input: string): string {
 }
 
 function escapeYamlString(s: string): string {
-  // Wrap in double quotes; escape backslashes and double quotes
   return `"${s.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
 }
 
-function buildFrontmatter(post: SavePostBody, slug: string): string {
+function buildFrontmatter(post: SavePostBody): string {
   const lines: string[] = ['---'];
   lines.push(`title: ${escapeYamlString(post.title)}`);
   lines.push(`description: ${escapeYamlString(post.description)}`);
@@ -75,22 +73,27 @@ function buildFrontmatter(post: SavePostBody, slug: string): string {
     if (post.seoTitle) lines.push(`  title: ${escapeYamlString(post.seoTitle)}`);
     if (post.seoDescription) lines.push(`  description: ${escapeYamlString(post.seoDescription)}`);
   }
-  lines.push(`slug: ${escapeYamlString(slug)}`);
   lines.push('---');
   return lines.join('\n');
 }
 
-function getPostsDir(locale: 'es' | 'en'): string {
+function getFilePath(locale: 'es' | 'en', slug: string): string {
   return locale === 'en'
-    ? join(process.cwd(), 'src', 'content', 'posts', 'en')
-    : join(process.cwd(), 'src', 'content', 'posts');
+    ? `src/content/posts/en/${slug}.md`
+    : `src/content/posts/${slug}.md`;
 }
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   // El middleware ya valido sesion. Doble check explicito.
   const user = getSessionUser(cookies);
   if (!user) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
+    return jsonRes({ error: 'Unauthorized' }, 401);
+  }
+
+  if (!isGitHubConfigured()) {
+    return jsonRes({
+      error: 'GitHub App no configurado. Ver ADMIN_GITHUB_* env vars.',
+    }, 503);
   }
 
   let body: SavePostBody;
@@ -119,8 +122,6 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   if (!body.date || !/^\d{4}-\d{2}-\d{2}$/.test(body.date)) {
     return jsonRes({ error: 'date must be YYYY-MM-DD' }, 400);
   }
-  // CSRF simple: el front debe mandar el header X-CSRF con cualquier valor
-  // no-vacio. Suficiente para un single-user dashboard.
   if (!body.csrfToken || typeof body.csrfToken !== 'string' || body.csrfToken.length < 8) {
     return jsonRes({ error: 'Invalid CSRF token' }, 403);
   }
@@ -130,39 +131,49 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     return jsonRes({ error: 'Invalid slug (only a-z, 0-9, -)' }, 400);
   }
 
-  const frontmatter = buildFrontmatter(body, slug);
+  const isUpdate = !!body.id;
+  const frontmatter = buildFrontmatter(body);
   const fullContent = `${frontmatter}\n\n${body.body.trim()}\n`;
-  const dir = getPostsDir(body.locale);
-  const filePath = join(dir, `${slug}.md`);
+  const filePath = getFilePath(body.locale, slug);
+  const commitMessage = isUpdate
+    ? `chore(blog): update ${body.locale}/${slug}`
+    : `feat(blog): add ${body.locale}/${slug} via admin dashboard`;
 
   try {
-    await mkdir(dir, { recursive: true });
-    await writeFile(filePath, fullContent, 'utf-8');
+    const result = await createOrUpdateFile(filePath, fullContent, commitMessage);
+    return jsonRes({
+      ok: true,
+      slug,
+      locale: body.locale,
+      filePath,
+      url: body.locale === 'en' ? `/en/blog/${slug}/` : `/blog/${slug}/`,
+      commitSha: result.commitSha,
+      commitUrl: result.commitUrl,
+      contentUrl: result.contentUrl,
+      message: 'Post guardado en GitHub. Vercel va a redeployar automaticamente (~1-2 min).',
+    });
   } catch (err) {
     return jsonRes({
-      error: 'Failed to write file. En Vercel los cambios no persisten: hacé git commit + push desde tu shell local.',
+      error: 'Failed to save to GitHub',
       detail: String((err as Error).message),
     }, 500);
   }
-
-  return jsonRes({
-    ok: true,
-    filePath: filePath.replace(process.cwd(), '').replace(/\\/g, '/'),
-    slug,
-    locale: body.locale,
-    url: body.locale === 'en' ? `/en/blog/${slug}/` : `/blog/${slug}/`,
-  });
 };
 
 export const GET: APIRoute = async ({ url }) => {
-  // Permite leer un post existente (para el form de edicion)
+  // Permite leer un post existente (para el form de edicion).
+  // Lee directo del filesystem (disponible en SSR; la lista principal
+  // usa getCollection de Astro content, pero para editar necesitamos
+  // el archivo raw para separar frontmatter del body).
+  const { readFile } = await import('node:fs/promises');
+  const { join } = await import('node:path');
   const locale = url.searchParams.get('locale');
   const slug = url.searchParams.get('slug');
   if (!locale || !slug || (locale !== 'es' && locale !== 'en')) {
     return jsonRes({ error: 'locale and slug required' }, 400);
   }
-  const dir = getPostsDir(locale as 'es' | 'en');
-  const filePath = join(dir, `${slug}.md`);
+  const dir = locale === 'en' ? 'src/content/posts/en' : 'src/content/posts';
+  const filePath = join(process.cwd(), dir, `${slug}.md`);
   try {
     const content = await readFile(filePath, 'utf-8');
     return new Response(JSON.stringify({ ok: true, content }), {
