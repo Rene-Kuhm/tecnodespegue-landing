@@ -41,10 +41,11 @@ const copy = {
 ---
 
 <section class="hero-section" data-hero>
-  <!-- Background full bleed — versión 21:9 (ultrawide) cuando el viewport es ancho,
+  <!-- Background full bleed — versión 4K 21:9 (ultrawide) cuando el viewport es ancho,
        versión 3:2 estándar en el resto. object-fit: cover mantiene aspect ratio. -->
   <picture class="hero-bg" aria-hidden="true">
-    <source media="(min-aspect-ratio: 17/9)" srcset="/hero-mockup-ultrawide.png" type="image/png" />
+    <source media="(min-aspect-ratio: 17/9)" srcset="/hero-mockup-ultrawide.webp" type="image/webp" />
+    <source media="(min-aspect-ratio: 17/9)" srcset="/hero-mockup-ultrawide.jpg" type="image/jpeg" />
     <source srcset="/hero-mockup.webp" type="image/webp" />
     <source srcset="/hero-mockup.jpg" type="image/jpeg" />
     <img src="/hero-mockup.jpg" alt="" class="hero-bg-img" loading="eager" decoding="async" fetchpriority="high" width="1264" height="848" />
