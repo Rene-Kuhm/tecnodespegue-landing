@@ -77,7 +77,7 @@ const toggleLabel = locale === 'es' ? 'EN' : 'ES';
     </button>
   </div>
 
-  <div class="nav-mobile" id="mobile-menu" data-nav-mobile aria-hidden="true">
+  <div class="nav-mobile" id="mobile-menu" data-nav-mobile aria-hidden="true" inert>
     <div class="nav-mobile-inner">
       <a href={localizedPath('/#soluciones', locale)} class="nav-mobile-link font-display">{t.nav.solutions}</a>
       <a href={localizedPath('/templates', locale)} class="nav-mobile-link font-display">{t.nav.templates}</a>
@@ -427,12 +427,16 @@ const toggleLabel = locale === 'es' ? 'EN' : 'ES';
         mobile.classList.remove('is-open');
         burger.classList.remove('is-open');
         mobile.setAttribute('aria-hidden', 'true');
+        // inert deshabilita focus + click en todo el sub-tree, el patron
+        // correcto WCAG para "ocultar" un menu. Cumple Lighthouse a11y 100.
+        (mobile as HTMLElement).inert = true;
         burger.setAttribute('aria-expanded', 'false');
         document.body.style.overflow = '';
       } else {
         mobile.classList.add('is-open');
         burger.classList.add('is-open');
         mobile.setAttribute('aria-hidden', 'false');
+        (mobile as HTMLElement).inert = false;
         burger.setAttribute('aria-expanded', 'true');
         document.body.style.overflow = 'hidden';
       }
