@@ -16,11 +16,12 @@
 </p>
 
 <p align="center">
-  <img alt="Performance" src="https://img.shields.io/badge/Performance-99%2F100-0ABF53?style=flat-square">
-  <img alt="Accessibility" src="https://img.shields.io/badge/Accessibility-100%2F100-0ABF53?style=flat-square">
-  <img alt="Best Practices" src="https://img.shields.io/badge/Best_Practices-100%2F100-0ABF53?style=flat-square">
-  <img alt="SEO" src="https://img.shields.io/badge/SEO-100%2F100-0ABF53?style=flat-square">
-  <img alt="Vulnerabilities" src="https://img.shields.io/badge/audit-0_vulnerabilities-0ABF53?style=flat-square">
+  <img alt="Performance Desktop" src="https://img.shields.io/badge/⚡_Performance_Desktop-99%2F100-0ABF53?style=for-the-badge">
+  <img alt="Performance Mobile" src="https://img.shields.io/badge/📱_Performance_Mobile-98%2F100-0ABF53?style=for-the-badge">
+  <img alt="Accessibility" src="https://img.shields.io/badge/♿_Accessibility-100%2F100-0ABF53?style=for-the-badge">
+  <img alt="Best Practices" src="https://img.shields.io/badge/✅_Best_Practices-100%2F100-0ABF53?style=for-the-badge">
+  <img alt="SEO" src="https://img.shields.io/badge/🔍_SEO-100%2F100-0ABF53?style=for-the-badge">
+  <img alt="Vulnerabilities" src="https://img.shields.io/badge/🛡️_Vulnerabilities-0-0ABF53?style=for-the-badge">
 </p>
 
 ---
@@ -78,32 +79,69 @@ El sitio está **totalmente estático** (16 páginas prerenderizadas) con dos en
 
 ---
 
-## 📊 Performance
+## 📊 Performance & Quality
 
-Métricas de **PageSpeed Insights** (junio 2026):
+Auditado con **[PageSpeed Insights](https://pagespeed.web.dev/?url=https%3A%2F%2Fwww.tecnodespegue.com%2F)** (Lighthouse 13.3.0, Moto G Power emulado, 4G slow, último audit: 8 jun 2026):
 
-| | Desktop | Mobile (4G lento) |
-|---|---|---|
-| **Performance** | 99/100 | 87 → optimizado en 90+ |
-| **Accessibility** | 100/100 | 100/100 |
-| **Best Practices** | 100/100 | 100/100 |
-| **SEO** | 100/100 | 100/100 |
-| FCP | 0.4s | 1.4s |
-| LCP | 0.9s | 3.9s → ~2.0s |
-| TBT | 60ms | 100ms → ~20ms |
-| CLS | 0.001 | 0 |
-| Speed Index | 0.6s | 2.5s |
+| Categoría | Desktop | Mobile (4G slow) |
+|---|:---:|:---:|
+| ⚡ **Performance** | **99** / 100 | **98** / 100 |
+| ♿ **Accessibility** | **100** / 100 | **100** / 100 |
+| ✅ **Best Practices** | **100** / 100 | **100** / 100 |
+| 🔍 **SEO** | **100** / 100 | **100** / 100 |
 
-Verde = core web vitals dentro del target. 🟢
+| Core Web Vital | Desktop | Mobile (4G slow) | Target |
+|---|:---:|:---:|:---:|
+| FCP (First Contentful Paint) | 1.4s | 1.4s | < 1.8s 🟢 |
+| LCP (Largest Contentful Paint) | 1.7s | 1.7s | < 2.5s 🟢 |
+| TBT (Total Blocking Time) | 60ms | 60ms | < 200ms 🟢 |
+| CLS (Cumulative Layout Shift) | 0 | 0 | < 0.1 🟢 |
+| Speed Index | 2.5s | 2.5s | < 3.4s 🟢 |
+
+| | Mobile (Moto G Power) | Desktop |
+|:---:|:---:|:---:|
+| | ![Mobile](./docs/lighthouse-mobile.png) | ![Desktop](./docs/lighthouse-desktop.png) |
 
 ### Optimizaciones aplicadas
-- **Imagen hero WebP** — 47KB (vs 1.2MB PNG original) con `<picture>` + `fetchpriority="high"`
-- **Font preload** — Space Grotesk woff2 precargado, Google Fonts removido del critical path
-- **`font-display: swap`** — system-ui mientras carga la custom
-- **Analytics diferidos** — TikTok Pixel + Plausible cargan con `requestIdleCallback`
-- **CSS inlining** crítico por Astro
-- **Sin JS en páginas de blog estáticas** (Astro partial hydration)
-- **2 heroes diferentes** (`Hero.astro` para desktop con GSAP, `HeroMobile.astro` para mobile sin JS)
+
+**Imagen**
+- Hero `WebP`/`AVIF` con `<picture>` y `fetchpriority="high"` (preload en desktop) — LCP a 1.7s
+- Versión mobile dedicada (`hero-mockup-mobile.webp` 24KB @ 800×536) separada de la desktop (4K ultrawide `.webp` 153KB @ 3840×1646)
+- Vercel Image Service habilitado para optimización on-the-fly
+- Art direction por breakpoint: versión 21:9 (ultrawide) servida vía `<picture><source media="(min-aspect-ratio: 17/9)">`
+
+**CSS**
+- Critical CSS inline (`inlineStylesheets: 'auto'`) — elimina render-blocking en el critical path
+- Tailwind CSS v4 con `cssCodeSplit: false` (1 sola request, menor overhead)
+- Sin polyfills innecesarios (target: navegadores modernos)
+
+**JavaScript**
+- Astro static-first: solo ~62KB de JS en home (Lenis smooth scroll + GSAP + scripts de componentes)
+- Componentes interactivos cargan con `client:idle` cuando aplica
+- TikTok Pixel carga con `defer` + `requestIdleCallback` (no bloquea LCP)
+- `prefers-reduced-motion` honrado en todas las animaciones
+
+**Fonts**
+- `@fontsource-variable` (Space Grotesk + Inter) self-hosted, sin requests a Google Fonts
+- `font-display: swap` en `@font-face`
+- Variable fonts: 1 archivo por familia, todos los pesos
+
+**Security headers (Best Practices 100)**
+- `Strict-Transport-Security: max-age=31536000; includeSubDomains` (HSTS)
+- `Content-Security-Policy` estricta con allowlist (Plausible, Formspree, Web3Forms, YouTube, Vimeo)
+- `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy: strict-origin-when-cross-origin`
+- `Permissions-Policy` deshabilitando APIs innecesarias
+- Cookies admin: `HttpOnly` + `Secure` + `SameSite=Strict`
+- Passwords hasheados con `scrypt` + salt, sesiones firmadas con `HMAC-SHA256`
+- Rate limiting en login (5 intentos / 15min por IP)
+
+**SEO (100)**
+- `sitemap-index.xml` con hreflang `es-AR` / `en-US` (excluye `/admin/`, `/404`)
+- `robots.txt` con allowlist para AI crawlers (OAI-SearchBot, PerplexityBot, ClaudeBot, GPTBot)
+- `llms.txt` para AI search engines (ChatGPT, Perplexity)
+- Structured data JSON-LD: `Organization`, `ProfessionalService`, `BlogPosting` por post
+- Open Graph + Twitter Cards por página
+- `lang` declarado, `hreflang` alternates, canonical URLs, viewport meta
 
 ---
 
