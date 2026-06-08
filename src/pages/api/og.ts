@@ -17,6 +17,134 @@ export const GET: APIRoute = async ({ url }) => {
   const description = url.searchParams.get('description') || 'Ingeniería de software & automatización con IA';
   const category = url.searchParams.get('category') || '';
   const author = url.searchParams.get('author') || 'René Kuhm';
+  const variant = url.searchParams.get('variant') || 'social';
+
+  if (variant === 'cover') {
+    return new ImageResponse(
+      {
+        type: 'div',
+        props: {
+          style: {
+            height: '100%',
+            width: '100%',
+            display: 'flex',
+            backgroundImage: 'linear-gradient(135deg, #09090b 0%, #18070b 46%, #050505 100%)',
+            fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
+            position: 'relative',
+            overflow: 'hidden',
+          },
+          children: [
+            {
+              type: 'div',
+              props: {
+                style: {
+                  position: 'absolute',
+                  inset: 0,
+                  backgroundImage:
+                    'linear-gradient(rgba(255,255,255,0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.055) 1px, transparent 1px)',
+                  backgroundSize: '72px 72px',
+                  opacity: 0.45,
+                },
+              },
+            },
+            {
+              type: 'div',
+              props: {
+                style: {
+                  position: 'absolute',
+                  width: 520,
+                  height: 520,
+                  right: -110,
+                  top: -90,
+                  borderRadius: 999,
+                  background: 'radial-gradient(circle, rgba(237,29,36,0.42), transparent 66%)',
+                },
+              },
+            },
+            {
+              type: 'div',
+              props: {
+                style: {
+                  position: 'absolute',
+                  width: 420,
+                  height: 420,
+                  left: -80,
+                  bottom: -120,
+                  borderRadius: 999,
+                  background: 'radial-gradient(circle, rgba(248,180,0,0.26), transparent 68%)',
+                },
+              },
+            },
+            {
+              type: 'div',
+              props: {
+                style: {
+                  position: 'absolute',
+                  inset: 58,
+                  border: '2px solid rgba(248,180,0,0.22)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  padding: 44,
+                },
+                children: [
+                  {
+                    type: 'div',
+                    props: {
+                      style: {
+                        display: 'flex',
+                        alignItems: 'center',
+                        color: '#fff',
+                        fontSize: 24,
+                        fontWeight: 900,
+                        letterSpacing: '0.22em',
+                      },
+                      children: 'TD TECNODESPEGUE',
+                    },
+                  },
+                  {
+                    type: 'div',
+                    props: {
+                      style: {
+                        display: 'flex',
+                        gap: 22,
+                        alignItems: 'flex-end',
+                      },
+                      children: [
+                        {
+                          type: 'div',
+                          props: {
+                            style: {
+                              width: 210,
+                              height: 210,
+                              border: '18px solid #ED1D24',
+                              borderRightColor: '#F8B400',
+                            },
+                          },
+                        },
+                        {
+                          type: 'div',
+                          props: {
+                            style: {
+                              flex: 1,
+                              height: 18,
+                              background: 'linear-gradient(90deg, #F8B400, #ED1D24, transparent)',
+                              marginBottom: 28,
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      { width: 1200, height: 630 }
+    );
+  }
 
   return new ImageResponse(
     {

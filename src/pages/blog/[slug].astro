@@ -7,7 +7,7 @@ import Footer from '../../components/Footer.astro';
 import Comments from '../../components/Comments.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
 import RelatedPosts from '../../components/RelatedPosts.astro';
-import { formatDate, calculateReadTime } from '../../utils/blog.ts';
+import { formatDate, calculateReadTime, getPostCoverImage } from '../../utils/blog.ts';
 import { localeConfig, type Locale } from '../../i18n';
 
 const locale: Locale = 'es';
@@ -35,9 +35,8 @@ const date = formatDate(post.data.date, cfg.dateLocale);
 const readTime = post.data.readTime ?? calculateReadTime(post.body);
 const title = post.data.seo?.title ?? post.data.title;
 const description = post.data.seo?.description ?? post.data.description;
-const ogImage = post.data.seo?.image
-  ? new URL(post.data.seo.image, Astro.site)
-  : new URL('/og-image.png', Astro.site);
+const coverImage = getPostCoverImage(post);
+const ogImage = new URL(getPostCoverImage(post, 'social'), Astro.site);
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
@@ -132,6 +131,10 @@ const blogPostingSchema = {
             </div>
           </div>
 
+          <figure class="post-cover" data-post-cover>
+            <img src={coverImage} alt="" class="post-cover-img" loading="eager" decoding="async" />
+          </figure>
+
           <!-- Divider cinemático -->
           <div class="post-divider" aria-hidden="true">
             <div class="post-divider-bar"></div>
@@ -220,7 +223,7 @@ const blogPostingSchema = {
     color: #FFFFFF;
     margin-top: 2.5rem;
     margin-bottom: 1rem;
-    letter-spacing: -0.015em;
+    letter-spacing: 0;
     scroll-margin-top: 6rem;
     position: relative;
     padding-left: 1rem;
@@ -245,7 +248,7 @@ const blogPostingSchema = {
     color: #FFFFFF;
     margin-top: 2rem;
     margin-bottom: 0.75rem;
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
     scroll-margin-top: 6rem;
   }
 
@@ -408,7 +411,7 @@ const blogPostingSchema = {
     .post-sidebar { order: 1; }
   }
 
-  .post-article { order: 1; max-width: 48rem; }
+  .post-article { order: 1; width: 100%; max-width: 48rem; min-width: 0; }
 
   @media (min-width: 1280px) {
     .post-article { order: 2; }
@@ -476,9 +479,12 @@ const blogPostingSchema = {
     font-weight: 900;
     font-size: clamp(2rem, 4vw, 3.25rem);
     line-height: 1;
-    letter-spacing: -0.025em;
+    letter-spacing: 0;
     color: #FFFFFF;
     margin: 0 0 1.25rem;
+    overflow-wrap: break-word;
+    word-break: normal;
+    text-wrap: balance;
   }
 
   .post-lead {
@@ -520,6 +526,31 @@ const blogPostingSchema = {
     font-size: 0.7rem;
     color: rgba(255, 255, 255, 0.4);
     margin: 0;
+  }
+
+  .post-cover {
+    position: relative;
+    margin: 0 0 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background: #070707;
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.32);
+  }
+
+  .post-cover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(180deg, transparent 60%, rgba(0, 0, 0, 0.3));
+  }
+
+  .post-cover-img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1200 / 630;
+    object-fit: cover;
   }
 
   .post-divider {

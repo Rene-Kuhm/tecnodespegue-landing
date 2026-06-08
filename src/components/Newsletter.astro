@@ -8,9 +8,11 @@ import type { Locale } from '../i18n';
 
 interface Props {
   locale?: Locale;
+  variant?: 'default' | 'compact';
 }
 
 const locale: Locale = Astro.props.locale ?? 'es';
+const variant = Astro.props.variant ?? 'default';
 const formspreeEndpoint = siteConfig.formspree.endpoint;
 const copy = {
   es: {
@@ -30,7 +32,7 @@ const copy = {
 }[locale];
 ---
 
-<section class="newsletter-section" data-newsletter data-formspree-endpoint={formspreeEndpoint}>
+<section class={`newsletter-section newsletter-${variant}`} data-newsletter data-formspree-endpoint={formspreeEndpoint}>
   <div class="newsletter-card">
     <!-- BG ambient -->
     <div class="nl-bg" aria-hidden="true">
@@ -102,6 +104,11 @@ const copy = {
     padding: 0 1.5rem;
   }
 
+  .newsletter-compact {
+    max-width: 44rem;
+    padding: 0;
+  }
+
   .newsletter-card {
     position: relative;
     background: linear-gradient(135deg, rgba(237, 29, 36, 0.05) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(177, 78, 255, 0.05) 100%);
@@ -110,6 +117,11 @@ const copy = {
     padding: 3rem 2rem;
     overflow: hidden;
     backdrop-filter: blur(20px);
+  }
+
+  .newsletter-compact .newsletter-card {
+    border-radius: 0.5rem;
+    padding: 1.75rem;
   }
 
   .nl-bg {
@@ -150,6 +162,10 @@ const copy = {
     margin-bottom: 2rem;
   }
 
+  .newsletter-compact .nl-header {
+    margin-bottom: 1.25rem;
+  }
+
   .nl-icon {
     display: inline-flex;
     align-items: center;
@@ -161,6 +177,18 @@ const copy = {
     border-radius: 1rem;
     color: var(--color-marvel-gold);
     margin-bottom: 1.25rem;
+  }
+
+  .newsletter-compact .nl-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 0.5rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .newsletter-compact .nl-icon svg {
+    width: 20px;
+    height: 20px;
   }
 
   .nl-icon svg {
@@ -180,12 +208,22 @@ const copy = {
     margin: 0 0 1rem;
   }
 
+  .newsletter-compact .nl-title {
+    font-size: clamp(1.45rem, 2.4vw, 2rem);
+    letter-spacing: 0;
+  }
+
   .nl-lead {
     font-size: 1rem;
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.6);
     max-width: 32rem;
     margin: 0 auto;
+  }
+
+  .newsletter-compact .nl-lead {
+    font-size: 0.9rem;
+    max-width: 28rem;
   }
 
   .nl-form {
