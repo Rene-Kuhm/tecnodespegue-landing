@@ -138,6 +138,9 @@ const professionalServiceSchema = {
     <link rel="alternate" hreflang="en-US" href={enURL} />
     <link rel="alternate" hreflang="x-default" href={esURL} />
 
+    <!-- RSS feed auto-discovery (so crawlers + readers can find it without manual URL) -->
+    <link rel="alternate" type="application/rss+xml" title={locale === 'en' ? 'TecnoDespegue — Engineering Blog' : 'TecnoDespegue — Blog de Ingeniería'} href={locale === 'en' ? new URL('/en/rss.xml', Astro.site).toString() : new URL('/rss.xml', Astro.site).toString()} />
+
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <!-- Open Graph / Facebook -->

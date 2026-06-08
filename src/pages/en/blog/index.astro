@@ -100,7 +100,7 @@ const description = 'Articles on fullstack development, AI automation, software 
             data-text={`${post.data.title} ${post.data.description}`.toLowerCase()}
             data-card-idx={idx}
           >
-            <a href={localizedPath(`/blog/${post.id}/`, locale)} class="blog-link">
+            <a href={localizedPath(`/blog/${post.id.replace(/^en\//, '')}/`, locale)} class="blog-link">
               <div class="blog-link-inner">
                 <div class="blog-meta font-mono">
                   <time datetime={post.data.date.toISOString()}>{date}</time>

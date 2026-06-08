@@ -32,6 +32,9 @@ interface Props {
 const { post, allPosts } = Astro.props;
 const { Content, headings } = await render(post);
 
+// post.id para EN es "en/typescript-production-tips" — strippear el "en/" para evitar /en/blog/en/...
+const postSlug = post.id.replace(/^en\//, '');
+
 const date = formatDate(post.data.date, cfg.dateLocale);
 const readTime = post.data.readTime ?? calculateReadTime(post.body);
 const title = post.data.seo?.title ?? post.data.title;
@@ -40,7 +43,7 @@ const ogImage = post.data.seo?.image
   ? new URL(post.data.seo.image, Astro.site)
   : new URL('/og-image.png', Astro.site);
 
-const canonicalURL = new URL(localizedPath(`/blog/${post.id}/`, locale), Astro.site);
+const canonicalURL = new URL(localizedPath(`/blog/${postSlug}/`, locale), Astro.site);
 
 const authorInitials = post.data.author
   .split(' ')
@@ -71,7 +74,7 @@ const blogPostingSchema = {
 };
 ---
 
-<Layout title={`${title} — TecnoDespegue`} description={description} path={localizedPath(`/blog/${post.id}/`, locale)} locale={locale}>
+<Layout title={`${title} — TecnoDespegue`} description={description} path={localizedPath(`/blog/${postSlug}/`, locale)} locale={locale}>
   <script is:inline type="application/ld+json" slot="head" set:html={JSON.stringify(blogPostingSchema)} />
   <Fragment slot="head">
     <meta property="og:type" content="article" />
