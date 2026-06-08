@@ -95,13 +95,13 @@ const month = new Date().toLocaleDateString(localeConfig[locale].dateLocale, { m
 <style>
   .blog-hero {
     position: relative;
-    padding: 7rem 0 2rem;
+    padding: 7rem 1.5rem 3rem;
     overflow: hidden;
   }
 
   @media (min-width: 768px) {
     .blog-hero {
-      padding: 8rem 0 2.5rem;
+      padding: 8rem 2rem 4rem;
     }
   }
 
@@ -148,9 +148,8 @@ const month = new Date().toLocaleDateString(localeConfig[locale].dateLocale, { m
   .hero-content {
     position: relative;
     z-index: 1;
-    max-width: 64rem;
+    max-width: 80rem;
     margin: 0 auto;
-    text-align: center;
   }
 
   /* Badge */
@@ -163,7 +162,7 @@ const month = new Date().toLocaleDateString(localeConfig[locale].dateLocale, { m
     backdrop-filter: blur(12px);
     border: 1px solid rgba(237, 29, 36, 0.3);
     border-radius: 999px;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
     opacity: 0;
     transform: translateY(16px);
   }
@@ -194,18 +193,17 @@ const month = new Date().toLocaleDateString(localeConfig[locale].dateLocale, { m
     font-weight: 900;
     font-size: clamp(2.5rem, 7vw, 5.5rem);
     line-height: 0.92;
-    letter-spacing: 0;
+    letter-spacing: -0.025em;
     text-transform: uppercase;
     color: #FFFFFF;
-    margin: 0 auto 1.25rem;
-    max-width: 56rem;
+    margin: 0 0 1.5rem;
+    max-width: 50rem;
   }
 
   .title-line {
     display: flex;
     flex-wrap: wrap;
     gap: 0 0.3em;
-    justify-content: center;
     margin-bottom: 0.05em;
   }
 
@@ -232,8 +230,8 @@ const month = new Date().toLocaleDateString(localeConfig[locale].dateLocale, { m
     font-size: clamp(1rem, 1.4vw, 1.2rem);
     line-height: 1.65;
     color: rgba(255, 255, 255, 0.6);
-    max-width: 44rem;
-    margin: 0 auto 2rem;
+    max-width: 40rem;
+    margin: 0 0 2.5rem;
     opacity: 0;
     transform: translateY(20px);
   }
@@ -243,7 +241,6 @@ const month = new Date().toLocaleDateString(localeConfig[locale].dateLocale, { m
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
     gap: 1.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid rgba(255, 255, 255, 0.08);

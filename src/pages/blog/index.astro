@@ -31,133 +31,125 @@ const description = 'Artículos sobre desarrollo fullstack, automatización con 
 <Layout title={title} description={description}>
   <Nav locale={locale} />
 
+  <BlogHero postCount={posts.length} categoryCount={categories.length} locale={locale} />
+
   <main id="contenido" class="blog-main min-h-screen">
-    <div class="blog-shell">
-      <BlogHero postCount={posts.length} categoryCount={categories.length} locale={locale} />
 
-      <!-- Toolbar: search + filters -->
-      <section class="blog-toolbar" data-toolbar aria-label="Filtros del blog">
-        <div class="toolbar-head">
-          <div>
-            <p class="toolbar-kicker font-mono">Biblioteca técnica</p>
-            <h2 class="toolbar-title font-display">Explorá artículos</h2>
-          </div>
-          <span class="search-count font-mono" data-search-count>{posts.length} artículos</span>
-        </div>
+    <!-- Toolbar: search + filters -->
+    <section class="blog-toolbar" data-toolbar>
+      <!-- Search -->
+      <div class="search-wrap">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+          <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input
+          type="search"
+          id="blog-search"
+          class="search-input font-mono"
+          placeholder="Buscar en el blog…"
+          aria-label="Buscar artículos"
+        />
+        <span class="search-count font-mono" data-search-count>{posts.length} artículos</span>
+      </div>
 
-        <!-- Search -->
-        <div class="search-wrap">
-          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
-            <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-          <input
-            type="search"
-            id="blog-search"
-            class="search-input font-mono"
-            placeholder="Buscar por tema, stack o problema..."
-            aria-label="Buscar artículos"
-          />
-        </div>
-
-        <!-- Category filter -->
-        <div class="filter-row">
-          <button class="filter-btn filter-btn-active font-mono" data-filter-cat="all">
-            Todas
-            <span class="filter-count">{posts.length}</span>
-          </button>
-          {categories.map(cat => {
-            const count = posts.filter(p => p.data.category === cat).length;
-            return (
-              <button class="filter-btn font-mono" data-filter-cat={cat}>
-                {cat}
-                <span class="filter-count">{count}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        <!-- Tag filter -->
-        {topTags.length > 0 && (
-          <div class="tag-row">
-            <span class="tag-label font-mono">Tags</span>
-            {topTags.map(tag => (
-              <button class="tag-chip font-mono" data-filter-tag={tag}>#{tag}</button>
-            ))}
-          </div>
-        )}
-      </section>
-
-      <!-- Posts grid -->
-      <section class="blog-grid" data-blog-grid>
-        {posts.length === 0 && (
-          <div class="empty-state">
-            <p class="empty-text">No hay artículos publicados todavía.</p>
-          </div>
-        )}
-
-        {posts.map((post, idx) => {
-          const date = formatDate(post.data.date);
-          const readTime = post.data.readTime ?? calculateReadTime(post.body, 200);
-          const isFirst = idx === 0;
+      <!-- Category filter -->
+      <div class="filter-row">
+        <button class="filter-btn filter-btn-active font-mono" data-filter-cat="all">
+          Todas
+          <span class="filter-count">{posts.length}</span>
+        </button>
+        {categories.map(cat => {
+          const count = posts.filter(p => p.data.category === cat).length;
           return (
-            <article
-              class={`blog-card ${isFirst ? 'blog-card-lg' : ''}`}
-              data-blog-card
-              data-categories={JSON.stringify([post.data.category])}
-              data-tags={JSON.stringify(post.data.tags || [])}
-              data-text={`${post.data.title} ${post.data.description}`.toLowerCase()}
-              data-card-idx={idx}
-            >
-              <a href={`/blog/${post.id}/`} class="blog-link">
-                <div class="blog-link-inner">
-                  <!-- Meta -->
-                  <div class="blog-meta font-mono">
-                    <time datetime={post.data.date.toISOString()}>{date}</time>
-                    <span class="blog-meta-sep">·</span>
-                    <span>{readTime} min</span>
-                    <span class="blog-meta-sep">·</span>
-                    <span class="blog-meta-cat">{post.data.category}</span>
-                  </div>
-
-                  <!-- Title -->
-                  <h2 class="blog-title font-display">
-                    {post.data.title}
-                  </h2>
-
-                  <!-- Description -->
-                  <p class="blog-desc">{post.data.description}</p>
-
-                  <!-- Tags -->
-                  {post.data.tags && post.data.tags.length > 0 && (
-                    <div class="blog-tags">
-                      {post.data.tags.slice(0, 4).map(tag => (
-                        <span class="blog-tag font-mono">#{tag}</span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <!-- Comic corners -->
-                <div class="blog-corner blog-corner-tl" aria-hidden="true"></div>
-                <div class="blog-corner blog-corner-tr" aria-hidden="true"></div>
-                <div class="blog-corner blog-corner-bl" aria-hidden="true"></div>
-                <div class="blog-corner blog-corner-br" aria-hidden="true"></div>
-              </a>
-            </article>
+            <button class="filter-btn font-mono" data-filter-cat={cat}>
+              {cat}
+              <span class="filter-count">{count}</span>
+            </button>
           );
         })}
+      </div>
 
-        <!-- No results message -->
-        <div class="no-results" data-no-results>
-          <p class="no-results-text">No se encontraron artículos con esos filtros.</p>
-          <button class="no-results-btn" data-clear-filters>Limpiar filtros</button>
+      <!-- Tag filter -->
+      {topTags.length > 0 && (
+        <div class="tag-row">
+          <span class="tag-label font-mono">Tags:</span>
+          {topTags.map(tag => (
+            <button class="tag-chip font-mono" data-filter-tag={tag}>#{tag}</button>
+          ))}
         </div>
-      </section>
+      )}
+    </section>
 
-      <!-- Newsletter -->
-      <Newsletter locale={locale} />
-    </div>
+    <!-- Posts grid -->
+    <section class="blog-grid" data-blog-grid>
+      {posts.length === 0 && (
+        <div class="empty-state">
+          <p class="empty-text">No hay artículos publicados todavía.</p>
+        </div>
+      )}
+
+      {posts.map((post, idx) => {
+        const date = formatDate(post.data.date);
+        const readTime = post.data.readTime ?? calculateReadTime(post.body, 200);
+        const isFirst = idx === 0;
+        return (
+          <article
+            class={`blog-card ${isFirst ? 'blog-card-lg' : ''}`}
+            data-blog-card
+            data-categories={JSON.stringify([post.data.category])}
+            data-tags={JSON.stringify(post.data.tags || [])}
+            data-text={`${post.data.title} ${post.data.description}`.toLowerCase()}
+            data-card-idx={idx}
+          >
+            <a href={`/blog/${post.id}/`} class="blog-link">
+              <div class="blog-link-inner">
+                <!-- Meta -->
+                <div class="blog-meta font-mono">
+                  <time datetime={post.data.date.toISOString()}>{date}</time>
+                  <span class="blog-meta-sep">·</span>
+                  <span>{readTime} min</span>
+                  <span class="blog-meta-sep">·</span>
+                  <span class="blog-meta-cat">{post.data.category}</span>
+                </div>
+
+                <!-- Title -->
+                <h2 class="blog-title font-display">
+                  {post.data.title}
+                </h2>
+
+                <!-- Description -->
+                <p class="blog-desc">{post.data.description}</p>
+
+                <!-- Tags -->
+                {post.data.tags && post.data.tags.length > 0 && (
+                  <div class="blog-tags">
+                    {post.data.tags.slice(0, 4).map(tag => (
+                      <span class="blog-tag font-mono">#{tag}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <!-- Comic corners -->
+              <div class="blog-corner blog-corner-tl" aria-hidden="true"></div>
+              <div class="blog-corner blog-corner-tr" aria-hidden="true"></div>
+              <div class="blog-corner blog-corner-bl" aria-hidden="true"></div>
+              <div class="blog-corner blog-corner-br" aria-hidden="true"></div>
+            </a>
+          </article>
+        );
+      })}
+
+      <!-- No results message -->
+      <div class="no-results" data-no-results>
+        <p class="no-results-text">No se encontraron artículos con esos filtros.</p>
+        <button class="no-results-btn" data-clear-filters>Limpiar filtros</button>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <Newsletter locale={locale} />
   </main>
 
   <Footer locale={locale} />
@@ -165,68 +157,23 @@ const description = 'Artículos sobre desarrollo fullstack, automatización con 
 
 <style>
   .blog-main {
-    position: relative;
-    max-width: none;
-    margin: 0;
-    padding: 0 1.5rem 7rem;
-    overflow: hidden;
-  }
-
-  .blog-main::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(circle at 15% 20%, rgba(237, 29, 36, 0.08), transparent 28rem),
-      radial-gradient(circle at 85% 40%, rgba(248, 180, 0, 0.05), transparent 30rem);
-  }
-
-  .blog-shell {
-    position: relative;
-    z-index: 1;
-    width: min(100%, 76rem);
+    max-width: 80rem;
     margin: 0 auto;
+    padding: 0 1.5rem 6rem;
   }
 
   @media (min-width: 768px) {
-    .blog-main { padding: 0 2rem 7rem; }
+    .blog-main { padding: 0 2rem 6rem; }
   }
 
   /* Toolbar */
   .blog-toolbar {
-    margin: 0 auto 2rem;
-    padding: 1.25rem;
-    background: linear-gradient(180deg, rgba(18, 18, 22, 0.86), rgba(7, 7, 8, 0.92));
+    margin-bottom: 3rem;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 0.75rem;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.32);
-  }
-
-  .toolbar-head {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .toolbar-kicker {
-    margin: 0 0 0.25rem;
-    color: var(--color-marvel-gold);
-    font-size: 0.65rem;
-    font-weight: 800;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-  }
-
-  .toolbar-title {
-    margin: 0;
-    color: #fff;
-    font-size: clamp(1.35rem, 2vw, 1.9rem);
-    line-height: 1;
-    text-transform: uppercase;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 1rem;
   }
 
   /* Search */
@@ -234,7 +181,7 @@ const description = 'Artículos sobre desarrollo fullstack, automatización con 
     position: relative;
     display: flex;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
   }
 
   .search-icon {
@@ -246,7 +193,6 @@ const description = 'Artículos sobre desarrollo fullstack, automatización con 
 
   .search-input {
     flex: 1;
-    width: 100%;
     padding: 0.875rem 1rem 0.875rem 2.75rem;
     background: rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -267,10 +213,11 @@ const description = 'Artículos sobre desarrollo fullstack, automatización con 
   }
 
   .search-count {
-    flex: 0 0 auto;
+    position: absolute;
+    right: 1rem;
     font-size: 0.7rem;
     color: rgba(255, 255, 255, 0.4);
-    white-space: nowrap;
+    pointer-events: none;
   }
 
   /* Filter rows */
@@ -280,7 +227,7 @@ const description = 'Artículos sobre desarrollo fullstack, automatización con 
     flex-wrap: wrap;
     gap: 0.5rem;
     align-items: center;
-    margin-bottom: 0.65rem;
+    margin-bottom: 0.75rem;
   }
 
   .tag-row { margin-bottom: 0; }
@@ -289,7 +236,6 @@ const description = 'Artículos sobre desarrollo fullstack, automatización con 
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    min-height: 2.25rem;
     padding: 0.5rem 0.875rem;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -328,11 +274,10 @@ const description = 'Artículos sobre desarrollo fullstack, automatización con 
     letter-spacing: 0.2em;
     color: rgba(255, 255, 255, 0.4);
     text-transform: uppercase;
-    margin-right: 0.35rem;
+    margin-right: 0.25rem;
   }
 
   .tag-chip {
-    min-height: 2rem;
     padding: 0.375rem 0.75rem;
     background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -359,19 +304,18 @@ const description = 'Artículos sobre desarrollo fullstack, automatización con 
   .blog-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1rem;
-    align-items: stretch;
+    gap: 1.25rem;
   }
 
   @media (min-width: 768px) {
-    .blog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+    .blog-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
   }
 
   .blog-card {
     position: relative;
-    background: linear-gradient(180deg, rgba(18, 18, 20, 0.95), rgba(11, 11, 13, 0.95));
-    border: 1px solid rgba(255, 255, 255, 0.075);
-    border-radius: 0.65rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 0.875rem;
     overflow: hidden;
     transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s, opacity 0.3s;
     opacity: 0;
@@ -404,12 +348,10 @@ const description = 'Artículos sobre desarrollo fullstack, automatización con 
     position: relative;
     text-decoration: none;
     color: inherit;
-    height: 100%;
   }
 
   .blog-link-inner {
-    min-height: 15rem;
-    padding: 1.4rem;
+    padding: 1.75rem;
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
@@ -421,7 +363,7 @@ const description = 'Artículos sobre desarrollo fullstack, automatización con 
     flex-wrap: wrap;
     align-items: center;
     gap: 0.4rem;
-    font-size: 0.66rem;
+    font-size: 0.7rem;
     color: rgba(255, 255, 255, 0.4);
   }
 
@@ -435,17 +377,16 @@ const description = 'Artículos sobre desarrollo fullstack, automatización con 
 
   .blog-title {
     font-weight: 900;
-    font-size: clamp(1.2rem, 1.5vw, 1.45rem);
-    line-height: 1.08;
-    letter-spacing: 0;
+    font-size: clamp(1.25rem, 1.8vw, 1.625rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
     color: #FFFFFF;
     margin: 0;
     transition: color 0.2s;
   }
 
   .blog-card-lg .blog-title {
-    max-width: 48rem;
-    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-size: clamp(1.75rem, 2.5vw, 2.25rem);
   }
 
   .blog-card:hover .blog-title {
@@ -453,7 +394,6 @@ const description = 'Artículos sobre desarrollo fullstack, automatización con 
   }
 
   .blog-desc {
-    max-width: 54rem;
     font-size: 0.875rem;
     line-height: 1.55;
     color: rgba(255, 255, 255, 0.5);
@@ -470,24 +410,6 @@ const description = 'Artículos sobre desarrollo fullstack, automatización con 
     gap: 0.4rem;
     margin-top: auto;
     padding-top: 0.75rem;
-  }
-
-  .blog-card-lg .blog-link-inner {
-    min-height: 13rem;
-    padding: 1.8rem;
-  }
-
-  @media (max-width: 720px) {
-    .toolbar-head {
-      align-items: flex-start;
-      flex-direction: column;
-    }
-
-    .blog-card-lg .blog-link-inner,
-    .blog-link-inner {
-      min-height: auto;
-      padding: 1.15rem;
-    }
   }
 
   .blog-tag {
