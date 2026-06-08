@@ -3,14 +3,19 @@ import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Icon from '../components/Icon.astro';
+import { useTranslations, localizedPath, type Locale } from '../i18n';
+
+const locale: Locale = 'es';
+const t = useTranslations(locale);
 ---
 
 <Layout
-  title="404 — Página no encontrada | TecnoDespegue"
-  description="La página que buscás no existe o fue movida. Volvé al inicio de TecnoDespegue o escribinos para encontrar lo que necesitás."
+  title={`${t.notFound.badge} | TecnoDespegue`}
+  description={t.notFound.desc}
   noindex={true}
+  locale={locale}
 >
-  <Nav />
+  <Nav locale={locale} />
 
   <main id="contenido" class="error-page" data-error>
     <div class="error-bg" aria-hidden="true">
@@ -23,7 +28,7 @@ import Icon from '../components/Icon.astro';
       <!-- Status badge -->
       <div class="error-badge">
         <span class="error-badge-dot"></span>
-        <span class="font-mono">Error 404 · Ruta Perdida</span>
+        <span class="font-mono">{t.notFound.badge}</span>
       </div>
 
       <!-- Big 404 con shine -->
@@ -37,10 +42,10 @@ import Icon from '../components/Icon.astro';
 
       <!-- Headline -->
       <h2 class="error-headline font-display">
-        <span class="error-headline-line">Esta página</span>
+        <span class="error-headline-line">{t.notFound.title}</span>
         <span class="error-headline-line">
           <span class="error-underline-wrap">
-            <span>despegó</span>
+            <span>{t.notFound.titleHighlight}</span>
             <span class="error-underline-bar" aria-hidden="true"></span>
           </span>
         </span>
@@ -49,14 +54,14 @@ import Icon from '../components/Icon.astro';
 
       <!-- Description -->
       <p class="error-lead">
-        La URL que buscás no existe, fue movida o nunca estuvo en nuestro radar. Tranqui, hay un montón de cosas más que podés explorar.
+        {t.notFound.desc}
       </p>
 
       <!-- CTAs -->
       <div class="error-ctas">
-        <a href="/" class="btn-primary magnetic" data-magnetic>
+        <a href={localizedPath('/', locale)} class="btn-primary magnetic" data-magnetic>
           <Icon name="arrow_forward" class="w-4 h-4" />
-          <span>Volver al Inicio</span>
+          <span>{t.notFound.ctaHome}</span>
         </a>
         <a
           href="https://wa.me/5492334409838?text=Hola,%20llegué%20a%20un%20404%20en%20www.tecnodespegue.com%20y%20quiero%20consultar"
@@ -66,7 +71,7 @@ import Icon from '../components/Icon.astro';
           data-magnetic
         >
           <Icon name="chat" class="w-4 h-4" />
-          <span>Hablar por WhatsApp</span>
+          <span>{t.notFound.ctaWhatsapp}</span>
         </a>
       </div>
 
@@ -74,17 +79,17 @@ import Icon from '../components/Icon.astro';
       <div class="error-quick">
         <p class="error-quick-label font-mono">O EXPLORÁ ESTAS SECCIONES</p>
         <div class="error-quick-chips">
-          <a href="/#soluciones" class="tech-badge">Soluciones</a>
-          <a href="/#portfolio" class="tech-badge">Portfolio</a>
-          <a href="/#stack" class="tech-badge">Stack</a>
-          <a href="/#proceso" class="tech-badge">Proceso</a>
-          <a href="/#contacto" class="tech-badge">Contacto</a>
+          <a href={localizedPath('/#soluciones', locale)} class="tech-badge">{t.nav.solutions}</a>
+          <a href={localizedPath('/#portfolio', locale)} class="tech-badge">{t.nav.portfolio}</a>
+          <a href={localizedPath('/#stack', locale)} class="tech-badge">{t.nav.stack}</a>
+          <a href={localizedPath('/#proceso', locale)} class="tech-badge">{t.nav.process}</a>
+          <a href={localizedPath('/#contacto', locale)} class="tech-badge">{t.nav.contact}</a>
         </div>
       </div>
     </div>
   </main>
 
-  <Footer />
+  <Footer locale={locale} />
 </Layout>
 
 <style>

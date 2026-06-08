@@ -53,12 +53,15 @@ async function runCompileSequence(container: HTMLElement) {
   // 2. Setup variables
   const sectionName = container.getAttribute('data-section') || '';
   const importPath = container.getAttribute('data-import') || '';
+  const locale = container.getAttribute('data-locale') || 'es';
   
   // Calculate dynamic random duration using pre-cached variables
   const compileDuration = Math.round(Math.random() * (maxDelay - minDelay) + minDelay);
 
   // Full import text to type
-  const fullText = `> importando { ${sectionName} } desde '${importPath}'`;
+  const fullText = locale === 'en'
+    ? `> importing { ${sectionName} } from '${importPath}'`
+    : `> importando { ${sectionName} } desde '${importPath}'`;
 
   // --- Phase 1: Terminal Import typing ---
   // typeWriter synchronously clears and populates the text with invisible spans 
@@ -89,7 +92,7 @@ async function runCompileSequence(container: HTMLElement) {
   // --- Phase 4: Confirmation Badge pop ---
   badgeContainer.innerHTML = `
     <div class="compile-badge">
-      <span class="compile-text">✓ compilado en ${compileDuration}ms</span>
+      <span class="compile-text">✓ ${locale === 'en' ? 'compiled in' : 'compilado en'} ${compileDuration}ms</span>
     </div>
   `;
   badgeContainer.classList.remove('hidden');

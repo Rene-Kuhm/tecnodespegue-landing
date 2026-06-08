@@ -13,8 +13,10 @@ import BlogHero from '../../components/BlogHero.astro';
 import Footer from '../../components/Footer.astro';
 import Newsletter from '../../components/Newsletter.astro';
 import { formatDate, calculateReadTime, getCategories, getTopTags } from '../../utils/blog.ts';
+import type { Locale } from '../../i18n';
 
-const allPosts = await getCollection('posts');
+const locale: Locale = 'es';
+const allPosts = await getCollection('posts', ({ data }) => (data.locale ?? 'es') === locale);
 const posts = allPosts
   .filter(p => !p.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
@@ -27,9 +29,9 @@ const description = 'Artículos sobre desarrollo fullstack, automatización con 
 ---
 
 <Layout title={title} description={description}>
-  <Nav />
+  <Nav locale={locale} />
 
-  <BlogHero postCount={posts.length} categoryCount={categories.length} />
+  <BlogHero postCount={posts.length} categoryCount={categories.length} locale={locale} />
 
   <main id="contenido" class="blog-main min-h-screen">
 
@@ -147,10 +149,10 @@ const description = 'Artículos sobre desarrollo fullstack, automatización con 
     </section>
 
     <!-- Newsletter -->
-    <Newsletter />
+    <Newsletter locale={locale} />
   </main>
 
-  <Footer />
+  <Footer locale={locale} />
 </Layout>
 
 <style>

@@ -1,6 +1,53 @@
 ---
 import Icon from './Icon.astro';
 import { siteConfig } from '../config/site.config';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale: Locale = Astro.props.locale ?? 'es';
+const copy = {
+  es: {
+    name: 'Nombre *',
+    namePlaceholder: 'Juan Pérez',
+    company: 'Empresa',
+    companyPlaceholder: 'Tu Empresa SRL',
+    project: 'Contanos sobre tu proyecto *',
+    projectPlaceholder: 'Necesitamos automatizar nuestro proceso de...',
+    budget: 'Presupuesto estimado',
+    budgetPlaceholder: 'Seleccionar rango',
+    submit: 'Enviar Consulta',
+    guaranteed: 'Respuesta garantizada en menos de 24 horas',
+    successTitle: '¡Mensaje Enviado!',
+    successBody: 'Te contactaremos en las próximas 24 horas.',
+    emailSubject: 'Nuevo contacto',
+    labels: { name: 'Nombre', email: 'Email', company: 'Empresa', budget: 'Presupuesto', project: 'Proyecto' },
+  },
+  en: {
+    name: 'Name *',
+    namePlaceholder: 'John Smith',
+    company: 'Company',
+    companyPlaceholder: 'Your Company LLC',
+    project: 'Tell us about your project *',
+    projectPlaceholder: 'We need to automate our process for...',
+    budget: 'Estimated budget',
+    budgetPlaceholder: 'Select range',
+    submit: 'Send Inquiry',
+    guaranteed: 'Guaranteed response in less than 24 hours',
+    successTitle: 'Message Sent!',
+    successBody: 'We will contact you within the next 24 hours.',
+    emailSubject: 'New contact',
+    labels: { name: 'Name', email: 'Email', company: 'Company', budget: 'Budget', project: 'Project' },
+  },
+}[locale];
+
+const formspreeEndpoint = siteConfig.formspree.endpoint;
+const formCopy = {
+  emailSubject: copy.emailSubject,
+  labels: copy.labels,
+};
 ---
 
 <div class="max-w-2xl mx-auto bg-surface-container border border-white/10 rounded-card p-8 glass-effect">
@@ -8,7 +55,7 @@ import { siteConfig } from '../config/site.config';
     <div class="grid md:grid-cols-2 gap-6">
       <div>
         <label for="name" class="block text-sm font-label text-on-surface-variant mb-2">
-          Nombre *
+          {copy.name}
         </label>
         <input
           type="text"
@@ -16,7 +63,7 @@ import { siteConfig } from '../config/site.config';
           name="name"
           required
           class="w-full bg-surface-container-high border-b-2 border-outline-variant focus:border-primary px-4 py-3 text-on-surface outline-none transition-colors"
-          placeholder="Juan Pérez"
+          placeholder={copy.namePlaceholder}
         />
       </div>
       
@@ -37,20 +84,20 @@ import { siteConfig } from '../config/site.config';
     
     <div>
       <label for="company" class="block text-sm font-label text-on-surface-variant mb-2">
-        Empresa
+        {copy.company}
       </label>
       <input
         type="text"
         id="company"
         name="company"
         class="w-full bg-surface-container-high border-b-2 border-outline-variant focus:border-primary px-4 py-3 text-on-surface outline-none transition-colors"
-        placeholder="Tu Empresa SRL"
+        placeholder={copy.companyPlaceholder}
       />
     </div>
     
     <div>
       <label for="project" class="block text-sm font-label text-on-surface-variant mb-2">
-        Contanos sobre tu proyecto *
+        {copy.project}
       </label>
       <textarea
         id="project"
@@ -58,20 +105,20 @@ import { siteConfig } from '../config/site.config';
         required
         rows="5"
         class="w-full bg-surface-container-high border-b-2 border-outline-variant focus:border-primary px-4 py-3 text-on-surface outline-none transition-colors resize-none"
-        placeholder="Necesitamos automatizar nuestro proceso de..."
+        placeholder={copy.projectPlaceholder}
       ></textarea>
     </div>
     
     <div>
       <label for="budget" class="block text-sm font-label text-on-surface-variant mb-2">
-        Presupuesto estimado
+        {copy.budget}
       </label>
       <select
         id="budget"
         name="budget"
         class="w-full bg-surface-container-high border-b-2 border-outline-variant focus:border-primary px-4 py-3 text-on-surface outline-none transition-colors"
       >
-        <option value="">Seleccionar rango</option>
+        <option value="">{copy.budgetPlaceholder}</option>
         <option value="5k-10k">USD 5K - 10K</option>
         <option value="10k-25k">USD 10K - 25K</option>
         <option value="25k-50k">USD 25K - 50K</option>
@@ -83,28 +130,28 @@ import { siteConfig } from '../config/site.config';
       type="submit"
       class="btn-primary w-full flex items-center justify-center gap-2 group"
     >
-      <span>Enviar Consulta</span>
+      <span>{copy.submit}</span>
       <Icon name="arrow_forward" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
     </button>
     
     <p class="text-xs text-on-surface-variant text-center">
-      Respuesta garantizada en <strong class="text-primary">menos de 24 horas</strong>
+      {copy.guaranteed}
     </p>
   </form>
   
   <div id="form-success" class="hidden text-center py-8">
     <Icon name="check_circle" class="w-16 h-16 text-secondary mb-4 mx-auto block" />
     <h3 class="text-2xl font-headline font-bold text-on-surface mb-2">
-      ¡Mensaje Enviado!
+      {copy.successTitle}
     </h3>
     <p class="text-on-surface-variant">
-      Te contactaremos en las próximas 24 horas.
+      {copy.successBody}
     </p>
   </div>
 </div>
 
-<script>
-  const form = document.getElementById('contact-form') as HTMLFormElement;
+<script define:vars={{ formspreeEndpoint, formCopy }}>
+  const form = document.getElementById('contact-form');
   const successMessage = document.getElementById('form-success');
   
   form?.addEventListener('submit', async (e) => {
@@ -114,7 +161,7 @@ import { siteConfig } from '../config/site.config';
     
     try {
       // Submit to Formspree
-      const response = await fetch(siteConfig.formspree.endpoint, {
+      const response = await fetch(formspreeEndpoint, {
         method: 'POST',
         body: formData,
         headers: {
@@ -123,18 +170,12 @@ import { siteConfig } from '../config/site.config';
       });
       
       if (response.ok) {
-        const tracker = (window as Window & {
-          tdTrackTikTok?: (
-            eventName: string,
-            params?: Record<string, unknown>,
-            customer?: Record<string, string>
-          ) => void;
-        }).tdTrackTikTok;
+        const tracker = window.tdTrackTikTok;
         const data = Object.fromEntries(formData.entries());
         tracker?.('Lead', {
           content_name: 'Formulario de contacto',
           content_id: 'contact-form',
-          content_type: 'lead_form',
+          content_type: 'product',
           url: window.location.href
         }, {
           email: String(data.email || ''),
@@ -147,14 +188,14 @@ import { siteConfig } from '../config/site.config';
       } else {
         // Fallback to mailto if Formspree fails
         const data = Object.fromEntries(formData.entries());
-        const subject = `Nuevo contacto: ${data.name} - ${data.company}`;
+        const subject = `${formCopy.emailSubject}: ${data.name} - ${data.company}`;
         const body = `
-Nombre: ${data.name}
-Email: ${data.email}
-Empresa: ${data.company}
-Presupuesto: ${data.budget}
+${formCopy.labels.name}: ${data.name}
+${formCopy.labels.email}: ${data.email}
+${formCopy.labels.company}: ${data.company}
+${formCopy.labels.budget}: ${data.budget}
 
-Proyecto:
+${formCopy.labels.project}:
 ${data.project}
         `.trim();
         
@@ -164,14 +205,14 @@ ${data.project}
       console.error('Form submission error:', error);
       // Fallback to mailto on error
       const data = Object.fromEntries(formData.entries());
-      const subject = `Nuevo contacto: ${data.name} - ${data.company}`;
+      const subject = `${formCopy.emailSubject}: ${data.name} - ${data.company}`;
       const body = `
-Nombre: ${data.name}
-Email: ${data.email}
-Empresa: ${data.company}
-Presupuesto: ${data.budget}
+${formCopy.labels.name}: ${data.name}
+${formCopy.labels.email}: ${data.email}
+${formCopy.labels.company}: ${data.company}
+${formCopy.labels.budget}: ${data.budget}
 
-Proyecto:
+${formCopy.labels.project}:
 ${data.project}
       `.trim();
       

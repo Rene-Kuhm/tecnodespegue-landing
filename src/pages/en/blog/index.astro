@@ -31,6 +31,7 @@ const description = 'Articles on fullstack development, AI automation, software 
     featuredCount={posts.length}
     postCount={posts.length}
     categoryCount={categories.length}
+    locale={locale}
   />
 
   <main id="contenido" class="blog-main min-h-screen">
@@ -139,7 +140,7 @@ const description = 'Articles on fullstack development, AI automation, software 
       </div>
     </section>
 
-    <Newsletter />
+    <Newsletter locale={locale} />
   </main>
 
   <Footer locale={locale} />

@@ -1,20 +1,24 @@
 ---
 // src/components/CompileReveal.astro
 export interface Props {
-  sectionName: 'Servicios' | 'Portafolio' | 'PorQué' | 'Testimonios' | 'Tecnologías' | 'Contacto';
+  sectionName: string;
   importPath: string;
   class?: string;
+  locale?: 'es' | 'en';
 }
 
-const { sectionName, importPath, class: className = '' } = Astro.props;
+const { sectionName, importPath, class: className = '', locale = 'es' } = Astro.props;
+const terminalText = locale === 'en'
+  ? `> importing { ${sectionName} } from '${importPath}'`
+  : `> importando { ${sectionName} } desde '${importPath}'`;
 ---
 
-<div class={`compile-container relative ${className}`} data-section={sectionName} data-import={importPath}>
+<div class={`compile-container relative ${className}`} data-section={sectionName} data-import={importPath} data-locale={locale}>
   <!-- Terminal Import Line (Phases 1 & 2) -->
   <div class="compile-terminal">
     <div class="terminal-bar font-mono text-[0.8rem] md:text-sm">
       <span class="terminal-type-target">
-        {`> importando { ${sectionName} } desde '${importPath}'`}
+        {terminalText}
       </span>
       <span class="terminal-cursor">_</span>
     </div>

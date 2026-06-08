@@ -4,8 +4,18 @@
  * Posts relacionados al final de un post, basados en tags compartidos
  */
 import { formatDate, calculateReadTime } from '../utils/blog.ts';
+import { localizedPath, localeConfig, type Locale } from '../i18n';
 
-const { currentPostId = '', currentTags = [] as string[], allPosts = [] as any[] } = Astro.props;
+const { currentPostId = '', currentTags = [] as string[], allPosts = [] as any[], locale = 'es' } = Astro.props as {
+  currentPostId?: string;
+  currentTags?: string[];
+  allPosts?: any[];
+  locale?: Locale;
+};
+const copy = {
+  es: { kicker: 'Sigue leyendo', titleA: 'Posts', titleB: 'relacionados', min: 'min' },
+  en: { kicker: 'Keep reading', titleA: 'Related', titleB: 'posts', min: 'min' },
+}[locale];
 
 // Calcular posts relacionados por tags compartidos
 const related = allPosts
@@ -25,20 +35,20 @@ const related = allPosts
     <header class="related-header">
       <div class="related-kicker">
         <span class="related-kicker-dot"></span>
-        <span class="related-kicker-text font-mono">Sigue leyendo</span>
+        <span class="related-kicker-text font-mono">{copy.kicker}</span>
       </div>
       <h2 class="related-title font-display">
-        Posts <span class="text-shine">relacionados</span>
+        {copy.titleA} <span class="text-shine">{copy.titleB}</span>
       </h2>
     </header>
 
     <div class="related-grid">
       {related.map((post: any, idx: number) => {
-        const date = formatDate(post.data.date);
+        const date = formatDate(post.data.date, localeConfig[locale].dateLocale);
         const readTime = post.data.readTime ?? calculateReadTime(post.body, 200);
         return (
           <article class="related-card" data-related-card data-related-idx={idx}>
-            <a href={`/blog/${post.id}/`} class="related-link">
+            <a href={localizedPath(`/blog/${post.id}/`, locale)} class="related-link">
               <!-- Top: number + category -->
               <div class="related-meta">
                 <span class="related-num font-mono">0{idx + 1}</span>
@@ -58,7 +68,7 @@ const related = allPosts
                 <div class="related-bottom-info font-mono">
                   <span>{date}</span>
                   <span class="related-dot">·</span>
-                  <span>{readTime} min</span>
+                  <span>{readTime} {copy.min}</span>
                 </div>
                 <span class="related-arrow" aria-hidden="true">→</span>
               </div>

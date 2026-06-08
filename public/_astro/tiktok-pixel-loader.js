@@ -65,7 +65,7 @@
   window.tdTrackTikTok = function (eventName, params, customer) {
     var eventId = (params && params.event_id) || window.tdTikTokEventId();
     var payload = Object.assign({
-      content_type: 'service',
+      content_type: 'product',
       content_id: 'tecnodespegue',
       content_name: document.title,
       value: 0,

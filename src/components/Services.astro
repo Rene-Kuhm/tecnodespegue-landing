@@ -6,6 +6,49 @@
  */
 
 import Icon from './Icon.astro';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale: Locale = Astro.props.locale ?? 'es';
+const copy = {
+  es: {
+    kicker: 'SERVICIOS · 01',
+    title: ['Soluciones de', 'Ingeniería'],
+    lead: 'Infraestructura digital diseñada para la eficiencia absoluta. Cuatro frentes, una sola doctrina: código que rinde.',
+    services: {
+      aiTag: 'SISTEMAS AUTÓNOMOS',
+      aiTitle: 'Automatizaciones con IA',
+      aiDesc: 'Integramos agentes inteligentes que procesan datos, atienden clientes y optimizan decisiones en tiempo real. No solo IA generativa, sino lógica autónoma.',
+      aiMetric: 'Reducción en tickets de soporte',
+      webDesc: 'Interfaces web ultra-rápidas y apps móviles nativas multiplataforma (Flutter/Dart). Arquitecturas escalables de punta a punta.',
+      webMetric: 'tiempo de respuesta',
+      processTitle: 'Optimización de Procesos',
+      processDesc: 'Conectamos tus sistemas de negocio para eliminar tareas manuales repetitivas y cuellos de botella mediante automatización de flujos con n8n y Python.',
+      backendTitle: 'Software a Medida & APIs',
+      backendDesc: 'Ingeniería de software en general. Desarrollo de backends robustos, APIs de alto rendimiento, bases de datos estructuradas, integraciones lógicas y scripts a medida.',
+    },
+  },
+  en: {
+    kicker: 'SERVICES · 01',
+    title: ['Engineering', 'Solutions'],
+    lead: 'Digital infrastructure designed for absolute efficiency. Four fronts, one doctrine: code that performs.',
+    services: {
+      aiTag: 'AUTONOMOUS SYSTEMS',
+      aiTitle: 'AI Automations',
+      aiDesc: 'We integrate intelligent agents that process data, support customers, and optimize decisions in real time. Not just generative AI, but autonomous logic.',
+      aiMetric: 'Reduction in support tickets',
+      webDesc: 'Ultra-fast web interfaces and native cross-platform mobile apps (Flutter/Dart). Scalable architectures from end to end.',
+      webMetric: 'response time',
+      processTitle: 'Process Optimization',
+      processDesc: 'We connect your business systems to eliminate repetitive manual tasks and bottlenecks through n8n and Python workflow automation.',
+      backendTitle: 'Custom Software & APIs',
+      backendDesc: 'General software engineering: robust backends, high-performance APIs, structured databases, logical integrations, and custom scripts.',
+    },
+  },
+}[locale];
 ---
 
 <section class="py-32 relative overflow-hidden" id="soluciones" data-services>
@@ -19,14 +62,14 @@ import Icon from './Icon.astro';
       <div class="services-header-text">
         <span class="kicker">
           <span class="kicker-dot"></span>
-          <span class="kicker-text font-mono">SERVICIOS · 01</span>
+          <span class="kicker-text font-mono">{copy.kicker}</span>
         </span>
         <h2 class="services-title font-display">
-          <span class="services-title-line">Soluciones de</span>
-          <span class="services-title-line text-shine">Ingeniería</span>
+          <span class="services-title-line">{copy.title[0]}</span>
+          <span class="services-title-line text-shine">{copy.title[1]}</span>
         </h2>
         <p class="services-lead">
-          Infraestructura digital diseñada para la eficiencia absoluta. Cuatro frentes, una sola doctrina: <span class="text-gold">código que rinde.</span>
+          {copy.lead}
         </p>
       </div>
 
@@ -52,14 +95,14 @@ import Icon from './Icon.astro';
         </div>
 
         <div class="svc-card-body">
-          <span class="svc-card-tag">SISTEMAS AUTÓNOMOS</span>
-          <h3 class="svc-card-title">Automatizaciones con IA</h3>
+          <span class="svc-card-tag">{copy.services.aiTag}</span>
+          <h3 class="svc-card-title">{copy.services.aiTitle}</h3>
           <p class="svc-card-desc">
-            Integramos agentes inteligentes que procesan datos, atienden clientes y optimizan decisiones en tiempo real. No solo IA generativa, sino <strong class="svc-strong">lógica autónoma</strong>.
+            {copy.services.aiDesc}
           </p>
           <div class="svc-card-metric">
             <span class="svc-metric-num font-display">-70%</span>
-            <span class="svc-metric-label">Reducción en tickets de soporte</span>
+            <span class="svc-metric-label">{copy.services.aiMetric}</span>
           </div>
           <div class="svc-card-tags">
             <span class="svc-tag-chip">LLM OPS</span>
@@ -81,11 +124,11 @@ import Icon from './Icon.astro';
         </div>
         <h3 class="svc-card-title">Web &amp; Mobile</h3>
         <p class="svc-card-desc">
-          Interfaces web ultra-rápidas y apps móviles nativas multiplataforma (Flutter/Dart). Arquitecturas escalables de punta a punta.
+          {copy.services.webDesc}
         </p>
         <div class="svc-card-metric svc-card-metric-mini">
           <span class="svc-metric-num font-display text-shine">&lt; 100ms</span>
-          <span class="svc-metric-label">tiempo de respuesta</span>
+          <span class="svc-metric-label">{copy.services.webMetric}</span>
         </div>
       </article>
 
@@ -99,9 +142,9 @@ import Icon from './Icon.astro';
         <div class="svc-card-icon-wrap svc-card-icon-wrap-red">
           <Icon name="account_tree" class="svc-card-icon" />
         </div>
-        <h3 class="svc-card-title">Optimización de Procesos</h3>
+        <h3 class="svc-card-title">{copy.services.processTitle}</h3>
         <p class="svc-card-desc">
-          Conectamos tus sistemas de negocio para eliminar tareas manuales repetitivas y cuellos de botella mediante automatización de flujos con n8n y Python.
+          {copy.services.processDesc}
         </p>
       </article>
 
@@ -114,9 +157,9 @@ import Icon from './Icon.astro';
 
         <div class="svc-card-body">
           <span class="svc-card-tag">BACKEND CORE</span>
-          <h3 class="svc-card-title">Software a Medida &amp; APIs</h3>
+          <h3 class="svc-card-title">{copy.services.backendTitle}</h3>
           <p class="svc-card-desc">
-            Ingeniería de software en general. Desarrollo de backends robustos, APIs de alto rendimiento, bases de datos estructuradas, integraciones lógicas y scripts a medida.
+            {copy.services.backendDesc}
           </p>
         </div>
         <div class="svc-card-icons">

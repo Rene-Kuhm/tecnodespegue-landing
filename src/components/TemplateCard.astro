@@ -4,9 +4,14 @@
  * Card glassmorphism para mostrar un template
  * Con esquinas cómic animadas, badge de categoría, precio tachado
  */
-import { formatDate } from '../utils/blog.ts';
+import { localizedPath, type Locale } from '../i18n';
 
-const { template, idx = 0, variant = 'default' } = Astro.props;
+const { template, idx = 0, variant = 'default', locale = 'es' } = Astro.props as {
+  template: any;
+  idx?: number;
+  variant?: string;
+  locale?: Locale;
+};
 
 const hasDiscount = template.data.compareAtPrice && template.data.compareAtPrice > template.data.price;
 const discount = hasDiscount
@@ -28,6 +33,11 @@ const licenseLabels: Record<string, string> = {
   commercial: 'Commercial',
   extended: 'Extended',
 };
+
+const copy = {
+  es: { featured: 'Destacado', view: 'Ver template', buy: 'Comprar' },
+  en: { featured: 'Featured', view: 'View template', buy: 'Buy' },
+}[locale];
 ---
 
 <article
@@ -37,7 +47,7 @@ const licenseLabels: Record<string, string> = {
   data-categories={template.data.category}
   data-license={template.data.license}
 >
-  <a href={`/templates/${template.id}/`} class="tpl-link">
+  <a href={localizedPath(`/templates/${template.id}/`, locale)} class="tpl-link">
     <!-- Cover / preview image area -->
     <div class="tpl-cover">
       {template.data.cover ? (
@@ -61,7 +71,7 @@ const licenseLabels: Record<string, string> = {
         {template.data.featured && (
           <span class="tpl-badge tpl-badge-featured">
             <span class="tpl-badge-icon">★</span>
-            Destacado
+            {copy.featured}
           </span>
         )}
         {hasDiscount && (
@@ -77,7 +87,7 @@ const licenseLabels: Record<string, string> = {
 
       <!-- Hover overlay -->
       <div class="tpl-hover-overlay">
-        <span class="tpl-hover-text">Ver template</span>
+        <span class="tpl-hover-text">{copy.view}</span>
         <span class="tpl-hover-arrow">→</span>
       </div>
     </div>
@@ -105,7 +115,7 @@ const licenseLabels: Record<string, string> = {
       <!-- Stack -->
       {template.data.stack && template.data.stack.length > 0 && (
         <div class="tpl-stack">
-          {template.data.stack.slice(0, 4).map(tech => (
+          {template.data.stack.slice(0, 4).map((tech: string) => (
             <span class="tpl-tech font-mono">{tech}</span>
           ))}
           {template.data.stack.length > 4 && (
@@ -123,7 +133,7 @@ const licenseLabels: Record<string, string> = {
           <span class="tpl-price-num font-display">${template.data.price}</span>
         </div>
         <div class="tpl-cta">
-          <span class="tpl-cta-text">Comprar</span>
+          <span class="tpl-cta-text">{copy.buy}</span>
           <span class="tpl-cta-arrow">→</span>
         </div>
       </div>

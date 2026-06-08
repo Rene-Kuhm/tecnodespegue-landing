@@ -8,9 +8,12 @@ import Comments from '../../components/Comments.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
 import RelatedPosts from '../../components/RelatedPosts.astro';
 import { formatDate, calculateReadTime } from '../../utils/blog.ts';
+import type { Locale } from '../../i18n';
+
+const locale: Locale = 'es';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts');
+  const posts = await getCollection('posts', ({ data }) => (data.locale ?? 'es') === 'es');
   return posts
     .filter(p => !p.data.draft)
     .map(post => ({
@@ -65,7 +68,7 @@ const blogPostingSchema = {
 };
 ---
 
-<Layout title={`${title} — TecnoDespegue`} description={description}>
+<Layout title={`${title} — TecnoDespegue`} description={description} locale={locale}>
   <script is:inline type="application/ld+json" slot="head" set:html={JSON.stringify(blogPostingSchema)} />
   <Fragment slot="head">
     <meta property="og:type" content="article" />
@@ -83,13 +86,13 @@ const blogPostingSchema = {
     <meta name="twitter:image" content={ogImage} />
   </Fragment>
 
-  <Nav />
+  <Nav locale={locale} />
 
   <main id="contenido" class="post-page">
     <div class="post-container">
       <!-- Left sidebar: TOC -->
       <aside class="post-sidebar">
-        <TableOfContents headings={headings} />
+        <TableOfContents headings={headings} locale={locale} />
       </aside>
 
       <!-- Right: article -->
@@ -190,11 +193,12 @@ const blogPostingSchema = {
         currentPostId={post.id}
         currentTags={post.data.tags || []}
         allPosts={allPosts}
+        locale={locale}
       />
     </div>
   </main>
 
-  <Footer />
+  <Footer locale={locale} />
 </Layout>
 
 <style is:global>

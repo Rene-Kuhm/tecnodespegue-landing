@@ -5,8 +5,16 @@
  */
 
 import Icon from './Icon.astro';
+import type { Locale } from '../i18n';
 
-const projects = [
+interface Props {
+  locale?: Locale;
+}
+
+const locale: Locale = Astro.props.locale ?? 'es';
+
+const projectsByLocale = {
+  es: [
   {
     title: "Aguamarina Mosaicos",
     description: "Sistema e-commerce empresarial completo con tienda online, panel de administración y API REST. Catálogo de productos, gestión de pedidos y métricas en tiempo real.",
@@ -67,7 +75,88 @@ const projects = [
     icon: "school",
     color: "cosmic",
   }
-];
+],
+  en: [
+  {
+    title: "Aguamarina Mosaicos",
+    description: "Complete enterprise e-commerce system with online store, admin panel, and REST API. Product catalog, order management, and real-time metrics.",
+    stack: ["Next.js 15", "React 19", "TypeScript", "PostgreSQL", "Railway"],
+    link: "https://aguamarinamosaicos.com",
+    repo: "https://github.com/Rene-Kuhm/acuamarina-ceramica",
+    type: "E-Commerce",
+    icon: "storefront",
+    color: "red",
+  },
+  {
+    title: "Premium E-Commerce",
+    description: "Premium e-commerce platform inspired by Nike/Adidas. Advanced filters, persistent cart, Zod-validated checkout, and WCAG 2.1 AA accessibility.",
+    stack: ["Next.js", "React 19", "TypeScript", "Tailwind", "Zod"],
+    link: "",
+    repo: "https://github.com/Rene-Kuhm/e-commerce-profecional",
+    type: "E-Commerce",
+    icon: "shopping_bag",
+    color: "gold",
+  },
+  {
+    title: "TecnoDespegue Automation",
+    description: "AI automation pipeline that generates content, creates images with GPT-5, and posts automatically to Instagram, Facebook, and TikTok through cron jobs.",
+    stack: ["Python", "OpenClaw", "OpenRouter", "Postiz", "Docker"],
+    link: "",
+    repo: "https://github.com/Rene-Kuhm/tecnodespegue-automation",
+    type: "AI & Automation",
+    icon: "smart_toy",
+    color: "cosmic",
+  },
+  {
+    title: "HydroTemp AIO Driver",
+    description: "Full reverse engineering of the HID protocol for AIO displays. Native macOS driver that reads CPU, GPU, and fan sensors in real time at 200ms refresh.",
+    stack: ["Python", "USB HID", "macOS", "LaunchAgent"],
+    link: "",
+    repo: "https://github.com/Rene-Kuhm/hydrotemp-aio-mac",
+    type: "Hardware & Drivers",
+    icon: "memory",
+    color: "red",
+  },
+  {
+    title: "Vaulta — Password Manager",
+    description: "Cross-platform password manager with Material 3, clean architecture, security contracts, and encryption. Dashboard with vault security metrics.",
+    stack: ["Flutter", "Dart", "Material 3", "Encryption"],
+    link: "",
+    repo: "https://github.com/Rene-Kuhm/Gestor-de-Contrase-as",
+    type: "Mobile & Desktop",
+    icon: "lock",
+    color: "gold",
+  },
+  {
+    title: "CampusMind",
+    description: "AI education SaaS for Spanish-speaking university students. RAG pipeline over academic documents, spaced-repetition flashcards, automatic quizzes, and integrated billing.",
+    stack: ["Next.js 16", "NestJS", "Turborepo", "pgvector", "GPT-4o", "Gemini"],
+    link: "",
+    repo: "https://github.com/Rene-Kuhm/CampusMind-sass",
+    type: "SaaS & AI",
+    icon: "school",
+    color: "cosmic",
+  }
+]};
+
+const copy = {
+  es: {
+    kicker: 'PORTFOLIO · 02',
+    title: ['Proyectos', 'Reales,', 'Código Real'],
+    lead: 'No mockups. No demos. Sistemas en producción que resuelven problemas reales. Cada uno en su universo, todos con el mismo ADN.',
+    live: 'Ver en vivo',
+    source: 'Código fuente',
+  },
+  en: {
+    kicker: 'PORTFOLIO · 02',
+    title: ['Real', 'Projects,', 'Real Code'],
+    lead: 'No mockups. No demos. Production systems that solve real problems. Each in its own universe, all with the same DNA.',
+    live: 'View live',
+    source: 'Source code',
+  },
+}[locale];
+
+const projects = projectsByLocale[locale];
 ---
 
 <section class="py-32 relative" id="portfolio" data-portfolio>
@@ -79,15 +168,15 @@ const projects = [
       <div>
         <span class="kicker">
           <span class="kicker-dot"></span>
-          <span class="kicker-text font-mono">PORTFOLIO · 02</span>
+          <span class="kicker-text font-mono">{copy.kicker}</span>
         </span>
         <h2 class="port-title font-display">
-          <span class="port-title-line">Proyectos</span>
-          <span class="port-title-line text-shine">Reales,</span>
-          <span class="port-title-line">Código Real</span>
+          <span class="port-title-line">{copy.title[0]}</span>
+          <span class="port-title-line text-shine">{copy.title[1]}</span>
+          <span class="port-title-line">{copy.title[2]}</span>
         </h2>
         <p class="port-lead">
-          No mockups. No demos. Sistemas en producción que resuelven problemas reales. Cada uno en su universo, todos con el mismo ADN.
+          {copy.lead}
         </p>
       </div>
     </header>
@@ -133,12 +222,12 @@ const projects = [
               {project.link && (
                 <a href={project.link} target="_blank" rel="noopener noreferrer" class="port-link port-link-live" data-magnetic>
                   <Icon name="open_in_new" class="w-4 h-4" />
-                  <span>Ver en vivo</span>
+                  <span>{copy.live}</span>
                 </a>
               )}
               <a href={project.repo} target="_blank" rel="noopener noreferrer" class="port-link port-link-repo" data-magnetic>
                 <Icon name="code" class="w-4 h-4" />
-                <span>Código fuente</span>
+                <span>{copy.source}</span>
               </a>
             </div>
           </div>

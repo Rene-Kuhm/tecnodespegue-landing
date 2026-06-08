@@ -17,14 +17,17 @@ import CTA from '../components/CTA.astro';
 import Footer from '../components/Footer.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 import CompileReveal from '../components/CompileReveal.astro';
+import type { Locale } from '../i18n';
+
+const locale: Locale = 'es';
 ---
 
-<Layout title="TecnoDespegue | Desarrollo Fullstack & Automatizaciones con IA">
-  <LoadingScreen />
+<Layout title="TecnoDespegue | Desarrollo Fullstack & Automatizaciones con IA" locale={locale}>
+  <LoadingScreen locale={locale} />
   <PageTransition />
   <ProgressBar />
   <CustomCursor />
-  <Nav />
+  <Nav locale={locale} />
   
   <main id="contenido">
     {/* Mobile-only hero (≤768px) — más rápido de cargar y mejor LCP */}
@@ -65,7 +68,7 @@ import CompileReveal from '../components/CompileReveal.astro';
     </CompileReveal>
   </main>
   
-  <Footer />
+  <Footer locale={locale} />
 </Layout>
 
 <style>

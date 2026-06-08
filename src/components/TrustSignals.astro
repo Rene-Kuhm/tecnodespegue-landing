@@ -5,12 +5,29 @@
  */
 
 import Icon from './Icon.astro';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale: Locale = Astro.props.locale ?? 'es';
+const copy = {
+  es: {
+    stats: ['Proyectos Entregados', 'Clientes en Producción', 'Tiempo de Respuesta', 'Tecnologías Dominadas'],
+    chips: ['Open Source', 'CI/CD Automático', 'Cloud & Self-Hosted'],
+  },
+  en: {
+    stats: ['Projects Delivered', 'Clients in Production', 'Response Time', 'Technologies Mastered'],
+    chips: ['Open Source', 'Automated CI/CD', 'Cloud & Self-Hosted'],
+  },
+}[locale];
 
 const stats = [
-  { value: "15+", label: "Proyectos Entregados" },
-  { value: "3+", label: "Clientes en Producción" },
-  { value: "<24h", label: "Tiempo de Respuesta" },
-  { value: "20+", label: "Tecnologías Dominadas" }
+  { value: "15+", label: copy.stats[0] },
+  { value: "3+", label: copy.stats[1] },
+  { value: "<24h", label: copy.stats[2] },
+  { value: "20+", label: copy.stats[3] }
 ];
 ---
 
@@ -36,15 +53,15 @@ const stats = [
     <div class="trust-chips">
       <div class="trust-chip">
         <Icon name="code" class="w-5 h-5" />
-        <span>Open Source</span>
+        <span>{copy.chips[0]}</span>
       </div>
       <div class="trust-chip">
         <Icon name="deployed_code" class="w-5 h-5" />
-        <span>CI/CD Automático</span>
+        <span>{copy.chips[1]}</span>
       </div>
       <div class="trust-chip">
         <Icon name="cloud" class="w-5 h-5" />
-        <span>Cloud &amp; Self-Hosted</span>
+        <span>{copy.chips[2]}</span>
       </div>
     </div>
   </div>
