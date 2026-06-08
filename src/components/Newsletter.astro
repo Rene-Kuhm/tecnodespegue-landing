@@ -65,7 +65,7 @@ const copy = {
             name="email"
             required
             placeholder="tu@email.com"
-            class="nl-input font-mono"
+            class="nl-input"
             autocomplete="email"
           />
           <button type="submit" class="nl-btn magnetic" data-magnetic>
@@ -239,13 +239,17 @@ const copy = {
 
   .nl-input {
     flex: 1;
+    min-width: 0;
     padding: 0.875rem 1rem;
     background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 0.625rem;
     color: #FFFFFF;
-    font-size: 0.875rem;
-    transition: border-color 0.2s, background 0.2s;
+    font-size: 0.9375rem;
+    font-family: inherit;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
   }
 
   .nl-input::placeholder {
