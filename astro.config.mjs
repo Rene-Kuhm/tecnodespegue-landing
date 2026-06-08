@@ -43,6 +43,9 @@ export default defineConfig({
   },
   build: {
     compressHTML: true,
+    // Inline critical CSS para reducir render-blocking requests
+    // (saving ~130ms en LCP segun PageSpeed Insights)
+    inlineStylesheets: 'auto',
   },
   vite: {
     plugins: [
