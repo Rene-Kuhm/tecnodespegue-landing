@@ -699,6 +699,44 @@ html.lenis body {
 }
 
 /* ============================================================
+   NEWSLETTER INPUT (global para que Vite/Astro lo bundlee siempre
+   y no sufra del bug de <style is:global> que no se inyecta en prod)
+   ============================================================ */
+.newsletter-section .nl-input-wrap {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.newsletter-section .nl-input {
+  flex: 1 1 0%;
+  min-width: 0;
+  width: 100%;
+  padding: 0.875rem 1rem !important;
+  background: rgba(0, 0, 0, 0.65) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 0.625rem !important;
+  color: #FFFFFF !important;
+  font-size: 0.9375rem !important;
+  font-family: inherit !important;
+  line-height: 1.4;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  box-shadow: none !important;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+.newsletter-section .nl-input::placeholder {
+  color: rgba(255, 255, 255, 0.45) !important;
+  opacity: 1 !important;
+}
+.newsletter-section .nl-input:focus {
+  outline: none !important;
+  border-color: rgba(248, 180, 0, 0.6) !important;
+  background: rgba(0, 0, 0, 0.85) !important;
+  box-shadow: 0 0 0 3px rgba(248, 180, 0, 0.15) !important;
+}
+
+/* ============================================================
    REDUCED MOTION
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
