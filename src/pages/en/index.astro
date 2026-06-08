@@ -15,8 +15,6 @@ import Why from '../../components/Why.astro';
 import Tech from '../../components/Tech.astro';
 import CTA from '../../components/CTA.astro';
 import Footer from '../../components/Footer.astro';
-import ScrollReveal from '../../components/ScrollReveal.astro';
-import CompileReveal from '../../components/CompileReveal.astro';
 ---
 
 <Layout
@@ -37,33 +35,13 @@ import CompileReveal from '../../components/CompileReveal.astro';
       <Hero locale="en" />
     </div>
 
-    <ScrollReveal>
-      <TrustSignals locale="en" />
-    </ScrollReveal>
-
-    <CompileReveal sectionName="Services" importPath="@components/Services.astro" locale="en">
-      <Services locale="en" />
-    </CompileReveal>
-
-    <CompileReveal sectionName="Portfolio" importPath="@components/Portfolio.astro" locale="en">
-      <Portfolio locale="en" />
-    </CompileReveal>
-
-    <CompileReveal sectionName="Optimization" importPath="@components/Refactor.astro" locale="en">
-      <Refactor locale="en" />
-    </CompileReveal>
-
-    <CompileReveal sectionName="Process" importPath="@components/Why.astro" locale="en">
-      <Why locale="en" />
-    </CompileReveal>
-
-    <CompileReveal sectionName="Technologies" importPath="@components/Tech.astro" locale="en">
-      <Tech locale="en" />
-    </CompileReveal>
-
-    <CompileReveal sectionName="Contact" importPath="@components/CTA.astro" locale="en">
-      <CTA locale="en" />
-    </CompileReveal>
+    <TrustSignals locale="en" />
+    <Services locale="en" />
+    <Portfolio locale="en" />
+    <Refactor locale="en" />
+    <Why locale="en" />
+    <Tech locale="en" />
+    <CTA locale="en" />
   </main>
 
   <Footer locale="en" />
