@@ -72,7 +72,74 @@ const postData = {
     <h1>Editar post</h1>
   </header>
   <PostEditor post={postData} categories={categories} tags={tags} csrfToken={csrfToken} />
+
+  <div class="danger-zone">
+    <h2>Zona peligrosa</h2>
+    <p>Eliminar este post lo borra de GitHub y Vercel. No se puede deshacer.</p>
+    <button id="delete-btn" class="btn-danger" data-slug={postData.slug} data-locale={postData.locale}>Eliminar post</button>
+    <div id="delete-status" class="status" role="status" aria-live="polite"></div>
+  </div>
 </AdminLayout>
+
+<script define:vars={{ csrfToken, slug: postData.slug, locale: postData.locale }}>
+  const btn = document.getElementById('delete-btn');
+  const status = document.getElementById('delete-status');
+
+  btn?.addEventListener('click', async () => {
+    if (!confirm(`¿Eliminar el post "${slug}"? Esta accion no se puede deshacer.`)) return;
+    btn.disabled = true;
+    btn.textContent = 'Eliminando...';
+    status.className = 'status';
+    status.textContent = '';
+
+    try {
+      const res = await fetch('/admin/api/delete-post', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ locale, slug, csrfToken }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        status.className = 'status error';
+        status.textContent = data.error || 'Error al eliminar';
+        if (data.detail) status.innerHTML += `<br><small>${data.detail}</small>`;
+        btn.disabled = false;
+        btn.textContent = 'Eliminar post';
+        return;
+      }
+      status.className = 'status success';
+      status.innerHTML = `Borrado. Commit: <a href="${data.commitUrl}" target="_blank">ver en GitHub</a>. Redirigiendo...`;
+      setTimeout(() => window.location.href = '/admin/', 2000);
+    } catch {
+      status.className = 'status error';
+      status.textContent = 'Error de red';
+      btn.disabled = false;
+      btn.textContent = 'Eliminar post';
+    }
+  });
+</script>
+
+<style>
+  .danger-zone {
+    margin-top: 3rem; padding: 1.5rem;
+    background: rgba(237, 29, 36, 0.05);
+    border: 1px solid rgba(237, 29, 36, 0.3);
+    border-radius: 0.5rem;
+  }
+  .danger-zone h2 { font-size: 1rem; color: #FCA5A5; margin: 0 0 0.5rem; }
+  .danger-zone p { color: rgba(255,255,255,0.5); font-size: 0.85rem; margin: 0 0 1rem; }
+  .btn-danger {
+    padding: 0.625rem 1.25rem;
+    background: rgba(237, 29, 36, 0.15);
+    border: 1px solid rgba(237, 29, 36, 0.4);
+    color: #FCA5A5;
+    border-radius: 0.5rem;
+    font-size: 0.85rem; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .btn-danger:hover:not(:disabled) { background: rgba(237, 29, 36, 0.3); }
+  .btn-danger:disabled { opacity: 0.5; cursor: not-allowed; }
+</style>
 
 <style>
   .page-head { margin-bottom: 1.5rem; }
