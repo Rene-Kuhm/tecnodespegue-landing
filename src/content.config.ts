@@ -10,6 +10,7 @@ const posts = defineCollection({
     title: z.string().max(100, 'El título no puede exceder 100 caracteres'),
     description: z.string().max(200, 'La descripción no puede exceder 200 caracteres'),
     date: z.coerce.date(),
+    updated: z.coerce.date().optional(),
     author: z.string().default('René Kuhm'),
     category: z.string(),
     tags: z.array(z.string()).default([]),

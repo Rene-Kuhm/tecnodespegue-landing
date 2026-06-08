@@ -8,9 +8,10 @@ import Comments from '../../components/Comments.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
 import RelatedPosts from '../../components/RelatedPosts.astro';
 import { formatDate, calculateReadTime } from '../../utils/blog.ts';
-import type { Locale } from '../../i18n';
+import { localeConfig, type Locale } from '../../i18n';
 
 const locale: Locale = 'es';
+const cfg = localeConfig[locale];
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => (data.locale ?? 'es') === 'es');
@@ -30,7 +31,7 @@ interface Props {
 const { post, allPosts } = Astro.props;
 const { Content, headings } = await render(post);
 
-const date = formatDate(post.data.date);
+const date = formatDate(post.data.date, cfg.dateLocale);
 const readTime = post.data.readTime ?? calculateReadTime(post.body);
 const title = post.data.seo?.title ?? post.data.title;
 const description = post.data.seo?.description ?? post.data.description;
@@ -54,7 +55,7 @@ const blogPostingSchema = {
   description: post.data.description,
   author: { '@type': 'Person', name: post.data.author, url: 'https://github.com/Rene-Kuhm' },
   datePublished: post.data.date.toISOString(),
-  dateModified: post.data.date.toISOString(),
+  dateModified: (post.data.updated ?? post.data.date).toISOString(),
   url: canonicalURL.toString(),
   image: ogImage.toString(),
   publisher: {
