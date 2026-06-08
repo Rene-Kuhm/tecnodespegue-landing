@@ -194,16 +194,18 @@ const month = new Date().toLocaleDateString(localeConfig[locale].dateLocale, { m
     font-weight: 900;
     font-size: clamp(2.5rem, 7vw, 5.5rem);
     line-height: 0.92;
-    letter-spacing: -0.025em;
+    letter-spacing: 0;
     text-transform: uppercase;
     color: #FFFFFF;
     margin: 0 auto 1.5rem;
     max-width: 50rem;
+    text-align: center;
   }
 
   .title-line {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 0 0.3em;
     margin-bottom: 0.05em;
   }
