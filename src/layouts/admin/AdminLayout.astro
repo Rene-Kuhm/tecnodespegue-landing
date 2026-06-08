@@ -1,0 +1,121 @@
+---
+/**
+ * src/layouts/admin/AdminLayout.astro
+ * Layout para todas las paginas /admin/*. Sidebar de navegacion.
+ */
+interface Props {
+  title: string;
+  csrfToken: string;
+}
+
+const { title, csrfToken } = Astro.props;
+const path = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="es" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} — Admin TecnoDespegue</title>
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style is:global>
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; }
+      body {
+        background: #0a0a0a;
+        color: #fff;
+        font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+        min-height: 100vh;
+      }
+      a { color: #F8B400; }
+      code { font-family: ui-monospace, monospace; background: rgba(255,255,255,0.06); padding: 0.1rem 0.3rem; border-radius: 0.25rem; font-size: 0.85em; }
+    </style>
+  </head>
+  <body>
+    <div class="admin-shell">
+      <aside class="sidebar">
+        <a href="/admin/" class="brand">
+          <span class="brand-td">TD</span>
+          <span class="brand-text">ADMIN</span>
+        </a>
+        <nav class="nav">
+          <a href="/admin/" class={path === '/admin/' || path === '/admin' ? 'active' : ''}>📝 Posts</a>
+          <a href="/admin/new" class={path.startsWith('/admin/new') ? 'active' : ''}>+ Nuevo</a>
+        </nav>
+        <div class="footer">
+          <a href="/" target="_blank" class="view-site">Ver sitio ↗</a>
+          <button id="logout-btn" class="logout">Cerrar sesión</button>
+        </div>
+      </aside>
+      <main class="content">
+        <slot />
+      </main>
+    </div>
+
+    <script is:inline define:vars={{ csrfToken }}>
+      const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+          await fetch('/admin/api/logout', { method: 'POST' });
+          window.location.href = '/admin/login';
+        });
+      }
+      // Expose CSRF token globally for forms
+      window.__adminCsrf = csrfToken;
+    </script>
+  </body>
+</html>
+
+<style>
+  .admin-shell {
+    display: grid;
+    grid-template-columns: 14rem 1fr;
+    min-height: 100vh;
+  }
+  @media (max-width: 800px) {
+    .admin-shell { grid-template-columns: 1fr; }
+    .sidebar { display: flex; flex-direction: row; align-items: center; padding: 0.75rem 1rem; gap: 1rem; }
+    .nav { flex: 1; display: flex; gap: 0.5rem; }
+    .footer { margin-left: auto; }
+  }
+  .sidebar {
+    background: #050505;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    padding: 1.25rem 1rem;
+    display: flex; flex-direction: column;
+  }
+  .brand { display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; text-decoration: none; }
+  .brand-td {
+    color: #ED1D24; font-weight: 900; font-size: 1.1rem;
+    font-family: var(--font-display, sans-serif);
+  }
+  .brand-text { color: #fff; font-weight: 800; letter-spacing: 0.15em; font-size: 0.85rem; }
+  .nav { display: flex; flex-direction: column; gap: 0.25rem; flex: 1; }
+  .nav a {
+    padding: 0.625rem 0.75rem;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
+  }
+  .nav a:hover { background: rgba(255,255,255,0.05); color: #fff; }
+  .nav a.active { background: rgba(237, 29, 36, 0.15); color: #fff; }
+  .footer { display: flex; flex-direction: column; gap: 0.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.06); }
+  .view-site, .logout {
+    padding: 0.5rem 0.75rem;
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    text-align: center;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .view-site:hover, .logout:hover { color: #fff; border-color: rgba(255,255,255,0.15); }
+  .content { padding: 2rem 2.5rem; max-width: 80rem; }
+  @media (max-width: 800px) { .content { padding: 1.5rem 1rem; } }
+</style>
