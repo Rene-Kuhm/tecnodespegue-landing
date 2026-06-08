@@ -16,6 +16,7 @@ pnpm-debug.log*
 dev.log
 dev-err.log
 dev-out.log
+dev-server.log
 
 # environment variables
 .env
@@ -38,3 +39,6 @@ dev-out.log
 playwright-report/
 test-results/
 .playwright/
+
+# Scripts screenshots (responsive testing, regenerables)
+scripts/screenshots/
