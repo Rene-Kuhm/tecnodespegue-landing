@@ -48,7 +48,7 @@ const related = allPosts
         const readTime = post.data.readTime ?? calculateReadTime(post.body, 200);
         return (
           <article class="related-card" data-related-card data-related-idx={idx}>
-            <a href={localizedPath(`/blog/${post.id}/`, locale)} class="related-link">
+            <a href={localizedPath(`/blog/${post.id.replace(/^en\//, '')}/`, locale)} class="related-link">
               <!-- Top: number + category -->
               <div class="related-meta">
                 <span class="related-num font-mono">0{idx + 1}</span>
