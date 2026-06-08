@@ -75,6 +75,13 @@ const posts = all
           <td class="actions">
             <a href={`/admin/edit/${p.locale}/${p.slug}`} class="btn-sm">Editar</a>
             <a href={p.locale === 'en' ? `/en/blog/${p.slug}/` : `/blog/${p.slug}/`} target="_blank" class="btn-sm btn-ghost">Ver ↗</a>
+            <button
+              class="btn-sm btn-danger"
+              data-delete
+              data-locale={p.locale}
+              data-slug={p.slug}
+              data-title={p.title}
+            >×</button>
           </td>
         </tr>
       ))}
@@ -144,6 +151,15 @@ const posts = all
   }
   .btn-sm:hover { background: rgba(255,255,255,0.1); }
   .btn-ghost { background: transparent; border: 1px solid rgba(255,255,255,0.1); }
+  .btn-danger {
+    background: rgba(237, 29, 36, 0.1) !important;
+    color: #FCA5A5 !important;
+    border: 1px solid rgba(237, 29, 36, 0.3);
+  }
+  .btn-danger:hover:not(:disabled) {
+    background: rgba(237, 29, 36, 0.25) !important;
+    color: #fff !important;
+  }
   .empty { padding: 3rem; text-align: center; color: rgba(255,255,255,0.4); }
 </style>
 
@@ -162,6 +178,37 @@ const posts = all
           : r.dataset.status === f;
         r.style.display = match ? '' : 'none';
       });
+    });
+  });
+
+  // Delete buttons
+  const csrfToken = window.__adminCsrf;
+  document.querySelectorAll<HTMLButtonElement>('[data-delete]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const locale = btn.dataset.locale!;
+      const slug = btn.dataset.slug!;
+      const title = btn.dataset.title!;
+      if (!confirm(`¿Eliminar "${title}"? No se puede deshacer.`)) return;
+      btn.disabled = true;
+      try {
+        const res = await fetch('/admin/api/delete-post', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ locale, slug, csrfToken }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          alert(data.error || 'Error al eliminar');
+          btn.disabled = false;
+          return;
+        }
+        // Remove row from DOM
+        const tr = btn.closest('tr');
+        if (tr) tr.remove();
+      } catch {
+        alert('Error de red');
+        btn.disabled = false;
+      }
     });
   });
 </script>
