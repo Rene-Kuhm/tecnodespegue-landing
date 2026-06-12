@@ -13,9 +13,9 @@
  *    en el cliente para evitar drift si el visitante está en otra zona.
  *
  * URLs de release (tomadas del README oficial del repo):
- *  - APK Android:     .../releases/download/dev-latest/vaulta.apk
- *  - Bundle Windows:  .../releases/download/dev-latest/vaulta-windows-bundle.zip
- *  - Release page:    .../releases/tag/dev-latest
+ *  - APK Android:     .../releases/download/v1.0.22/vaulta.apk
+ *  - Bundle Windows:  .../releases/download/v1.0.22/vaulta-windows-bundle.zip
+ *  - Release page:    .../releases/tag/v1.0.22
  */
 
 import Icon from './Icon.astro';
@@ -28,13 +28,15 @@ interface Props {
 const locale: Locale = Astro.props.locale ?? 'es';
 
 const RELEASE_ISO_UTC = '2026-06-12T15:00:00.000Z';
-// Release v1.0.22 publicado el 11 jun 2026; tag público dev-latest.
+// Release oficial v1.0.22 (publicado 11 jun 2026) — incluye APK Android + bundle
+// Windows. La release dev-latest del bot de GitHub Actions solo incluye el APK,
+// por eso apuntamos a v1.0.22 para que ambos botones tengan destino real.
 const APK_URL =
-  'https://github.com/Rene-Kuhm/Gestor-de-Contrase-as/releases/download/dev-latest/vaulta.apk';
+  'https://github.com/Rene-Kuhm/Gestor-de-Contrase-as/releases/download/v1.0.22/vaulta.apk';
 const WIN_URL =
-  'https://github.com/Rene-Kuhm/Gestor-de-Contrase-as/releases/download/dev-latest/vaulta-windows-bundle.zip';
+  'https://github.com/Rene-Kuhm/Gestor-de-Contrase-as/releases/download/v1.0.22/vaulta-windows-bundle.zip';
 const RELEASE_PAGE =
-  'https://github.com/Rene-Kuhm/Gestor-de-Contrase-as/releases/tag/dev-latest';
+  'https://github.com/Rene-Kuhm/Gestor-de-Contrase-as/releases/tag/v1.0.22';
 const REPO_URL =
   'https://github.com/Rene-Kuhm/Gestor-de-Contrase-as';
 
@@ -181,7 +183,8 @@ const copy = {
         href={APK_URL}
         class="vaulta-btn vaulta-btn-primary"
         data-vaulta-android
-        rel="noopener noreferrer"
+        download="vaulta.apk"
+        rel="noopener"
       >
         <span class="vaulta-btn-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
@@ -198,7 +201,8 @@ const copy = {
         href={WIN_URL}
         class="vaulta-btn vaulta-btn-secondary"
         data-vaulta-windows
-        rel="noopener noreferrer"
+        download="vaulta-windows-bundle.zip"
+        rel="noopener"
       >
         <span class="vaulta-btn-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
