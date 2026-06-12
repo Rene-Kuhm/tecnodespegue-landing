@@ -61,6 +61,17 @@ const copy = {
       'Argon2id para derivar la clave del master password.',
       'Biometría real en Android (Android KeyStore) y Windows Hello.',
     ],
+    supportBadge: 'OPEN SOURCE',
+    supportTitle: '¿Te sirvió? Dejanos una ⭐ en GitHub.',
+    supportText: 'Vaulta es gratis y open source. Una estrella ayuda al proyecto a crecer y nos motiva a seguir publicando software seguro y offline-first.',
+    starsLabel: 'ESTRELLAS',
+    starCta: 'Dar estrella en GitHub',
+    loadingStars: '…',
+    securityPoints: [
+      'Cifrado AES-256-GCM local, sin servidores.',
+      'Argon2id para derivar la clave del master password.',
+      'Biometría real en Android (Android KeyStore) y Windows Hello.',
+    ],
   },
   en: {
     kicker: 'APP · LAUNCH',
@@ -79,6 +90,17 @@ const copy = {
     winSub: 'Windows x64 · vaulta-windows-bundle.zip',
     repoCta: 'View source & release notes',
     securityTitle: 'Built to keep your keys safe',
+    securityPoints: [
+      'Local AES-256-GCM encryption, no servers.',
+      'Argon2id for master password key derivation.',
+      'Real biometrics on Android (Android KeyStore) and Windows Hello.',
+    ],
+    supportBadge: 'OPEN SOURCE',
+    supportTitle: 'Loved it? Leave us a star.',
+    supportText: 'Vaulta is free and open source. A star helps the project grow and motivates us to keep shipping secure, offline-first software.',
+    starsLabel: 'STARS',
+    starCta: 'Star on GitHub',
+    loadingStars: '…',
     securityPoints: [
       'Local AES-256-GCM encryption, no servers.',
       'Argon2id for master password key derivation.',
@@ -202,6 +224,44 @@ const copy = {
         <span class="vaulta-link-arrow" aria-hidden="true">→</span>
       </a>
     </div>
+
+    <!-- Bloque de soporte: invitación a star + contador en vivo + CTA secundario al repo -->
+    <aside class="vaulta-support" data-vaulta-support data-repo="Rene-Kuhm/Gestor-de-Contrase-as">
+      <div class="vaulta-support-copy">
+        <span class="vaulta-support-badge">
+          <Icon name="star" class="w-3.5 h-3.5" />
+          <span class="font-mono">OPEN SOURCE</span>
+        </span>
+        <h3 class="vaulta-support-title font-display">{copy.supportTitle}</h3>
+        <p class="vaulta-support-text">
+          {copy.supportText}
+        </p>
+      </div>
+
+      <div class="vaulta-support-actions">
+        <div class="vaulta-stars" data-vaulta-stars aria-live="polite" aria-atomic="true">
+          <span class="vaulta-stars-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+              <path d="M12 2.5l2.95 6.36 6.95.78-5.2 4.85 1.5 6.91L12 17.95l-6.2 3.45 1.5-6.91-5.2-4.85 6.95-.78L12 2.5z"/>
+            </svg>
+          </span>
+          <span class="vaulta-stars-num font-display" data-vaulta-stars-num>—</span>
+          <span class="vaulta-stars-label font-mono">{copy.starsLabel}</span>
+        </div>
+
+        <a
+          href={REPO_URL}
+          class="vaulta-support-cta"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-vaulta-star-cta
+        >
+          <Icon name="star" class="w-4 h-4" />
+          <span>{copy.starCta}</span>
+          <span class="vaulta-support-cta-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </aside>
 
     <!-- Security blurb -->
     <aside class="vaulta-security">
@@ -340,6 +400,38 @@ const copy = {
         }, 1000);
         // Limpieza si Astro navega con View Transitions.
         document.addEventListener('astro:before-swap', () => window.clearInterval(interval), { once: true });
+      }
+    }
+  }
+
+  /**
+   * Star counter — pide /api/github-stars y renderiza el conteo.
+   * Si la API falla, mantiene el placeholder "—" sin romper la UI.
+   * El endpoint ya cachea en CDN por 1h, así que esto es un solo fetch por visita.
+   */
+  const supportEl = document.querySelector<HTMLElement>('[data-vaulta-support]');
+  if (supportEl) {
+    const repo = supportEl.dataset.repo || 'Rene-Kuhm/Gestor-de-Contrase-as';
+    const $num = supportEl.querySelector<HTMLElement>('[data-vaulta-stars-num]');
+    if ($num) {
+      const format = (n: number) => {
+        if (n < 1000) return String(n);
+        if (n < 10_000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+        return Math.round(n / 1000) + 'k';
+      };
+      try {
+        const res = await fetch(`/api/github-stars?repo=${encodeURIComponent(repo)}`, {
+          headers: { Accept: 'application/json' },
+        });
+        if (res.ok) {
+          const data = (await res.json()) as { stars?: number };
+          if (typeof data.stars === 'number') {
+            $num.textContent = format(data.stars);
+            supportEl.classList.add('has-stars');
+          }
+        }
+      } catch {
+        // Silencioso: dejamos el "—" si la red o el server fallan.
       }
     }
   }
@@ -730,6 +822,130 @@ const copy = {
     0%, 100% { transform: scale(1); box-shadow: 0 0 12px rgba(248, 180, 0, 0.7); }
     50% { transform: scale(1.4); box-shadow: 0 0 22px rgba(248, 180, 0, 0.9); }
   }
+
+  /* Support block (star CTA + live counter) */
+  .vaulta-support {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 1.5rem;
+    align-items: center;
+    margin: 2rem auto 0;
+    max-width: 56rem;
+    padding: 1.5rem 1.75rem;
+    border: 1px solid rgba(248, 180, 0, 0.18);
+    border-radius: 16px;
+    background:
+      linear-gradient(180deg, rgba(248, 180, 0, 0.04) 0%, rgba(248, 180, 0, 0) 100%),
+      rgba(20, 20, 26, 0.55);
+  }
+  @media (max-width: 720px) {
+    .vaulta-support { grid-template-columns: 1fr; text-align: left; }
+  }
+  .vaulta-support-copy { display: flex; flex-direction: column; gap: 0.5rem; }
+  .vaulta-support-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    background: rgba(248, 180, 0, 0.08);
+    border: 1px solid rgba(248, 180, 0, 0.3);
+    color: var(--color-marvel-gold);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    align-self: flex-start;
+  }
+  .vaulta-support-title {
+    font-size: clamp(1.1rem, 1.7vw, 1.35rem);
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.2;
+  }
+  .vaulta-support-text {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--color-on-surface-variant);
+    margin: 0;
+    max-width: 32rem;
+  }
+
+  .vaulta-support-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.85rem;
+  }
+  @media (min-width: 721px) {
+    .vaulta-support-actions { align-items: flex-end; }
+  }
+
+  .vaulta-stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.45);
+    color: var(--color-on-surface-variant);
+    align-self: flex-end;
+    transition: border-color 200ms ease, color 200ms ease;
+  }
+  .vaulta-support.has-stars .vaulta-stars {
+    border-color: rgba(248, 180, 0, 0.35);
+    color: var(--color-marvel-gold);
+  }
+  .vaulta-stars-icon { display: inline-flex; align-items: center; }
+  .vaulta-stars-num {
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1;
+    color: inherit;
+    font-variant-numeric: tabular-nums;
+    min-width: 1.2em;
+    text-align: left;
+  }
+  .vaulta-support.has-stars .vaulta-stars-num { color: #ffffff; }
+  .vaulta-stars-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: inherit;
+    opacity: 0.85;
+  }
+  .vaulta-stars-icon svg { color: var(--color-marvel-gold); }
+
+  .vaulta-support-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    padding: 0.85rem 1.1rem;
+    border: 1px solid rgba(248, 180, 0, 0.4);
+    border-radius: 12px;
+    background: rgba(248, 180, 0, 0.06);
+    color: var(--color-marvel-gold);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    transition: background 200ms ease, border-color 200ms ease, color 200ms ease, transform 200ms ease;
+  }
+  .vaulta-support-cta :global(svg) { color: var(--color-marvel-gold); }
+  .vaulta-support-cta:hover {
+    background: rgba(248, 180, 0, 0.14);
+    border-color: var(--color-marvel-gold);
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+  .vaulta-support-cta:hover :global(svg) { color: #ffffff; }
+  .vaulta-support-cta-arrow { font-weight: 700; }
 
   /* Estado "lanzado" — sutil highlight */
   .vaulta-section.is-launched .vaulta-countdown {
