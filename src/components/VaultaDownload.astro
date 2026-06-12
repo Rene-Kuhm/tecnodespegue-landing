@@ -1,0 +1,751 @@
+---
+/**
+ * VaultaDownload.astro
+ *
+ * Sección "Descargá Vaulta" con contador regresivo al lanzamiento público
+ * (jueves 12 jun 2026 12:00 ART = 15:00 UTC) y dos CTAs de descarga:
+ * APK Android + bundle ZIP Windows.
+ *
+ * Comportamiento del contador:
+ *  - Antes del lanzamiento: muestra countdown vivo (dd hh mm ss) en ES y en.
+ *  - Después del lanzamiento: muestra "Disponible ahora" + los botones quedan activos.
+ *  - Zona horaria: America/Argentina/Buenos_Aires (UTC-3). Se calcula contra UTC
+ *    en el cliente para evitar drift si el visitante está en otra zona.
+ *
+ * URLs de release (tomadas del README oficial del repo):
+ *  - APK Android:     .../releases/download/dev-latest/vaulta.apk
+ *  - Bundle Windows:  .../releases/download/dev-latest/vaulta-windows-bundle.zip
+ *  - Release page:    .../releases/tag/dev-latest
+ */
+
+import Icon from './Icon.astro';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale: Locale = Astro.props.locale ?? 'es';
+
+const RELEASE_ISO_UTC = '2026-06-12T15:00:00.000Z';
+// Release v1.0.22 publicado el 11 jun 2026; tag público dev-latest.
+const APK_URL =
+  'https://github.com/Rene-Kuhm/Gestor-de-Contrase-as/releases/download/dev-latest/vaulta.apk';
+const WIN_URL =
+  'https://github.com/Rene-Kuhm/Gestor-de-Contrase-as/releases/download/dev-latest/vaulta-windows-bundle.zip';
+const RELEASE_PAGE =
+  'https://github.com/Rene-Kuhm/Gestor-de-Contrase-as/releases/tag/dev-latest';
+const REPO_URL =
+  'https://github.com/Rene-Kuhm/Gestor-de-Contrase-as';
+
+const copy = {
+  es: {
+    kicker: 'APP · LANZAMIENTO',
+    title: ['Vaulta está', 'a punto de despegar'],
+    lead: 'El gestor de contraseñas cifrado de TecnoDespegue llega mañana al mediodía (hora Argentina). Andoird y Windows, cifrado AES-256-GCM, Argon2id, desbloqueo biométrico y vault offline-first.',
+    countdownLabel: 'Cuenta regresiva al lanzamiento',
+    days: ['días', 'día'],
+    hours: ['hs', 'h'],
+    minutes: ['min', 'm'],
+    seconds: ['seg', 's'],
+    launched: '¡Ya está disponible!',
+    launchedSub: 'Descargá la versión firmada de Vaulta.',
+    androidCta: 'Descargar APK',
+    androidSub: 'Android · vaulta.apk',
+    winCta: 'Descargar para Windows',
+    winSub: 'Windows x64 · vaulta-windows-bundle.zip',
+    repoCta: 'Ver código y notas de release',
+    securityTitle: 'Pensado para mantener tus claves a salvo',
+    securityPoints: [
+      'Cifrado AES-256-GCM local, sin servidores.',
+      'Argon2id para derivar la clave del master password.',
+      'Biometría real en Android (Android KeyStore) y Windows Hello.',
+    ],
+  },
+  en: {
+    kicker: 'APP · LAUNCH',
+    title: ['Vaulta is', 'about to launch'],
+    lead: "TecnoDespegue's encrypted password manager lands tomorrow at noon (Argentina time). Android and Windows, AES-256-GCM encryption, Argon2id, biometric unlock, offline-first vault.",
+    countdownLabel: 'Countdown to launch',
+    days: ['days', 'day'],
+    hours: ['h', 'h'],
+    minutes: ['min', 'm'],
+    seconds: ['s', 's'],
+    launched: 'It\'s live!',
+    launchedSub: 'Download the signed Vaulta build.',
+    androidCta: 'Download APK',
+    androidSub: 'Android · vaulta.apk',
+    winCta: 'Download for Windows',
+    winSub: 'Windows x64 · vaulta-windows-bundle.zip',
+    repoCta: 'View source & release notes',
+    securityTitle: 'Built to keep your keys safe',
+    securityPoints: [
+      'Local AES-256-GCM encryption, no servers.',
+      'Argon2id for master password key derivation.',
+      'Real biometrics on Android (Android KeyStore) and Windows Hello.',
+    ],
+  },
+}[locale];
+---
+
+<section class="vaulta-section py-24 md:py-32 relative overflow-hidden" id="vaulta" data-vaulta-release={RELEASE_ISO_UTC}>
+  <!-- Background decorativo -->
+  <div class="vaulta-bg" aria-hidden="true">
+    <div class="vaulta-glow vaulta-glow-1"></div>
+    <div class="vaulta-glow vaulta-glow-2"></div>
+    <div class="vaulta-grid"></div>
+    <div class="vaulta-vignette"></div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 md:px-8 relative z-10">
+
+    <header class="vaulta-header">
+      <span class="kicker">
+        <span class="kicker-dot"></span>
+        <span class="kicker-text font-mono">{copy.kicker}</span>
+      </span>
+
+      <h2 class="vaulta-title font-display">
+        <span class="vaulta-title-line">{copy.title[0]}</span>
+        <span class="vaulta-title-line vaulta-title-accent">
+          <span class="vaulta-underline-wrap">
+            <span class="vaulta-underline-text">{copy.title[1]}</span>
+            <span class="vaulta-underline-bar" aria-hidden="true"></span>
+          </span>
+        </span>
+      </h2>
+
+      <p class="vaulta-lead">{copy.lead}</p>
+    </header>
+
+    <!-- Countdown / launched state -->
+    <div class="vaulta-countdown" data-vaulta-countdown>
+      <p class="vaulta-countdown-label font-mono" data-vaulta-countdown-label>
+        {copy.countdownLabel}
+      </p>
+
+      <div class="vaulta-clock" role="timer" aria-live="polite">
+        <div class="vaulta-clock-cell">
+          <span class="vaulta-clock-num font-display" data-vaulta-d>00</span>
+          <span class="vaulta-clock-unit font-mono">{copy.days[1]}</span>
+        </div>
+        <span class="vaulta-clock-sep" aria-hidden="true">:</span>
+        <div class="vaulta-clock-cell">
+          <span class="vaulta-clock-num font-display" data-vaulta-h>00</span>
+          <span class="vaulta-clock-unit font-mono">{copy.hours[1]}</span>
+        </div>
+        <span class="vaulta-clock-sep" aria-hidden="true">:</span>
+        <div class="vaulta-clock-cell">
+          <span class="vaulta-clock-num font-display" data-vaulta-m>00</span>
+          <span class="vaulta-clock-unit font-mono">{copy.minutes[1]}</span>
+        </div>
+        <span class="vaulta-clock-sep" aria-hidden="true">:</span>
+        <div class="vaulta-clock-cell">
+          <span class="vaulta-clock-num font-display" data-vaulta-s>00</span>
+          <span class="vaulta-clock-unit font-mono">{copy.seconds[1]}</span>
+        </div>
+      </div>
+
+      <p class="vaulta-countdown-meta font-mono">
+        <Icon name="schedule" class="w-3.5 h-3.5 inline-block align-[-2px] mr-1.5" />
+        <span data-vaulta-target>12 jun 2026 · 12:00 ART (UTC-3)</span>
+      </p>
+    </div>
+
+    <!-- Botones de descarga (siempre visibles: antes del launch muestran
+         el estado "no disponible" en cliente; después quedan activos). -->
+    <div class="vaulta-ctas" data-vaulta-ctas>
+      <a
+        href={APK_URL}
+        class="vaulta-btn vaulta-btn-primary"
+        data-vaulta-android
+        rel="noopener noreferrer"
+      >
+        <span class="vaulta-btn-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+            <path d="M17.5 14.4c-.03-2.6 2.13-3.85 2.23-3.91-1.22-1.78-3.11-2.02-3.78-2.05-1.61-.16-3.14.94-3.96.94-.82 0-2.08-.92-3.42-.9-1.76.03-3.38 1.02-4.28 2.6-1.82 3.16-.47 7.84 1.31 10.41.86 1.26 1.88 2.67 3.22 2.62 1.29-.05 1.78-.84 3.34-.84 1.55 0 2 .84 3.36.81 1.39-.02 2.27-1.28 3.12-2.55.99-1.46 1.4-2.88 1.42-2.95-.03-.01-2.72-1.04-2.75-4.13ZM14.93 6.78c.71-.86 1.19-2.06 1.06-3.25-1.02.04-2.27.68-3 1.54-.66.76-1.24 1.98-1.08 3.14 1.14.09 2.31-.58 3.02-1.43Z"/>
+          </svg>
+        </span>
+        <span class="vaulta-btn-text">
+          <span class="vaulta-btn-title" data-vaulta-android-title>{copy.androidCta}</span>
+          <span class="vaulta-btn-sub font-mono">{copy.androidSub}</span>
+        </span>
+      </a>
+
+      <a
+        href={WIN_URL}
+        class="vaulta-btn vaulta-btn-secondary"
+        data-vaulta-windows
+        rel="noopener noreferrer"
+      >
+        <span class="vaulta-btn-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+            <path d="M3 5.4 10.5 4v8H3V5.4Zm0 13.2 7.5 1.4v-8H3v6.6Zm8.5-14.7L21 3v9h-9.5V3.9Zm0 16.2L21 21v-9h-9.5v8.1Z"/>
+          </svg>
+        </span>
+        <span class="vaulta-btn-text">
+          <span class="vaulta-btn-title" data-vaulta-windows-title>{copy.winCta}</span>
+          <span class="vaulta-btn-sub font-mono">{copy.winSub}</span>
+        </span>
+      </a>
+    </div>
+
+    <div class="vaulta-extra">
+      <a href={RELEASE_PAGE} class="vaulta-link" target="_blank" rel="noopener noreferrer">
+        <Icon name="open_in_new" class="w-3.5 h-3.5" />
+        <span>{copy.repoCta}</span>
+        <span class="vaulta-link-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href={REPO_URL} class="vaulta-link" target="_blank" rel="noopener noreferrer">
+        <Icon name="code" class="w-3.5 h-3.5" />
+        <span>github.com/Rene-Kuhm/Gestor-de-Contrase-as</span>
+        <span class="vaulta-link-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <!-- Security blurb -->
+    <aside class="vaulta-security">
+      <div class="vaulta-security-head">
+        <span class="vaulta-security-badge">
+          <Icon name="lock" class="w-3.5 h-3.5" />
+          <span class="font-mono">SECURITY</span>
+        </span>
+        <h3 class="vaulta-security-title font-display">{copy.securityTitle}</h3>
+      </div>
+      <ul class="vaulta-security-list">
+        {copy.securityPoints.map((point) => (
+          <li class="vaulta-security-item">
+            <Icon name="check_circle" class="w-4 h-4" />
+            <span>{point}</span>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<script>
+  /**
+   * Vaulta countdown client logic.
+   * Lee `data-vaulta-release` (ISO UTC) y actualiza dd:hh:mm:ss cada segundo
+   * hasta llegar a 0; en ese momento, marca la sección como "launched" y
+   * habilita los botones de descarga.
+   *
+   * Robusto a:
+   *  - Zona horaria del visitante: todo se calcula contra UTC.
+   *  - Reloj adelantado: muestra ceros y cambia a "launched" automáticamente.
+   *  - JS deshabilitado / reducido: el HTML sigue siendo legible y los <a>
+   *    siguen funcionando (el contador simplemente queda estático).
+   */
+  type Locale = 'es' | 'en';
+
+  const section = document.querySelector<HTMLElement>('[data-vaulta-release]');
+  if (section) {
+    const targetIso = section.dataset.vaultaRelease!;
+    const targetMs = Date.parse(targetIso);
+    if (!Number.isNaN(targetMs)) {
+      // Heurística de idioma: si el <html lang> empieza con "en", usamos copy EN.
+      const htmlLang = (document.documentElement.lang || 'es').toLowerCase();
+      const locale: Locale = htmlLang.startsWith('en') ? 'en' : 'es';
+
+      const i18n = {
+        es: {
+          label: 'Cuenta regresiva al lanzamiento',
+          launched: '¡Ya está disponible!',
+          launchedSub: 'Descargá la versión firmada de Vaulta.',
+          days: ['días', 'día'],
+          hours: ['hs', 'h'],
+          minutes: ['min', 'm'],
+          seconds: ['seg', 's'],
+          androidCta: 'Descargar APK',
+          winCta: 'Descargar para Windows',
+        },
+        en: {
+          label: 'Countdown to launch',
+          launched: "It's live!",
+          launchedSub: 'Download the signed Vaulta build.',
+          days: ['days', 'day'],
+          hours: ['h', 'h'],
+          minutes: ['min', 'm'],
+          seconds: ['s', 's'],
+          androidCta: 'Download APK',
+          winCta: 'Download for Windows',
+        },
+      }[locale];
+
+      const $d = section.querySelector<HTMLElement>('[data-vaulta-d]');
+      const $h = section.querySelector<HTMLElement>('[data-vaulta-h]');
+      const $m = section.querySelector<HTMLElement>('[data-vaulta-m]');
+      const $s = section.querySelector<HTMLElement>('[data-vaulta-s]');
+      const $label = section.querySelector<HTMLElement>('[data-vaulta-countdown-label]');
+      const $androidTitle = section.querySelector<HTMLElement>('[data-vaulta-android-title]');
+      const $windowsTitle = section.querySelector<HTMLElement>('[data-vaulta-windows-title]');
+
+      const pad = (n: number) => String(n).padStart(2, '0');
+
+      const unit = (es: string[], en: string[], n: number) =>
+        locale === 'en' ? en[0] : (n === 1 ? es[0] : es[1]);
+
+      const renderRemaining = (ms: number) => {
+        const clamped = Math.max(0, ms);
+        const totalSec = Math.floor(clamped / 1000);
+        const days = Math.floor(totalSec / 86400);
+        const hours = Math.floor((totalSec % 86400) / 3600);
+        const minutes = Math.floor((totalSec % 3600) / 60);
+        const seconds = totalSec % 60;
+
+        if ($d) $d.textContent = pad(days);
+        if ($h) $h.textContent = pad(hours);
+        if ($m) $m.textContent = pad(minutes);
+        if ($s) $s.textContent = pad(seconds);
+
+        // Actualizamos los labels de unidad (singular/plural) abajo del número.
+        const cells = section.querySelectorAll<HTMLElement>('.vaulta-clock-cell .vaulta-clock-unit');
+        if (cells.length === 4) {
+          cells[0].textContent = unit(i18n.days, i18n.days, days);
+          cells[1].textContent = unit(i18n.hours, i18n.hours, hours);
+          cells[2].textContent = unit(i18n.minutes, i18n.minutes, minutes);
+          cells[3].textContent = unit(i18n.seconds, i18n.seconds, seconds);
+        }
+      };
+
+      const markLaunched = () => {
+        section.classList.add('is-launched');
+        if ($label) $label.textContent = i18n.launched;
+        const sub = section.querySelector<HTMLElement>('.vaulta-countdown-meta');
+        if (sub) {
+          sub.innerHTML =
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 inline-block align-[-2px] mr-1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>' +
+            i18n.launchedSub;
+        }
+        if ($androidTitle) $androidTitle.textContent = i18n.androidCta;
+        if ($windowsTitle) $windowsTitle.textContent = i18n.winCta;
+      };
+
+      const tick = () => {
+        const remaining = targetMs - Date.now();
+        if (remaining <= 0) {
+          renderRemaining(0);
+          markLaunched();
+          return false; // detener
+        }
+        renderRemaining(remaining);
+        return true;
+      };
+
+      // Render inicial + interval (se cancela solo al lanzar).
+      if (tick()) {
+        const interval = window.setInterval(() => {
+          if (!tick()) window.clearInterval(interval);
+        }, 1000);
+        // Limpieza si Astro navega con View Transitions.
+        document.addEventListener('astro:before-swap', () => window.clearInterval(interval), { once: true });
+      }
+    }
+  }
+</script>
+
+<style>
+  .vaulta-section {
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(248, 180, 0, 0.06) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 100%, rgba(237, 29, 36, 0.07) 0%, transparent 55%),
+      #0a0a0a;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .vaulta-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .vaulta-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.35;
+  }
+  .vaulta-glow-1 {
+    width: 480px;
+    height: 480px;
+    background: var(--color-marvel-gold);
+    top: -120px;
+    left: -80px;
+  }
+  .vaulta-glow-2 {
+    width: 420px;
+    height: 420px;
+    background: var(--color-marvel-red);
+    bottom: -120px;
+    right: -80px;
+    opacity: 0.25;
+  }
+  .vaulta-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(248, 180, 0, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(248, 180, 0, 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  }
+  .vaulta-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.55) 100%);
+  }
+
+  /* Header */
+  .vaulta-header {
+    text-align: center;
+    max-width: 56rem;
+    margin: 0 auto 2.5rem;
+  }
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .kicker-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-marvel-gold);
+    box-shadow: 0 0 12px rgba(248, 180, 0, 0.7);
+    animation: vaulta-pulse 1.6s ease-in-out infinite;
+  }
+  .kicker-text {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    color: var(--color-marvel-gold);
+  }
+
+  .vaulta-title {
+    font-weight: 900;
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    line-height: 0.94;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin: 0 0 1.5rem;
+  }
+  .vaulta-title-line { display: block; }
+  .vaulta-title-accent { font-style: italic; }
+  .vaulta-underline-wrap { position: relative; display: inline-block; }
+  .vaulta-underline-text { position: relative; z-index: 2; }
+  .vaulta-underline-bar {
+    position: absolute;
+    left: -0.05em;
+    right: -0.05em;
+    bottom: 0.05em;
+    height: 0.18em;
+    background: linear-gradient(90deg, var(--color-marvel-gold) 0%, var(--color-marvel-red) 100%);
+    transform-origin: left center;
+    z-index: 1;
+    box-shadow: 0 0 32px rgba(248, 180, 0, 0.35);
+  }
+
+  .vaulta-lead {
+    font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+    line-height: 1.65;
+    color: var(--color-on-surface-variant);
+    max-width: 42rem;
+    margin: 0 auto;
+  }
+
+  /* Countdown */
+  .vaulta-countdown {
+    text-align: center;
+    margin: 2.5rem auto 2rem;
+    max-width: 36rem;
+    padding: 1.75rem 1.25rem;
+    border: 1px solid rgba(248, 180, 0, 0.18);
+    border-radius: 18px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0) 100%),
+      rgba(20, 20, 26, 0.55);
+    backdrop-filter: blur(6px);
+  }
+  .vaulta-countdown-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-marvel-gold);
+    margin: 0 0 1.25rem;
+  }
+  .vaulta-clock {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 0.5rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .vaulta-clock-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 72px;
+    padding: 0.75rem 0.5rem;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .vaulta-clock-num {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 800;
+    line-height: 1;
+    color: #ffffff;
+    text-shadow: 0 0 18px rgba(248, 180, 0, 0.25);
+  }
+  .vaulta-clock-unit {
+    margin-top: 0.4rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-dim);
+  }
+  .vaulta-clock-sep {
+    align-self: center;
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 700;
+    color: var(--color-marvel-gold);
+    line-height: 1;
+    transform: translateY(-0.6rem);
+  }
+  .vaulta-countdown-meta {
+    margin: 1.25rem 0 0;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-dim);
+  }
+  .vaulta-countdown-meta :global(svg) { color: var(--color-marvel-gold); }
+
+  @media (max-width: 520px) {
+    .vaulta-clock { gap: 0.25rem; }
+    .vaulta-clock-cell { min-width: 56px; padding: 0.6rem 0.25rem; }
+  }
+
+  /* CTAs */
+  .vaulta-ctas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    max-width: 44rem;
+    margin: 2.5rem auto 1.25rem;
+  }
+  @media (max-width: 640px) {
+    .vaulta-ctas { grid-template-columns: 1fr; }
+  }
+  .vaulta-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1.1rem 1.4rem;
+    border-radius: 14px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(20, 20, 26, 0.7);
+    transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease, background 200ms ease;
+    overflow: hidden;
+  }
+  .vaulta-btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.08) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 700ms ease;
+    pointer-events: none;
+  }
+  .vaulta-btn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(248, 180, 0, 0.5);
+    box-shadow: 0 18px 40px -20px rgba(248, 180, 0, 0.4);
+  }
+  .vaulta-btn:hover::after { transform: translateX(100%); }
+
+  .vaulta-btn-primary {
+    background: linear-gradient(135deg, var(--color-marvel-red) 0%, var(--color-marvel-red-deep) 100%);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+  .vaulta-btn-primary:hover {
+    box-shadow: 0 18px 40px -20px rgba(237, 29, 36, 0.55);
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+  .vaulta-btn-secondary {
+    background: linear-gradient(135deg, #1c1c24 0%, #14141a 100%);
+    border-color: rgba(248, 180, 0, 0.35);
+  }
+  .vaulta-btn-secondary:hover {
+    border-color: rgba(248, 180, 0, 0.8);
+  }
+
+  /* Estado pre-launch: botones deshabilitados visualmente hasta las 12:00 ART. */
+  .vaulta-section:not(.is-launched) .vaulta-btn {
+    opacity: 0.55;
+    filter: grayscale(0.35);
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+  .vaulta-section:not(.is-launched) .vaulta-btn::before {
+    content: "🔒 12:00 ART";
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-marvel-gold);
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(248, 180, 0, 0.35);
+    border-radius: 999px;
+    padding: 0.2rem 0.55rem;
+    z-index: 1;
+  }
+
+  .vaulta-btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.35);
+    color: #ffffff;
+    flex-shrink: 0;
+  }
+  .vaulta-btn-text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+  .vaulta-btn-title {
+    font-size: 0.95rem;
+    line-height: 1.2;
+    color: #ffffff;
+  }
+  .vaulta-btn-sub {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .vaulta-btn-primary .vaulta-btn-icon { background: rgba(0, 0, 0, 0.3); }
+  .vaulta-btn-secondary .vaulta-btn-icon { color: var(--color-marvel-gold); }
+
+  /* Extra links */
+  .vaulta-extra {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.25rem 1.75rem;
+    margin: 1rem 0 3rem;
+  }
+  .vaulta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--color-on-surface-variant);
+    text-decoration: none;
+    border-bottom: 1px dashed transparent;
+    transition: color 200ms ease, border-color 200ms ease;
+  }
+  .vaulta-link:hover { color: var(--color-marvel-gold); border-color: var(--color-marvel-gold); }
+  .vaulta-link-arrow { font-weight: 700; }
+
+  /* Security blurb */
+  .vaulta-security {
+    margin: 0 auto;
+    max-width: 44rem;
+    padding: 1.5rem 1.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    background: rgba(10, 10, 10, 0.55);
+  }
+  .vaulta-security-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+  .vaulta-security-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    background: rgba(248, 180, 0, 0.08);
+    border: 1px solid rgba(248, 180, 0, 0.3);
+    color: var(--color-marvel-gold);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+  }
+  .vaulta-security-title {
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #ffffff;
+    margin: 0;
+  }
+  .vaulta-security-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.65rem;
+  }
+  .vaulta-security-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.88rem;
+    color: var(--color-on-surface-variant);
+  }
+  .vaulta-security-item :global(svg) { color: var(--color-marvel-gold); flex-shrink: 0; }
+
+  /* Animación del dot kicker */
+  @keyframes vaulta-pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 12px rgba(248, 180, 0, 0.7); }
+    50% { transform: scale(1.4); box-shadow: 0 0 22px rgba(248, 180, 0, 0.9); }
+  }
+
+  /* Estado "lanzado" — sutil highlight */
+  .vaulta-section.is-launched .vaulta-countdown {
+    border-color: rgba(0, 255, 136, 0.35);
+    box-shadow: 0 0 0 1px rgba(0, 255, 136, 0.15) inset, 0 0 40px -10px rgba(0, 255, 136, 0.25);
+  }
+  .vaulta-section.is-launched .vaulta-countdown-label { color: var(--color-secondary, #00ff88); }
+  .vaulta-section.is-launched .kicker-dot {
+    background: var(--color-secondary, #00ff88);
+    box-shadow: 0 0 14px rgba(0, 255, 136, 0.7);
+  }
+  .vaulta-section.is-launched .vaulta-btn {
+    opacity: 1;
+    filter: none;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+  .vaulta-section.is-launched .vaulta-btn::before { content: none; }
+</style>
