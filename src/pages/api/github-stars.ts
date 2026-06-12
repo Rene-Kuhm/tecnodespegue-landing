@@ -28,11 +28,11 @@ interface CacheEntry {
 const memoryCache = new Map<string, CacheEntry>();
 const CACHE_TTL_MS = 60 * 60 * 1000; // 1h
 
-const REPO_DEFAULT = 'Rene-Kuhm/Gestor-de-Contrase-as';
+const REPO_DEFAULT = 'Rene-Kuhm/vaulta';
 // Whitelist: solo permitimos consultar repos de nuestra org/usuario para
 // evitar que cualquiera nos use como proxy abierto de GitHub.
 const ALLOWED_REPOS = new Set<string>([
-  'Rene-Kuhm/Gestor-de-Contrase-as',
+  'Rene-Kuhm/vaulta',
   'Rene-Kuhm/tecnodespegue-landing',
   'Rene-Kuhm/tecnodespegue',
 ]);

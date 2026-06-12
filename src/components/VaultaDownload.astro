@@ -32,13 +32,13 @@ const RELEASE_ISO_UTC = '2026-06-12T15:00:00.000Z';
 // Windows. La release dev-latest del bot de GitHub Actions solo incluye el APK,
 // por eso apuntamos a v1.0.22 para que ambos botones tengan destino real.
 const APK_URL =
-  'https://github.com/Rene-Kuhm/Gestor-de-Contrase-as/releases/download/v1.0.22/vaulta.apk';
+  'https://github.com/Rene-Kuhm/vaulta/releases/download/v1.0.22/vaulta.apk';
 const WIN_URL =
-  'https://github.com/Rene-Kuhm/Gestor-de-Contrase-as/releases/download/v1.0.22/vaulta-windows-bundle.zip';
+  'https://github.com/Rene-Kuhm/vaulta/releases/download/v1.0.22/vaulta-windows-bundle.zip';
 const RELEASE_PAGE =
-  'https://github.com/Rene-Kuhm/Gestor-de-Contrase-as/releases/tag/v1.0.22';
+  'https://github.com/Rene-Kuhm/vaulta/releases/tag/v1.0.22';
 const REPO_URL =
-  'https://github.com/Rene-Kuhm/Gestor-de-Contrase-as';
+  'https://github.com/Rene-Kuhm/vaulta';
 
 const copy = {
   es: {
@@ -224,13 +224,13 @@ const copy = {
       </a>
       <a href={REPO_URL} class="vaulta-link" target="_blank" rel="noopener noreferrer">
         <Icon name="code" class="w-3.5 h-3.5" />
-        <span>github.com/Rene-Kuhm/Gestor-de-Contrase-as</span>
+        <span>github.com/Rene-Kuhm/vaulta</span>
         <span class="vaulta-link-arrow" aria-hidden="true">→</span>
       </a>
     </div>
 
     <!-- Bloque de soporte: invitación a star + contador en vivo + CTA secundario al repo -->
-    <aside class="vaulta-support" data-vaulta-support data-repo="Rene-Kuhm/Gestor-de-Contrase-as">
+    <aside class="vaulta-support" data-vaulta-support data-repo="Rene-Kuhm/vaulta">
       <div class="vaulta-support-copy">
         <span class="vaulta-support-badge">
           <Icon name="star" class="w-3.5 h-3.5" />
@@ -415,7 +415,7 @@ const copy = {
    */
   const supportEl = document.querySelector<HTMLElement>('[data-vaulta-support]');
   if (supportEl) {
-    const repo = supportEl.dataset.repo || 'Rene-Kuhm/Gestor-de-Contrase-as';
+    const repo = supportEl.dataset.repo || 'Rene-Kuhm/vaulta';
     const $num = supportEl.querySelector<HTMLElement>('[data-vaulta-stars-num]');
     if ($num) {
       const format = (n: number) => {
