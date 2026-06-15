@@ -1,0 +1,22 @@
+#!/bin/sh
+# Pre-commit hook generado por init-project.js
+# Regenera Vault Health antes de commitear
+# Solo actua en este repo
+
+VAULT_PATH="C:/Users/insyd/Desktop/tecnodespegue-landing"
+BRIDGE_DIR="C:/Users/insyd/.gemini/antigravity"
+
+REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
+case "$REPO_ROOT" in
+  *$(basename "C:/Users/insyd/Desktop/tecnodespegue-landing")*)
+    ;;
+  *)
+    exit 0
+    ;;
+esac
+
+echo "[pre-commit] Regenerando Vault Health..."
+node "$BRIDGE_DIR/vault-health.js" "$VAULT_PATH" >/dev/null 2>&1
+
+git add "$VAULT_PATH/Vault Health.md" "$VAULT_PATH/Home.md" 2>/dev/null
+exit 0
