@@ -7,6 +7,7 @@
 interface Props {
   post?: {
     id: string;
+    slug: string;
     locale: 'es' | 'en';
     title: string;
     description: string;
@@ -208,7 +209,7 @@ const today = new Date().toISOString().slice(0, 10);
 
 <script>
   // Stats: desc count + body word count
-  const desc = document.getElementById('description');
+  const desc = document.getElementById('description') as HTMLTextAreaElement | null;
   const descCount = document.getElementById('desc-count');
   if (desc && descCount) {
     const update = () => { descCount.textContent = String(desc.value.length); };
@@ -216,7 +217,7 @@ const today = new Date().toISOString().slice(0, 10);
     update();
   }
 
-  const body = document.getElementById('body');
+  const body = document.getElementById('body') as HTMLTextAreaElement | null;
   const bodyStats = document.getElementById('body-stats');
   if (body && bodyStats) {
     const update = () => {
@@ -229,7 +230,7 @@ const today = new Date().toISOString().slice(0, 10);
   }
 
   // Slug preview
-  const title = document.getElementById('title');
+  const title = document.getElementById('title') as HTMLInputElement | null;
   const slugHint = document.getElementById('slug-hint');
   if (title && slugHint) {
     const update = () => {

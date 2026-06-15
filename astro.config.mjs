@@ -43,14 +43,14 @@ export default defineConfig({
     },
   },
   build: {
-    compressHTML: true,
     // Inline critical CSS para reducir render-blocking requests
     // (saving ~130ms en LCP segun PageSpeed Insights)
     inlineStylesheets: 'auto',
   },
   vite: {
+    // @ts-ignore – Vite plugin type mismatch between tailwindcss / security-headers and Astro's expected PluginOption
     plugins: [
-      tailwindcss(),
+      ...tailwindcss(),
       {
         name: 'security-headers',
         configureServer(server) {
