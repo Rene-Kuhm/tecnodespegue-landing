@@ -27,18 +27,27 @@ test.describe('Blog', () => {
 
     // Antes del filtro: todos los posts visibles
     const allCards = page.locator('[data-blog-card]');
+    await expect(allCards.first()).toBeVisible();
     const totalBefore = await allCards.count();
 
     // Click en una categoria especifica
     const filterButton = page.locator('[data-filter-cat]').nth(1); // segundo boton (skip "All")
     const filterCat = await filterButton.getAttribute('data-filter-cat');
+    
+    // El filtro tiene JS. Nos aseguramos de esperar un poco a que el JS hidrate si es necesario.
+    await page.waitForTimeout(500); 
     await filterButton.click();
 
     // Despues del filtro: solo posts de esa categoria
     const visibleCards = page.locator('[data-blog-card]:not(.is-hidden)');
-    const totalAfter = await visibleCards.count();
+    
+    // Esperamos a que la cantidad de cartas cambie (el filtro se aplique)
+    await expect(async () => {
+      const count = await visibleCards.count();
+      expect(count).toBeLessThan(totalBefore);
+    }).toPass();
 
-    expect(totalAfter).toBeLessThan(totalBefore);
+    const totalAfter = await visibleCards.count();
     expect(totalAfter).toBeGreaterThan(0);
 
     // Verificar que cada post visible tiene la categoria esperada
@@ -49,7 +58,7 @@ test.describe('Blog', () => {
   });
 
   test('post individual tiene structured data BlogPosting', async ({ page }) => {
-    await page.goto('/blog/');
+    await page.goto('/blog');
 
     // Tomar el primer post link
     const firstPostLink = page.locator('[data-blog-card] a').first();

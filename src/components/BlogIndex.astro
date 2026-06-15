@@ -52,7 +52,7 @@ const copy = {
 }[locale];
 
 const getSlug = (post: CollectionEntry<'posts'>) => post.id.replace(/^en\//, '');
-const getHref = (post: CollectionEntry<'posts'>) => localizedPath(`/blog/${getSlug(post)}/`, locale);
+const getHref = (post: CollectionEntry<'posts'>) => localizedPath(`/blog/${getSlug(post)}`, locale);
 const getDate = (post: CollectionEntry<'posts'>) => formatDate(post.data.date, cfg.dateLocale);
 const getReadTime = (post: CollectionEntry<'posts'>) => post.data.readTime ?? calculateReadTime(post.body ?? '', 200);
 const recommended = posts.slice(0, 3);
