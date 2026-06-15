@@ -33,7 +33,7 @@ const { post, allPosts } = Astro.props;
 const { Content, headings } = await render(post);
 
 const date = formatDate(post.data.date, cfg.dateLocale);
-const readTime = post.data.readTime ?? calculateReadTime(post.body);
+const readTime = post.data.readTime ?? calculateReadTime(post.body ?? '');
 const title = post.data.seo?.title ?? post.data.title;
 const description = post.data.seo?.description ?? post.data.description;
 const ogImage = new URL('/og-image.png', Astro.site);

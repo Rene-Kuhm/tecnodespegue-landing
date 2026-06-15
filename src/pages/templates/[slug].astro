@@ -34,7 +34,7 @@ const { Content } = await render(template);
 
 const hasDiscount = template.data.compareAtPrice && template.data.compareAtPrice > template.data.price;
 const discount = hasDiscount
-  ? Math.round(((template.data.compareAtPrice - template.data.price) / template.data.compareAtPrice) * 100)
+  ? Math.round(((template.data.compareAtPrice! - template.data.price) / template.data.compareAtPrice!) * 100)
   : 0;
 
 // Related templates (same category, different slug)
