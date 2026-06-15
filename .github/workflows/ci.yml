@@ -1,0 +1,68 @@
+# CI: valida build, lint y tests en cada PR a main/develop
+# No usa commitlint porque ya lo validas localmente con suggest-commit.js
+
+name: CI
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main]
+
+# Cancela runs previos en la misma branch (ahorra minutos de GitHub Actions)
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # historial completo para changelog
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Type check
+        run: npx astro check
+
+      - name: Build
+        run: npm run build
+
+      - name: Tests (Playwright)
+        run: |
+          npx playwright install --with-deps chromium
+          npm test
+        env:
+          CI: 'true'
+
+  # Job opcional: comenta el PR con resumen (si tenes permiso)
+  comment-summary:
+    needs: validate
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Comentar resultado en PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: ci-summary
+          message: |
+            ## CI Summary
+
+            - [x] Type check
+            - [x] Build
+            - [x] Tests
+
+            **${{ github.workflow }}** completed successfully on ${{ github.event.pull_request.head.sha }}
