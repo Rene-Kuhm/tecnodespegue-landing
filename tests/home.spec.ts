@@ -13,9 +13,10 @@ test.describe('Home page', () => {
     await expect(page).toHaveTitle(/Fullstack.*IA/i);
 
     // h1 (viene del Hero, montado en el cliente)
-    const h1 = page.locator('h1').first();
+    // There are 2 H1s (mobile and desktop). Select the visible one.
+    const h1 = page.locator('h1:visible').first();
     await expect(h1).toBeVisible();
-    await expect(h1).toContainText(/construi|despegue|tecnodespegue/i);
+    await expect(h1).toContainText(/constru[ií]|despegue|tecnodespegue/i);
   });
 
   test('tiene meta description y canonical', async ({ page }) => {
@@ -39,8 +40,9 @@ test.describe('Home page', () => {
 
   test('CTAs de contacto apuntan a #contacto', async ({ page }) => {
     await page.goto('/');
-    const ctaButtons = page.locator('a[href="#contacto"]');
-    await expect(ctaButtons.first()).toBeVisible();
+    // There are multiple CTAs (desktop/mobile). Check the first visible one.
+    const ctaButton = page.locator('a[href="/#contacto"]:visible').first();
+    await expect(ctaButton).toBeVisible();
   });
 
   test('skip link salta al main', async ({ page, browserName }) => {
