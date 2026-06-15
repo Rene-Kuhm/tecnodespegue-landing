@@ -27,12 +27,21 @@ const {
 const t = useTranslations(locale);
 const cfg = localeConfig[locale];
 
-const canonicalURL = new URL(path, Astro.site);
+const cleanPath = (p: string) => {
+  let cleaned = p.trim();
+  if (cleaned.length > 1 && cleaned.endsWith('/')) {
+    cleaned = cleaned.slice(0, -1);
+  }
+  return cleaned;
+};
+
+const normalizedPath = cleanPath(path);
+const canonicalURL = new URL(normalizedPath, Astro.site);
 const ogImage = new URL(customOgImage || (locale === 'en' ? siteConfig.ogImageEn : siteConfig.ogImage), Astro.site);
 const plausibleDomain = siteConfig.plausible.domain || Astro.site?.hostname || canonicalURL.hostname;
 
-const esPath = path.startsWith('/en') ? path.replace(/^\/en/, '') || '/' : path;
-const enPath = esPath === '/' ? '/en/' : `/en${esPath}`;
+const esPath = normalizedPath.startsWith('/en') ? cleanPath(normalizedPath.replace(/^\/en/, '')) || '/' : normalizedPath;
+const enPath = esPath === '/' ? '/en' : `/en${esPath}`;
 const esURL = new URL(esPath, Astro.site).toString();
 const enURL = new URL(enPath, Astro.site).toString();
 
