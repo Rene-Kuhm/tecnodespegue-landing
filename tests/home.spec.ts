@@ -12,9 +12,8 @@ test.describe('Home page', () => {
     // Title con keyword primaria
     await expect(page).toHaveTitle(/Fullstack.*IA/i);
 
-    // h1 (viene del Hero, montado en el cliente)
-    // There are 2 H1s (mobile and desktop). Select the visible one.
-    const h1 = page.locator('h1:visible').first();
+    await expect(page.locator('h1')).toHaveCount(1);
+    const h1 = page.locator('h1');
     await expect(h1).toBeVisible();
     await expect(h1).toContainText(/constru[ií]|despegue|tecnodespegue/i);
   });
@@ -40,8 +39,7 @@ test.describe('Home page', () => {
 
   test('CTAs de contacto apuntan a #contacto', async ({ page }) => {
     await page.goto('/');
-    // There are multiple CTAs (desktop/mobile). Check the first visible one.
-    const ctaButton = page.locator('a[href="/#contacto"]:visible').first();
+    const ctaButton = page.locator('a[href="#contacto"]:visible').first();
     await expect(ctaButton).toBeVisible();
   });
 

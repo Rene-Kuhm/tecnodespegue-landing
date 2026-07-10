@@ -20,15 +20,15 @@ const copy = {
     lead: 'Estamos preparando una colección de templates copy-paste ready: landings cinemáticas, e-commerce full-stack, dashboards con IA, blogs con MDX y bundles de componentes premium. Todos con TypeScript estricto y la calidad que ya conocés.',
     statusDev: 'En desarrollo',
     interest: '¿Te interesa?',
-    notifyLead: 'Dejanos tu email y te avisamos cuando lancemos el primero, con descuento de early-bird del 30%.',
+    notifyLead: 'Dejanos tu email y te avisamos cuando publiquemos el primer template.',
     notifyButton: 'Notificarme',
     success: '¡Listo! Te avisaremos cuando esté disponible.',
     roadmap: [
       ['Aurora — Landing cinemática', 'Landing premium para SaaS con portal 3D, animaciones GSAP, glassmorphism.', 'En desarrollo'],
-      ['Forge — Dashboard con IA', 'Admin dashboard con auth, charts, reportes AI, real-time updates.', 'Q3 2025'],
-      ['TiendaNube Pro — E-commerce', 'E-commerce headless con Stripe, multi-idioma, multi-moneda.', 'Q3 2025'],
-      ['Inkwell — Blog con MDX', 'Blog estático con content collections, search, RSS, i18n.', 'Q4 2025'],
-      ['Marvel Bundle — 40+ componentes', 'Botones, cards, modales, navbars premium copy-paste ready.', 'Q4 2025'],
+      ['Forge — Dashboard con IA', 'Admin dashboard con auth, charts, reportes AI, real-time updates.', 'Planificado'],
+      ['TiendaNube Pro — E-commerce', 'E-commerce headless con Stripe, multi-idioma, multi-moneda.', 'Planificado'],
+      ['Inkwell — Blog con MDX', 'Blog estático con content collections, search, RSS, i18n.', 'Planificado'],
+      ['Marvel Bundle — 40+ componentes', 'Botones, cards, modales, navbars premium copy-paste ready.', 'Planificado'],
     ],
   },
   en: {
@@ -40,15 +40,15 @@ const copy = {
     lead: 'We are preparing a copy-paste-ready collection of cinematic landing pages, full-stack e-commerce builds, AI dashboards, MDX blogs, and premium component bundles. All with strict TypeScript and the quality you already know.',
     statusDev: 'In development',
     interest: 'Interested?',
-    notifyLead: 'Leave your email and we will let you know when the first one launches, with a 30% early-bird discount.',
+    notifyLead: 'Leave your email and we will let you know when the first template is published.',
     notifyButton: 'Notify me',
     success: 'Done. We will let you know when it is available.',
     roadmap: [
       ['Aurora — Cinematic landing page', 'Premium SaaS landing with a 3D portal, GSAP animations, and glassmorphism.', 'In development'],
-      ['Forge — AI dashboard', 'Admin dashboard with auth, charts, AI reports, and real-time updates.', 'Q3 2025'],
-      ['TiendaNube Pro — E-commerce', 'Headless e-commerce with Stripe, multi-language, and multi-currency support.', 'Q3 2025'],
-      ['Inkwell — MDX blog', 'Static blog with content collections, search, RSS, and i18n.', 'Q4 2025'],
-      ['Marvel Bundle — 40+ components', 'Premium copy-paste-ready buttons, cards, modals, and navbars.', 'Q4 2025'],
+      ['Forge — AI dashboard', 'Admin dashboard with auth, charts, AI reports, and real-time updates.', 'Planned'],
+      ['TiendaNube Pro — E-commerce', 'Headless e-commerce with Stripe, multi-language, and multi-currency support.', 'Planned'],
+      ['Inkwell — MDX blog', 'Static blog with content collections, search, RSS, and i18n.', 'Planned'],
+      ['Marvel Bundle — 40+ components', 'Premium copy-paste-ready buttons, cards, modals, and navbars.', 'Planned'],
     ],
   },
 }[locale];
@@ -57,7 +57,7 @@ const description = copy.description;
 const formspreeEndpoint = siteConfig.formspree.endpoint;
 ---
 
-<Layout title={title} description={description} path={locale === 'en' ? '/en/templates' : '/templates'} locale={locale}>
+<Layout title={title} description={description} path={locale === 'en' ? '/en/templates' : '/templates'} locale={locale} alternatePaths={{ es: '/templates', en: '/en/templates' }}>
   <Nav locale={locale} />
 
   <main id="contenido" class="tpl-soon-page">
@@ -166,7 +166,7 @@ const formspreeEndpoint = siteConfig.formspree.endpoint;
                 type="email"
                 name="email"
                 required
-                placeholder={locale === 'en' ? 'you@email.com' : 'tu@email.com'}
+                placeholder={locale === 'en' ? 'you@example.com…' : 'tu@ejemplo.com…'}
                 class="notify-input"
                 autocomplete="email"
               />
@@ -236,7 +236,6 @@ const formspreeEndpoint = siteConfig.formspree.endpoint;
     background: radial-gradient(circle, rgba(237, 29, 36, 0.18) 0%, transparent 70%);
     top: -10%;
     right: -5%;
-    animation: glow-drift-1 18s ease-in-out infinite;
   }
 
   .bg-glow-2 {
@@ -245,7 +244,6 @@ const formspreeEndpoint = siteConfig.formspree.endpoint;
     background: radial-gradient(circle, rgba(248, 180, 0, 0.12) 0%, transparent 70%);
     bottom: -10%;
     left: -5%;
-    animation: glow-drift-2 22s ease-in-out infinite;
   }
 
   .bg-glow-3 {
@@ -254,7 +252,6 @@ const formspreeEndpoint = siteConfig.formspree.endpoint;
     background: radial-gradient(circle, rgba(177, 78, 255, 0.1) 0%, transparent 70%);
     top: 40%;
     left: 30%;
-    animation: glow-drift-3 16s ease-in-out infinite;
   }
 
   @keyframes glow-drift-1 {
@@ -348,7 +345,6 @@ const formspreeEndpoint = siteConfig.formspree.endpoint;
     inset: 0;
     background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.15) 50%, transparent 100%);
     transform: translateX(-100%);
-    animation: shine-sweep 3s ease-in-out infinite;
   }
 
   @keyframes shine-sweep {
@@ -618,7 +614,6 @@ const formspreeEndpoint = siteConfig.formspree.endpoint;
     background: var(--color-marvel-gold);
     border-radius: 50%;
     box-shadow: 0 0 8px rgba(248, 180, 0, 0.5);
-    animation: deco-twinkle 3s ease-in-out infinite;
   }
 
   @keyframes deco-twinkle {

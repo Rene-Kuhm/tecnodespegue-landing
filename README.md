@@ -224,10 +224,9 @@ tecnodespegue-landing/
 ├── scripts/
 │   └── check-deploy.mjs         # Validación pre-deploy
 └── src/
-    ├── components/              # 18 componentes Astro
+    ├── components/              # Componentes Astro
     │   ├── Nav.astro
-    │   ├── Hero.astro              ← desktop
-    │   ├── HeroMobile.astro        ← mobile (NEW)
+    │   ├── Hero.astro              ← hero responsive unificado
     │   ├── TrustSignals.astro
     │   ├── Services.astro
     │   ├── Portfolio.astro
@@ -236,7 +235,6 @@ tecnodespegue-landing/
     │   ├── Tech.astro
     │   ├── CTA.astro
     │   ├── Footer.astro
-    │   ├── LoadingScreen.astro
     │   ├── PageTransition.astro
     │   ├── ProgressBar.astro
     │   ├── CustomCursor.astro

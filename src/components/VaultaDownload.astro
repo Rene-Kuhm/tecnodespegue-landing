@@ -1,22 +1,5 @@
 ---
-/**
- * VaultaDownload.astro
- *
- * Sección "Descargá Vaulta" con contador regresivo al lanzamiento público
- * (jueves 12 jun 2026 12:00 ART = 15:00 UTC) y dos CTAs de descarga:
- * APK Android + bundle ZIP Windows.
- *
- * Comportamiento del contador:
- *  - Antes del lanzamiento: muestra countdown vivo (dd hh mm ss) en ES y en.
- *  - Después del lanzamiento: muestra "Disponible ahora" + los botones quedan activos.
- *  - Zona horaria: America/Argentina/Buenos_Aires (UTC-3). Se calcula contra UTC
- *    en el cliente para evitar drift si el visitante está en otra zona.
- *
- * URLs de release (tomadas del README oficial del repo):
- *  - APK Android:     .../releases/download/v1.0.22/vaulta.apk
- *  - Bundle Windows:  .../releases/download/v1.0.22/vaulta-windows-bundle.zip
- *  - Release page:    .../releases/tag/v1.0.22
- */
+/** Vaulta public release downloads and verifiable security notes. */
 
 import Icon from './Icon.astro';
 import type { Locale } from '../i18n';
@@ -27,7 +10,6 @@ interface Props {
 
 const locale: Locale = Astro.props.locale ?? 'es';
 
-const RELEASE_ISO_UTC = '2026-06-12T15:00:00.000Z';
 // Release oficial v1.0.22 (publicado 11 jun 2026) — incluye APK Android + bundle
 // Windows. La release dev-latest del bot de GitHub Actions solo incluye el APK,
 // por eso apuntamos a v1.0.22 para que ambos botones tengan destino real.
@@ -42,9 +24,9 @@ const REPO_URL =
 
 const copy = {
   es: {
-    kicker: 'APP · LANZAMIENTO',
-    title: ['Vaulta está', 'a punto de despegar'],
-    lead: 'El gestor de contraseñas cifrado de TecnoDespegue llega mañana al mediodía (hora Argentina). Andoird y Windows, cifrado AES-256-GCM, Argon2id, desbloqueo biométrico y vault offline-first.',
+    kicker: 'APP · DISPONIBLE',
+    title: ['Vaulta ya está', 'disponible'],
+    lead: 'Gestor de contraseñas open source y offline-first para Android y Windows. La release documenta cifrado AES-256-GCM, derivación de clave con Argon2id y desbloqueo biométrico.',
     countdownLabel: 'Cuenta regresiva al lanzamiento',
     days: ['días', 'día'],
     hours: ['hs', 'h'],
@@ -71,9 +53,9 @@ const copy = {
     loadingStars: '…',
   },
   en: {
-    kicker: 'APP · LAUNCH',
-    title: ['Vaulta is', 'about to launch'],
-    lead: "TecnoDespegue's encrypted password manager lands tomorrow at noon (Argentina time). Android and Windows, AES-256-GCM encryption, Argon2id, biometric unlock, offline-first vault.",
+    kicker: 'APP · AVAILABLE',
+    title: ['Vaulta is', 'available now'],
+    lead: "Open-source, offline-first password manager for Android and Windows. The release documents AES-256-GCM encryption, Argon2id key derivation, and biometric unlock.",
     countdownLabel: 'Countdown to launch',
     days: ['days', 'day'],
     hours: ['h', 'h'],
@@ -102,7 +84,7 @@ const copy = {
 }[locale];
 ---
 
-<section class="vaulta-section py-24 md:py-32 relative overflow-hidden" id="vaulta" data-vaulta-release={RELEASE_ISO_UTC}>
+<section class="vaulta-section py-24 md:py-32 relative overflow-hidden" id="vaulta">
   <!-- Background decorativo -->
   <div class="vaulta-bg" aria-hidden="true">
     <div class="vaulta-glow vaulta-glow-1"></div>
@@ -131,43 +113,15 @@ const copy = {
 
       <p class="vaulta-lead">{copy.lead}</p>
     </header>
-
-    <!-- Countdown / launched state -->
-    <div class="vaulta-countdown" data-vaulta-countdown>
-      <p class="vaulta-countdown-label font-mono" data-vaulta-countdown-label>
-        {copy.countdownLabel}
-      </p>
-
-      <div class="vaulta-clock" role="timer" aria-live="polite">
-        <div class="vaulta-clock-cell">
-          <span class="vaulta-clock-num font-display" data-vaulta-d>00</span>
-          <span class="vaulta-clock-unit font-mono">{copy.days[1]}</span>
-        </div>
-        <span class="vaulta-clock-sep" aria-hidden="true">:</span>
-        <div class="vaulta-clock-cell">
-          <span class="vaulta-clock-num font-display" data-vaulta-h>00</span>
-          <span class="vaulta-clock-unit font-mono">{copy.hours[1]}</span>
-        </div>
-        <span class="vaulta-clock-sep" aria-hidden="true">:</span>
-        <div class="vaulta-clock-cell">
-          <span class="vaulta-clock-num font-display" data-vaulta-m>00</span>
-          <span class="vaulta-clock-unit font-mono">{copy.minutes[1]}</span>
-        </div>
-        <span class="vaulta-clock-sep" aria-hidden="true">:</span>
-        <div class="vaulta-clock-cell">
-          <span class="vaulta-clock-num font-display" data-vaulta-s>00</span>
-          <span class="vaulta-clock-unit font-mono">{copy.seconds[1]}</span>
-        </div>
-      </div>
-
+    <div class="vaulta-countdown is-available">
+      <p class="vaulta-countdown-label font-mono">{copy.launched}</p>
       <p class="vaulta-countdown-meta font-mono">
-        <Icon name="schedule" class="w-3.5 h-3.5 inline-block align-[-2px] mr-1.5" />
-        <span data-vaulta-target>12 jun 2026 · 12:00 ART (UTC-3)</span>
+        <Icon name="check_circle" class="w-3.5 h-3.5 inline-block align-[-2px] mr-1.5" />
+        {copy.launchedSub}
       </p>
     </div>
 
-    <!-- Botones de descarga (siempre visibles: antes del launch muestran
-         el estado "no disponible" en cliente; después quedan activos). -->
+    <!-- Signed release downloads. -->
     <div class="vaulta-ctas" data-vaulta-ctas>
       <a
         href={APK_URL}
@@ -233,16 +187,6 @@ const copy = {
       </div>
 
       <div class="vaulta-support-actions">
-        <div class="vaulta-stars" data-vaulta-stars aria-live="polite" aria-atomic="true">
-          <span class="vaulta-stars-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-              <path d="M12 2.5l2.95 6.36 6.95.78-5.2 4.85 1.5 6.91L12 17.95l-6.2 3.45 1.5-6.91-5.2-4.85 6.95-.78L12 2.5z"/>
-            </svg>
-          </span>
-          <span class="vaulta-stars-num font-display" data-vaulta-stars-num>—</span>
-          <span class="vaulta-stars-label font-mono">{copy.starsLabel}</span>
-        </div>
-
         <a
           href={REPO_URL}
           class="vaulta-support-cta"
@@ -277,159 +221,6 @@ const copy = {
     </aside>
   </div>
 </section>
-
-<script>
-  /**
-   * Vaulta countdown client logic.
-   * Lee `data-vaulta-release` (ISO UTC) y actualiza dd:hh:mm:ss cada segundo
-   * hasta llegar a 0; en ese momento, marca la sección como "launched" y
-   * habilita los botones de descarga.
-   *
-   * Robusto a:
-   *  - Zona horaria del visitante: todo se calcula contra UTC.
-   *  - Reloj adelantado: muestra ceros y cambia a "launched" automáticamente.
-   *  - JS deshabilitado / reducido: el HTML sigue siendo legible y los <a>
-   *    siguen funcionando (el contador simplemente queda estático).
-   */
-  type Locale = 'es' | 'en';
-
-  const section = document.querySelector<HTMLElement>('[data-vaulta-release]');
-  if (section) {
-    const targetIso = section.dataset.vaultaRelease!;
-    const targetMs = Date.parse(targetIso);
-    if (!Number.isNaN(targetMs)) {
-      // Heurística de idioma: si el <html lang> empieza con "en", usamos copy EN.
-      const htmlLang = (document.documentElement.lang || 'es').toLowerCase();
-      const locale: Locale = htmlLang.startsWith('en') ? 'en' : 'es';
-
-      const i18n = {
-        es: {
-          label: 'Cuenta regresiva al lanzamiento',
-          launched: '¡Ya está disponible!',
-          launchedSub: 'Descargá la versión firmada de Vaulta.',
-          days: ['días', 'día'],
-          hours: ['hs', 'h'],
-          minutes: ['min', 'm'],
-          seconds: ['seg', 's'],
-          androidCta: 'Descargar APK',
-          winCta: 'Descargar para Windows',
-        },
-        en: {
-          label: 'Countdown to launch',
-          launched: "It's live!",
-          launchedSub: 'Download the signed Vaulta build.',
-          days: ['days', 'day'],
-          hours: ['h', 'h'],
-          minutes: ['min', 'm'],
-          seconds: ['s', 's'],
-          androidCta: 'Download APK',
-          winCta: 'Download for Windows',
-        },
-      }[locale];
-
-      const $d = section.querySelector<HTMLElement>('[data-vaulta-d]');
-      const $h = section.querySelector<HTMLElement>('[data-vaulta-h]');
-      const $m = section.querySelector<HTMLElement>('[data-vaulta-m]');
-      const $s = section.querySelector<HTMLElement>('[data-vaulta-s]');
-      const $label = section.querySelector<HTMLElement>('[data-vaulta-countdown-label]');
-      const $androidTitle = section.querySelector<HTMLElement>('[data-vaulta-android-title]');
-      const $windowsTitle = section.querySelector<HTMLElement>('[data-vaulta-windows-title]');
-
-      const pad = (n: number) => String(n).padStart(2, '0');
-
-      const unit = (es: string[], en: string[], n: number) =>
-        locale === 'en' ? en[0] : (n === 1 ? es[0] : es[1]);
-
-      const renderRemaining = (ms: number) => {
-        const clamped = Math.max(0, ms);
-        const totalSec = Math.floor(clamped / 1000);
-        const days = Math.floor(totalSec / 86400);
-        const hours = Math.floor((totalSec % 86400) / 3600);
-        const minutes = Math.floor((totalSec % 3600) / 60);
-        const seconds = totalSec % 60;
-
-        if ($d) $d.textContent = pad(days);
-        if ($h) $h.textContent = pad(hours);
-        if ($m) $m.textContent = pad(minutes);
-        if ($s) $s.textContent = pad(seconds);
-
-        // Actualizamos los labels de unidad (singular/plural) abajo del número.
-        const cells = section.querySelectorAll<HTMLElement>('.vaulta-clock-cell .vaulta-clock-unit');
-        if (cells.length === 4) {
-          cells[0].textContent = unit(i18n.days, i18n.days, days);
-          cells[1].textContent = unit(i18n.hours, i18n.hours, hours);
-          cells[2].textContent = unit(i18n.minutes, i18n.minutes, minutes);
-          cells[3].textContent = unit(i18n.seconds, i18n.seconds, seconds);
-        }
-      };
-
-      const markLaunched = () => {
-        section.classList.add('is-launched');
-        if ($label) $label.textContent = i18n.launched;
-        const sub = section.querySelector<HTMLElement>('.vaulta-countdown-meta');
-        if (sub) {
-          sub.innerHTML =
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 inline-block align-[-2px] mr-1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>' +
-            i18n.launchedSub;
-        }
-        if ($androidTitle) $androidTitle.textContent = i18n.androidCta;
-        if ($windowsTitle) $windowsTitle.textContent = i18n.winCta;
-      };
-
-      const tick = () => {
-        const remaining = targetMs - Date.now();
-        if (remaining <= 0) {
-          renderRemaining(0);
-          markLaunched();
-          return false; // detener
-        }
-        renderRemaining(remaining);
-        return true;
-      };
-
-      // Render inicial + interval (se cancela solo al lanzar).
-      if (tick()) {
-        const interval = window.setInterval(() => {
-          if (!tick()) window.clearInterval(interval);
-        }, 1000);
-        // Limpieza si Astro navega con View Transitions.
-        document.addEventListener('astro:before-swap', () => window.clearInterval(interval), { once: true });
-      }
-    }
-  }
-
-  /**
-   * Star counter — pide /api/github-stars y renderiza el conteo.
-   * Si la API falla, mantiene el placeholder "—" sin romper la UI.
-   * El endpoint ya cachea en CDN por 1h, así que esto es un solo fetch por visita.
-   */
-  const supportEl = document.querySelector<HTMLElement>('[data-vaulta-support]');
-  if (supportEl) {
-    const repo = supportEl.dataset.repo || 'Rene-Kuhm/vaulta';
-    const $num = supportEl.querySelector<HTMLElement>('[data-vaulta-stars-num]');
-    if ($num) {
-      const format = (n: number) => {
-        if (n < 1000) return String(n);
-        if (n < 10_000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
-        return Math.round(n / 1000) + 'k';
-      };
-      try {
-        const res = await fetch(`/api/github-stars?repo=${encodeURIComponent(repo)}`, {
-          headers: { Accept: 'application/json' },
-        });
-        if (res.ok) {
-          const data = (await res.json()) as { stars?: number };
-          if (typeof data.stars === 'number') {
-            $num.textContent = format(data.stars);
-            supportEl.classList.add('has-stars');
-          }
-        }
-      } catch {
-        // Silencioso: dejamos el "—" si la red o el server fallan.
-      }
-    }
-  }
-</script>
 
 <style>
   .vaulta-section {
@@ -677,29 +468,6 @@ const copy = {
     border-color: rgba(248, 180, 0, 0.8);
   }
 
-  /* Estado pre-launch: botones deshabilitados visualmente hasta las 12:00 ART. */
-  .vaulta-section:not(.is-launched) .vaulta-btn {
-    opacity: 0.55;
-    filter: grayscale(0.35);
-    pointer-events: none;
-    cursor: not-allowed;
-  }
-  .vaulta-section:not(.is-launched) .vaulta-btn::before {
-    content: "🔒 12:00 ART";
-    position: absolute;
-    top: 0.5rem;
-    right: 0.75rem;
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--color-marvel-gold);
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(248, 180, 0, 0.35);
-    border-radius: 999px;
-    padding: 0.2rem 0.55rem;
-    z-index: 1;
-  }
 
   .vaulta-btn-icon {
     display: inline-flex;
@@ -941,21 +709,4 @@ const copy = {
   .vaulta-support-cta:hover :global(svg) { color: #ffffff; }
   .vaulta-support-cta-arrow { font-weight: 700; }
 
-  /* Estado "lanzado" — sutil highlight */
-  .vaulta-section.is-launched .vaulta-countdown {
-    border-color: rgba(0, 255, 136, 0.35);
-    box-shadow: 0 0 0 1px rgba(0, 255, 136, 0.15) inset, 0 0 40px -10px rgba(0, 255, 136, 0.25);
-  }
-  .vaulta-section.is-launched .vaulta-countdown-label { color: var(--color-secondary, #00ff88); }
-  .vaulta-section.is-launched .kicker-dot {
-    background: var(--color-secondary, #00ff88);
-    box-shadow: 0 0 14px rgba(0, 255, 136, 0.7);
-  }
-  .vaulta-section.is-launched .vaulta-btn {
-    opacity: 1;
-    filter: none;
-    pointer-events: auto;
-    cursor: pointer;
-  }
-  .vaulta-section.is-launched .vaulta-btn::before { content: none; }
 </style>

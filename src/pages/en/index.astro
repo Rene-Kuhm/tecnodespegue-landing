@@ -2,10 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/Nav.astro';
 import ProgressBar from '../../components/ProgressBar.astro';
-import LoadingScreen from '../../components/LoadingScreen.astro';
 import PageTransition from '../../components/PageTransition.astro';
 import Hero from '../../components/Hero.astro';
-import HeroMobile from '../../components/HeroMobile.astro';
 import TrustSignals from '../../components/TrustSignals.astro';
 import Services from '../../components/Services.astro';
 import Portfolio from '../../components/Portfolio.astro';
@@ -21,17 +19,14 @@ import Footer from '../../components/Footer.astro';
   description="Custom software engineering, AI automation, and scalable solutions. We build high-performance web apps, cross-platform mobile apps, and intelligent workflows."
   path="/en"
   locale="en"
+  alternatePaths={{ es: '/', en: '/en' }}
 >
-  <LoadingScreen locale="en" />
   <PageTransition />
   <ProgressBar />
   <Nav locale="en" />
 
   <main id="contenido">
-    <HeroMobile locale="en" />
-    <div class="hero-desktop-wrap">
-      <Hero locale="en" />
-    </div>
+    <Hero locale="en" />
 
     <TrustSignals locale="en" />
     <Services locale="en" />
@@ -50,13 +45,4 @@ import Footer from '../../components/Footer.astro';
     scroll-behavior: smooth;
   }
 
-  .hero-desktop-wrap {
-    display: none;
-    background: #0a0508;
-  }
-  @media (min-width: 768px) {
-    .hero-desktop-wrap {
-      display: block;
-    }
-  }
 </style>
