@@ -14,20 +14,20 @@ interface Props {
 const locale: Locale = Astro.props.locale ?? 'es';
 const copy = {
   es: {
-    stats: ['Proyectos Entregados', 'Clientes en Producción', 'Tiempo de Respuesta', 'Tecnologías Dominadas'],
+    stats: ['Desarrollo guiado por specs', 'Pruebas automatizadas', 'Pipelines de entrega', 'Código auditable'],
     chips: ['Open Source', 'CI/CD Automático', 'Cloud & Self-Hosted'],
   },
   en: {
-    stats: ['Projects Delivered', 'Clients in Production', 'Response Time', 'Technologies Mastered'],
+    stats: ['Spec-driven development', 'Automated testing', 'Delivery pipelines', 'Auditable code'],
     chips: ['Open Source', 'Automated CI/CD', 'Cloud & Self-Hosted'],
   },
 }[locale];
 
 const stats = [
-  { value: "15+", label: copy.stats[0] },
-  { value: "3+", label: copy.stats[1] },
-  { value: "<24h", label: copy.stats[2] },
-  { value: "20+", label: copy.stats[3] }
+  { value: "SDD", label: copy.stats[0] },
+  { value: "E2E", label: copy.stats[1] },
+  { value: "CI/CD", label: copy.stats[2] },
+  { value: "OSS", label: copy.stats[3] }
 ];
 ---
 
@@ -146,7 +146,7 @@ const stats = [
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.05em;
-    transition: all 0.3s var(--ease-marvel);
+    transition: background-color 0.3s var(--ease-marvel), border-color 0.3s var(--ease-marvel), color 0.3s var(--ease-marvel), box-shadow 0.3s var(--ease-marvel), transform 0.3s var(--ease-marvel);
   }
   .trust-chip:hover {
     border-color: var(--color-marvel-gold);

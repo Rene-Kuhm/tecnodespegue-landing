@@ -21,7 +21,7 @@ const copy = {
     lead: 'Software a medida, automatizaciones con IA y experiencias digitales que escalan tu negocio.',
     primary: 'Iniciá tu Proyecto',
     secondary: 'Ver Portfolio',
-    stats: ['Proyectos', 'PageSpeed', 'Uptime', 'Deploys/mes'],
+    stats: ['Arquitectura', 'Pruebas', 'Entrega', 'Código'],
     status: 'SISTEMAS EN ÓRBITA',
     contactHref: '#contacto',
     portfolioHref: '#portfolio',
@@ -32,7 +32,7 @@ const copy = {
     lead: 'Custom software, AI automation, and digital experiences that scale your business.',
     primary: 'Start your Project',
     secondary: 'View Portfolio',
-    stats: ['Projects', 'PageSpeed', 'Uptime', 'Deploys/mo'],
+    stats: ['Architecture', 'Testing', 'Delivery', 'Code'],
     status: 'SYSTEMS IN ORBIT',
     contactHref: '/en#contacto',
     portfolioHref: '/en#portfolio',
@@ -91,22 +91,22 @@ const copy = {
   <div class="hero-bottom-bar" data-hero-bottom>
     <div class="bb-stats">
       <div class="bb-stat">
-        <div class="bb-stat-num font-display">15<span class="bb-stat-plus">+</span></div>
+        <div class="bb-stat-num font-display">SDD</div>
         <div class="bb-stat-label">{copy.stats[0]}</div>
       </div>
       <div class="bb-divider"></div>
       <div class="bb-stat">
-        <div class="bb-stat-num font-display text-shine">99<span class="bb-stat-suffix">/100</span></div>
+        <div class="bb-stat-num font-display text-shine">BDD</div>
         <div class="bb-stat-label">{copy.stats[1]}</div>
       </div>
       <div class="bb-divider"></div>
       <div class="bb-stat">
-        <div class="bb-stat-num font-display">99.9<span class="bb-stat-suffix">%</span></div>
+        <div class="bb-stat-num font-display">CI/CD</div>
         <div class="bb-stat-label">{copy.stats[2]}</div>
       </div>
       <div class="bb-divider"></div>
       <div class="bb-stat">
-        <div class="bb-stat-num font-display">38</div>
+        <div class="bb-stat-num font-display">OSS</div>
         <div class="bb-stat-label">{copy.stats[3]}</div>
       </div>
     </div>
@@ -196,7 +196,6 @@ const copy = {
     background: var(--color-secondary);
     border-radius: 50%;
     box-shadow: 0 0 8px var(--color-secondary);
-    animation: kicker-pulse 2s ease-in-out infinite;
   }
 
   @keyframes kicker-pulse {
@@ -376,7 +375,6 @@ const copy = {
     background: var(--color-secondary);
     border-radius: 50%;
     box-shadow: 0 0 8px var(--color-secondary);
-    animation: kicker-pulse 2s ease-in-out infinite;
   }
 
   /* Responsive */
@@ -539,19 +537,6 @@ const copy = {
     tl.to('[data-hero-ctas]', { opacity: 1, y: 0, duration: 0.7 }, 1.1);
     tl.to('[data-hero-bottom]', { opacity: 1, y: 0, duration: 0.7 }, 1.3);
 
-    // Magnetic
-    const magneticEls = section.querySelectorAll<HTMLElement>('[data-magnetic]');
-    magneticEls.forEach((el) => {
-      el.addEventListener('mousemove', (e) => {
-        const rect = el.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        gsap.to(el, { x: x * 0.2, y: y * 0.2, duration: 0.35, ease: 'power2.out' });
-      });
-      el.addEventListener('mouseleave', () => {
-        gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
-      });
-    });
   }
 
   if (document.readyState === 'loading') {

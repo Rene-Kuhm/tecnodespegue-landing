@@ -16,33 +16,36 @@ const locale: Locale = Astro.props.locale ?? 'es';
 const projectsByLocale = {
   es: [
   {
-    title: "Aguamarina Mosaicos",
-    description: "Sistema e-commerce empresarial completo con tienda online, panel de administración y API REST. Catálogo de productos, gestión de pedidos y métricas en tiempo real.",
-    stack: ["Next.js 15", "React 19", "TypeScript", "PostgreSQL", "Railway"],
-    link: "https://aguamarinamosaicos.com",
-    repo: "https://github.com/Rene-Kuhm/acuamarina-ceramica",
-    type: "E-Commerce",
-    icon: "storefront",
+    title: "flow-engineering",
+    description: "Plataforma de ingeniería para trabajar con contexto estructurado, especificaciones y verificación. El repositorio local registra 541 commits, suites unitarias, BDD y E2E, CI y gobernanza técnica.",
+    stack: ["Go", "SDD", "MCP", "BDD", "E2E", "CI"],
+    link: "",
+    repo: "",
+    type: "Arquitectura & Tooling",
+    status: "Caso de estudio privado",
+    icon: "account_tree",
     color: "red",
   },
   {
-    title: "E-Commerce Premium",
-    description: "Plataforma e-commerce con diseño premium inspirado en Nike/Adidas. Filtros avanzados, carrito persistente, checkout con validación Zod y accesibilidad WCAG 2.1 AA.",
-    stack: ["Next.js", "React 19", "TypeScript", "Tailwind", "Zod"],
+    title: "Vaulta — Password Manager",
+    description: "Gestor de contraseñas multiplataforma, open source y offline-first. El repositorio documenta arquitectura limpia, contratos de seguridad, cifrado local y releases descargables para Android y Windows.",
+    stack: ["Flutter", "Dart", "Material 3", "Encryption"],
     link: "",
-    repo: "https://github.com/Rene-Kuhm/e-commerce-profecional",
-    type: "E-Commerce",
-    icon: "shopping_bag",
+    repo: "https://github.com/Rene-Kuhm/vaulta",
+    type: "Mobile & Desktop",
+    status: "Release público",
+    icon: "lock",
     color: "gold",
   },
   {
-    title: "TecnoDespegue Automation",
-    description: "Pipeline de automatización con IA que genera contenido, crea imágenes con GPT-5 y publica automáticamente en Instagram, Facebook y TikTok vía cron jobs.",
-    stack: ["Python", "OpenClaw", "OpenRouter", "Postiz", "Docker"],
-    link: "",
-    repo: "https://github.com/Rene-Kuhm/tecnodespegue-automation",
-    type: "IA & Automatización",
-    icon: "smart_toy",
+    title: "TecnoDespegue Landing",
+    description: "Este sitio: una landing bilingüe construida con Astro, contenido tipado, SEO técnico, seguridad por headers, CI y pruebas Playwright para desktop y mobile.",
+    stack: ["Astro", "TypeScript", "Playwright", "Tailwind", "Vercel"],
+    link: "https://www.tecnodespegue.com",
+    repo: "https://github.com/Rene-Kuhm/tecnodespegue-landing",
+    type: "Web & Producto",
+    status: "Sitio público",
+    icon: "language",
     color: "cosmic",
   },
   {
@@ -52,59 +55,65 @@ const projectsByLocale = {
     link: "",
     repo: "https://github.com/Rene-Kuhm/hydrotemp-aio-mac",
     type: "Hardware & Drivers",
+    status: "Código público",
     icon: "memory",
     color: "red",
   },
   {
-    title: "Vaulta — Password Manager",
-    description: "Gestor de contraseñas multiplataforma con Material 3, arquitectura limpia, contratos de seguridad y cifrado. Dashboard con métricas de seguridad del vault.",
-    stack: ["Flutter", "Dart", "Material 3", "Encryption"],
+    title: "KineIA",
+    description: "Proyecto de IA aplicada con recuperación aumentada por contexto. Se presenta como trabajo en evolución: la evidencia pública está en el código y la documentación del repositorio.",
+    stack: ["Python", "RAG", "AI", "Vector Search"],
     link: "",
-    repo: "https://github.com/Rene-Kuhm/vaulta",
-    type: "Mobile & Desktop",
-    icon: "lock",
+    repo: "https://github.com/Rene-Kuhm/KineIA",
+    type: "IA & RAG",
+    status: "En evolución",
+    icon: "psychology",
     color: "gold",
   },
   {
-    title: "CampusMind",
-    description: "SaaS educativa con IA para estudiantes universitarios hispanohablantes. RAG pipeline sobre documentos académicos, flashcards con repetición espaciada, quiz automático y billing integrado.",
-    stack: ["Next.js 16", "NestJS", "Turborepo", "pgvector", "GPT-4o", "Gemini"],
+    title: "Tecno-JARVIS",
+    description: "Asistente de automatización distribuido como proyecto open source con releases públicas. El repositorio permite revisar implementación, instalación y evolución del producto.",
+    stack: ["Python", "Automation", "AI", "Releases"],
     link: "",
-    repo: "https://github.com/Rene-Kuhm/CampusMind-sass",
-    type: "SaaS & IA",
-    icon: "school",
+    repo: "https://github.com/Rene-Kuhm/tecno-jarvis",
+    type: "IA & Automatización",
+    status: "Código y releases públicos",
+    icon: "smart_toy",
     color: "cosmic",
   }
 ],
   en: [
   {
-    title: "Aguamarina Mosaicos",
-    description: "Complete enterprise e-commerce system with online store, admin panel, and REST API. Product catalog, order management, and real-time metrics.",
-    stack: ["Next.js 15", "React 19", "TypeScript", "PostgreSQL", "Railway"],
-    link: "https://aguamarinamosaicos.com",
-    repo: "https://github.com/Rene-Kuhm/acuamarina-ceramica",
-    type: "E-Commerce",
-    icon: "storefront",
+    title: "flow-engineering",
+    description: "Engineering platform for structured context, specifications, and verification. The local repository records 541 commits, unit, BDD, and E2E suites, CI, and technical governance.",
+    stack: ["Go", "SDD", "MCP", "BDD", "E2E", "CI"],
+    link: "",
+    repo: "",
+    type: "Architecture & Tooling",
+    status: "Private case study",
+    icon: "account_tree",
     color: "red",
   },
   {
-    title: "Premium E-Commerce",
-    description: "Premium e-commerce platform inspired by Nike/Adidas. Advanced filters, persistent cart, Zod-validated checkout, and WCAG 2.1 AA accessibility.",
-    stack: ["Next.js", "React 19", "TypeScript", "Tailwind", "Zod"],
+    title: "Vaulta — Password Manager",
+    description: "Open-source, offline-first, cross-platform password manager. Its repository documents clean architecture, security contracts, local encryption, and downloadable Android and Windows releases.",
+    stack: ["Flutter", "Dart", "Material 3", "Encryption"],
     link: "",
-    repo: "https://github.com/Rene-Kuhm/e-commerce-profecional",
-    type: "E-Commerce",
-    icon: "shopping_bag",
+    repo: "https://github.com/Rene-Kuhm/vaulta",
+    type: "Mobile & Desktop",
+    status: "Public release",
+    icon: "lock",
     color: "gold",
   },
   {
-    title: "TecnoDespegue Automation",
-    description: "AI automation pipeline that generates content, creates images with GPT-5, and posts automatically to Instagram, Facebook, and TikTok through cron jobs.",
-    stack: ["Python", "OpenClaw", "OpenRouter", "Postiz", "Docker"],
-    link: "",
-    repo: "https://github.com/Rene-Kuhm/tecnodespegue-automation",
-    type: "AI & Automation",
-    icon: "smart_toy",
+    title: "TecnoDespegue Landing",
+    description: "This site: a bilingual Astro landing page with typed content, technical SEO, security headers, CI, and Playwright coverage across desktop and mobile.",
+    stack: ["Astro", "TypeScript", "Playwright", "Tailwind", "Vercel"],
+    link: "https://www.tecnodespegue.com",
+    repo: "https://github.com/Rene-Kuhm/tecnodespegue-landing",
+    type: "Web & Product",
+    status: "Public site",
+    icon: "language",
     color: "cosmic",
   },
   {
@@ -114,27 +123,30 @@ const projectsByLocale = {
     link: "",
     repo: "https://github.com/Rene-Kuhm/hydrotemp-aio-mac",
     type: "Hardware & Drivers",
+    status: "Public source",
     icon: "memory",
     color: "red",
   },
   {
-    title: "Vaulta — Password Manager",
-    description: "Cross-platform password manager with Material 3, clean architecture, security contracts, and encryption. Dashboard with vault security metrics.",
-    stack: ["Flutter", "Dart", "Material 3", "Encryption"],
+    title: "KineIA",
+    description: "Applied AI project with retrieval-augmented context. It is presented as evolving work: public evidence lives in the repository's code and documentation.",
+    stack: ["Python", "RAG", "AI", "Vector Search"],
     link: "",
-    repo: "https://github.com/Rene-Kuhm/vaulta",
-    type: "Mobile & Desktop",
-    icon: "lock",
+    repo: "https://github.com/Rene-Kuhm/KineIA",
+    type: "AI & RAG",
+    status: "In progress",
+    icon: "psychology",
     color: "gold",
   },
   {
-    title: "CampusMind",
-    description: "AI education SaaS for Spanish-speaking university students. RAG pipeline over academic documents, spaced-repetition flashcards, automatic quizzes, and integrated billing.",
-    stack: ["Next.js 16", "NestJS", "Turborepo", "pgvector", "GPT-4o", "Gemini"],
+    title: "Tecno-JARVIS",
+    description: "Automation assistant distributed as an open-source project with public releases. The repository exposes its implementation, setup, and product evolution.",
+    stack: ["Python", "Automation", "AI", "Releases"],
     link: "",
-    repo: "https://github.com/Rene-Kuhm/CampusMind-sass",
-    type: "SaaS & AI",
-    icon: "school",
+    repo: "https://github.com/Rene-Kuhm/tecno-jarvis",
+    type: "AI & Automation",
+    status: "Public source & releases",
+    icon: "smart_toy",
     color: "cosmic",
   }
 ]};
@@ -143,14 +155,14 @@ const copy = {
   es: {
     kicker: 'PORTFOLIO · 02',
     title: ['Proyectos', 'Reales,', 'Código Real'],
-    lead: 'No mockups. No demos. Sistemas en producción que resuelven problemas reales. Cada uno en su universo, todos con el mismo ADN.',
+    lead: 'Casos con estado y evidencia explícitos. Código público cuando existe; alcance y límites claros cuando el trabajo es privado o está en evolución.',
     live: 'Ver en vivo',
     source: 'Código fuente',
   },
   en: {
     kicker: 'PORTFOLIO · 02',
     title: ['Real', 'Projects,', 'Real Code'],
-    lead: 'No mockups. No demos. Production systems that solve real problems. Each in its own universe, all with the same DNA.',
+    lead: 'Case studies with explicit status and evidence. Public source when available; clear scope and limits for private or evolving work.',
     live: 'View live',
     source: 'Source code',
   },
@@ -200,7 +212,10 @@ const projects = projectsByLocale[locale];
           <div class="port-card-inner">
             <!-- Header -->
             <div class="port-card-head">
-              <span class="port-card-type">{project.type}</span>
+              <div class="port-card-meta">
+                <span class="port-card-type">{project.type}</span>
+                <span class="port-card-status">{project.status}</span>
+              </div>
               <div class={`port-card-icon port-card-icon-${project.color}`}>
                 <Icon name={project.icon} class="w-5 h-5" />
               </div>
@@ -225,10 +240,12 @@ const projects = projectsByLocale[locale];
                   <span>{copy.live}</span>
                 </a>
               )}
-              <a href={project.repo} target="_blank" rel="noopener noreferrer" class="port-link port-link-repo" data-magnetic>
-                <Icon name="code" class="w-4 h-4" />
-                <span>{copy.source}</span>
-              </a>
+              {project.repo && (
+                <a href={project.repo} target="_blank" rel="noopener noreferrer" class="port-link port-link-repo" data-magnetic>
+                  <Icon name="code" class="w-4 h-4" />
+                  <span>{copy.source}</span>
+                </a>
+              )}
             </div>
           </div>
         </article>
@@ -363,7 +380,7 @@ const projects = projectsByLocale[locale];
     width: 14px;
     height: 14px;
     border: 1.5px solid var(--color-marvel-red);
-    transition: all 0.4s var(--ease-marvel);
+    transition: inset 0.4s var(--ease-marvel);
     z-index: 2;
   }
   .port-corner-tl { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
@@ -405,6 +422,13 @@ const projects = projectsByLocale[locale];
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+
+  .port-card-meta { display: flex; flex-direction: column; align-items: flex-start; gap: 0.4rem; min-width: 0; }
+
+  .port-card-status {
+    font-size: 0.67rem;
+    color: rgba(255, 255, 255, 0.58);
   }
 
   .port-card-type {

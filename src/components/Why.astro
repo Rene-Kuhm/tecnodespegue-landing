@@ -22,7 +22,7 @@ const copy = {
       ['Código Limpio', 'Documentación rigurosa y patrones de diseño modernos. Sin deuda técnica oculta.'],
       ['Comunicación Transparente', 'Acceso directo a los ingenieros, sin intermediarios ni tickets de soporte eternos.'],
     ],
-    footer: 'Entregamos resultados medibles, no promesas vacías. Métricas reales sobre proyectos en producción.',
+    footer: 'Cada entrega deja evidencia: especificaciones, pruebas, CI y decisiones documentadas.',
   },
   en: {
     kicker: 'PROCESS · 04',
@@ -33,7 +33,7 @@ const copy = {
       ['Clean Code', 'Rigorous documentation and modern design patterns. No hidden technical debt.'],
       ['Transparent Communication', 'Direct access to engineers, with no middlemen or endless support tickets.'],
     ],
-    footer: 'We deliver measurable results, not empty promises. Real metrics from production projects.',
+    footer: 'Every delivery leaves evidence: specifications, tests, CI, and documented decisions.',
   },
 }[locale];
 ---
@@ -114,35 +114,33 @@ const copy = {
             <span>pnpm test:all &amp;&amp; pytest</span>
           </div>
           <div class="why-console-output">
-            <div><span class="why-arrow">→</span> running vitest suite <span class="why-ok">✓ 84 passed</span></div>
-            <div><span class="why-arrow">→</span> running python pytest <span class="why-ok">✓ 53 passed</span></div>
-            <div><span class="why-arrow">→</span> building optimized images <span class="why-ok">✓ 4.2s</span></div>
-            <div><span class="why-arrow">→</span> deploying node &amp; python apis <span class="why-ok">✓</span></div>
-            <div><span class="why-arrow">→</span> rolling update (0 downtime) <span class="why-ok">✓</span></div>
-            <div><span class="why-arrow">→</span> system health check <span class="why-ok">200 OK</span></div>
+            <div><span class="why-arrow">→</span> validating requirements <span class="why-ok">✓ traceable</span></div>
+            <div><span class="why-arrow">→</span> running automated tests <span class="why-ok">✓ verified</span></div>
+            <div><span class="why-arrow">→</span> building optimized assets <span class="why-ok">✓ budgeted</span></div>
+            <div><span class="why-arrow">→</span> checking deployment health <span class="why-ok">✓ observable</span></div>
           </div>
 
           <div class="why-console-line">
             <span class="why-prompt">$</span>
-            <span>monitor --since 30d</span>
+            <span>engineering-evidence --latest</span>
           </div>
 
           <div class="why-metrics">
             <div class="why-metric">
-              <div class="why-metric-label">UPTIME</div>
-              <div class="why-metric-num">99.94%</div>
+              <div class="why-metric-label">REQUIREMENTS</div>
+              <div class="why-metric-num">SDD</div>
             </div>
             <div class="why-metric">
-              <div class="why-metric-label">P95 LATENCY</div>
-              <div class="why-metric-num why-metric-num-gold">87ms</div>
+              <div class="why-metric-label">BEHAVIOR</div>
+              <div class="why-metric-num why-metric-num-gold">BDD</div>
             </div>
             <div class="why-metric">
-              <div class="why-metric-label">ERROR RATE</div>
-              <div class="why-metric-num why-ok-num">0.02%</div>
+              <div class="why-metric-label">DELIVERY</div>
+              <div class="why-metric-num why-ok-num">CI</div>
             </div>
             <div class="why-metric">
-              <div class="why-metric-label">DEPLOYS/MES</div>
-              <div class="why-metric-num">38</div>
+              <div class="why-metric-label">DECISIONS</div>
+              <div class="why-metric-num">ADR</div>
             </div>
           </div>
 
