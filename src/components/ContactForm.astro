@@ -3,220 +3,117 @@ import Icon from './Icon.astro';
 import { siteConfig } from '../config/site.config';
 import type { Locale } from '../i18n';
 
-interface Props {
-  locale?: Locale;
-}
+interface Props { locale?: Locale; }
 
 const locale: Locale = Astro.props.locale ?? 'es';
 const copy = {
   es: {
-    name: 'Nombre *',
-    namePlaceholder: 'Juan Pérez',
-    company: 'Empresa',
-    companyPlaceholder: 'Tu Empresa SRL',
-    project: 'Contanos sobre tu proyecto *',
-    projectPlaceholder: 'Necesitamos automatizar nuestro proceso de...',
-    budget: 'Presupuesto estimado',
-    budgetPlaceholder: 'Seleccionar rango',
-    submit: 'Enviar Consulta',
-    guaranteed: 'Respuesta garantizada en menos de 24 horas',
-    successTitle: '¡Mensaje Enviado!',
-    successBody: 'Te contactaremos en las próximas 24 horas.',
-    emailSubject: 'Nuevo contacto',
-    labels: { name: 'Nombre', email: 'Email', company: 'Empresa', budget: 'Presupuesto', project: 'Proyecto' },
+    name: 'Nombre *', namePlaceholder: 'Ej.: Juan Pérez…', company: 'Empresa', companyPlaceholder: 'Ej.: Tu Empresa SRL…',
+    project: 'Contanos sobre tu proyecto *', projectPlaceholder: 'Ej.: necesitamos automatizar el proceso de…', budget: 'Presupuesto estimado',
+    budgetPlaceholder: 'Seleccioná un rango', submit: 'Enviar consulta', sending: 'Enviando…', note: 'Te responderemos personalmente.',
+    successTitle: 'Mensaje enviado', successBody: 'Gracias. Revisaremos el contexto y te responderemos por email.',
+    error: 'No pudimos enviar el mensaje. Revisá tu conexión e intentá nuevamente.',
   },
   en: {
-    name: 'Name *',
-    namePlaceholder: 'John Smith',
-    company: 'Company',
-    companyPlaceholder: 'Your Company LLC',
-    project: 'Tell us about your project *',
-    projectPlaceholder: 'We need to automate our process for...',
-    budget: 'Estimated budget',
-    budgetPlaceholder: 'Select range',
-    submit: 'Send Inquiry',
-    guaranteed: 'Guaranteed response in less than 24 hours',
-    successTitle: 'Message Sent!',
-    successBody: 'We will contact you within the next 24 hours.',
-    emailSubject: 'New contact',
-    labels: { name: 'Name', email: 'Email', company: 'Company', budget: 'Budget', project: 'Project' },
+    name: 'Name *', namePlaceholder: 'E.g. John Smith…', company: 'Company', companyPlaceholder: 'E.g. Your Company LLC…',
+    project: 'Tell us about your project *', projectPlaceholder: 'E.g. we need to automate the process for…', budget: 'Estimated budget',
+    budgetPlaceholder: 'Select a range', submit: 'Send inquiry', sending: 'Sending…', note: 'You will receive a personal response.',
+    successTitle: 'Message sent', successBody: 'Thank you. We will review the context and reply by email.',
+    error: 'We could not send the message. Check your connection and try again.',
   },
 }[locale];
-
 const formspreeEndpoint = siteConfig.formspree.endpoint;
-const formCopy = {
-  emailSubject: copy.emailSubject,
-  labels: copy.labels,
-};
 ---
 
 <div class="max-w-2xl mx-auto bg-surface-container border border-white/10 rounded-card p-8 glass-effect">
-  <form id="contact-form" class="space-y-6">
+  <form id={`contact-form-${locale}`} class="space-y-6" data-contact-form novalidate>
     <div class="grid md:grid-cols-2 gap-6">
       <div>
-        <label for="name" class="block text-sm font-label text-on-surface-variant mb-2">
-          {copy.name}
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          required
-          class="w-full bg-surface-container-high border-b-2 border-outline-variant focus:border-primary px-4 py-3 text-on-surface outline-none transition-colors"
-          placeholder={copy.namePlaceholder}
-        />
+        <label for={`contact-name-${locale}`} class="block text-sm font-label text-on-surface-variant mb-2">{copy.name}</label>
+        <input type="text" id={`contact-name-${locale}`} name="name" required autocomplete="name" aria-describedby={`contact-error-${locale}`} class="contact-field w-full bg-surface-container-high border-b-2 border-outline-variant px-4 py-3 text-on-surface" placeholder={copy.namePlaceholder} />
       </div>
-      
       <div>
-        <label for="email" class="block text-sm font-label text-on-surface-variant mb-2">
-          Email *
-        </label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          required
-          class="w-full bg-surface-container-high border-b-2 border-outline-variant focus:border-primary px-4 py-3 text-on-surface outline-none transition-colors"
-          placeholder="juan@empresa.com"
-        />
+        <label for={`contact-email-${locale}`} class="block text-sm font-label text-on-surface-variant mb-2">Email *</label>
+        <input type="email" id={`contact-email-${locale}`} name="email" required autocomplete="email" spellcheck="false" inputmode="email" aria-describedby={`contact-error-${locale}`} class="contact-field w-full bg-surface-container-high border-b-2 border-outline-variant px-4 py-3 text-on-surface" placeholder="name@example.com…" />
       </div>
     </div>
-    
     <div>
-      <label for="company" class="block text-sm font-label text-on-surface-variant mb-2">
-        {copy.company}
-      </label>
-      <input
-        type="text"
-        id="company"
-        name="company"
-        class="w-full bg-surface-container-high border-b-2 border-outline-variant focus:border-primary px-4 py-3 text-on-surface outline-none transition-colors"
-        placeholder={copy.companyPlaceholder}
-      />
+      <label for={`contact-company-${locale}`} class="block text-sm font-label text-on-surface-variant mb-2">{copy.company}</label>
+      <input type="text" id={`contact-company-${locale}`} name="company" autocomplete="organization" class="contact-field w-full bg-surface-container-high border-b-2 border-outline-variant px-4 py-3 text-on-surface" placeholder={copy.companyPlaceholder} />
     </div>
-    
     <div>
-      <label for="project" class="block text-sm font-label text-on-surface-variant mb-2">
-        {copy.project}
-      </label>
-      <textarea
-        id="project"
-        name="project"
-        required
-        rows="5"
-        class="w-full bg-surface-container-high border-b-2 border-outline-variant focus:border-primary px-4 py-3 text-on-surface outline-none transition-colors resize-none"
-        placeholder={copy.projectPlaceholder}
-      ></textarea>
+      <label for={`contact-project-${locale}`} class="block text-sm font-label text-on-surface-variant mb-2">{copy.project}</label>
+      <textarea id={`contact-project-${locale}`} name="project" required autocomplete="off" rows="5" aria-describedby={`contact-error-${locale}`} class="contact-field w-full bg-surface-container-high border-b-2 border-outline-variant px-4 py-3 text-on-surface resize-y" placeholder={copy.projectPlaceholder}></textarea>
     </div>
-    
     <div>
-      <label for="budget" class="block text-sm font-label text-on-surface-variant mb-2">
-        {copy.budget}
-      </label>
-      <select
-        id="budget"
-        name="budget"
-        class="w-full bg-surface-container-high border-b-2 border-outline-variant focus:border-primary px-4 py-3 text-on-surface outline-none transition-colors"
-      >
+      <label for={`contact-budget-${locale}`} class="block text-sm font-label text-on-surface-variant mb-2">{copy.budget}</label>
+      <select id={`contact-budget-${locale}`} name="budget" autocomplete="off" class="contact-field w-full bg-surface-container-high border-b-2 border-outline-variant px-4 py-3 text-on-surface">
         <option value="">{copy.budgetPlaceholder}</option>
-        <option value="5k-10k">USD 5K - 10K</option>
-        <option value="10k-25k">USD 10K - 25K</option>
-        <option value="25k-50k">USD 25K - 50K</option>
-        <option value="50k+">USD 50K+</option>
+        <option value="5k-10k">USD 5K - 10K</option><option value="10k-25k">USD 10K - 25K</option><option value="25k-50k">USD 25K - 50K</option><option value="50k+">USD 50K+</option>
       </select>
     </div>
-    
-    <button
-      type="submit"
-      class="btn-primary w-full flex items-center justify-center gap-2 group"
-    >
-      <span>{copy.submit}</span>
+    <p id={`contact-error-${locale}`} class="contact-error hidden" role="alert" aria-live="assertive" data-contact-error tabindex="-1"></p>
+    <button type="submit" class="btn-primary w-full flex items-center justify-center gap-2 group disabled:opacity-60 disabled:cursor-wait" data-contact-submit data-idle-label={copy.submit} data-pending-label={copy.sending}>
+      <span data-contact-submit-label>{copy.submit}</span>
       <Icon name="arrow_forward" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
     </button>
-    
-    <p class="text-xs text-on-surface-variant text-center">
-      {copy.guaranteed}
-    </p>
+    <p class="text-xs text-on-surface-variant text-center">{copy.note}</p>
   </form>
-  
-  <div id="form-success" class="hidden text-center py-8">
+  <div class="hidden text-center py-8" data-contact-success role="status" aria-live="polite" tabindex="-1">
     <Icon name="check_circle" class="w-16 h-16 text-secondary mb-4 mx-auto block" />
-    <h3 class="text-2xl font-headline font-bold text-on-surface mb-2">
-      {copy.successTitle}
-    </h3>
-    <p class="text-on-surface-variant">
-      {copy.successBody}
-    </p>
+    <h3 class="text-2xl font-headline font-bold text-on-surface mb-2">{copy.successTitle}</h3>
+    <p class="text-on-surface-variant">{copy.successBody}</p>
   </div>
 </div>
 
-<script define:vars={{ formspreeEndpoint, formCopy }}>
-  const form = document.getElementById('contact-form');
-  const successMessage = document.getElementById('form-success');
-  
-  form?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const formData = new FormData(form);
-    
-    try {
-      // Submit to Formspree
-      const response = await fetch(formspreeEndpoint, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-      
-      if (response.ok) {
-        const tracker = window.tdTrackTikTok;
-        const data = Object.fromEntries(formData.entries());
-        tracker?.('Lead', {
-          content_name: 'Formulario de contacto',
-          content_id: 'contact-form',
-          content_type: 'product',
-          url: window.location.href
-        }, {
-          email: String(data.email || ''),
-          external_id: String(data.email || '')
-        });
+<script define:vars={{ formspreeEndpoint, errorCopy: copy.error }}>
+  document.querySelectorAll('[data-contact-form]').forEach((node) => {
+    const form = node;
+    if (!(form instanceof HTMLFormElement) || form.dataset.enhanced === 'true') return;
+    form.dataset.enhanced = 'true';
+    const submit = form.querySelector('[data-contact-submit]');
+    const label = form.querySelector('[data-contact-submit-label]');
+    const error = form.querySelector('[data-contact-error]');
+    const success = form.parentElement?.querySelector('[data-contact-success]');
 
-        // Show success message
-        form.classList.add('hidden');
-        successMessage?.classList.remove('hidden');
-      } else {
-        // Fallback to mailto if Formspree fails
-        const data = Object.fromEntries(formData.entries());
-        const subject = `${formCopy.emailSubject}: ${data.name} - ${data.company}`;
-        const body = `
-${formCopy.labels.name}: ${data.name}
-${formCopy.labels.email}: ${data.email}
-${formCopy.labels.company}: ${data.company}
-${formCopy.labels.budget}: ${data.budget}
-
-${formCopy.labels.project}:
-${data.project}
-        `.trim();
-        
-        window.location.href = `mailto:renekuhm2@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) {
+        form.querySelector(':invalid')?.focus();
+        return;
       }
-    } catch (error) {
-      console.error('Form submission error:', error);
-      // Fallback to mailto on error
-      const data = Object.fromEntries(formData.entries());
-      const subject = `${formCopy.emailSubject}: ${data.name} - ${data.company}`;
-      const body = `
-${formCopy.labels.name}: ${data.name}
-${formCopy.labels.email}: ${data.email}
-${formCopy.labels.company}: ${data.company}
-${formCopy.labels.budget}: ${data.budget}
-
-${formCopy.labels.project}:
-${data.project}
-      `.trim();
-      
-      window.location.href = `mailto:renekuhm2@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    }
+      if (!(submit instanceof HTMLButtonElement) || !(label instanceof HTMLElement) || !(error instanceof HTMLElement) || !(success instanceof HTMLElement)) return;
+      error?.classList.add('hidden');
+      submit.disabled = true;
+      submit.setAttribute('aria-busy', 'true');
+      if (label) label.textContent = submit.dataset.pendingLabel || '';
+      const formData = new FormData(form);
+      try {
+        const response = await fetch(formspreeEndpoint, { method: 'POST', body: formData, headers: { Accept: 'application/json' } });
+        if (!response.ok) throw new Error(`Form submission failed: ${response.status}`);
+        window.tdTrackTikTok?.('Lead', { content_name: 'Contact form', content_id: 'contact-form', content_type: 'product', url: window.location.href }, { email: String(formData.get('email') || ''), external_id: String(formData.get('email') || '') });
+        form.classList.add('hidden');
+        success?.classList.remove('hidden');
+        success?.focus();
+      } catch {
+        if (error) {
+          error.textContent = errorCopy;
+          error.classList.remove('hidden');
+          error.focus();
+        }
+      } finally {
+        submit.disabled = false;
+        submit.removeAttribute('aria-busy');
+        if (label) label.textContent = submit.dataset.idleLabel || '';
+      }
+    });
   });
 </script>
+
+<style>
+  .contact-field { color-scheme: dark; outline: 2px solid transparent; outline-offset: 2px; transition: border-color 150ms ease, outline-color 150ms ease, background-color 150ms ease; }
+  .contact-field:hover { border-color: rgba(255, 255, 255, 0.35); }
+  .contact-field:focus-visible { border-color: var(--color-primary); outline-color: color-mix(in srgb, var(--color-primary) 45%, transparent); }
+  .contact-field:invalid:not(:placeholder-shown) { border-color: #ff6b6b; }
+  .contact-error { padding: 0.85rem 1rem; border: 1px solid rgba(255, 107, 107, 0.45); border-radius: 0.5rem; color: #ffb4b4; background: rgba(120, 0, 0, 0.18); font-size: 0.875rem; }
+</style>

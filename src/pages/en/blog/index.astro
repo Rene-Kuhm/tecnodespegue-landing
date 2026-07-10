@@ -21,7 +21,7 @@ const title = 'Engineering Blog | Fullstack, AI & Architecture | TecnoDespegue';
 const description = 'Articles on fullstack development, AI automation, software architecture, and tech strategy for startups. Real production experience, no fluff.';
 ---
 
-<Layout title={title} description={description} path="/en/blog" locale={locale}>
+<Layout title={title} description={description} path="/en/blog" locale={locale} alternatePaths={{ es: '/blog', en: '/en/blog' }}>
   <Nav locale={locale} />
   <BlogHero
     featuredCount={posts.length}
