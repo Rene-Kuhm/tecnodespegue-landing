@@ -9,13 +9,13 @@ test.describe('Home page', () => {
   test('carga con titulo y h1', async ({ page }) => {
     await page.goto('/');
 
-    // Title con keyword primaria
-    await expect(page).toHaveTitle(/Fullstack.*IA/i);
+    // Title aligned with the primary offer.
+    await expect(page).toHaveTitle(/software interno.*automatización/i);
 
     await expect(page.locator('h1')).toHaveCount(1);
     const h1 = page.locator('h1');
     await expect(h1).toBeVisible();
-    await expect(h1).toContainText(/constru[ií]|despegue|tecnodespegue/i);
+    await expect(h1).toContainText(/tareas\s+manuales[\s\S]*control/i);
   });
 
   test('tiene meta description y canonical', async ({ page }) => {

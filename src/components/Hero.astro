@@ -16,9 +16,9 @@ interface Props {
 const locale: Locale = Astro.props.locale ?? 'es';
 const copy = {
   es: {
-    kicker: 'SISTEMAS AUTÓNOMOS · 01',
-    title: ['Construí', 'el futuro', 'digital'],
-    lead: 'Software a medida, automatizaciones con IA y experiencias digitales que escalan tu negocio.',
+    kicker: 'SOFTWARE PARA OPERACIONES · 01',
+    title: ['Menos tareas', 'manuales.', 'Más control.'],
+    lead: 'Automatizamos procesos, conectamos sistemas fragmentados y construimos software interno para equipos que necesitan operar con menos fricción.',
     primary: 'Iniciá tu Proyecto',
     secondary: 'Ver Portfolio',
     stats: ['Arquitectura', 'Pruebas', 'Entrega', 'Código'],
@@ -27,9 +27,9 @@ const copy = {
     portfolioHref: '#portfolio',
   },
   en: {
-    kicker: 'AUTONOMOUS SYSTEMS · 01',
-    title: ['Build', 'the digital', 'future'],
-    lead: 'Custom software, AI automation, and digital experiences that scale your business.',
+    kicker: 'SOFTWARE FOR OPERATIONS · 01',
+    title: ['Less manual', 'work.', 'More control.'],
+    lead: 'We automate processes, connect fragmented systems, and build internal software for teams that need to operate with less friction.',
     primary: 'Start your Project',
     secondary: 'View Portfolio',
     stats: ['Architecture', 'Testing', 'Delivery', 'Code'],
@@ -76,11 +76,11 @@ const copy = {
     </p>
 
     <div class="side-ctas" data-hero-ctas>
-      <a href={copy.contactHref} class="side-btn-primary magnetic" data-magnetic>
+      <a href={copy.contactHref} class="side-btn-primary magnetic" data-magnetic data-hero-analytics="primary" data-locale={locale}>
         <Icon name="bolt" class="w-4 h-4" />
         <span>{copy.primary}</span>
       </a>
-      <a href={copy.portfolioHref} class="side-btn-ghost magnetic" data-magnetic>
+      <a href={copy.portfolioHref} class="side-btn-ghost magnetic" data-magnetic data-hero-analytics="portfolio" data-locale={locale}>
         <span>{copy.secondary}</span>
         <Icon name="arrow_forward" class="w-4 h-4" />
       </a>
@@ -169,7 +169,7 @@ const copy = {
     top: 50%;
     left: 4rem;
     transform: translateY(-50%);
-    z-index: 20;
+    z-index: 30;
     max-width: 32rem;
     pointer-events: none;
     /* Compensar el nav principal de la página (~70px) */
@@ -544,4 +544,13 @@ const copy = {
   } else {
     initHero();
   }
+
+  document.querySelectorAll<HTMLElement>('[data-hero-analytics]').forEach((link) => {
+    link.addEventListener('click', () => {
+      window.plausible?.('Hero CTA Click', { props: {
+        locale: link.dataset.locale || 'unknown',
+        placement: link.dataset.heroAnalytics || 'unknown',
+      }});
+    });
+  });
 </script>

@@ -21,6 +21,7 @@ const projectsByLocale = {
     stack: ["Go", "SDD", "MCP", "BDD", "E2E", "CI"],
     link: "",
     repo: "",
+    caseUrl: "/casos/flow-engineering",
     type: "Arquitectura & Tooling",
     status: "Caso de estudio privado",
     icon: "account_tree",
@@ -32,6 +33,7 @@ const projectsByLocale = {
     stack: ["Flutter", "Dart", "Material 3", "Encryption"],
     link: "",
     repo: "https://github.com/Rene-Kuhm/vaulta",
+    caseUrl: "/casos/vaulta",
     type: "Mobile & Desktop",
     status: "Release público",
     icon: "lock",
@@ -89,6 +91,7 @@ const projectsByLocale = {
     stack: ["Go", "SDD", "MCP", "BDD", "E2E", "CI"],
     link: "",
     repo: "",
+    caseUrl: "/en/case-studies/flow-engineering",
     type: "Architecture & Tooling",
     status: "Private case study",
     icon: "account_tree",
@@ -100,6 +103,7 @@ const projectsByLocale = {
     stack: ["Flutter", "Dart", "Material 3", "Encryption"],
     link: "",
     repo: "https://github.com/Rene-Kuhm/vaulta",
+    caseUrl: "/en/case-studies/vaulta",
     type: "Mobile & Desktop",
     status: "Public release",
     icon: "lock",
@@ -158,6 +162,7 @@ const copy = {
     lead: 'Casos con estado y evidencia explícitos. Código público cuando existe; alcance y límites claros cuando el trabajo es privado o está en evolución.',
     live: 'Ver en vivo',
     source: 'Código fuente',
+    caseStudy: 'Ver caso de estudio',
   },
   en: {
     kicker: 'PORTFOLIO · 02',
@@ -165,10 +170,11 @@ const copy = {
     lead: 'Case studies with explicit status and evidence. Public source when available; clear scope and limits for private or evolving work.',
     live: 'View live',
     source: 'Source code',
+    caseStudy: 'View case study',
   },
 }[locale];
 
-const projects = projectsByLocale[locale];
+const projects = projectsByLocale[locale].map(project => ({ caseUrl: '', ...project }));
 ---
 
 <section class="py-32 relative" id="portfolio" data-portfolio>
@@ -234,14 +240,20 @@ const projects = projectsByLocale[locale];
 
             <!-- Actions -->
             <div class="port-card-actions">
+              {project.caseUrl && (
+                <a href={project.caseUrl} class="port-link port-link-live" data-analytics-event="Portfolio Project Open" data-analytics-project={project.title} data-analytics-locale={locale} data-magnetic>
+                  <Icon name="article" class="w-4 h-4" />
+                  <span>{copy.caseStudy}</span>
+                </a>
+              )}
               {project.link && (
-                <a href={project.link} target="_blank" rel="noopener noreferrer" class="port-link port-link-live" data-magnetic>
+                <a href={project.link} target="_blank" rel="noopener noreferrer" class="port-link port-link-live" data-analytics-event="Portfolio Project Open" data-analytics-project={project.title} data-analytics-locale={locale} data-magnetic>
                   <Icon name="open_in_new" class="w-4 h-4" />
                   <span>{copy.live}</span>
                 </a>
               )}
               {project.repo && (
-                <a href={project.repo} target="_blank" rel="noopener noreferrer" class="port-link port-link-repo" data-magnetic>
+                <a href={project.repo} target="_blank" rel="noopener noreferrer" class="port-link port-link-repo" data-analytics-event="Portfolio Project Open" data-analytics-project={project.title} data-analytics-locale={locale} data-magnetic>
                   <Icon name="code" class="w-4 h-4" />
                   <span>{copy.source}</span>
                 </a>
@@ -253,6 +265,18 @@ const projects = projectsByLocale[locale];
     </div>
   </div>
 </section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-analytics-event="Portfolio Project Open"]').forEach((link) => {
+    link.addEventListener('click', () => {
+      window.plausible?.('Portfolio Project Open', { props: {
+        locale: link.dataset.analyticsLocale || 'unknown',
+        project: link.dataset.analyticsProject || 'unknown',
+        placement: 'portfolio',
+      }});
+    });
+  });
+</script>
 
 <style>
   .portfolio-bg {

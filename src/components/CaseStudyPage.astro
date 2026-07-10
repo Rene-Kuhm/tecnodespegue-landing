@@ -1,0 +1,114 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Nav from './Nav.astro';
+import Footer from './Footer.astro';
+import Icon from './Icon.astro';
+import type { Locale } from '../i18n';
+
+interface Props {
+  study: CollectionEntry<'caseStudies'>;
+  Content: any;
+  locale: Locale;
+}
+
+const { study, Content, locale } = Astro.props;
+const isEs = locale === 'es';
+const path = isEs ? `/casos/${study.data.routeSlug}` : `/en/case-studies/${study.data.routeSlug}`;
+const alternates = {
+  es: `/casos/${study.data.routeSlug}`,
+  en: `/en/case-studies/${study.data.routeSlug}`,
+};
+const copy = isEs ? {
+  back: 'Volver al portfolio', role: 'Responsabilidad', evidence: 'Evidencia verificable',
+  limits: 'Límites y transparencia', repo: 'Revisar código', releases: 'Ver releases', contact: 'Conversar sobre un sistema similar',
+} : {
+  back: 'Back to portfolio', role: 'Responsibility', evidence: 'Verifiable evidence',
+  limits: 'Limits and transparency', repo: 'Review source', releases: 'View releases', contact: 'Discuss a similar system',
+};
+---
+
+<Layout
+  title={`${study.data.seo?.title ?? study.data.title} | TecnoDespegue`}
+  description={study.data.seo?.description ?? study.data.description}
+  path={path}
+  locale={locale}
+  alternatePaths={alternates}
+>
+  <Nav locale={locale} alternatePath={isEs ? alternates.en : alternates.es} />
+  <main id="contenido" class="case-page">
+    <header class="case-hero">
+      <div class="case-grid" aria-hidden="true"></div>
+      <div class="case-shell">
+        <a href={isEs ? '/#portfolio' : '/en#portfolio'} class="case-back"><Icon name="arrow_back" class="w-4 h-4" />{copy.back}</a>
+        <div class="case-kicker"><span></span>{study.data.eyebrow}</div>
+        <h1 class="case-title font-display">{study.data.title}</h1>
+        <p class="case-lead">{study.data.description}</p>
+        <div class="case-meta">
+          <div><span>{copy.role}</span><strong>{study.data.role}</strong></div>
+          <div><span>Status</span><strong>{study.data.status}</strong></div>
+        </div>
+        <div class="case-stack">{study.data.stack.map(item => <span>{item}</span>)}</div>
+      </div>
+    </header>
+
+    <div class="case-shell case-body-grid">
+      <article class="case-prose"><Content /></article>
+      <aside class="case-evidence">
+        <section>
+          <h2>{copy.evidence}</h2>
+          <ul>{study.data.evidence.map(item => <li><Icon name="check_circle" class="w-4 h-4" /><span>{item}</span></li>)}</ul>
+        </section>
+        <section class="case-limits">
+          <h2>{copy.limits}</h2>
+          <ul>{study.data.limitations.map(item => <li>{item}</li>)}</ul>
+        </section>
+        <div class="case-actions">
+          {study.data.repositoryUrl && <a href={study.data.repositoryUrl} target="_blank" rel="noopener noreferrer"><Icon name="code" class="w-4 h-4" />{copy.repo}</a>}
+          {study.data.releaseUrl && <a href={study.data.releaseUrl} target="_blank" rel="noopener noreferrer"><Icon name="download" class="w-4 h-4" />{copy.releases}</a>}
+          <a class="case-contact" href={isEs ? '/#contacto' : '/en#contacto'}>{copy.contact}<Icon name="arrow_forward" class="w-4 h-4" /></a>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <Footer locale={locale} />
+</Layout>
+
+<style is:global>
+  .case-page { background: #0a090c; min-height: 100vh; }
+  .case-shell { width: min(1120px, calc(100% - 2rem)); margin-inline: auto; }
+  .case-hero { position: relative; overflow: hidden; padding: 9rem 0 5rem; border-bottom: 1px solid rgba(255,255,255,.1); background: radial-gradient(circle at 80% 20%, rgba(177,78,255,.16), transparent 34%), radial-gradient(circle at 10% 80%, rgba(237,29,36,.12), transparent 30%); }
+  .case-grid { position:absolute; inset:0; opacity:.35; background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px); background-size:52px 52px; mask-image:linear-gradient(to bottom,black,transparent); }
+  .case-hero .case-shell { position:relative; }
+  .case-back { display:inline-flex; gap:.5rem; align-items:center; color:rgba(255,255,255,.65); text-decoration:none; margin-bottom:3.5rem; font-size:.85rem; }
+  .case-back:hover { color:#fff; }
+  .case-kicker { display:flex; gap:.65rem; align-items:center; color:var(--color-marvel-gold); font:700 .7rem/1 var(--font-mono); letter-spacing:.28em; text-transform:uppercase; }
+  .case-kicker span { width:7px; height:7px; border-radius:50%; background:var(--color-marvel-red); box-shadow:0 0 12px var(--color-marvel-red); }
+  .case-title { max-width:900px; margin:1.2rem 0; color:#fff; font-size:clamp(3.5rem,10vw,8rem); line-height:.88; letter-spacing:-.04em; text-transform:uppercase; }
+  .case-lead { max-width:760px; font-size:clamp(1.1rem,2vw,1.45rem); line-height:1.55; color:rgba(255,255,255,.72); }
+  .case-meta { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; margin-top:3rem; max-width:800px; }
+  .case-meta div { padding:1rem 1.2rem; border:1px solid rgba(255,255,255,.1); background:rgba(10,9,12,.66); }
+  .case-meta span { display:block; color:rgba(255,255,255,.42); font:600 .65rem/1 var(--font-mono); text-transform:uppercase; letter-spacing:.15em; margin-bottom:.55rem; }
+  .case-meta strong { color:#fff; font-size:.92rem; }
+  .case-stack { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1rem; }
+  .case-stack span { padding:.45rem .7rem; border:1px solid rgba(248,180,0,.25); color:rgba(255,255,255,.72); font:600 .68rem/1 var(--font-mono); }
+  .case-body-grid { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(300px,.8fr); gap:clamp(2rem,7vw,6rem); padding-block:5rem 7rem; align-items:start; }
+  .case-prose { color:rgba(255,255,255,.75); font-size:1.05rem; line-height:1.8; }
+  .case-prose h2 { margin:3rem 0 1rem; color:#fff; font:800 clamp(1.7rem,3vw,2.5rem)/1.05 var(--font-display); text-transform:uppercase; }
+  .case-prose h2:first-child { margin-top:0; }
+  .case-prose p,.case-prose ul { margin:0 0 1.3rem; }
+  .case-prose li { margin:.55rem 0; }
+  .case-evidence { display:grid; gap:1rem; position:sticky; top:6rem; }
+  .case-evidence section { padding:1.5rem; border:1px solid rgba(255,255,255,.11); background:rgba(255,255,255,.035); }
+  .case-evidence h2 { margin:0 0 1.1rem; color:#fff; font:800 1.05rem/1 var(--font-display); text-transform:uppercase; letter-spacing:.04em; }
+  .case-evidence ul { list-style:none; margin:0; padding:0; display:grid; gap:.85rem; }
+  .case-evidence li { display:flex; gap:.65rem; color:rgba(255,255,255,.7); font-size:.86rem; line-height:1.5; }
+  .case-evidence li svg { color:var(--color-marvel-gold); flex:none; margin-top:.15rem; }
+  .case-limits { border-color:rgba(237,29,36,.3)!important; }
+  .case-limits li { padding-left:1rem; border-left:2px solid var(--color-marvel-red); }
+  .case-actions { display:grid; gap:.6rem; }
+  .case-actions a { display:flex; justify-content:center; align-items:center; gap:.55rem; padding:.85rem 1rem; border:1px solid rgba(255,255,255,.14); color:#fff; text-decoration:none; font-weight:700; font-size:.82rem; }
+  .case-actions a:hover { border-color:rgba(255,255,255,.4); background:rgba(255,255,255,.05); }
+  .case-actions .case-contact { background:#fff; color:#09090b; }
+  @media(max-width:800px){ .case-meta,.case-body-grid{grid-template-columns:1fr}.case-evidence{position:static}.case-title{font-size:clamp(3rem,18vw,5.5rem)} }
+</style>

@@ -7,6 +7,9 @@ export function formatDate(date: Date | string, locale = 'es-AR'): string {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    // Frontmatter publication dates are date-only values. UTC prevents the
+    // previous calendar day from appearing in negative-offset time zones.
+    timeZone: 'UTC',
   }).format(d);
 }
 

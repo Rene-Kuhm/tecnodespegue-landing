@@ -146,6 +146,13 @@ const blogPostingSchema = {
           </div>
         </header>
 
+        {post.data.date.getUTCFullYear() <= 2025 && (
+          <aside class="post-age-notice" role="note">
+            <strong>Contenido publicado en 2025.</strong>
+            <span>Conservamos la fecha original. Algunas herramientas, versiones o recomendaciones pueden haber cambiado; verificá la documentación actual antes de aplicarlas.</span>
+          </aside>
+        )}
+
         <!-- Content -->
         <div class="post-content">
           <Content />
@@ -215,6 +222,8 @@ const blogPostingSchema = {
     font-size: 1.0625rem;
     line-height: 1.8;
   }
+  .post-age-notice { margin: 0 0 2rem; padding: 1rem 1.2rem; border-left: 3px solid var(--color-marvel-gold); background: rgba(248,180,0,.07); color: rgba(255,255,255,.72); font-size:.9rem; line-height:1.55; }
+  .post-age-notice strong { display:block; color:#fff; margin-bottom:.2rem; }
 
   .post-content > * + * { margin-top: 1.25rem; }
 

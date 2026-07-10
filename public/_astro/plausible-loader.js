@@ -8,6 +8,12 @@
   var PLAUSIBLE_DOMAIN = document.documentElement.getAttribute('data-plausible-domain');
   if (!PLAUSIBLE_DOMAIN) return;
 
+  // Plausible's official queue pattern: callers can record events immediately,
+  // even before the remote script arrives. An existing test/consent wrapper wins.
+  window.plausible = window.plausible || function () {
+    (window.plausible.q = window.plausible.q || []).push(arguments);
+  };
+
   var load = function () {
     var s = document.createElement('script');
     s.setAttribute('data-domain', PLAUSIBLE_DOMAIN);

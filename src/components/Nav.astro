@@ -7,13 +7,15 @@ import { useTranslations, localizedPath, languageToggleHref, type Locale } from 
 
 interface Props {
   locale?: Locale;
+  /** Verified counterpart for pages whose localized routes do not share a path. */
+  alternatePath?: string;
 }
 
 const locale: Locale = Astro.props.locale ?? 'es';
 const t = useTranslations(locale);
 const currentPath = Astro.url.pathname;
 
-const toggleHref = languageToggleHref(locale, currentPath);
+const toggleHref = Astro.props.alternatePath ?? languageToggleHref(locale, currentPath);
 const toggleLabel = locale === 'es' ? 'EN' : 'ES';
 ---
 

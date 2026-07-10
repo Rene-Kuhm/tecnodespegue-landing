@@ -11,9 +11,10 @@ interface Props {
   postCount?: number;
   categoryCount?: number;
   locale?: Locale;
+  latestPublication?: Date;
 }
 
-const { featuredCount = 0, postCount = 0, categoryCount = 0, locale = 'es' } = Astro.props;
+const { featuredCount = 0, postCount = 0, categoryCount = 0, locale = 'es', latestPublication } = Astro.props;
 const copy = {
   es: {
     title: ['Pensamientos', 'técnicos', 'sin humo'],
@@ -21,7 +22,7 @@ const copy = {
     articles: 'artículos',
     categories: 'categorías',
     topics: 'temas',
-    updated: 'Actualizado',
+    updated: 'Última publicación',
   },
   en: {
     title: ['Technical', 'thinking', 'no fluff'],
@@ -29,11 +30,11 @@ const copy = {
     articles: 'articles',
     categories: 'categories',
     topics: 'topics',
-    updated: 'Updated',
+    updated: 'Latest publication',
   },
 }[locale];
 
-const month = new Date().toLocaleDateString(localeConfig[locale].dateLocale, { month: 'long', year: 'numeric' });
+const month = latestPublication?.toLocaleDateString(localeConfig[locale].dateLocale, { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) ?? '—';
 ---
 
 <section class="blog-hero" data-blog-hero>
