@@ -545,12 +545,39 @@ const copy = {
     initHero();
   }
 
-  document.querySelectorAll<HTMLElement>('[data-hero-analytics]').forEach((link) => {
-    link.addEventListener('click', () => {
-      window.plausible?.('Hero CTA Click', { props: {
-        locale: link.dataset.locale || 'unknown',
-        placement: link.dataset.heroAnalytics || 'unknown',
-      }});
-    });
-  });
+  type HeroAnalyticsWindow = typeof window & {
+    __heroAnalyticsClickHandler?: (event: MouseEvent) => void;
+    __heroAnalyticsPageLoadHandler?: () => void;
+  };
+
+  const analyticsWindow = window as HeroAnalyticsWindow;
+
+  function bindHeroAnalytics() {
+    if (analyticsWindow.__heroAnalyticsClickHandler) {
+      document.removeEventListener('click', analyticsWindow.__heroAnalyticsClickHandler);
+    }
+
+    analyticsWindow.__heroAnalyticsClickHandler = (event: MouseEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const link = target.closest<HTMLElement>('[data-hero-analytics]');
+      if (!link) return;
+
+      const locale = link.dataset.locale;
+      const placement = link.dataset.heroAnalytics;
+      if ((locale !== 'es' && locale !== 'en') || (placement !== 'primary' && placement !== 'portfolio')) return;
+
+      window.plausible?.('Hero CTA Click', { props: { locale, placement } });
+    };
+
+    document.addEventListener('click', analyticsWindow.__heroAnalyticsClickHandler);
+  }
+
+  if (analyticsWindow.__heroAnalyticsPageLoadHandler) {
+    document.removeEventListener('astro:page-load', analyticsWindow.__heroAnalyticsPageLoadHandler);
+  }
+  analyticsWindow.__heroAnalyticsPageLoadHandler = bindHeroAnalytics;
+  document.addEventListener('astro:page-load', analyticsWindow.__heroAnalyticsPageLoadHandler);
+  bindHeroAnalytics();
 </script>

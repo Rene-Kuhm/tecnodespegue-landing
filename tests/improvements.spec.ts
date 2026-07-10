@@ -70,6 +70,60 @@ test.describe('Evidence-based case studies', () => {
 test.describe('Plausible funnel', () => {
   test.beforeEach(async ({ page }) => captureAnalytics(page));
 
+  for (const { locale, path, placement } of [
+    { locale: 'es', path: '/', placement: 'primary' },
+    { locale: 'es', path: '/', placement: 'portfolio' },
+    { locale: 'en', path: '/en', placement: 'primary' },
+    { locale: 'en', path: '/en', placement: 'portfolio' },
+  ] as const) {
+    test(`tracks the ${locale} hero ${placement} CTA exactly once`, async ({ page }) => {
+      await page.goto(path);
+      const cta = page.locator(`[data-hero-analytics="${placement}"]`);
+      await cta.click();
+
+      const destination = placement === 'primary' ? '#contacto' : '#portfolio';
+      await expect(page.locator(destination)).toBeInViewport();
+      expect(await events(page)).toEqual([
+        {
+          name: 'Hero CTA Click',
+          options: { props: { locale, placement } },
+        },
+      ]);
+    });
+  }
+
+  test('keeps one delegated handler after repeated Astro page-load lifecycle events', async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(() => {
+      document.dispatchEvent(new Event('astro:page-load'));
+      document.dispatchEvent(new Event('astro:page-load'));
+    });
+
+    await page.locator('[data-hero-analytics="portfolio"]').click();
+
+    await expect(page.locator('#portfolio')).toBeInViewport();
+    expect(await events(page)).toEqual([
+      {
+        name: 'Hero CTA Click',
+        options: { props: { locale: 'es', placement: 'portfolio' } },
+      },
+    ]);
+  });
+
+  test('keeps navigation working when Plausible is unavailable', async ({ page }) => {
+    const pageErrors: string[] = [];
+    page.on('pageerror', error => pageErrors.push(error.message));
+    await page.goto('/');
+    await page.evaluate(() => {
+      delete window.plausible;
+    });
+
+    await page.locator('[data-hero-analytics="primary"]').click();
+
+    await expect(page.locator('#contacto')).toBeInViewport();
+    expect(pageErrors).toEqual([]);
+  });
+
   test('tracks hero, portfolio and WhatsApp clicks with bounded props', async ({ page }) => {
     await page.goto('/');
     const dispatchWithoutNavigation = async (selector: string) => page.locator(selector).first().evaluate((element) => {
