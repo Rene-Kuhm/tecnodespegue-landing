@@ -165,6 +165,254 @@ test.describe('Plausible funnel', () => {
   });
 });
 
+test.describe('Deferred mobile performance', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.route('https://analytics.tiktok.com/**', route => route.abort());
+  });
+
+  test('renders the complete hero title with real CSS when JavaScript is disabled', async ({ browser, page }, testInfo) => {
+    const context = await browser.newContext({
+      javaScriptEnabled: false,
+      viewport: page.viewportSize() ?? { width: 1280, height: 720 },
+      colorScheme: 'dark',
+      baseURL: String(testInfo.project.use.baseURL ?? 'http://localhost:4321'),
+    });
+    const noJavaScriptPage = await context.newPage();
+    try {
+      await noJavaScriptPage.goto('/');
+      const title = noJavaScriptPage.locator('[data-hero-title]');
+      await expect(title).toBeVisible();
+      await expect(title).toContainText(/Menos tareas\s+manuales\.\s+Más control\./i);
+      const bounds = await title.boundingBox();
+      expect(bounds).not.toBeNull();
+      expect(bounds!.width).toBeGreaterThan(100);
+      expect(bounds!.height).toBeGreaterThan(50);
+
+      const lcpWord = title.locator('.side-accent');
+      const renderedState = await lcpWord.evaluate((element) => {
+        const opacityChain: Array<{ tag: string; opacity: number }> = [];
+        for (let node: Element | null = element; node; node = node.parentElement) {
+          opacityChain.push({
+            tag: node.tagName.toLowerCase(),
+            opacity: Number.parseFloat(getComputedStyle(node).opacity),
+          });
+        }
+
+        const style = getComputedStyle(element);
+        const matrix = style.transform === 'none' ? new DOMMatrix() : new DOMMatrix(style.transform);
+        const translateValues = style.translate === 'none'
+          ? []
+          : [...style.translate.matchAll(/-?\d*\.?\d+/g)].map(match => Number.parseFloat(match[0]));
+        return {
+          opacityChain,
+          transformOffset: { x: matrix.e, y: matrix.f },
+          translateOffset: translateValues,
+        };
+      });
+      expect(renderedState.opacityChain.length).toBeGreaterThan(3);
+      for (const node of renderedState.opacityChain) {
+        expect(node.opacity, `${node.tag} must not hide the LCP word`).toBeGreaterThan(0.99);
+      }
+      expect(Math.abs(renderedState.transformOffset.x)).toBeLessThanOrEqual(0.5);
+      expect(Math.abs(renderedState.transformOffset.y)).toBeLessThanOrEqual(0.5);
+      expect(renderedState.translateOffset.every(offset => Math.abs(offset) <= 0.5)).toBe(true);
+    } finally {
+      await context.close();
+    }
+  });
+
+  test('reports the hero title as LCP close to first contentful paint', async ({ page }) => {
+    await page.addInitScript(() => {
+      const metrics = (window as any).__heroPaintMetrics = {
+        fcp: null as number | null,
+        lcp: null as null | { time: number; element: string; text: string },
+      };
+      new PerformanceObserver((list) => {
+        const fcp = list.getEntriesByName('first-contentful-paint').at(-1);
+        if (fcp) metrics.fcp = fcp.startTime;
+      }).observe({ type: 'paint', buffered: true });
+      new PerformanceObserver((list) => {
+        const entry = list.getEntries().at(-1) as PerformanceEntry & { element?: Element };
+        if (!entry) return;
+        const element = entry.element;
+        metrics.lcp = {
+          time: entry.startTime,
+          element: element?.closest('[data-hero-title]') ? 'hero-title' : (element?.tagName.toLowerCase() ?? 'unknown'),
+          text: element?.textContent?.trim().replace(/\s+/g, ' ').slice(0, 80) ?? '',
+        };
+      }).observe({ type: 'largest-contentful-paint', buffered: true });
+    });
+
+    await page.goto('/');
+    await expect.poll(() => page.evaluate(() => (window as any).__heroPaintMetrics.lcp?.time ?? 0)).toBeGreaterThan(0);
+    await page.waitForTimeout(1000);
+    const metrics = await page.evaluate(() => (window as any).__heroPaintMetrics as {
+      fcp: number | null;
+      lcp: { time: number; element: string; text: string } | null;
+    });
+    expect(metrics.fcp).not.toBeNull();
+    expect(metrics.lcp).not.toBeNull();
+    expect(metrics.lcp!.element).toBe('hero-title');
+    expect(metrics.lcp!.text).toMatch(/MANUALES\./i);
+    expect(metrics.lcp!.time - metrics.fcp!).toBeLessThanOrEqual(450);
+  });
+
+  test('loads the TikTok SDK once after the real delay', async ({ page }) => {
+    await page.clock.install();
+    const sdkRequests: string[] = [];
+    page.on('request', request => {
+      if (request.url().includes('analytics.tiktok.com/i18n/pixel/events.js')) sdkRequests.push(request.url());
+    });
+
+    await page.goto('/');
+    await page.clock.fastForward(3000);
+    expect(sdkRequests).toHaveLength(0);
+
+    await page.clock.fastForward(1500);
+    await expect.poll(() => sdkRequests.length).toBe(1);
+    await page.clock.fastForward(5000);
+    expect(sdkRequests).toHaveLength(1);
+  });
+
+  test('loads the TikTok SDK once on meaningful interaction', async ({ page }) => {
+    const sdkRequests: string[] = [];
+    page.on('request', request => {
+      if (request.url().includes('analytics.tiktok.com/i18n/pixel/events.js')) sdkRequests.push(request.url());
+    });
+
+    await page.goto('/');
+    expect(sdkRequests).toHaveLength(0);
+    await page.evaluate(() => window.dispatchEvent(new PointerEvent('pointerdown')));
+    await expect.poll(() => sdkRequests.length).toBe(1);
+
+    await page.evaluate(() => {
+      window.dispatchEvent(new PointerEvent('pointerdown'));
+      document.dispatchEvent(new Event('astro:page-load'));
+      document.dispatchEvent(new Event('astro:page-load'));
+    });
+    await page.waitForTimeout(100);
+    expect(sdkRequests).toHaveLength(1);
+  });
+
+  test('preserves the TikTok queue and emits one semantic page view per Astro URL', async ({ page }) => {
+    await page.route('**/api/tiktok-event', route => route.fulfill({ status: 200, contentType: 'application/json', body: '{}' }));
+    await page.addInitScript(() => {
+      (window as any).ttq = [['preexisting-event', { consent: 'queued' }]];
+    });
+    await page.goto('/');
+    await page.evaluate(() => {
+      const original = window.tdTrackTikTok;
+      (window as any).__tiktokSemanticCalls = [];
+      window.tdTrackTikTok = ((...args: Parameters<NonNullable<typeof window.tdTrackTikTok>>) => {
+        (window as any).__tiktokSemanticCalls.push(args);
+        return original?.(...args);
+      }) as typeof window.tdTrackTikTok;
+    });
+
+    await page.evaluate(() => window.dispatchEvent(new PointerEvent('pointerdown')));
+    await expect.poll(() => page.evaluate(() => ((window as any).ttq as unknown[][]).length)).toBeGreaterThan(2);
+
+    await page.evaluate(() => {
+      document.dispatchEvent(new Event('astro:page-load'));
+      document.dispatchEvent(new Event('astro:page-load'));
+      window.dispatchEvent(new PointerEvent('pointerdown'));
+      history.pushState({}, '', '/en');
+      document.dispatchEvent(new Event('astro:page-load'));
+      window.dispatchEvent(new PointerEvent('pointerdown'));
+      history.pushState({}, '', '/');
+      document.dispatchEvent(new Event('astro:page-load'));
+      window.dispatchEvent(new PointerEvent('pointerdown'));
+    });
+
+    const result = await page.evaluate(() => {
+      const queue = (window as any).ttq as unknown[][];
+      return {
+        queue,
+        calls: (window as any).__tiktokSemanticCalls as unknown[][],
+      };
+    });
+    expect(result.queue[0]).toEqual(['preexisting-event', { consent: 'queued' }]);
+
+    const pageCalls = result.queue.filter(entry => entry[0] === 'page');
+    const viewContentCalls = result.queue.filter(entry => entry[0] === 'track' && entry[1] === 'ViewContent');
+    expect(pageCalls).toHaveLength(2);
+    expect(viewContentCalls).toHaveLength(2);
+    for (const entry of viewContentCalls) {
+      const payload = entry[2] as Record<string, unknown>;
+      const options = entry[3] as Record<string, unknown>;
+      expect(payload).toMatchObject({
+        content_type: 'product',
+        content_id: 'tecnodespegue',
+        currency: 'USD',
+      });
+      expect(payload.event_id).toEqual(options.event_id);
+      expect(typeof payload.event_id).toBe('string');
+    }
+
+    expect(result.calls).toHaveLength(2);
+    expect(result.calls.map(call => call[0])).toEqual(['ViewContent', 'ViewContent']);
+    expect(result.calls.map(call => (call[1] as Record<string, string>).url)).toEqual([
+      'http://localhost:4321/',
+      'http://localhost:4321/en',
+    ]);
+  });
+
+  test('does not request Lenis on touch mobile and keeps native anchors working', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'mobile-chrome', 'Mobile-only behavior');
+    await page.clock.install();
+    const lenisRequests: string[] = [];
+    page.on('request', request => {
+      if (/\/_astro\/lenis\.[^/]+\.js/.test(request.url())) lenisRequests.push(request.url());
+    });
+
+    await page.goto('/');
+    await page.clock.fastForward(5000);
+    expect(lenisRequests).toHaveLength(0);
+
+    await page.locator('[data-hero-analytics="portfolio"]').click();
+    await expect(page.locator('#portfolio')).toBeInViewport();
+    expect(lenisRequests).toHaveLength(0);
+  });
+
+  test('loads Lenis once on desktop after interaction', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'chromium', 'Desktop-only behavior');
+    await page.clock.install();
+    const lenisRequests: string[] = [];
+    page.on('request', request => {
+      if (/\/_astro\/lenis\.[^/]+\.js/.test(request.url())) lenisRequests.push(request.url());
+    });
+
+    await page.goto('/');
+    await page.clock.fastForward(3000);
+    expect(lenisRequests).toHaveLength(0);
+
+    await page.evaluate(() => window.dispatchEvent(new PointerEvent('pointerdown')));
+    await expect.poll(() => lenisRequests.length).toBe(1);
+    await page.evaluate(() => {
+      window.dispatchEvent(new PointerEvent('pointerdown'));
+      document.dispatchEvent(new Event('astro:page-load'));
+    });
+    await page.clock.fastForward(5000);
+    expect(lenisRequests).toHaveLength(1);
+  });
+
+  test('does not request Lenis with reduced motion', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'chromium', 'Desktop-only behavior');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.clock.install();
+    const lenisRequests: string[] = [];
+    page.on('request', request => {
+      if (/\/_astro\/lenis\.[^/]+\.js/.test(request.url())) lenisRequests.push(request.url());
+    });
+
+    await page.goto('/');
+    await page.clock.fastForward(5000);
+    await page.evaluate(() => window.dispatchEvent(new PointerEvent('pointerdown')));
+    await page.waitForTimeout(100);
+    expect(lenisRequests).toHaveLength(0);
+  });
+});
+
 test.describe('Blog honesty', () => {
   test('shows the actual latest publication date and no cadence promise', async ({ page }) => {
     await page.goto('/blog');

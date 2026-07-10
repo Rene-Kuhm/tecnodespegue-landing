@@ -189,30 +189,80 @@ const professionalServiceSchema = {
     <CustomCursor />
     <a class="skip-link" href="#contenido">{t.meta.skipToContent}</a>
 
-    <!-- Lenis bootstrap. Las secciones son visibles por defecto; las animaciones
-         no deben ser requisito para que la landing se renderice correctamente. -->
+    <!-- Lenis is an optional desktop enhancement. Native scrolling remains the
+         baseline on touch/coarse-pointer devices and for reduced motion. -->
     <script>
-      const startLenisAndAnimations = async () => {
-        const { initLenis } = await import('../scripts/animations/lenis');
-        initLenis();
+      type DeferredLenisState = {
+        timerId: number | null;
+        interactionBound: boolean;
+        lifecycleBound: boolean;
+        loadPromise?: Promise<void>;
+        load?: () => void;
+        schedule?: () => void;
       };
 
-      const schedule = () => {
-        if ('requestIdleCallback' in window) {
-          requestIdleCallback(startLenisAndAnimations, { timeout: 2000 });
-        } else {
-          setTimeout(startLenisAndAnimations, 1500);
-        }
+      type DeferredLenisWindow = typeof window & {
+        __tdDeferredLenis?: DeferredLenisState;
       };
 
-      if (document.readyState === 'complete') {
-        schedule();
-      } else {
-        window.addEventListener('load', schedule, { once: true });
+      const deferredWindow = window as DeferredLenisWindow;
+      const state = deferredWindow.__tdDeferredLenis ??= {
+        timerId: null,
+        interactionBound: false,
+        lifecycleBound: false,
+      };
+      const interactionEvents = ['pointerdown', 'keydown', 'wheel'] as const;
+
+      const shouldUseNativeScroll = () =>
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+        window.matchMedia('(pointer: coarse)').matches ||
+        navigator.maxTouchPoints > 0;
+
+      const removeInteractionListeners = () => {
+        if (!state.interactionBound || !state.load) return;
+        interactionEvents.forEach((eventName) => {
+          window.removeEventListener(eventName, state.load!);
+        });
+        state.interactionBound = false;
+      };
+
+      if (!state.load) {
+        state.load = () => {
+          if (state.timerId !== null) {
+            window.clearTimeout(state.timerId);
+            state.timerId = null;
+          }
+          removeInteractionListeners();
+          if (shouldUseNativeScroll() || state.loadPromise) return;
+
+          state.loadPromise = import('../scripts/animations/lenis').then(({ initLenis }) => {
+            initLenis();
+          });
+        };
       }
-      // Safety net: si la página lleva 6s sin cargar por algo raro,
-      // arrancamos igual.
-      setTimeout(schedule, 6000);
+
+      if (!state.schedule) {
+        state.schedule = () => {
+          if (shouldUseNativeScroll() || state.loadPromise || !state.load) return;
+          if (state.timerId !== null) window.clearTimeout(state.timerId);
+
+          if (!state.interactionBound) {
+            interactionEvents.forEach((eventName) => {
+              window.addEventListener(eventName, state.load!, { passive: true });
+            });
+            state.interactionBound = true;
+          }
+          state.timerId = window.setTimeout(state.load, 4000);
+        };
+      }
+
+      if (!state.lifecycleBound) {
+        document.addEventListener('astro:page-load', state.schedule);
+        state.lifecycleBound = true;
+      }
+
+      if (document.readyState === 'complete') state.schedule();
+      else window.addEventListener('load', state.schedule, { once: true });
     </script>
 
     <slot />

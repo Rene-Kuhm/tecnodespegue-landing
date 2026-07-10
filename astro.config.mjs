@@ -121,7 +121,6 @@ export default defineConfig({
     ],
     server: { allowedHosts: true },
     build: {
-      cssCodeSplit: false,
       rollupOptions: {
         output: {
           assetFileNames: ({ name }) => {
