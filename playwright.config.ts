@@ -3,10 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * Playwright config para tests E2E de la landing.
  *
- * Apunta al dev server local (npm run dev → http://localhost:4321).
- * En CI, el workflow debe levantar el server antes de correr los tests:
- *   npm run build && npm run preview &
- *   npx playwright test
+ * Builds once and exercises Astro's production preview output.
  */
 export default defineConfig({
   testDir: './tests',
@@ -32,9 +29,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run dev',
+    command: 'npm run build && npm run preview',
     url: 'http://localhost:4321',
     reuseExistingServer: !process.env.CI,
-    timeout: 60_000,
+    timeout: 120_000,
   },
 });

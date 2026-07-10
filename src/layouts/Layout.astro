@@ -13,6 +13,8 @@ interface Props {
   locale?: Locale;
   /** URL path para generar hreflang alternates. Ej: '/blog', '/privacidad' */
   path?: string;
+  /** Explicit locale counterparts. Omit when a page has no translation. */
+  alternatePaths?: Partial<Record<Locale, string>>;
 }
 
 const {
@@ -22,6 +24,7 @@ const {
   ogImage: customOgImage,
   locale = 'es',
   path = Astro.url.pathname,
+  alternatePaths,
 } = Astro.props;
 
 const t = useTranslations(locale);
@@ -40,10 +43,8 @@ const canonicalURL = new URL(normalizedPath, Astro.site);
 const ogImage = new URL(customOgImage || (locale === 'en' ? siteConfig.ogImageEn : siteConfig.ogImage), Astro.site);
 const plausibleDomain = siteConfig.plausible.domain || Astro.site?.hostname || canonicalURL.hostname;
 
-const esPath = normalizedPath.startsWith('/en') ? cleanPath(normalizedPath.replace(/^\/en/, '')) || '/' : normalizedPath;
-const enPath = esPath === '/' ? '/en' : `/en${esPath}`;
-const esURL = new URL(esPath, Astro.site).toString();
-const enURL = new URL(enPath, Astro.site).toString();
+const esURL = alternatePaths?.es ? new URL(cleanPath(alternatePaths.es), Astro.site).toString() : undefined;
+const enURL = alternatePaths?.en ? new URL(cleanPath(alternatePaths.en), Astro.site).toString() : undefined;
 
 const organizationSchema = {
   "@context": "https://schema.org",
@@ -128,18 +129,6 @@ const professionalServiceSchema = {
          Inter y las display fonts (Big Shoulders / Bangers) solo se usan en títulos grandes
          y pueden esperar a FCP sin impactar LCP. -->
 
-    <!-- LCP image: solo preload en desktop. En mobile HeroMobile usa loading="eager"
-         fetchpriority="high" directamente en el <img> — el preload duplicado compite
-         con otros recursos críticos. -->
-    <link
-      rel="preload"
-      as="image"
-      href="/hero-mockup.webp"
-      type="image/webp"
-      fetchpriority="high"
-      media="(min-width: 768px)"
-    />
-
     <!-- Font (Space Grotesk Variable) se carga via @font-face en global.css
          con font-display: swap. Astro+Vite lo bundlea con hash, asi que
          no podemos hacer preload estatico de un path fijo. -->
@@ -147,10 +136,10 @@ const professionalServiceSchema = {
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
 
-    <!-- Hreflang alternates for i18n -->
-    <link rel="alternate" hreflang="es-AR" href={esURL} />
-    <link rel="alternate" hreflang="en-US" href={enURL} />
-    <link rel="alternate" hreflang="x-default" href={esURL} />
+    <!-- Only emit verified, reciprocal locale counterparts. -->
+    {esURL && <link rel="alternate" hreflang="es-AR" href={esURL} />}
+    {enURL && <link rel="alternate" hreflang="en-US" href={enURL} />}
+    {esURL && <link rel="alternate" hreflang="x-default" href={esURL} />}
 
     <!-- RSS feed auto-discovery (so crawlers + readers can find it without manual URL) -->
     <link rel="alternate" type="application/rss+xml" title={locale === 'en' ? 'TecnoDespegue — Engineering Blog' : 'TecnoDespegue — Blog de Ingeniería'} href={locale === 'en' ? new URL('/en/rss.xml', Astro.site).toString() : new URL('/rss.xml', Astro.site).toString()} />

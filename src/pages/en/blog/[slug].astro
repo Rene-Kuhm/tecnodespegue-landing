@@ -10,6 +10,7 @@ import RelatedPosts from '../../../components/RelatedPosts.astro';
 import BlogCoverArt from '../../../components/BlogCoverArt.astro';
 import { formatDate, calculateReadTime } from '../../../utils/blog.ts';
 import { useTranslations, localizedPath, localeConfig, type Locale } from '../../../i18n';
+import { getPostAlternatePaths } from '../../../i18n/alternates';
 
 const locale: Locale = 'en';
 const t = useTranslations(locale);
@@ -43,6 +44,7 @@ const description = post.data.seo?.description ?? post.data.description;
 const ogImage = new URL('/og-image-en.png', Astro.site);
 
 const canonicalURL = new URL(localizedPath(`/blog/${postSlug}`, locale), Astro.site);
+const alternatePaths = getPostAlternatePaths(locale, postSlug);
 
 const authorInitials = post.data.author
   .split(' ')
@@ -73,7 +75,7 @@ const blogPostingSchema = {
 };
 ---
 
-<Layout title={`${title} — TecnoDespegue`} description={description} path={localizedPath(`/blog/${postSlug}`, locale)} locale={locale}>
+<Layout title={`${title} — TecnoDespegue`} description={description} path={localizedPath(`/blog/${postSlug}`, locale)} locale={locale} alternatePaths={alternatePaths}>
   <script is:inline type="application/ld+json" slot="head" set:html={JSON.stringify(blogPostingSchema)} />
   <Fragment slot="head">
     <meta property="og:type" content="article" />

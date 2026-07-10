@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "node scripts/serve-preview.mjs",
     "astro": "astro",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
