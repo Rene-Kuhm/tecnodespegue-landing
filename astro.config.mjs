@@ -30,6 +30,28 @@ export default defineConfig({
           en: 'en-US',
         },
       },
+      // Astro's automatic pairing only recognizes identical localized paths.
+      // Case studies intentionally use localized route names, so pair them here.
+      serialize: (item) => {
+        const caseStudyPairs = new Map([
+          ['/casos/flow-engineering', ['/casos/flow-engineering', '/en/case-studies/flow-engineering']],
+          ['/en/case-studies/flow-engineering', ['/casos/flow-engineering', '/en/case-studies/flow-engineering']],
+          ['/casos/vaulta', ['/casos/vaulta', '/en/case-studies/vaulta']],
+          ['/en/case-studies/vaulta', ['/casos/vaulta', '/en/case-studies/vaulta']],
+        ]);
+        const pathname = new URL(item.url).pathname;
+        const pair = caseStudyPairs.get(pathname);
+        if (!pair) return item;
+        const [esPath, enPath] = pair;
+        return {
+          ...item,
+          links: [
+            { lang: 'es-AR', url: new URL(esPath, item.url).toString() },
+            { lang: 'en-US', url: new URL(enPath, item.url).toString() },
+            { lang: 'x-default', url: new URL(esPath, item.url).toString() },
+          ],
+        };
+      },
     }),
   ],
   // i18n — ES en raíz, EN bajo /en/. El defaultLocale NO se prefija para

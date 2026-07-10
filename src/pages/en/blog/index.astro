@@ -16,6 +16,7 @@ const posts = allPosts
 
 const categories = getCategories(posts);
 const topTags = getTopTags(posts, 12);
+const latestPublication = posts[0]?.data.date;
 
 const title = 'Engineering Blog | Fullstack, AI & Architecture | TecnoDespegue';
 const description = 'Articles on fullstack development, AI automation, software architecture, and tech strategy for startups. Real production experience, no fluff.';
@@ -28,6 +29,7 @@ const description = 'Articles on fullstack development, AI automation, software 
     postCount={posts.length}
     categoryCount={categories.length}
     locale={locale}
+    latestPublication={latestPublication}
   />
   <BlogIndex posts={posts} categories={categories} topTags={topTags} locale={locale} />
   <Footer locale={locale} />

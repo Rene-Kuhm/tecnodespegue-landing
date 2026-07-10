@@ -1,0 +1,14 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import CaseStudyPage from '../../components/CaseStudyPage.astro';
+
+export async function getStaticPaths() {
+  const studies = await getCollection('caseStudies', ({ data }) => data.locale === 'es');
+  return studies.map(study => ({ params: { slug: study.data.routeSlug }, props: { study } }));
+}
+
+interface Props { study: CollectionEntry<'caseStudies'> }
+const { study } = Astro.props;
+const { Content } = await render(study);
+---
+<CaseStudyPage study={study} Content={Content} locale="es" />

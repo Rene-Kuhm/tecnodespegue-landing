@@ -18,7 +18,7 @@ const es = {
     mobileMenuClose: 'Cerrar menú',
   },
   footer: {
-    tagline: 'Ingeniería de software a medida, automatizaciones con IA y soluciones escalables.',
+    tagline: 'Software interno, integraciones y automatización para operaciones con menos fricción.',
     contact: 'Contacto',
     socials: 'Redes',
     location: 'Eduardo Castex, La Pampa, Argentina',
@@ -78,7 +78,7 @@ const en: UIDict = {
     mobileMenuClose: 'Close menu',
   },
   footer: {
-    tagline: 'Custom software engineering, AI automation, and scalable solutions.',
+    tagline: 'Internal software, integrations, and automation for operations with less friction.',
     contact: 'Contact',
     socials: 'Social',
     location: 'Eduardo Castex, La Pampa, Argentina',

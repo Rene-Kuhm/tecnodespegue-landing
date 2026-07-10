@@ -15,8 +15,8 @@ export const siteConfig = {
 
   // Branding
   name: 'TecnoDespegue',
-  tagline: 'Ingeniería de software & automatización con IA',
-  description: 'Desarrollo fullstack, automatizaciones con IA y soluciones a medida. Desde Argentina para el mundo.',
+  tagline: 'Software interno, integraciones y automatización',
+  description: 'Automatización de procesos, integración de sistemas y software interno a medida para empresas con operaciones manuales o fragmentadas.',
 
   // Contacto
   email: import.meta.env.PUBLIC_CONTACT_EMAIL || 'renekuhm2@gmail.com',

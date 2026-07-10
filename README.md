@@ -41,9 +41,10 @@
 
 - **Landing cinemática** — hero estilo Marvel con monitor mockup y animaciones GSAP
 - **Blog técnico** — 5 artículos sobre desarrollo, IA, performance y arquitectura
+- **Casos de estudio bilingües** — contenido tipado con evidencia, decisiones y limitaciones explícitas
 - **Catálogo de templates** (próximamente) — componentes premium en preparación
 - **Formulario de contacto** integrado con Formspree
-- **Tracking analytics** con TikTok Pixel + Plausible
+- **Embudo de conversión** con eventos de Plausible y tracking de TikTok
 
 El sitio está **totalmente estático** (16 páginas prerenderizadas) con dos endpoints serverless en Vercel (`/api/og` para OG images dinámicas).
 
@@ -249,9 +250,10 @@ tecnodespegue-landing/
     ├── config/
     │   └── site.config.ts       # Config centralizada
     ├── content/                 # Markdown collections
+    │   ├── case-studies/        # Casos ES/EN con evidencia y límites
     │   ├── posts/               # 5 blog posts
     │   └── templates/           # 5 templates (preview mode)
-    ├── content.config.ts
+    ├── content.config.ts        # Schemas tipados: posts, templates y caseStudies
     ├── layouts/
     │   └── Layout.astro         # HTML shell + meta + JSON-LD
     ├── pages/

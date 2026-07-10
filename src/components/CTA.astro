@@ -18,7 +18,7 @@ const copy = {
   es: {
     kicker: 'CONTACTO · FINAL',
     title: ['¿Listo para', 'despegar?'],
-    lead: 'Agendá una consulta técnica de 30 minutos o escribinos directamente. Sin compromiso, sin letra chica.',
+    lead: 'Contanos qué proceso manual o sistema fragmentado está frenando a tu equipo. En una consulta técnica evaluamos si conviene automatizar, integrar o construir software interno.',
     primary: 'Agendá tu Consulta Gratis',
     whatsapp: 'WhatsApp Directo',
     trust: ['Respuesta personal', 'Consulta Sin Costo', 'NDA Disponible'],
@@ -26,7 +26,7 @@ const copy = {
   en: {
     kicker: 'CONTACT · FINAL',
     title: ['Ready to', 'launch?'],
-    lead: 'Book a 30-minute technical consultation or message us directly. No commitment, no fine print.',
+    lead: 'Tell us which manual process or fragmented system is slowing your team down. In a technical consultation, we assess whether to automate, integrate, or build internal software.',
     primary: 'Book a Free Consultation',
     whatsapp: 'Direct WhatsApp',
     trust: ['Personal response', 'Free Consultation', 'NDA Available'],
@@ -78,7 +78,7 @@ const copy = {
         <Icon name="calendar_month" class="w-4 h-4" />
         <span>{copy.primary}</span>
       </a>
-      <a href="https://wa.me/5492334409838?text=Hola,%20quiero%20consultar%20sobre%20un%20proyecto%20de%20desarrollo" target="_blank" rel="noopener noreferrer" class="btn-secondary cta-btn" data-magnetic data-tiktok-event="Contact" data-tiktok-label="WhatsApp directo">
+      <a href="https://wa.me/5492334409838?text=Hola,%20quiero%20consultar%20sobre%20un%20proyecto%20de%20desarrollo" target="_blank" rel="noopener noreferrer" class="btn-secondary cta-btn" data-magnetic data-tiktok-event="Contact" data-tiktok-label="WhatsApp directo" data-whatsapp-analytics data-locale={locale}>
         <Icon name="chat" class="w-4 h-4" />
         <span>{copy.whatsapp}</span>
       </a>
@@ -108,6 +108,17 @@ const copy = {
     </div>
   </div>
 </section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-whatsapp-analytics]').forEach((link) => {
+    link.addEventListener('click', () => {
+      window.plausible?.('WhatsApp Click', { props: {
+        locale: link.dataset.locale || 'unknown',
+        placement: 'contact',
+      }});
+    });
+  });
+</script>
 
 <style>
   .cta-section {
