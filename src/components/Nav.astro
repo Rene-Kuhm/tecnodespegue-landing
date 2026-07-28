@@ -34,10 +34,6 @@ const toggleLabel = locale === 'es' ? 'EN' : 'ES';
         <span class="nav-link-text">{t.nav.solutions}</span>
         <span class="nav-link-underline" aria-hidden="true"></span>
       </a>
-      <a href={localizedPath('/templates', locale)} class="nav-link" data-magnetic>
-        <span class="nav-link-text">{t.nav.templates}</span>
-        <span class="nav-link-underline" aria-hidden="true"></span>
-      </a>
       <a href={localizedPath('/blog', locale)} class="nav-link" data-magnetic>
         <span class="nav-link-text">{t.nav.blog}</span>
         <span class="nav-link-underline" aria-hidden="true"></span>
@@ -82,7 +78,6 @@ const toggleLabel = locale === 'es' ? 'EN' : 'ES';
   <div class="nav-mobile" id="mobile-menu" data-nav-mobile aria-hidden="true" inert>
     <div class="nav-mobile-inner">
       <a href={localizedPath('/#soluciones', locale)} class="nav-mobile-link font-display">{t.nav.solutions}</a>
-      <a href={localizedPath('/templates', locale)} class="nav-mobile-link font-display">{t.nav.templates}</a>
       <a href={localizedPath('/blog', locale)} class="nav-mobile-link font-display">{t.nav.blog}</a>
       <a href={localizedPath('/#portfolio', locale)} class="nav-mobile-link font-display">{t.nav.portfolio}</a>
       <a href={localizedPath('/#stack', locale)} class="nav-mobile-link font-display">{t.nav.stack}</a>
