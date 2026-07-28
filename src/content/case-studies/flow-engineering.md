@@ -4,20 +4,21 @@ translationKey: flow-engineering
 routeSlug: flow-engineering
 title: "Flow Engineering"
 eyebrow: "Plataforma de ingeniería"
-description: "Un sistema privado para dirigir trabajo de ingeniería con contexto estructurado, especificaciones verificables y señales de drift."
-status: "Repositorio privado · versión 1.3.0"
+description: "Un sistema open source para dirigir trabajo de ingeniería con contexto estructurado, especificaciones verificables y señales de drift."
+status: "Código y caso de estudio públicos · versión 1.3.0"
 role: "Arquitectura, implementación y gobernanza técnica"
 stack: ["Python", "CLI", "MCP", "SDD", "Engram", "GitHub Actions"]
+repositoryUrl: "https://github.com/Rene-Kuhm/flow-engineering"
 evidence:
-  - "541 commits verificados en 708726e."
+  - "544 commits verificados en 4be4db7."
   - "Paquete Python 1.3.0 con CLI y servidor MCP opcional."
   - "Máquina de estados, detección de drift y snapshots deterministas."
   - "Bridge de memoria Engram y registro de prompts."
   - "CI en Python 3.12 y 3.13 con Ruff, análisis de seguridad, mypy y pytest."
   - "Umbral mínimo de cobertura del 80%."
 limitations:
-  - "El repositorio es privado; no hay código fuente ni demo pública para inspección independiente."
-  - "Los datos describen el estado verificado del commit 708726e, no métricas comerciales ni resultados de clientes."
+  - "Herramienta de tooling interno para desarrollo asistido por IA; no expone métricas comerciales ni resultados de clientes."
+  - "Los datos describen el estado verificado del commit 4be4db7, no un benchmark independiente."
 featured: true
 seo:
   title: "Flow Engineering: caso de estudio de plataforma SDD"
