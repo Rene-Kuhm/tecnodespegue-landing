@@ -1,7 +1,7 @@
 ---
 /**
  * CTA.astro - Versión Marvel
- * Headline gigante con underline cinemático dorado, onomatopeya "BOOM!",
+ * Headline gigante con underline cinemático dorado,
  * formulario con border bevel, trust signals como chips Marvel
  */
 
@@ -45,7 +45,6 @@ const copy = {
 
   <div class="max-w-6xl mx-auto px-6 md:px-8 relative z-10">
 
-    <!-- Header con onomatopeya BOOM! -->
     <header class="cta-header">
       <div class="cta-header-text">
         <span class="kicker">
@@ -66,10 +65,6 @@ const copy = {
         </p>
       </div>
 
-      <div class="cta-burst" aria-hidden="true">
-        <span class="onomatopeya cta-burst-text">BOOM!</span>
-        <div class="cta-burst-stars">★ ★ ★</div>
-      </div>
     </header>
 
     <!-- Botones principales -->
@@ -232,31 +227,6 @@ const copy = {
     margin: 0 auto 2rem;
   }
   .cta-strong { color: #FFFFFF; font-weight: 700; }
-
-  /* BOOM! */
-  .cta-burst {
-    position: absolute;
-    top: -2rem;
-    right: 0;
-    transform: rotate(12deg);
-    pointer-events: none;
-  }
-  .cta-burst-text {
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    line-height: 0.85;
-  }
-  .cta-burst-stars {
-    color: var(--color-marvel-gold);
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
-    text-align: center;
-    text-shadow: 0 0 12px rgba(248, 180, 0, 0.6);
-    transform: translateY(-0.5rem);
-  }
-
-  @media (max-width: 767px) {
-    .cta-burst { display: none; }
-  }
 
   /* Buttons */
   .cta-buttons {
