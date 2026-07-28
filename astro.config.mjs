@@ -22,7 +22,10 @@ export default defineConfig({
         !page.includes('/admin/') &&
         !page.includes('/404') &&
         !page.includes('/en/404') &&
-        !page.includes('/en/admin/'),
+        !page.includes('/en/admin/') &&
+        // Templates aún no publicados (placeholders "próximamente"): no indexar
+        // hasta que exista al menos un template real y comprable.
+        !page.includes('/templates'),
       i18n: {
         defaultLocale: 'es',
         locales: {
