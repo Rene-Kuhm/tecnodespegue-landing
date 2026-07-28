@@ -12,6 +12,17 @@ import type { APIRoute } from 'astro';
 
 export const prerender = false;
 
+// @vercel/og@1's ImageResponse constructor returns a real Response instance
+// at runtime (it does `return new Response(...)` inside the constructor),
+// but its TS types no longer declare that, and it now types its first arg
+// as ReactElement instead of a loosely-typed satori tree. We build the tree
+// as plain duck-typed objects (matching satori's expected shape) like before
+// the major bump, so we cast at the boundary instead of rewriting to real JSX.
+function renderOg(element: unknown, options: { width: number; height: number }): Response {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return new ImageResponse(element as any, options) as unknown as Response;
+}
+
 export const GET: APIRoute = async ({ url }) => {
   const title = url.searchParams.get('title') || 'TecnoDespegue';
   const description = url.searchParams.get('description') || 'Ingeniería de software & automatización con IA';
@@ -20,7 +31,7 @@ export const GET: APIRoute = async ({ url }) => {
   const variant = url.searchParams.get('variant') || 'social';
 
   if (variant === 'cover') {
-    return new ImageResponse(
+    return renderOg(
       {
         type: 'div',
         props: {
@@ -135,7 +146,7 @@ export const GET: APIRoute = async ({ url }) => {
     );
   }
 
-  return new ImageResponse(
+  return renderOg(
     {
       type: 'div',
       props: {

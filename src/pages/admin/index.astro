@@ -6,10 +6,10 @@ export const prerender = false;
 
 import { getCollection } from 'astro:content';
 import AdminLayout from '../../layouts/admin/AdminLayout.astro';
+import { getCsrfToken } from '../../lib/auth';
 
 // CSRF token: un valor aleatorio por sesion
-const csrfToken = Array.from(crypto.getRandomValues(new Uint8Array(24)))
-  .map(b => b.toString(16).padStart(2, '0')).join('');
+const csrfToken = getCsrfToken(Astro.cookies) ?? '';
 
 const all = await getCollection('posts');
 const posts = all
