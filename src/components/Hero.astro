@@ -1,9 +1,18 @@
 ---
 /**
- * Hero.astro — Mockup Edition v5 (Clean overlay)
+ * Hero.astro — Mockup Edition v6 (3D screen layer)
  * La imagen mockup ocupa todo el viewport como background.
  * El contenido web (headline + CTAs + stats) va DEBAJO como un overlay
  * semi-transparente centrado sobre la imagen, NO se superpone con el monitor.
+ *
+ * v6: en desktop (>820px), sin prefers-reduced-motion y con WebGL disponible,
+ * se monta una escena Three.js (Code3D, ya existente en
+ * src/scripts/three/code3D.ts pero sin usar hasta ahora) exactamente sobre
+ * el rectángulo de la pantalla del monitor en la foto, agregando líneas de
+ * código flotando en 3D encima del dashboard estático. Es progressive
+ * enhancement puro: si falla WebGL, hay reduced-motion, o el viewport es
+ * mobile, el usuario sigue viendo la imagen estática (sin cambios de layout,
+ * sin JS extra descargado — el chunk de Three.js se importa dinámicamente).
  */
 
 import Icon from './Icon.astro';
@@ -51,6 +60,10 @@ const copy = {
     <img src="/hero-mockup.jpg" alt="" class="hero-bg-img" loading="eager" decoding="async" fetchpriority="high" width="1264" height="848" />
     <div class="hero-bg-top-fade" aria-hidden="true"></div>
   </picture>
+
+  <!-- Capa 3D: se posiciona por JS exactamente sobre la pantalla del monitor
+       en la foto de fondo. Vacía y oculta hasta que el script la monta. -->
+  <div class="hero-3d-mount" data-hero-3d aria-hidden="true"></div>
 
   <!-- Side content: title + copy + CTAs (no se superpone con el monitor) -->
   <div class="hero-side" data-hero-side>
@@ -161,6 +174,26 @@ const copy = {
     height: 30%;
     background: linear-gradient(180deg, #0a0508 0%, rgba(10,5,8,0.8) 50%, transparent 100%);
     pointer-events: none;
+  }
+
+  /* ─── Capa 3D (Code3D) sobre la pantalla del monitor ─── */
+  .hero-3d-mount {
+    position: absolute;
+    z-index: 1;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: auto;
+    transition: opacity 900ms var(--ease-marvel, ease);
+  }
+
+  .hero-3d-mount.is-active {
+    opacity: 1;
+  }
+
+  .hero-3d-mount :global(canvas) {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
   }
 
   /* ─── Side content (izquierda, fuera del monitor) ─── */
@@ -449,6 +482,10 @@ const copy = {
       max-width: none;
       margin: 0 auto;
     }
+    /* La capa 3D no se monta en mobile (ver script) — se oculta por las dudas */
+    .hero-3d-mount {
+      display: none;
+    }
   }
 
   @media (max-width: 640px) {
@@ -565,4 +602,135 @@ const copy = {
   analyticsWindow.__heroAnalyticsPageLoadHandler = bindHeroAnalytics;
   document.addEventListener('astro:page-load', analyticsWindow.__heroAnalyticsPageLoadHandler);
   bindHeroAnalytics();
+</script>
+
+<script>
+  /**
+   * Capa 3D del hero (progressive enhancement).
+   * Monta Code3D (src/scripts/three/code3D.ts) exactamente sobre el
+   * rectángulo de la pantalla del monitor en la foto de fondo, solo en
+   * desktop (>820px), sin prefers-reduced-motion, y si WebGL está
+   * disponible. Se re-posiciona en resize y se limpia/remonta en cada
+   * navegación de Astro (astro:page-load) para no perder contextos WebGL.
+   */
+  import type { Code3D as Code3DType } from '../scripts/three/code3D';
+
+  type Hero3DWindow = typeof window & {
+    __hero3DPageLoadHandler?: () => void;
+    __hero3DResizeHandler?: () => void;
+  };
+
+  // Rectángulo de la pantalla dentro de cada foto fuente, en píxeles nativos
+  // de la imagen (medido sobre hero-mockup.jpg / hero-mockup-ultrawide.jpg).
+  const SCREEN_BOX = {
+    standard: { iw: 1264, ih: 848, x0: 306, y0: 181, x1: 964, y1: 569 },
+    ultrawide: { iw: 3840, ih: 1646, x0: 1267, y0: 345, x1: 2568, y1: 1152 },
+  } as const;
+
+  const heroWindow = window as Hero3DWindow;
+
+  let instance: Code3DType | null = null;
+  let mountEl: HTMLElement | null = null;
+
+  function pickBox() {
+    const ar = window.innerWidth / Math.max(window.innerHeight, 1);
+    return ar >= 17 / 9 ? SCREEN_BOX.ultrawide : SCREEN_BOX.standard;
+  }
+
+  function supportsWebGL(): boolean {
+    try {
+      const canvas = document.createElement('canvas');
+      return !!(
+        window.WebGLRenderingContext &&
+        (canvas.getContext('webgl') || canvas.getContext('experimental-webgl'))
+      );
+    } catch {
+      return false;
+    }
+  }
+
+  function shouldEnable3D(): boolean {
+    return (
+      window.matchMedia('(min-width: 821px)').matches &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+      supportsWebGL()
+    );
+  }
+
+  function updatePosition(section: HTMLElement) {
+    if (!mountEl) return;
+    const rect = section.getBoundingClientRect();
+    const box = pickBox();
+    const scale = Math.max(rect.width / box.iw, rect.height / box.ih);
+    const dispW = box.iw * scale;
+    const dispH = box.ih * scale;
+    const offX = (rect.width - dispW) / 2;
+    const offY = (rect.height - dispH) / 2;
+
+    mountEl.style.left = `${offX + box.x0 * scale}px`;
+    mountEl.style.top = `${offY + box.y0 * scale}px`;
+    mountEl.style.width = `${(box.x1 - box.x0) * scale}px`;
+    mountEl.style.height = `${(box.y1 - box.y0) * scale}px`;
+  }
+
+  async function mount() {
+    if (instance || !mountEl) return;
+    try {
+      const { Code3D } = await import('../scripts/three/code3D');
+      if (!mountEl || instance) return; // re-check tras el import async
+      instance = new Code3D({ container: mountEl, density: 'low' });
+      requestAnimationFrame(() => mountEl?.classList.add('is-active'));
+    } catch (err) {
+      console.warn('[hero-3d] No se pudo montar la escena 3D, se mantiene la imagen estática.', err);
+    }
+  }
+
+  function teardown() {
+    instance?.dispose();
+    instance = null;
+    mountEl?.classList.remove('is-active');
+  }
+
+  function setup() {
+    const section = document.querySelector<HTMLElement>('[data-hero]');
+    mountEl = section?.querySelector<HTMLElement>('[data-hero-3d]') ?? null;
+    if (!section || !mountEl) return;
+
+    updatePosition(section);
+    if (shouldEnable3D()) {
+      mount();
+    }
+
+    if (heroWindow.__hero3DResizeHandler) {
+      window.removeEventListener('resize', heroWindow.__hero3DResizeHandler);
+      window.removeEventListener('orientationchange', heroWindow.__hero3DResizeHandler);
+    }
+
+    let resizeRaf = 0;
+    heroWindow.__hero3DResizeHandler = () => {
+      cancelAnimationFrame(resizeRaf);
+      resizeRaf = requestAnimationFrame(() => {
+        updatePosition(section);
+        if (shouldEnable3D()) {
+          mount();
+        } else if (instance) {
+          teardown();
+        }
+      });
+    };
+    window.addEventListener('resize', heroWindow.__hero3DResizeHandler);
+    window.addEventListener('orientationchange', heroWindow.__hero3DResizeHandler);
+  }
+
+  if (heroWindow.__hero3DPageLoadHandler) {
+    document.removeEventListener('astro:page-load', heroWindow.__hero3DPageLoadHandler);
+  }
+  heroWindow.__hero3DPageLoadHandler = () => {
+    teardown();
+    setup();
+  };
+  document.addEventListener('astro:page-load', heroWindow.__hero3DPageLoadHandler);
+  setup();
+
+  document.addEventListener('astro:before-swap', () => teardown(), { once: false });
 </script>
