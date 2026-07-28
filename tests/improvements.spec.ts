@@ -19,7 +19,7 @@ async function events(page: Page): Promise<TrackedEvent[]> {
 
 test.describe('Evidence-based case studies', () => {
   for (const [path, counterpart, limitation] of [
-    ['/casos/flow-engineering', '/en/case-studies/flow-engineering', 'repositorio es privado'],
+    ['/casos/flow-engineering', '/en/case-studies/flow-engineering', 'no expone métricas comerciales'],
     ['/casos/vaulta', '/en/case-studies/vaulta', 'auditoría criptográfica externa'],
   ] as const) {
     test(`${path} has unique H1, canonical, reciprocal alternates and limits`, async ({ page }) => {

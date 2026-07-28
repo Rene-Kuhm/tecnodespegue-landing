@@ -57,7 +57,7 @@ const description = copy.description;
 const formspreeEndpoint = siteConfig.formspree.endpoint;
 ---
 
-<Layout title={title} description={description} path={locale === 'en' ? '/en/templates' : '/templates'} locale={locale} alternatePaths={{ es: '/templates', en: '/en/templates' }}>
+<Layout title={title} description={description} path={locale === 'en' ? '/en/templates' : '/templates'} locale={locale} alternatePaths={{ es: '/templates', en: '/en/templates' }} noindex={true}>
   <Nav locale={locale} />
 
   <main id="contenido" class="tpl-soon-page">
