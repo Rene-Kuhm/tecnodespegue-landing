@@ -114,7 +114,48 @@ export function getSessionUser(cookies: AstroCookies): string | null {
   return payload?.sub ?? null;
 }
 
+// --- CSRF (bound to the session token, no extra storage needed) ---
+//
+// The token embedded in admin forms is HMAC(sessionCookieValue) using a
+// distinct label so it can't be confused with the session-signing key
+// usage. Since it's derived from the session cookie itself, a request
+// forged from another origin can't produce a valid token even if it
+// somehow guesses/observes one from a previous page (it would also need
+// the session cookie value, which SameSite=strict already keeps from
+// being sent cross-site). This replaces the previous no-op check that
+// only validated the token's length.
+
+function getCsrfSecret(sessionToken: string, secret: string): string {
+  return sign(`csrf:${sessionToken}`, secret);
+}
+
+export function getCsrfToken(cookies: AstroCookies): string | null {
+  const sessionToken = cookies.get(SESSION_COOKIE)?.value;
+  if (!sessionToken) return null;
+  return getCsrfSecret(sessionToken, getSessionSecret());
+}
+
+export function verifyCsrfToken(cookies: AstroCookies, submitted: unknown): boolean {
+  if (typeof submitted !== 'string' || submitted.length === 0) return false;
+  const expected = getCsrfToken(cookies);
+  if (!expected) return false;
+  const expectedBuf = Buffer.from(expected, 'utf-8');
+  const submittedBuf = Buffer.from(submitted, 'utf-8');
+  if (expectedBuf.length !== submittedBuf.length) return false;
+  return timingSafeEqual(expectedBuf, submittedBuf);
+}
+
 // --- Rate limit (in-memory, single-instance) ---
+//
+// KNOWN LIMITATION: on Vercel's serverless runtime, this Map only persists
+// for the lifetime of one warm function instance. Under sustained or
+// distributed brute-force traffic, concurrent/cold invocations get their
+// own counters, so the "5 attempts / 15 min" limit is a best-effort
+// deterrent, not a hard guarantee. scrypt's cost factor already makes each
+// guess slow, and this still stops the common single-source scripted case,
+// but a durable limit needs an external store (e.g. Vercel KV, Upstash
+// Redis) shared across invocations. Not wired up here since that requires
+// provisioning an account/credentials outside this codebase.
 
 interface RateLimitEntry {
   count: number;

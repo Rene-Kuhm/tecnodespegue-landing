@@ -8,6 +8,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import PostEditor from '../../../../components/admin/PostEditor.astro';
 import AdminLayout from '../../../../layouts/admin/AdminLayout.astro';
+import { getCsrfToken } from '../../../../lib/auth';
 
 export const prerender = false;
 
@@ -43,8 +44,7 @@ const body = fmMatch ? fmMatch[2].trim() : rawContent;
 const categories = [...new Set(all.map(p => p.data.category))].sort();
 const tags = [...new Set(all.flatMap(p => p.data.tags ?? []))].sort();
 
-const csrfToken = Array.from(crypto.getRandomValues(new Uint8Array(24)))
-  .map(b => b.toString(16).padStart(2, '0')).join('');
+const csrfToken = getCsrfToken(Astro.cookies) ?? '';
 
 const postData = {
   id: post.id,
