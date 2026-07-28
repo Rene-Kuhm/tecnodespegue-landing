@@ -9,7 +9,7 @@
  */
 
 import type { APIRoute } from 'astro';
-import { getSessionUser } from '../../../lib/auth';
+import { getSessionUser, verifyCsrfToken } from '../../../lib/auth';
 import { isGitHubConfigured } from '../../../lib/github';
 
 export const prerender = false;
@@ -84,7 +84,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   if (!body.slug || !/^[a-z0-9-]+$/.test(body.slug)) {
     return jsonRes({ error: 'Invalid slug' }, 400);
   }
-  if (!body.csrfToken || body.csrfToken.length < 8) {
+  if (!verifyCsrfToken(cookies, body.csrfToken)) {
     return jsonRes({ error: 'Invalid CSRF token' }, 403);
   }
 

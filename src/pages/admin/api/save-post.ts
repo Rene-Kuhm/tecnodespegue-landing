@@ -13,7 +13,7 @@
  */
 
 import type { APIRoute } from 'astro';
-import { getSessionUser } from '../../../lib/auth';
+import { getSessionUser, verifyCsrfToken } from '../../../lib/auth';
 import { createOrUpdateFile, isGitHubConfigured } from '../../../lib/github';
 
 export const prerender = false;
@@ -122,7 +122,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   if (!body.date || !/^\d{4}-\d{2}-\d{2}$/.test(body.date)) {
     return jsonRes({ error: 'date must be YYYY-MM-DD' }, 400);
   }
-  if (!body.csrfToken || typeof body.csrfToken !== 'string' || body.csrfToken.length < 8) {
+  if (!verifyCsrfToken(cookies, body.csrfToken)) {
     return jsonRes({ error: 'Invalid CSRF token' }, 403);
   }
 
