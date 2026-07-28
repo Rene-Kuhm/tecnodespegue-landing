@@ -7,9 +7,9 @@ export const prerender = false;
 import { getCollection } from 'astro:content';
 import PostEditor from '../../components/admin/PostEditor.astro';
 import AdminLayout from '../../layouts/admin/AdminLayout.astro';
+import { getCsrfToken } from '../../lib/auth';
 
-const csrfToken = Array.from(crypto.getRandomValues(new Uint8Array(24)))
-  .map(b => b.toString(16).padStart(2, '0')).join('');
+const csrfToken = getCsrfToken(Astro.cookies) ?? '';
 
 const all = await getCollection('posts');
 const categories = [...new Set(all.map(p => p.data.category))].sort();
