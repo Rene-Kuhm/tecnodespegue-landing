@@ -17,6 +17,7 @@
 
 import Icon from './Icon.astro';
 import GlowOrbs from './GlowOrbs.astro';
+import HeroCodeShowcase from './HeroCodeShowcase.astro';
 import type { Locale } from '../i18n';
 
 interface Props {
@@ -51,26 +52,14 @@ const copy = {
 ---
 
 <section class="hero-section" data-hero>
-  <!-- Background full bleed — versión 4K 21:9 (ultrawide) cuando el viewport es ancho,
-       versión 3:2 estándar en el resto. object-fit: cover mantiene aspect ratio. -->
-  <picture class="hero-bg" aria-hidden="true">
-    <source media="(min-aspect-ratio: 17/9)" srcset="/hero-mockup-ultrawide.webp" type="image/webp" />
-    <source media="(min-aspect-ratio: 17/9)" srcset="/hero-mockup-ultrawide.jpg" type="image/jpeg" />
-    <source srcset="/hero-mockup.webp" type="image/webp" />
-    <source srcset="/hero-mockup.jpg" type="image/jpeg" />
-    <img src="/hero-mockup.jpg" alt="" class="hero-bg-img" loading="eager" decoding="async" fetchpriority="high" width="1264" height="848" />
-    <div class="hero-bg-top-fade" aria-hidden="true"></div>
-  </picture>
-
-  <!-- Glow orbs: cosmic/gold/red atmospheric wash behind the 3D code layer.
-       DOM-ordered between .hero-bg (z:0) and .hero-3d-mount (z:1) so the
-       orbs tint the dark areas of the mockup but stay behind the floating
-       code lines. -->
+  <!-- Glow orbs: cosmic/gold/red atmospheric wash behind everything. -->
   <GlowOrbs />
 
-  <!-- Capa 3D: se posiciona por JS exactamente sobre la pantalla del monitor
-       en la foto de fondo. Vacía y oculta hasta que el script la monta. -->
-  <div class="hero-3d-mount" data-hero-3d aria-hidden="true"></div>
+  <!-- Terminal showcase: replaces the prior static mockup image and the
+       3D code layer. CSS-built, narrates the user's actual workflow. -->
+  <div class="hero-showcase-wrap">
+    <HeroCodeShowcase />
+  </div>
 
   <!-- Side content: title + copy + CTAs (no se superpone con el monitor) -->
   <div class="hero-side" data-hero-side>
@@ -166,9 +155,11 @@ const copy = {
     padding: 5rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
   }
 
-  /* Hide monitor mockup + 3D code layer on mobile — text-first hero. */
+  /* Hide monitor mockup + 3D code layer on mobile — text-first hero.
+     Also hide the terminal showcase on mobile (it's desktop-only). */
   .hero-bg,
-  .hero-3d-mount {
+  .hero-3d-mount,
+  .hero-showcase-wrap {
     display: none;
   }
 
@@ -577,6 +568,19 @@ const copy = {
       pointer-events: auto;
     }
 
+    /* Terminal showcase: positioned on the right of the hero, sized to
+       balance visually with the left-aligned hero-side text. */
+    .hero-showcase-wrap {
+      display: block;
+      position: absolute;
+      top: 50%;
+      right: clamp(2rem, 5vw, 5rem);
+      transform: translateY(-50%);
+      z-index: 8;
+      width: clamp(30rem, 42vw, 38rem);
+      max-width: calc(100vw - 32rem - 6rem); /* leaves room for hero-side */
+    }
+
     /* Bottom bar — floating, centered */
     .hero-bottom-bar {
       position: absolute;
@@ -647,14 +651,6 @@ const copy = {
       max-width: 24rem;
     }
   }
-    .side-title { font-size: clamp(1.85rem, 11vw, 2.35rem); }
-    .side-ctas { flex-direction: column; }
-    .side-btn-primary,
-    .side-btn-ghost { width: 100%; }
-    .bb-stats { gap: 0.35rem; }
-    .bb-stat-num { font-size: 0.95rem; }
-    .bb-stat-label { font-size: 0.4rem; }
-  }
 
   @media (max-height: 700px) and (max-width: 820px) {
     .hero-section { min-height: 40rem; }
@@ -699,135 +695,4 @@ const copy = {
   analyticsWindow.__heroAnalyticsPageLoadHandler = bindHeroAnalytics;
   document.addEventListener('astro:page-load', analyticsWindow.__heroAnalyticsPageLoadHandler);
   bindHeroAnalytics();
-</script>
-
-<script>
-  /**
-   * Capa 3D del hero (progressive enhancement).
-   * Monta Code3D (src/scripts/three/code3D.ts) exactamente sobre el
-   * rectángulo de la pantalla del monitor en la foto de fondo, solo en
-   * desktop (>820px), sin prefers-reduced-motion, y si WebGL está
-   * disponible. Se re-posiciona en resize y se limpia/remonta en cada
-   * navegación de Astro (astro:page-load) para no perder contextos WebGL.
-   */
-  import type { Code3D as Code3DType } from '../scripts/three/code3D';
-
-  type Hero3DWindow = typeof window & {
-    __hero3DPageLoadHandler?: () => void;
-    __hero3DResizeHandler?: () => void;
-  };
-
-  // Rectángulo de la pantalla dentro de cada foto fuente, en píxeles nativos
-  // de la imagen (medido sobre hero-mockup.jpg / hero-mockup-ultrawide.jpg).
-  const SCREEN_BOX = {
-    standard: { iw: 1264, ih: 848, x0: 306, y0: 181, x1: 964, y1: 569 },
-    ultrawide: { iw: 3840, ih: 1646, x0: 1267, y0: 345, x1: 2568, y1: 1152 },
-  } as const;
-
-  const heroWindow = window as Hero3DWindow;
-
-  let instance: Code3DType | null = null;
-  let mountEl: HTMLElement | null = null;
-
-  function pickBox() {
-    const ar = window.innerWidth / Math.max(window.innerHeight, 1);
-    return ar >= 17 / 9 ? SCREEN_BOX.ultrawide : SCREEN_BOX.standard;
-  }
-
-  function supportsWebGL(): boolean {
-    try {
-      const canvas = document.createElement('canvas');
-      return !!(
-        window.WebGLRenderingContext &&
-        (canvas.getContext('webgl') || canvas.getContext('experimental-webgl'))
-      );
-    } catch {
-      return false;
-    }
-  }
-
-  function shouldEnable3D(): boolean {
-    return (
-      window.matchMedia('(min-width: 821px)').matches &&
-      !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
-      supportsWebGL()
-    );
-  }
-
-  function updatePosition(section: HTMLElement) {
-    if (!mountEl) return;
-    const rect = section.getBoundingClientRect();
-    const box = pickBox();
-    const scale = Math.max(rect.width / box.iw, rect.height / box.ih);
-    const dispW = box.iw * scale;
-    const dispH = box.ih * scale;
-    const offX = (rect.width - dispW) / 2;
-    const offY = (rect.height - dispH) / 2;
-
-    mountEl.style.left = `${offX + box.x0 * scale}px`;
-    mountEl.style.top = `${offY + box.y0 * scale}px`;
-    mountEl.style.width = `${(box.x1 - box.x0) * scale}px`;
-    mountEl.style.height = `${(box.y1 - box.y0) * scale}px`;
-  }
-
-  async function mount() {
-    if (instance || !mountEl) return;
-    try {
-      const { Code3D } = await import('../scripts/three/code3D');
-      if (!mountEl || instance) return; // re-check tras el import async
-      instance = new Code3D({ container: mountEl, density: 'low' });
-      requestAnimationFrame(() => mountEl?.classList.add('is-active'));
-    } catch (err) {
-      console.warn('[hero-3d] No se pudo montar la escena 3D, se mantiene la imagen estática.', err);
-    }
-  }
-
-  function teardown() {
-    instance?.dispose();
-    instance = null;
-    mountEl?.classList.remove('is-active');
-  }
-
-  function setup() {
-    const section = document.querySelector<HTMLElement>('[data-hero]');
-    mountEl = section?.querySelector<HTMLElement>('[data-hero-3d]') ?? null;
-    if (!section || !mountEl) return;
-
-    updatePosition(section);
-    if (shouldEnable3D()) {
-      mount();
-    }
-
-    if (heroWindow.__hero3DResizeHandler) {
-      window.removeEventListener('resize', heroWindow.__hero3DResizeHandler);
-      window.removeEventListener('orientationchange', heroWindow.__hero3DResizeHandler);
-    }
-
-    let resizeRaf = 0;
-    heroWindow.__hero3DResizeHandler = () => {
-      cancelAnimationFrame(resizeRaf);
-      resizeRaf = requestAnimationFrame(() => {
-        updatePosition(section);
-        if (shouldEnable3D()) {
-          mount();
-        } else if (instance) {
-          teardown();
-        }
-      });
-    };
-    window.addEventListener('resize', heroWindow.__hero3DResizeHandler);
-    window.addEventListener('orientationchange', heroWindow.__hero3DResizeHandler);
-  }
-
-  if (heroWindow.__hero3DPageLoadHandler) {
-    document.removeEventListener('astro:page-load', heroWindow.__hero3DPageLoadHandler);
-  }
-  heroWindow.__hero3DPageLoadHandler = () => {
-    teardown();
-    setup();
-  };
-  document.addEventListener('astro:page-load', heroWindow.__hero3DPageLoadHandler);
-  setup();
-
-  document.addEventListener('astro:before-swap', () => teardown(), { once: false });
 </script>
