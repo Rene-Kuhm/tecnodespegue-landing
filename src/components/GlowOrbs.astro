@@ -1,0 +1,152 @@
+---
+/**
+ * GlowOrbs.astro — Atmospheric radial-gradient orbs for depth.
+ *
+ * Adds soft blurred color washes using the site's Marvel palette
+ * (cosmic purple, gold, red). Pure CSS, GPU-accelerated via filter,
+ * respects prefers-reduced-motion, scales blur down on mobile.
+ *
+ * No animation by default — the blur does the visual work. Add
+ * `animation` later if subtle drift is desired (separate iteration).
+ *
+ * @example
+ *   <GlowOrbs />                          // cosmic + gold + red, default blur
+ *   <GlowOrbs variant="cosmic-only" />    // just cosmic purple
+ *   <GlowOrbs intensity={0.6} />          // dimmer overall
+ *   <GlowOrbs blur={120} />               // more diffuse
+ */
+
+export type GlowVariant =
+  | 'cosmic-gold-red'
+  | 'cosmic-only'
+  | 'gold-only'
+  | 'red-only'
+  | 'cosmic-gold';
+
+interface Props {
+  /**
+   * Which orbs to render. Default is the full tri-tone used in the hero.
+   */
+  variant?: GlowVariant;
+  /**
+   * 0..1 — multiplier on each orb's alpha. Use to tune prominence per surface.
+   * @default 1
+   */
+  intensity?: number;
+  /**
+   * Blur radius in px applied to every orb. Mobile auto-reduces to 50px.
+   * @default 80
+   */
+  blur?: number;
+}
+
+const {
+  variant = 'cosmic-gold-red',
+  intensity = 1,
+  blur = 80,
+} = Astro.props;
+
+const showCosmic = variant === 'cosmic-gold-red' || variant === 'cosmic-only' || variant === 'cosmic-gold';
+const showGold = variant === 'cosmic-gold-red' || variant === 'gold-only' || variant === 'cosmic-gold';
+const showRed = variant === 'cosmic-gold-red' || variant === 'red-only';
+---
+
+<div
+  class="glow-orbs"
+  data-variant={variant}
+  aria-hidden="true"
+  style={`--orb-intensity:${intensity};--orb-blur:${blur}px;`}
+>
+  {showCosmic && <div class="glow-orb glow-orb--cosmic"></div>}
+  {showGold && <div class="glow-orb glow-orb--gold"></div>}
+  {showRed && <div class="glow-orb glow-orb--red"></div>}
+</div>
+
+<style>
+  .glow-orbs {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1; /* above .hero-bg (z:0), below .hero-3d-mount (z:1, later in DOM) */
+    /* Hint to the compositor that this layer is opaque-ish and stable. */
+    transform: translateZ(0);
+  }
+
+  .glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(var(--orb-blur, 80px));
+    will-change: transform;
+    /* Promote to its own layer so the parent doesn't repaint when an orb
+       would otherwise invalidate a large area. */
+    transform: translateZ(0);
+  }
+
+  /* Cosmic purple — top-left wash */
+  .glow-orb--cosmic {
+    width: 55%;
+    height: 55%;
+    top: -10%;
+    left: -5%;
+    background: radial-gradient(
+      circle,
+      rgba(177, 78, 255, calc(0.35 * var(--orb-intensity, 1))) 0%,
+      transparent 70%
+    );
+  }
+
+  /* Gold — mid-right wash (complements the cosmic top-left) */
+  .glow-orb--gold {
+    width: 45%;
+    height: 45%;
+    top: 45%;
+    right: -10%;
+    background: radial-gradient(
+      circle,
+      rgba(248, 180, 0, calc(0.28 * var(--orb-intensity, 1))) 0%,
+      transparent 70%
+    );
+  }
+
+  /* Marvel red — bottom-center anchor, lower alpha (red is the loudest) */
+  .glow-orb--red {
+    width: 35%;
+    height: 35%;
+    bottom: -8%;
+    left: 30%;
+    background: radial-gradient(
+      circle,
+      rgba(237, 29, 36, calc(0.22 * var(--orb-intensity, 1))) 0%,
+      transparent 70%
+    );
+  }
+
+  /* Mobile — smaller blur + wider orbs so the wash covers the smaller viewport
+     without needing more GPU work per orb. */
+  @media (max-width: 768px) {
+    .glow-orb {
+      filter: blur(50px);
+    }
+    .glow-orb--cosmic {
+      width: 80%;
+      height: 50%;
+    }
+    .glow-orb--gold {
+      width: 60%;
+      height: 40%;
+    }
+    .glow-orb--red {
+      width: 50%;
+      height: 30%;
+    }
+  }
+
+  /* Respect users who don't want motion / extra paint cost.
+     Static blur still counts as extra rendering work. */
+  @media (prefers-reduced-motion: reduce) {
+    .glow-orbs {
+      display: none;
+    }
+  }
+</style>
