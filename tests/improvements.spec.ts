@@ -42,6 +42,8 @@ test.describe('Evidence-based case studies', () => {
     for (const [path, expected] of [
       ['/casos/vaulta', '/en/case-studies/vaulta'],
       ['/en/case-studies/flow-engineering', '/casos/flow-engineering'],
+      ['/', '/en'],
+      ['/en', '/'],
     ] as const) {
       await page.goto(path);
       const mobile = (page.viewportSize()?.width ?? 1024) < 768;

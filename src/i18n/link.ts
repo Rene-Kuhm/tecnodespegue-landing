@@ -36,8 +36,8 @@ export function languageToggleHref(currentLocale: Locale, currentPath: string): 
     }
     return '/';
   } else {
-    // From ES: /blog → /en/blog
+    // From ES: /blog → /en/blog, / → /en (no trailing slash: trailingSlash is 'never')
     const normalized = currentPath.startsWith('/') ? currentPath : `/${currentPath}`;
-    return `/en${normalized}`;
+    return normalized === '/' ? '/en' : `/en${normalized}`;
   }
 }
