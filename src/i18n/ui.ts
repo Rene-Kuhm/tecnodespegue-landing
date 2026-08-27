@@ -6,6 +6,7 @@ import type { Locale } from './locales';
 
 const es = {
   nav: {
+    home: 'Inicio',
     solutions: 'Soluciones',
     blog: 'Blog',
     portfolio: 'Portfolio',
@@ -65,6 +66,7 @@ type UIDict = {
 
 const en: UIDict = {
   nav: {
+    home: 'Home',
     solutions: 'Solutions',
     blog: 'Blog',
     portfolio: 'Portfolio',

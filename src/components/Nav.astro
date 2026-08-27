@@ -30,6 +30,10 @@ const toggleLabel = locale === 'es' ? 'EN' : 'ES';
     </a>
 
     <div class="nav-menu" data-nav-menu>
+      <a href={locale === 'es' ? '/' : '/en'} class="nav-link" data-magnetic>
+        <span class="nav-link-text">{t.nav.home}</span>
+        <span class="nav-link-underline" aria-hidden="true"></span>
+      </a>
       <a href={localizedPath('/#soluciones', locale)} class="nav-link" data-magnetic>
         <span class="nav-link-text">{t.nav.solutions}</span>
         <span class="nav-link-underline" aria-hidden="true"></span>
@@ -77,6 +81,7 @@ const toggleLabel = locale === 'es' ? 'EN' : 'ES';
 
   <div class="nav-mobile" id="mobile-menu" data-nav-mobile aria-hidden="true" inert>
     <div class="nav-mobile-inner">
+      <a href={locale === 'es' ? '/' : '/en'} class="nav-mobile-link font-display">{t.nav.home}</a>
       <a href={localizedPath('/#soluciones', locale)} class="nav-mobile-link font-display">{t.nav.solutions}</a>
       <a href={localizedPath('/blog', locale)} class="nav-mobile-link font-display">{t.nav.blog}</a>
       <a href={localizedPath('/#portfolio', locale)} class="nav-mobile-link font-display">{t.nav.portfolio}</a>
