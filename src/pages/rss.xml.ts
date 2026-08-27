@@ -12,6 +12,8 @@ export async function GET(context: APIContext) {
     title: 'TecnoDespegue — Blog de Ingeniería',
     description: 'Desarrollo fullstack, automatizaciones con IA, arquitectura de software y estrategia tecnológica. Sin humo, solo experiencia real.',
     site: context.site!,
+    // @astrojs/rss default is trailingSlash=true; alineamos con astro.config.mjs (`never`).
+    trailingSlash: false,
     items: posts
       .filter(p => !p.data.draft)
       .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
@@ -19,7 +21,7 @@ export async function GET(context: APIContext) {
         title: post.data.title,
         description: post.data.seo?.description ?? post.data.description,
         pubDate: post.data.date,
-        link: `/blog/${post.id}/`,
+        link: `/blog/${post.id}`,
         categories: [post.data.category, ...(post.data.tags ?? [])],
         author: post.data.author,
       })),
