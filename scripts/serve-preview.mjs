@@ -5,7 +5,7 @@ import { extname, join, normalize } from 'node:path';
 const root = join(process.cwd(), 'dist', 'client');
 const port = Number(process.env.PORT || 4321);
 const types = { '.css': 'text/css', '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.json': 'application/json', '.png': 'image/png', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.xml': 'application/xml', '.txt': 'text/plain; charset=utf-8', '.woff2': 'font/woff2' };
-const contentSecurityPolicy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://*.tiktok.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://plausible.io https://*.tiktok.com https://*.tiktokw.us https://*.analytics.tiktok.com https://formspree.io; frame-src 'self' https://*.tiktok.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://formspree.io; object-src 'none'";
+const contentSecurityPolicy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://*.tiktok.com https://plausible.io https://giscus.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://giscus.app; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://plausible.io https://*.tiktok.com https://*.tiktokw.us https://*.analytics.tiktok.com https://formspree.io; frame-src 'self' https://*.tiktok.com https://giscus.app; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://formspree.io; object-src 'none'";
 
 const server = createServer((request, response) => {
   const pathname = decodeURIComponent(new URL(request.url || '/', `http://${request.headers.host}`).pathname);
