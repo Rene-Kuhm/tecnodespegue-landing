@@ -19,13 +19,11 @@ export default defineConfig({
   integrations: [
     sitemap({
       filter: (page) =>
-        !page.includes('/admin/') &&
+        // `includes('/admin')` catches both `/admin` and `/admin/...` (the previous
+        // `/admin/` only filter missed the bare `/admin` route that landed in the sitemap).
+        !page.includes('/admin') &&
         !page.includes('/404') &&
-        !page.includes('/en/404') &&
-        !page.includes('/en/admin/') &&
-        // Templates aún no publicados (placeholders "próximamente"): no indexar
-        // hasta que exista al menos un template real y comprable.
-        !page.includes('/templates'),
+        !page.includes('/en/404'),
       i18n: {
         defaultLocale: 'es',
         locales: {
