@@ -16,6 +16,7 @@
  */
 
 import Icon from './Icon.astro';
+import GlowOrbs from './GlowOrbs.astro';
 import type { Locale } from '../i18n';
 
 interface Props {
@@ -60,6 +61,12 @@ const copy = {
     <img src="/hero-mockup.jpg" alt="" class="hero-bg-img" loading="eager" decoding="async" fetchpriority="high" width="1264" height="848" />
     <div class="hero-bg-top-fade" aria-hidden="true"></div>
   </picture>
+
+  <!-- Glow orbs: cosmic/gold/red atmospheric wash behind the 3D code layer.
+       DOM-ordered between .hero-bg (z:0) and .hero-3d-mount (z:1) so the
+       orbs tint the dark areas of the mockup but stay behind the floating
+       code lines. -->
+  <GlowOrbs />
 
   <!-- Capa 3D: se posiciona por JS exactamente sobre la pantalla del monitor
        en la foto de fondo. Vacía y oculta hasta que el script la monta. -->

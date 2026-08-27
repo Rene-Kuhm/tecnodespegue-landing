@@ -6,6 +6,7 @@
  */
 
 import Icon from './Icon.astro';
+import GlowOrbs from './GlowOrbs.astro';
 import type { Locale } from '../i18n';
 
 interface Props {
@@ -66,6 +67,9 @@ const copy = {
 ---
 
 <section class="py-32 relative overflow-hidden" id="optimizacion" data-refactor>
+  <!-- Glow orbs (atmospheric depth) -->
+  <GlowOrbs intensity={0.6} />
+
   <div class="refactor-bg" aria-hidden="true"></div>
 
   <div class="max-w-7xl mx-auto px-6 md:px-8 relative z-10 grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">

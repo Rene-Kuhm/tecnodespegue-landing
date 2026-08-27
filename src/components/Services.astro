@@ -6,6 +6,7 @@
  */
 
 import Icon from './Icon.astro';
+import GlowOrbs from './GlowOrbs.astro';
 import type { Locale } from '../i18n';
 
 interface Props {
@@ -52,6 +53,9 @@ const copy = {
 ---
 
 <section class="py-32 relative overflow-hidden" id="soluciones" data-services>
+  <!-- Glow orbs (atmospheric depth) -->
+  <GlowOrbs intensity={0.7} />
+
   <!-- Background ambient -->
   <div class="services-bg" aria-hidden="true"></div>
 
