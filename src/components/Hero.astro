@@ -272,22 +272,31 @@ const copy = {
     cursor: pointer;
   }
 
-  /* Primary CTA dominates — full width, prominent on mobile */
+  /* Primary CTA dominates — full width, prominent on mobile.
+     min-height stays at 44px (iOS HIG minimum touch target); visual
+     weight reduced via smaller padding/font/lighter shadow. */
   .side-btn-primary {
     width: 100%;
     min-height: 2.75rem;
-    padding: 0.7rem 1.125rem;
-    font-size: 0.875rem;
-    font-weight: 600;
+    padding: 0.45rem 1rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
     border-radius: 999px;
     background: #FFFFFF;
     color: #0a0a0a;
-    box-shadow: 0 6px 18px -6px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08);
+    box-shadow: 0 4px 12px -4px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.06);
+  }
+
+  /* Shrink icons inside buttons on mobile — match text visual weight */
+  .side-btn-primary :global(svg),
+  .side-btn-ghost :global(svg) {
+    width: 0.875rem;
+    height: 0.875rem;
   }
 
   .side-btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 24px -6px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.18);
+    box-shadow: 0 8px 18px -4px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.18);
   }
 
   .side-btn-primary:active {
@@ -299,13 +308,13 @@ const copy = {
     align-self: center;
     width: auto;
     min-height: 2.25rem;
-    padding: 0.4rem 0.875rem;
-    font-size: 0.8125rem;
-    font-weight: 500;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 400;
     border-radius: 999px;
     background: transparent;
-    color: rgba(255,255,255,0.75);
-    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.7);
+    border: 1px solid rgba(255,255,255,0.12);
   }
 
   .side-btn-ghost:hover {
