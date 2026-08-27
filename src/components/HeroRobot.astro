@@ -1,0 +1,483 @@
+---
+/**
+ * HeroRobot.astro — Animated automation-robot illustration for the hero.
+ *
+ * Replaces HeroCodeShowcase + HeroFloatingCards as the hero's right-side
+ * visual. Hand-built inline SVG (no raster/photo assets) so it stays on
+ * the site's "built, not photographed" direction — same reasoning that
+ * replaced the original static mockup image with the terminal showcase.
+ *
+ * Composition: a console-bot with a chest "core" (Marvel arc-reactor
+ * echo), a scanning visor, an articulated arm tapping a floating task
+ * card, two idle gears, and dashed data lines pulsing out to two glass
+ * HUD chips — same visual grammar as the site's existing
+ * HeroFloatingCards (glassmorphism, dashed connectors, reveal stagger).
+ *
+ * CSS drives idle/looping motion (gear spin, visor scan, core pulse,
+ * connector dash-flow) so the piece still reads as "alive" with JS
+ * disabled. GSAP adds the one-shot entrance choreography (arm/gears/
+ * chips staggering in) and the arm's periodic "tap" gesture — mirrors
+ * how HeroCodeShowcase treats static markup as the no-JS fallback and
+ * JS as pure enhancement.
+ *
+ * Desktop-only (`.hero-robot` display:none below 821px, same threshold
+ * as the showcase it replaces) and fully prefers-reduced-motion aware.
+ */
+
+interface Props {
+  locale?: 'es' | 'en';
+}
+
+const { locale = 'es' } = Astro.props;
+
+const copy = {
+  es: {
+    figLabel: 'Automation Core · Live',
+    chipAuto: 'AUTOMATIZACIÓN',
+    chipAutoValue: '24/7',
+    chipPipeline: 'CI/CD',
+    chipPipelineValue: 'ACTIVO',
+  },
+  en: {
+    figLabel: 'Automation Core · Live',
+    chipAuto: 'AUTOMATION',
+    chipAutoValue: '24/7',
+    chipPipeline: 'CI/CD',
+    chipPipelineValue: 'ACTIVE',
+  },
+}[locale];
+---
+
+<div class="hero-robot" aria-hidden="true" data-hero-robot>
+  <div class="hr-fig">
+    <span class="hr-fig-num">Fig 0.2</span>
+    <span class="hr-fig-sep">—</span>
+    <span class="hr-fig-label">{copy.figLabel}</span>
+  </div>
+
+  <div class="hr-stage">
+    <svg
+      class="hr-svg"
+      viewBox="0 0 440 340"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-label="Robot automatizando tareas frente a una consola"
+    >
+      <!-- ── Idle gears (behind the bot) ── -->
+      <g class="hr-gear hr-gear--lg" style="transform-origin: 78px 250px;">
+        <circle cx="78" cy="250" r="26" class="hr-gear-body" />
+        <g class="hr-gear-teeth">
+          <rect x="74" y="216" width="8" height="14" rx="2" />
+          <rect x="74" y="270" width="8" height="14" rx="2" />
+          <rect x="44" y="246" width="14" height="8" rx="2" />
+          <rect x="98" y="246" width="14" height="8" rx="2" />
+          <rect x="55" y="223" width="8" height="14" rx="2" transform="rotate(45 59 230)" />
+          <rect x="93" y="223" width="8" height="14" rx="2" transform="rotate(-45 97 230)" />
+          <rect x="55" y="263" width="8" height="14" rx="2" transform="rotate(-45 59 270)" />
+          <rect x="93" y="263" width="8" height="14" rx="2" transform="rotate(45 97 270)" />
+        </g>
+        <circle cx="78" cy="250" r="8" class="hr-gear-hub" />
+      </g>
+
+      <g class="hr-gear hr-gear--sm" style="transform-origin: 118px 220px;">
+        <circle cx="118" cy="220" r="15" class="hr-gear-body" />
+        <g class="hr-gear-teeth">
+          <rect x="115" y="199" width="6" height="9" rx="1.5" />
+          <rect x="115" y="232" width="6" height="9" rx="1.5" />
+          <rect x="99" y="217" width="9" height="6" rx="1.5" />
+          <rect x="128" y="217" width="9" height="6" rx="1.5" />
+        </g>
+        <circle cx="118" cy="220" r="5" class="hr-gear-hub" />
+      </g>
+
+      <!-- ── Data connectors to HUD chips ── -->
+      <path class="hr-connector hr-connector--a" d="M244,150 C300,130 330,90 372,64" />
+      <path class="hr-connector hr-connector--b" d="M256,220 C310,232 344,252 388,268" />
+
+      <!-- ── Robot body ── -->
+      <g class="hr-bot">
+        <!-- antenna -->
+        <line x1="220" y1="42" x2="220" y2="20" class="hr-antenna-mast" />
+        <circle cx="220" cy="16" r="6" class="hr-antenna-tip" />
+
+        <!-- head -->
+        <rect x="162" y="44" width="116" height="82" rx="20" class="hr-head" />
+        <rect x="180" y="76" width="80" height="20" rx="10" class="hr-visor" />
+        <rect x="186" y="82" width="16" height="8" rx="4" class="hr-visor-scan" />
+
+        <!-- torso -->
+        <rect x="146" y="132" width="148" height="132" rx="22" class="hr-torso" />
+
+        <!-- chest core (arc-reactor echo) -->
+        <circle cx="220" cy="196" r="30" class="hr-core-ring" />
+        <circle cx="220" cy="196" r="18" class="hr-core-glow" />
+        <circle cx="220" cy="196" r="7" class="hr-core-hub" />
+
+        <!-- status lights -->
+        <circle cx="168" cy="150" r="4" class="hr-light hr-light--a" />
+        <circle cx="180" cy="150" r="4" class="hr-light hr-light--b" />
+
+        <!-- left arm (static, resting) -->
+        <path d="M146,170 Q118,190 122,232" class="hr-limb" />
+        <circle cx="122" cy="232" r="7" class="hr-joint" />
+
+        <!-- right arm (animated, taps the task card) -->
+        <g class="hr-arm-upper" style="transform-origin: 292px 168px;">
+          <path d="M292,168 Q330,178 344,214" class="hr-limb" />
+          <circle cx="292" cy="168" r="7" class="hr-joint" />
+          <g class="hr-arm-fore" style="transform-origin: 344px 214px;">
+            <path d="M344,214 Q356,242 340,262" class="hr-limb" />
+            <circle cx="344" cy="214" r="6" class="hr-joint" />
+            <circle cx="340" cy="262" r="6" class="hr-joint hr-joint--hand" />
+          </g>
+        </g>
+      </g>
+
+      <!-- ── Floating task card the arm taps ── -->
+      <g class="hr-task">
+        <rect x="300" y="266" width="80" height="52" rx="10" class="hr-task-card" />
+        <path d="M316,292 L328,304 L364,278" class="hr-task-check" />
+      </g>
+    </svg>
+
+    <!-- ── HUD chips (glassmorphic, same grammar as HeroFloatingCards) ── -->
+    <div class="hr-chip hr-chip--a">
+      <span class="hr-chip-label font-mono">{copy.chipAuto}</span>
+      <span class="hr-chip-value font-display">{copy.chipAutoValue}</span>
+    </div>
+    <div class="hr-chip hr-chip--b">
+      <span class="hr-chip-label font-mono">{copy.chipPipeline}</span>
+      <span class="hr-chip-value font-display">{copy.chipPipelineValue}</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { gsap } from 'gsap';
+
+  function initHeroRobot() {
+    const root = document.querySelector<HTMLElement>('[data-hero-robot]');
+    if (!root || root.dataset.hrAnimated === 'true') return;
+    root.dataset.hrAnimated = 'true';
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const upper = root.querySelector<SVGGElement>('.hr-arm-upper');
+    const fore = root.querySelector<SVGGElement>('.hr-arm-fore');
+    const task = root.querySelector<SVGGElement>('.hr-task');
+    const chips = root.querySelectorAll<HTMLElement>('.hr-chip');
+    const bot = root.querySelector<SVGGElement>('.hr-bot');
+
+    if (reduceMotion) {
+      // Static frame — everything already visible via CSS, no JS motion.
+      return;
+    }
+
+    // Entrance: bot settles in, then chips stagger, mirrors HeroFloatingCards' reveal timing.
+    gsap.fromTo(
+      root,
+      { opacity: 0, y: 16 },
+      { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.15 }
+    );
+    if (chips.length) {
+      gsap.fromTo(
+        chips,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', stagger: 0.15, delay: 0.55 }
+      );
+    }
+
+    // Looping "tap the task card" gesture on the right arm.
+    if (upper && fore && task) {
+      const tapLoop = gsap.timeline({ repeat: -1, repeatDelay: 1.1, delay: 1.1 });
+      tapLoop
+        .to(upper, { rotate: 8, duration: 0.45, ease: 'power2.inOut' })
+        .to(fore, { rotate: -14, duration: 0.35, ease: 'power2.inOut' }, '<0.05')
+        .to(task, { scale: 1.06, transformOrigin: '340px 292px', duration: 0.18, ease: 'power1.out' }, '-=0.15')
+        .to(task, { scale: 1, duration: 0.25, ease: 'power1.out' })
+        .to(upper, { rotate: 0, duration: 0.5, ease: 'power2.inOut' }, '<')
+        .to(fore, { rotate: 0, duration: 0.4, ease: 'power2.inOut' }, '<');
+    }
+
+    // Gentle idle bob on the whole bot, independent of the tap loop.
+    if (bot) {
+      gsap.to(bot, {
+        y: -4,
+        duration: 2.6,
+        ease: 'sine.inOut',
+        repeat: -1,
+        yoyo: true,
+      });
+    }
+  }
+
+  initHeroRobot();
+  document.addEventListener('astro:page-load', initHeroRobot);
+</script>
+
+<style>
+  .hero-robot {
+    position: relative;
+    background: #0d0d12;
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(107, 45, 142, 0.16), transparent 55%),
+      radial-gradient(circle at 90% 90%, rgba(248, 180, 0, 0.08), transparent 55%);
+    border-radius: 0.875rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+      0 32px 64px -16px rgba(0, 0, 0, 0.6),
+      0 0 0 1px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+    opacity: 0;
+    animation: hr-reveal 600ms var(--ease-marvel, ease) 200ms forwards;
+  }
+
+  @keyframes hr-reveal {
+    to { opacity: 1; }
+  }
+
+  .hr-fig {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem 0.375rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.5);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .hr-fig-num {
+    color: var(--color-marvel-gold);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .hr-fig-sep {
+    color: rgba(255, 255, 255, 0.25);
+  }
+
+  .hr-fig-label {
+    color: rgba(255, 255, 255, 0.75);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .hr-stage {
+    position: relative;
+    padding: 1rem 1.25rem 1.5rem;
+  }
+
+  .hr-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* ── Gears ── */
+  .hr-gear-body {
+    fill: #17171f;
+    stroke: rgba(255, 255, 255, 0.12);
+    stroke-width: 1.5;
+  }
+  .hr-gear-teeth rect {
+    fill: #17171f;
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 1;
+  }
+  .hr-gear-hub {
+    fill: var(--color-marvel-cosmic, #6b2d8e);
+    opacity: 0.7;
+  }
+  .hr-gear {
+    animation: hr-spin 14s linear infinite;
+  }
+  .hr-gear--sm {
+    animation-duration: 9s;
+    animation-direction: reverse;
+  }
+  @keyframes hr-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* ── Connectors (dashed, flowing) ── */
+  .hr-connector {
+    stroke: rgba(255, 255, 255, 0.18);
+    stroke-width: 1.5;
+    stroke-dasharray: 4 5;
+    fill: none;
+    animation: hr-connector-flow 2.4s linear infinite;
+  }
+  .hr-connector--b {
+    animation-duration: 3s;
+    animation-direction: reverse;
+  }
+  @keyframes hr-connector-flow {
+    to { stroke-dashoffset: -18; }
+  }
+
+  /* ── Bot body ── */
+  .hr-head {
+    fill: #14141c;
+    stroke: rgba(255, 255, 255, 0.14);
+    stroke-width: 1.5;
+  }
+  .hr-torso {
+    fill: #14141c;
+    stroke: rgba(255, 255, 255, 0.14);
+    stroke-width: 1.5;
+  }
+  .hr-visor {
+    fill: #05050a;
+    stroke: rgba(255, 255, 255, 0.08);
+  }
+  .hr-visor-scan {
+    fill: var(--color-marvel-gold);
+    filter: drop-shadow(0 0 4px var(--color-marvel-gold));
+    animation: hr-scan 2.8s ease-in-out infinite;
+  }
+  @keyframes hr-scan {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(58px); }
+  }
+
+  .hr-antenna-mast {
+    stroke: rgba(255, 255, 255, 0.25);
+    stroke-width: 2;
+  }
+  .hr-antenna-tip {
+    fill: var(--color-marvel-red-glow, #ff3b47);
+    filter: drop-shadow(0 0 5px var(--color-marvel-red-glow, #ff3b47));
+    animation: hr-blink 1.8s ease-in-out infinite;
+  }
+
+  .hr-light--a,
+  .hr-light--b {
+    fill: var(--color-secondary, #00ff88);
+    filter: drop-shadow(0 0 3px var(--color-secondary, #00ff88));
+    animation: hr-blink 2.2s ease-in-out infinite;
+  }
+  .hr-light--b {
+    animation-delay: 0.6s;
+  }
+  @keyframes hr-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.25; }
+  }
+
+  .hr-core-ring {
+    fill: none;
+    stroke: var(--color-marvel-cosmic, #6b2d8e);
+    stroke-width: 2;
+    opacity: 0.7;
+  }
+  .hr-core-glow {
+    fill: var(--color-marvel-gold);
+    opacity: 0.85;
+    filter: drop-shadow(0 0 10px var(--color-marvel-gold)) drop-shadow(0 0 22px rgba(248, 180, 0, 0.5));
+    animation: hr-core-pulse 2.4s ease-in-out infinite;
+  }
+  .hr-core-hub {
+    fill: #ffffff;
+  }
+  @keyframes hr-core-pulse {
+    0%, 100% { r: 18; opacity: 0.85; }
+    50% { r: 21; opacity: 1; }
+  }
+
+  .hr-limb {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.28);
+    stroke-width: 6;
+    stroke-linecap: round;
+  }
+  .hr-joint {
+    fill: #1d1d28;
+    stroke: rgba(255, 255, 255, 0.3);
+    stroke-width: 1.5;
+  }
+  .hr-joint--hand {
+    fill: var(--color-marvel-gold);
+    stroke: none;
+    filter: drop-shadow(0 0 4px var(--color-marvel-gold));
+  }
+
+  .hr-task-card {
+    fill: rgba(0, 255, 136, 0.06);
+    stroke: var(--color-secondary, #00ff88);
+    stroke-width: 1.5;
+  }
+  .hr-task-check {
+    fill: none;
+    stroke: var(--color-secondary, #00ff88);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 4px var(--color-secondary, #00ff88));
+  }
+
+  /* ── HUD chips ── */
+  .hr-chip {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(10, 5, 8, 0.55);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.6);
+  }
+
+  .hr-chip--a {
+    top: 6%;
+    right: 6%;
+    box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.6), 0 0 24px -8px rgba(248, 180, 0, 0.2);
+  }
+
+  .hr-chip--b {
+    bottom: 8%;
+    right: 10%;
+    box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.6), 0 0 24px -8px rgba(0, 255, 136, 0.18);
+  }
+
+  .hr-chip-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: rgba(255, 255, 255, 0.55);
+    white-space: nowrap;
+  }
+
+  .hr-chip-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #ffffff;
+    white-space: nowrap;
+  }
+
+  /* Reduced motion: freeze on a good static frame, no CSS or JS motion */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-robot { animation: none; opacity: 1; }
+    .hr-gear,
+    .hr-visor-scan,
+    .hr-antenna-tip,
+    .hr-light--a,
+    .hr-light--b,
+    .hr-core-glow,
+    .hr-connector {
+      animation: none;
+    }
+    .hr-core-glow { r: 19; opacity: 1; }
+  }
+
+  @media (max-width: 1100px) {
+    .hr-stage { padding: 0.75rem 1rem 1.25rem; }
+  }
+</style>

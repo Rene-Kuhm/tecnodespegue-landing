@@ -18,8 +18,7 @@
 import Icon from './Icon.astro';
 import GlowOrbs from './GlowOrbs.astro';
 import HeroAurora from './HeroAurora.astro';
-import HeroCodeShowcase from './HeroCodeShowcase.astro';
-import HeroFloatingCards from './HeroFloatingCards.astro';
+import HeroRobot from './HeroRobot.astro';
 import type { Locale } from '../i18n';
 
 interface Props {
@@ -29,9 +28,9 @@ interface Props {
 const locale: Locale = Astro.props.locale ?? 'es';
 const copy = {
   es: {
-    kicker: 'SOFTWARE PARA OPERACIONES · 01',
-    title: ['Menos parches.', 'Menos tickets.', 'Software que dura.'],
-    lead: 'Construimos sistemas internos que tu equipo no va a odiar en seis meses.',
+    kicker: 'DESARROLLO + AUTOMATIZACIÓN · 01',
+    title: ['Programamos.', 'Automatizamos.', 'Vos despegás.'],
+    lead: 'Software a medida y procesos automatizados para que tu equipo deje de perder horas en tareas que ya deberían andar solas.',
     primary: 'Iniciá tu Proyecto',
     secondary: 'Ver Portfolio',
     stats: ['Arquitectura', 'Pruebas', 'Entrega', 'Código'],
@@ -40,9 +39,9 @@ const copy = {
     portfolioHref: '#portfolio',
   },
   en: {
-    kicker: 'SOFTWARE FOR OPERATIONS · 01',
-    title: ['Fewer patches.', 'Fewer tickets.', 'Software that lasts.'],
-    lead: "We build internal systems your team won't hate in six months.",
+    kicker: 'DEVELOPMENT + AUTOMATION · 01',
+    title: ['We code.', 'We automate.', 'You take off.'],
+    lead: 'Custom software and automated workflows so your team stops losing hours on tasks that should already run themselves.',
     primary: 'Start your Project',
     secondary: 'View Portfolio',
     stats: ['Architecture', 'Testing', 'Delivery', 'Code'],
@@ -70,11 +69,13 @@ const copy = {
        composition. Desktop-only (see @media 821px block below) — on
        mobile it's a plain block, no positioning override. -->
   <div class="hero-frame">
-    <!-- Terminal showcase: replaces the prior static mockup image and the
-         3D code layer. CSS-built, narrates the user's actual workflow. -->
+    <!-- Robot showcase: hand-built SVG + GSAP illustration of an
+         automation bot at work. Replaces the terminal showcase (which
+         itself replaced the original static mockup image) — same
+         "built, not photographed" direction, now visualizing automation
+         directly instead of narrating it via fake terminal output. -->
     <div class="hero-showcase-wrap">
-      <HeroCodeShowcase />
-      <HeroFloatingCards locale={locale} />
+      <HeroRobot locale={locale} />
     </div>
 
     <!-- Side content: title + copy + CTAs (no se superpone con el monitor) -->
