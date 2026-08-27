@@ -4,6 +4,7 @@ import Nav from '../components/Nav.astro';
 import ProgressBar from '../components/ProgressBar.astro';
 import PageTransition from '../components/PageTransition.astro';
 import Hero from '../components/Hero.astro';
+import HeroStatStrip from '../components/HeroStatStrip.astro';
 import TrustSignals from '../components/TrustSignals.astro';
 import Services from '../components/Services.astro';
 import Portfolio from '../components/Portfolio.astro';
@@ -25,7 +26,9 @@ const locale: Locale = 'es';
   
   <main id="contenido">
     <Hero />
-    
+
+    <HeroStatStrip locale={locale} />
+
     <TrustSignals />
     <Services />
     <Portfolio />

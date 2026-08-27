@@ -1,0 +1,259 @@
+---
+/**
+ * HeroStatStrip.astro — Bilingual metric strip placed between the hero
+ * and the next section. Sells senior engineer credibility at first
+ * glance: experience, methodology, performance, volume.
+ *
+ * Count-up animation triggers via IntersectionObserver when the strip
+ * scrolls into view. Respects prefers-reduced-motion.
+ */
+
+interface StatItem {
+  /** The big number, e.g. "15", "247", "<100ms" */
+  value: string;
+  /** Optional suffix rendered smaller and gold (e.g. "+", "ms") */
+  suffix?: string;
+  /** The label below the number */
+  label: string;
+  /** Numeric portion for the count-up animation (parsed from `value`).
+      Set to 0 for non-numeric values like "<100ms" — animation skipped. */
+  countTo?: number;
+}
+
+interface Props {
+  locale?: 'es' | 'en';
+}
+
+const { locale = 'es' } = Astro.props;
+
+const statsByLocale: Record<'es' | 'en', StatItem[]> = {
+  es: [
+    { value: '15', suffix: '+', label: 'años de ingeniería', countTo: 15 },
+    { value: '47', label: 'productos shipped', countTo: 47 },
+    { value: '247', label: 'tests passing', countTo: 247 },
+    { value: '<100', suffix: 'ms', label: 'TTFB obsesivo', countTo: 100 },
+  ],
+  en: [
+    { value: '15', suffix: '+', label: 'years engineering', countTo: 15 },
+    { value: '47', label: 'products shipped', countTo: 47 },
+    { value: '247', label: 'tests passing', countTo: 247 },
+    { value: '<100', suffix: 'ms', label: 'TTFB obsessed', countTo: 100 },
+  ],
+};
+
+const stats = statsByLocale[locale];
+---
+
+<section class="hero-stat-strip" aria-label={locale === 'es' ? 'Métricas de ingeniería' : 'Engineering metrics'}>
+  <div class="hss-container">
+    {stats.map((stat, idx) => {
+      const isLast = idx === stats.length - 1;
+      return (
+        <>
+          <div class="hss-stat">
+            <div class="hss-value-row">
+              <span
+                class="hss-counter"
+                data-value={stat.countTo ?? '0'}
+                data-display={stat.value}
+              >{stat.value}</span>
+              {stat.suffix && <span class="hss-suffix">{stat.suffix}</span>}
+            </div>
+            <div class="hss-label">{stat.label}</div>
+          </div>
+          {!isLast && <div class="hss-divider" aria-hidden="true"></div>}
+        </>
+      );
+    })}
+  </div>
+</section>
+
+<script>
+  type CounterWindow = typeof window & {
+    __hssObserved?: boolean;
+  };
+
+  const hssWindow = window as CounterWindow;
+
+  function animateCounter(el: HTMLElement, target: number, display: string) {
+    if (target <= 0 || hssWindow.__hssObserved) {
+      // Non-numeric value like "<100" — show as-is.
+      el.textContent = display;
+      return;
+    }
+
+    const duration = 1400;
+    const start = performance.now();
+
+    function tick(now: number) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+      const current = Math.round(target * eased);
+      el.textContent = current.toString();
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        el.textContent = display; // restore original display value (e.g. "15" with no separator)
+      }
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  function setupCountUp() {
+    const counters = document.querySelectorAll<HTMLElement>('.hss-counter:not([data-hss-ready])');
+    if (counters.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target as HTMLElement;
+            const target = parseInt(el.dataset.value ?? '0', 10);
+            const display = el.dataset.display ?? target.toString();
+            el.dataset.hssReady = 'true';
+            animateCounter(el, target, display);
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+
+    counters.forEach((c) => observer.observe(c));
+    hssWindow.__hssObserved = true;
+  }
+
+  setupCountUp();
+  document.addEventListener('astro:page-load', setupCountUp);
+</script>
+
+<style>
+  .hero-stat-strip {
+    position: relative;
+    padding: 2.5rem 1.5rem;
+    background:
+      linear-gradient(180deg, rgba(10, 5, 8, 0) 0%, rgba(10, 5, 8, 0.4) 30%, rgba(10, 5, 8, 0.4) 70%, rgba(10, 5, 8, 0) 100%),
+      radial-gradient(ellipse at 30% 50%, rgba(177, 78, 255, 0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 50%, rgba(248, 180, 0, 0.05) 0%, transparent 60%);
+    overflow: hidden;
+  }
+
+  /* Top/bottom hairline so the strip reads as a discrete band */
+  .hero-stat-strip::before,
+  .hero-stat-strip::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.08) 20%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.08) 80%,
+      transparent 100%
+    );
+  }
+  .hero-stat-strip::before { top: 0; }
+  .hero-stat-strip::after { bottom: 0; }
+
+  .hss-container {
+    max-width: 72rem;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .hss-stat {
+    flex: 1 1 0;
+    min-width: 0;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: hss-reveal 600ms var(--ease-marvel, ease) forwards;
+  }
+
+  .hss-stat:nth-child(1) { animation-delay: 0ms; }
+  .hss-stat:nth-child(3) { animation-delay: 80ms; }
+  .hss-stat:nth-child(5) { animation-delay: 160ms; }
+  .hss-stat:nth-child(7) { animation-delay: 240ms; }
+
+  @keyframes hss-reveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hss-value-row {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.125rem;
+    color: #ffffff;
+    font-family: var(--font-display, var(--font-mono));
+    font-weight: 900;
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hss-suffix {
+    color: var(--color-marvel-gold);
+    font-size: 0.65em;
+    font-weight: 700;
+  }
+
+  .hss-label {
+    margin-top: 0.5rem;
+    color: rgba(255, 255, 255, 0.55);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .hss-divider {
+    width: 1px;
+    height: 1.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    flex: 0 0 auto;
+  }
+
+  /* Responsive: stack on small viewports */
+  @media (max-width: 640px) {
+    .hero-stat-strip {
+      padding: 2rem 1rem;
+    }
+    .hss-container {
+      flex-wrap: wrap;
+      gap: 1.5rem 1rem;
+    }
+    .hss-stat {
+      flex: 1 1 calc(50% - 1rem);
+    }
+    .hss-divider {
+      display: none;
+    }
+    .hss-value-row {
+      font-size: clamp(1.5rem, 8vw, 2rem);
+    }
+    .hss-label {
+      font-size: 0.65rem;
+    }
+  }
+
+  /* Respect reduced motion — show values immediately, no reveal */
+  @media (prefers-reduced-motion: reduce) {
+    .hss-stat {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
