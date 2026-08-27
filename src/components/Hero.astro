@@ -19,6 +19,7 @@ import Icon from './Icon.astro';
 import GlowOrbs from './GlowOrbs.astro';
 import HeroAurora from './HeroAurora.astro';
 import HeroCodeShowcase from './HeroCodeShowcase.astro';
+import HeroFloatingCards from './HeroFloatingCards.astro';
 import type { Locale } from '../i18n';
 
 interface Props {
@@ -61,14 +62,23 @@ const copy = {
   <!-- Glow orbs: cosmic/gold/red atmospheric wash behind everything. -->
   <GlowOrbs />
 
-  <!-- Terminal showcase: replaces the prior static mockup image and the
-       3D code layer. CSS-built, narrates the user's actual workflow. -->
-  <div class="hero-showcase-wrap">
-    <HeroCodeShowcase />
-  </div>
+  <!-- Content frame: caps how far the side column and the showcase can
+       drift apart on ultra-wide monitors (34"+, 3440px+). Without this,
+       .hero-side (left: 4rem) and .hero-showcase-wrap (right: ...) are
+       positioned relative to the full viewport, so the gap between them
+       grows unbounded on wide screens instead of staying a fixed
+       composition. Desktop-only (see @media 821px block below) — on
+       mobile it's a plain block, no positioning override. -->
+  <div class="hero-frame">
+    <!-- Terminal showcase: replaces the prior static mockup image and the
+         3D code layer. CSS-built, narrates the user's actual workflow. -->
+    <div class="hero-showcase-wrap">
+      <HeroCodeShowcase />
+      <HeroFloatingCards locale={locale} />
+    </div>
 
-  <!-- Side content: title + copy + CTAs (no se superpone con el monitor) -->
-  <div class="hero-side" data-hero-side>
+    <!-- Side content: title + copy + CTAs (no se superpone con el monitor) -->
+    <div class="hero-side" data-hero-side>
     <span class="side-kicker" data-hero-kicker>
       <span class="side-kicker-dot"></span>
       <span class="side-kicker-text font-mono">{copy.kicker}</span>
@@ -99,6 +109,7 @@ const copy = {
         <span>{copy.secondary}</span>
         <Icon name="arrow_forward" class="w-4 h-4" />
       </a>
+    </div>
     </div>
   </div>
 
@@ -228,11 +239,22 @@ const copy = {
   }
 
   .side-accent {
-    background: linear-gradient(135deg, #FFFFFF 0%, #FF6B9D 50%, #B14EFF 100%);
+    background: linear-gradient(120deg, #FFFFFF 0%, #FF6B9D 25%, #B14EFF 50%, #FF6B9D 75%, #FFFFFF 100%);
+    background-size: 220% 100%;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 0 30px rgba(255,107,157,0.5));
+    animation: side-accent-sheen 7s ease-in-out infinite;
+  }
+
+  @keyframes side-accent-sheen {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .side-accent { animation: none; }
   }
 
   .side-lead {
@@ -542,6 +564,19 @@ const copy = {
       height: 100% !important;
     }
 
+    /* Content frame — caps the composition width so .hero-side and
+       .hero-showcase-wrap (both absolute, positioned from opposite
+       edges) can't drift apart into an empty void on ultra-wide
+       monitors. Backgrounds (HeroAurora, GlowOrbs) stay full-bleed on
+       .hero-section, unaffected — only the foreground content is
+       framed. Centers itself once the viewport exceeds the max-width. */
+    .hero-frame {
+      position: absolute;
+      inset: 0;
+      max-width: 1760px;
+      margin-inline: auto;
+    }
+
     /* Side content — absolute, left of the monitor */
     .hero-side {
       position: absolute;
@@ -584,7 +619,7 @@ const copy = {
       transform: translateY(-50%);
       z-index: 8;
       width: clamp(30rem, 42vw, 38rem);
-      max-width: calc(100vw - 32rem - 6rem); /* leaves room for hero-side */
+      max-width: calc(100% - 32rem - 6rem); /* leaves room for hero-side, relative to .hero-frame */
     }
 
     /* Bottom bar — floating, centered */
