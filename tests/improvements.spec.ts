@@ -44,6 +44,8 @@ test.describe('Evidence-based case studies', () => {
       ['/en/case-studies/flow-engineering', '/casos/flow-engineering'],
       ['/', '/en'],
       ['/en', '/'],
+      ['/blog/typescript-tips-produccion', '/en/blog/typescript-production-tips'],
+      ['/en/blog/ai-automation-case-study', '/blog/automatizacion-ia-caso-real'],
     ] as const) {
       await page.goto(path);
       const mobile = (page.viewportSize()?.width ?? 1024) < 768;
