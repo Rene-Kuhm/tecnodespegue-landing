@@ -15,7 +15,7 @@ test.describe('Home page', () => {
     await expect(page.locator('h1')).toHaveCount(1);
     const h1 = page.locator('h1');
     await expect(h1).toBeVisible();
-    await expect(h1).toContainText(/parches[\s\S]*tickets[\s\S]*dura/i);
+    await expect(h1).toContainText(/programamos[\s\S]*automatizamos[\s\S]*despeg/i);
   });
 
   test('tiene meta description y canonical', async ({ page }) => {

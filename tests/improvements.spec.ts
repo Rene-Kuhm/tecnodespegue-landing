@@ -182,7 +182,7 @@ test.describe('Deferred mobile performance', () => {
       await noJavaScriptPage.goto('/');
       const title = noJavaScriptPage.locator('[data-hero-title]');
       await expect(title).toBeVisible();
-      await expect(title).toContainText(/Menos parches\.\s+Menos tickets\.\s+Software que dura\./i);
+      await expect(title).toContainText(/Programamos\.\s+Automatizamos\.\s+Vos despegás\./i);
       const bounds = await title.boundingBox();
       expect(bounds).not.toBeNull();
       expect(bounds!.width).toBeGreaterThan(100);
@@ -253,7 +253,7 @@ test.describe('Deferred mobile performance', () => {
     expect(metrics.fcp).not.toBeNull();
     expect(metrics.lcp).not.toBeNull();
     expect(metrics.lcp!.element).toBe('hero-title');
-    expect(metrics.lcp!.text).toMatch(/Menos tickets\./i);
+    expect(metrics.lcp!.text).toMatch(/Automatizamos\./i);
     expect(metrics.lcp!.time - metrics.fcp!).toBeLessThanOrEqual(450);
   });
 
