@@ -1,0 +1,97 @@
+---
+/**
+ * HeroAurora.astro — Animated cosmic aurora background for the hero.
+ *
+ * Resolves the "empty center" problem in the split hero by adding a
+ * flowing gradient layer that visually unifies the text column (left)
+ * with the terminal showcase (right). Pure CSS — no JS, no assets.
+ *
+ * Layering (z-index):
+ *   0 — HeroAurora (this)        ← deep background, animated
+ *   1 — GlowOrbs                 ← discrete orbs (existing)
+ *   5+ — content layers          ← text, terminal, bottom bar
+ *
+ * Animation: 30s drift via transform translateX, ease-in-out,
+ * infinite alternate. Respects prefers-reduced-motion.
+ */
+
+export interface Props {
+  /**
+   * Overall intensity multiplier (0..1) for the aurora colors.
+   * @default 1
+   */
+  intensity?: number;
+}
+
+const { intensity = 1 } = Astro.props;
+---
+
+<div
+  class="hero-aurora"
+  aria-hidden="true"
+  style={`--aurora-intensity: ${intensity};`}
+></div>
+
+<style>
+  .hero-aurora {
+    position: absolute;
+    inset: -8%; /* extra room so translateX animation doesn't reveal edges */
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background:
+      radial-gradient(
+        ellipse 60% 50% at 25% 50%,
+        rgba(237, 29, 36, calc(0.18 * var(--aurora-intensity, 1))) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 55% 45% at 50% 50%,
+        rgba(177, 78, 255, calc(0.14 * var(--aurora-intensity, 1))) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 60% 50% at 75% 50%,
+        rgba(248, 180, 0, calc(0.16 * var(--aurora-intensity, 1))) 0%,
+        transparent 60%
+      );
+    filter: blur(40px);
+    animation: hero-aurora-drift 28s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+
+  /* Subtle film-grain noise overlay (data-URI SVG, ~200 bytes) */
+  .hero-aurora::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+    opacity: 0.045;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  @keyframes hero-aurora-drift {
+    from {
+      transform: translate3d(-3%, 0, 0);
+    }
+    to {
+      transform: translate3d(3%, -1%, 0);
+    }
+  }
+
+  /* Respect reduced-motion — show static aurora without drift */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-aurora {
+      animation: none;
+    }
+  }
+
+  /* Hidden on mobile — the empty-center concern is desktop-only.
+     Mobile already has the text-first hero with glow orbs. */
+  @media (max-width: 820px) {
+    .hero-aurora {
+      display: none;
+    }
+  }
+</style>

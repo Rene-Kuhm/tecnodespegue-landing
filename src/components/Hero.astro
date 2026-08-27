@@ -17,6 +17,7 @@
 
 import Icon from './Icon.astro';
 import GlowOrbs from './GlowOrbs.astro';
+import HeroAurora from './HeroAurora.astro';
 import HeroCodeShowcase from './HeroCodeShowcase.astro';
 import type { Locale } from '../i18n';
 
@@ -52,6 +53,11 @@ const copy = {
 ---
 
 <section class="hero-section" data-hero>
+  <!-- Aurora: animated cosmic gradient bridging the text column (left)
+       with the terminal showcase (right). Solves the empty-center
+       problem. Layered at z-index 0 (deepest). -->
+  <HeroAurora />
+
   <!-- Glow orbs: cosmic/gold/red atmospheric wash behind everything. -->
   <GlowOrbs />
 
