@@ -75,12 +75,76 @@ const { locale = 'es' } = Astro.props;
       Deploy: canary → production
     </div>
 
-    <div class="ts-line">
+    <div class="ts-line" data-ts-final>
       <span class="ts-prompt">$</span>
       <span class="ts-cursor" aria-hidden="true">█</span>
     </div>
   </div>
 </div>
+
+<script>
+  // Types out the command line character-by-character, then reveals each
+  // output line in sequence — the terminal reads as live, not a static
+  // screenshot. Static markup (already in the DOM) is the no-JS/reduced-
+  // motion fallback: this script only hides/animates things it can undo.
+  function initTerminalTyping() {
+    const showcase = document.querySelector<HTMLElement>('.terminal-showcase');
+    if (!showcase || showcase.dataset.tsAnimated === 'true') return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const cmdEl = showcase.querySelector<HTMLElement>('.ts-cmd');
+    const outputLines = showcase.querySelectorAll<HTMLElement>('.ts-output');
+    const finalLine = showcase.querySelector<HTMLElement>('[data-ts-final]');
+    if (reduceMotion || !cmdEl) return;
+
+    const fullCmd = cmdEl.textContent ?? '';
+    cmdEl.textContent = '';
+    outputLines.forEach((el) => { el.style.opacity = '0'; });
+    if (finalLine) finalLine.style.opacity = '0';
+
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting || showcase.dataset.tsAnimated === 'true') continue;
+        showcase.dataset.tsAnimated = 'true';
+        observer.disconnect();
+        window.setTimeout(typeCommand, 500);
+      }
+    }, { threshold: 0.3 });
+    observer.observe(showcase);
+
+    function typeCommand() {
+      let i = 0;
+      const speed = 28;
+      (function tick() {
+        if (i <= fullCmd.length) {
+          cmdEl!.textContent = fullCmd.slice(0, i);
+          i++;
+          window.setTimeout(tick, speed);
+        } else {
+          revealOutputs();
+        }
+      })();
+    }
+
+    function revealOutputs() {
+      outputLines.forEach((el, idx) => {
+        window.setTimeout(() => {
+          el.style.transition = 'opacity 250ms ease';
+          el.style.opacity = '1';
+        }, idx * 180);
+      });
+      window.setTimeout(() => {
+        if (finalLine) {
+          finalLine.style.transition = 'opacity 250ms ease';
+          finalLine.style.opacity = '1';
+        }
+      }, outputLines.length * 180 + 300);
+    }
+  }
+
+  initTerminalTyping();
+  document.addEventListener('astro:page-load', initTerminalTyping);
+</script>
 
 <style>
   .terminal-showcase {

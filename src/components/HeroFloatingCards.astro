@@ -1,0 +1,282 @@
+---
+/**
+ * HeroFloatingCards.astro — Glassmorphic HUD widgets floating over the
+ * terminal showcase, desktop only.
+ *
+ * Reuses real numbers already claimed in HeroStatStrip (tests passing,
+ * TTFB) instead of inventing new metrics — each card gets a small
+ * decorative sparkline/pulse-line, not a real-time chart, so no data
+ * fetching or hover layer is needed (single static value + trend shape).
+ *
+ * Hidden on mobile/reduced-motion via CSS, same as HeroCodeShowcase.
+ */
+
+interface Props {
+  locale?: 'es' | 'en';
+}
+
+const { locale = 'es' } = Astro.props;
+
+const copy = {
+  es: { tests: 'TESTS PASSING', perf: 'TTFB PROMEDIO', pipeline: 'PIPELINE ACTIVO' },
+  en: { tests: 'TESTS PASSING', perf: 'AVG TTFB', pipeline: 'ACTIVE PIPELINE' },
+}[locale];
+---
+
+<div class="hfc-layer" aria-hidden="true">
+  <div class="hfc-card hfc-card--tests">
+    <div class="hfc-card-head">
+      <span class="hfc-label font-mono">{copy.tests}</span>
+    </div>
+    <div class="hfc-card-body">
+      <span class="hfc-value font-display">247</span>
+      <svg class="hfc-spark" viewBox="0 0 64 24" preserveAspectRatio="none">
+        <polyline
+          points="0,20 9,17 18,18 27,11 36,13 45,6 54,8 64,3"
+          fill="none"
+          stroke="var(--color-secondary)"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </div>
+  </div>
+
+  <div class="hfc-card hfc-card--perf">
+    <div class="hfc-card-head">
+      <span class="hfc-label font-mono">{copy.perf}</span>
+    </div>
+    <div class="hfc-card-body">
+      <span class="hfc-value font-display">&lt;100<span class="hfc-suffix">ms</span></span>
+      <svg class="hfc-spark hfc-spark--pulse" viewBox="0 0 64 24" preserveAspectRatio="none">
+        <polyline
+          points="0,12 12,12 16,4 20,20 24,12 30,12 34,8 38,16 42,12 64,12"
+          fill="none"
+          stroke="var(--color-marvel-gold)"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </div>
+  </div>
+
+  <!-- Pipeline card: unlike the bottom bar's static SDD/BDD/CI-CD/OSS
+       labels, this one cycles which stage is "active" — a live status
+       read, not a repeated list. -->
+  <div class="hfc-card hfc-card--pipeline">
+    <div class="hfc-card-head">
+      <span class="hfc-label font-mono">{copy.pipeline}</span>
+    </div>
+    <div class="hfc-pipe-row font-mono">
+      <span class="hfc-pipe-step" style="animation-delay: 0s">SDD</span>
+      <span class="hfc-pipe-dot" aria-hidden="true"></span>
+      <span class="hfc-pipe-step" style="animation-delay: -1.5s">BDD</span>
+      <span class="hfc-pipe-dot" aria-hidden="true"></span>
+      <span class="hfc-pipe-step" style="animation-delay: -3s">CI/CD</span>
+    </div>
+  </div>
+
+  <!-- Connector lines from each card toward the showcase — pure decoration -->
+  <svg class="hfc-connectors" viewBox="0 0 100 100" preserveAspectRatio="none">
+    <line class="hfc-connector hfc-connector--tests" x1="14" y1="4" x2="38" y2="30" />
+    <line class="hfc-connector hfc-connector--perf" x1="86" y1="78" x2="66" y2="62" />
+    <line class="hfc-connector hfc-connector--pipeline" x1="58" y1="10" x2="58" y2="26" />
+  </svg>
+</div>
+
+<style>
+  .hfc-layer {
+    display: none;
+  }
+
+  @media (min-width: 1180px) {
+    .hfc-layer {
+      display: block;
+      position: absolute;
+      inset: 0;
+      z-index: 12;
+      pointer-events: none;
+    }
+
+    .hfc-card {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: rgba(10, 5, 8, 0.55);
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0.875rem;
+      box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      translate: 0 10px;
+      animation: hfc-reveal 500ms var(--ease-marvel, ease) forwards;
+    }
+
+    .hfc-card--tests {
+      top: -17%;
+      left: -8%;
+      animation-delay: 550ms;
+    }
+
+    .hfc-card--perf {
+      bottom: 10%;
+      right: -3%;
+      animation-delay: 700ms;
+    }
+
+    .hfc-card--pipeline {
+      top: -19%;
+      left: 40%;
+      animation-delay: 850ms;
+    }
+
+    .hfc-card--tests {
+      box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.6), 0 0 24px -8px rgba(0, 255, 136, 0.18);
+    }
+
+    .hfc-card--perf {
+      box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.6), 0 0 24px -8px rgba(248, 180, 0, 0.2);
+    }
+
+    .hfc-card--pipeline {
+      box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.6), 0 0 24px -8px rgba(177, 78, 255, 0.18);
+    }
+
+    .hfc-pipe-row {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+
+    .hfc-pipe-step {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: rgba(255, 255, 255, 0.35);
+      animation: hfc-pipe-cycle 4.5s ease-in-out infinite;
+    }
+
+    .hfc-pipe-dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.25);
+      flex-shrink: 0;
+    }
+
+    @keyframes hfc-pipe-cycle {
+      0%, 18% {
+        color: #ffffff;
+        text-shadow: 0 0 10px rgba(177, 78, 255, 0.7);
+      }
+      33.34%, 100% {
+        color: rgba(255, 255, 255, 0.35);
+        text-shadow: none;
+      }
+    }
+
+    @keyframes hfc-reveal {
+      to {
+        opacity: 1;
+        translate: 0;
+      }
+    }
+
+    .hfc-label {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: rgba(255, 255, 255, 0.55);
+      white-space: nowrap;
+    }
+
+    .hfc-card-body {
+      display: flex;
+      align-items: baseline;
+      gap: 0.625rem;
+    }
+
+    .hfc-value {
+      font-size: 1.375rem;
+      font-weight: 700;
+      line-height: 1;
+      color: #ffffff;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .hfc-suffix {
+      font-size: 0.65em;
+      font-weight: 600;
+      color: var(--color-marvel-gold);
+      margin-left: 0.1em;
+    }
+
+    .hfc-spark {
+      width: 3.25rem;
+      height: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .hfc-connectors {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hfc-connector {
+      stroke: rgba(255, 255, 255, 0.16);
+      stroke-width: 0.15;
+      stroke-dasharray: 2 1.4;
+      opacity: 0;
+      animation: hfc-connector-reveal 600ms var(--ease-marvel, ease) forwards;
+    }
+
+    .hfc-connector--tests {
+      animation-delay: 650ms;
+    }
+
+    .hfc-connector--perf {
+      animation-delay: 800ms;
+    }
+
+    .hfc-connector--pipeline {
+      animation-delay: 950ms;
+    }
+
+    @keyframes hfc-connector-reveal {
+      to {
+        opacity: 1;
+      }
+    }
+  }
+
+  @media (min-width: 1180px) and (max-width: 1400px) {
+    .hfc-card--tests {
+      left: 2%;
+    }
+    .hfc-card--perf {
+      right: 2%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hfc-card,
+    .hfc-connector {
+      animation: none;
+      opacity: 1;
+      translate: none;
+    }
+
+    .hfc-pipe-step {
+      animation: none;
+      color: #ffffff;
+    }
+  }
+</style>
