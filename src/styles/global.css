@@ -759,43 +759,6 @@ select:focus-visible {
 }
 
 /* ============================================================
-   NOTIFY INPUT (templates page) — mismo bug que el newsletter:
-   flex: 1 colapsa a min-content. Solucion: grid 1fr + auto
-   ============================================================ */
-.notify-input-wrap {
-  display: grid !important;
-  grid-template-columns: 1fr auto !important;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-}
-.notify-input {
-  width: 100% !important;
-  min-width: 0 !important;
-  padding: 0.75rem 1rem !important;
-  background: rgba(0, 0, 0, 0.5) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  border-radius: 0.5rem !important;
-  color: #FFFFFF !important;
-  font-size: 0.8125rem !important;
-  font-family: inherit !important;
-  -webkit-appearance: none !important;
-  -moz-appearance: none !important;
-  appearance: none !important;
-  box-shadow: none !important;
-  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-}
-.notify-input::placeholder {
-  color: rgba(255, 255, 255, 0.45) !important;
-  opacity: 1 !important;
-}
-.notify-input:focus {
-  outline: none !important;
-  border-color: rgba(248, 180, 0, 0.6) !important;
-  background: rgba(0, 0, 0, 0.85) !important;
-  box-shadow: 0 0 0 3px rgba(248, 180, 0, 0.15) !important;
-}
-
-/* ============================================================
    REDUCED MOTION
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {

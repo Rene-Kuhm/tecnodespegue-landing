@@ -46,7 +46,6 @@ test.describe('SEO meta tags', () => {
     ['/', '/en'],
     ['/blog', '/en/blog'],
     ['/privacidad', '/en/privacidad'],
-    ['/templates', '/en/templates'],
     ['/blog/astro-framework-mas-rapido', '/en/blog/astro-fastest-landing-framework'],
     ['/blog/automatizacion-ia-caso-real', '/en/blog/ai-automation-case-study'],
     ['/blog/caso-real-ecommerce-n8n', '/en/blog/ecommerce-automation-n8n-case-study'],
@@ -68,11 +67,6 @@ test.describe('SEO meta tags', () => {
         expect((await request.get(enHref!)).status()).toBe(200);
       }
     }
-  });
-
-  test('Spanish-only template details omit nonexistent English alternates', async ({ page }) => {
-    await page.goto('/templates/aurora-landing');
-    await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(0);
   });
 
   test('todas las paginas publicas tienen OG image', async ({ page }) => {
