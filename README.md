@@ -42,7 +42,6 @@
 - **Landing cinemática** — hero estilo Marvel con monitor mockup y animaciones GSAP
 - **Blog técnico** — 5 artículos sobre desarrollo, IA, performance y arquitectura
 - **Casos de estudio bilingües** — contenido tipado con evidencia, decisiones y limitaciones explícitas
-- **Catálogo de templates** (próximamente) — componentes premium en preparación
 - **Formulario de contacto** integrado con Formspree
 - **Embudo de conversión** con eventos de Plausible y tracking de TikTok
 
@@ -251,9 +250,8 @@ tecnodespegue-landing/
     │   └── site.config.ts       # Config centralizada
     ├── content/                 # Markdown collections
     │   ├── case-studies/        # Casos ES/EN con evidencia y límites
-    │   ├── posts/               # 5 blog posts
-    │   └── templates/           # 5 templates (preview mode)
-    ├── content.config.ts        # Schemas tipados: posts, templates y caseStudies
+    │   └── posts/               # 5 blog posts
+    ├── content.config.ts        # Schemas tipados: posts y caseStudies
     ├── layouts/
     │   └── Layout.astro         # HTML shell + meta + JSON-LD
     ├── pages/
@@ -265,9 +263,6 @@ tecnodespegue-landing/
     │   ├── blog/
     │   │   ├── index.astro
     │   │   └── [slug].astro
-    │   └── templates/
-    │       ├── index.astro
-    │       └── [slug].astro
     ├── scripts/
     │   ├── analytics/
     │   │   ├── tiktok-pixel-loader.js
@@ -380,7 +375,6 @@ found 0 vulnerabilities
 - [x] PageSpeed 99/100 desktop, 100/100 SEO/A11y/BP
 - [x] Path-to-regexp CVE mitigado
 - [x] Cross-origin isolation headers
-- [ ] **Catálogo de templates** (5 productos en roadmap)
 - [ ] RSS feed del blog
 - [ ] Multi-idioma (i18n EN/ES)
 - [ ] Dark/Light theme toggle

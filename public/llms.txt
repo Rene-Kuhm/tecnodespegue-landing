@@ -18,10 +18,6 @@
 - [Apps móviles y desktop](https://www.tecnodespegue.com/#soluciones): Flutter, React Native
 - [Refactor y modernización](https://www.tecnodespegue.com/#optimizacion): diagnóstico y mejora de código legacy
 
-## Templates
-
-- [Catálogo de templates](https://www.tecnodespegue.com/templates): landings, e-commerce, dashboards, blogs
-
 ## Blog técnico
 
 - [Blog](https://www.tecnodespegue.com/blog): artículos sobre fullstack, IA, arquitectura
