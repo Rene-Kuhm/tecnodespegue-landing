@@ -100,8 +100,8 @@ export default defineConfig({
                 // 'unsafe-inline' como fallback para los inline scripts que Astro
                 // emite para los styles scoped. TODO: migrar a nonces cuando Astro
                 // lo soporte nativamente para reducir el riesgo XSS.
-                "script-src 'self' 'unsafe-inline' https://plausible.io",
-                "style-src 'self' 'unsafe-inline'",
+                "script-src 'self' 'unsafe-inline' https://plausible.io https://giscus.app",
+                "style-src 'self' 'unsafe-inline' https://giscus.app",
                 "img-src 'self' data: https:",
                 "font-src 'self' data:",
                 'connect-src ' +
@@ -109,7 +109,7 @@ export default defineConfig({
                   'https://plausible.io ' +
                   'https://api.web3forms.com ' +
                   'https://formspree.io',
-                'frame-src https://www.youtube.com https://player.vimeo.com',
+                'frame-src https://www.youtube.com https://player.vimeo.com https://giscus.app',
                 'media-src https:',
                 'worker-src ' + "'self'",
                 'manifest-src ' + "'self'",
