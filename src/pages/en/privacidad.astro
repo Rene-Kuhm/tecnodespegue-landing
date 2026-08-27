@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
-import { useTranslations, localizedPath, type Locale } from '../../i18n';
+import { useTranslations, type Locale } from '../../i18n';
 
 const locale: Locale = 'en';
 const t = useTranslations(locale);
@@ -181,7 +181,7 @@ const lastUpdated = "April 24, 2026";
       </div>
 
       <div class="mt-16 pt-8 border-t border-white/5">
-        <a href={localizedPath('/', locale)} class="inline-flex items-center gap-2 text-sm text-[rgba(255,255,255,0.5)] hover:text-[var(--color-marvel-gold)] transition-colors font-mono">
+        <a href="/en" class="inline-flex items-center gap-2 text-sm text-[rgba(255,255,255,0.5)] hover:text-[var(--color-marvel-gold)] transition-colors font-mono">
           {t.privacy.back}
         </a>
       </div>

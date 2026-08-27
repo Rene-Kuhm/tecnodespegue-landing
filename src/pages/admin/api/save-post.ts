@@ -146,7 +146,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       slug,
       locale: body.locale,
       filePath,
-      url: body.locale === 'en' ? `/en/blog/${slug}/` : `/blog/${slug}/`,
+      url: body.locale === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`,
       commitSha: result.commitSha,
       commitUrl: result.commitUrl,
       contentUrl: result.contentUrl,
