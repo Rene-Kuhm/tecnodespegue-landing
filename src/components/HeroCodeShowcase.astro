@@ -24,6 +24,15 @@ const { locale = 'es' } = Astro.props;
 ---
 
 <div class="terminal-showcase" aria-hidden="true" data-locale={locale}>
+  <!-- Comic-book annotation (Linear.app pattern) — gives the showcase a
+       narrative label that reinforces Marvel/comic identity and frames
+       the terminal as a "figure" in the user's storyboard. -->
+  <div class="ts-fig">
+    <span class="ts-fig-num">Fig 0.1</span>
+    <span class="ts-fig-sep">—</span>
+    <span class="ts-fig-label">Code · Ship · Iterate</span>
+  </div>
+
   <!-- Title bar with traffic-light dots -->
   <div class="ts-titlebar">
     <div class="ts-dots" aria-hidden="true">
@@ -111,6 +120,35 @@ const { locale = 'es' } = Astro.props;
     background-size: 100% 3px;
     pointer-events: none;
     opacity: 0.4;
+  }
+
+  /* ─── Comic-book Fig annotation ─── */
+  .ts-fig {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem 0.375rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.5);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .ts-fig-num {
+    color: var(--color-marvel-gold);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .ts-fig-sep {
+    color: rgba(255, 255, 255, 0.25);
+  }
+
+  .ts-fig-label {
+    color: rgba(255, 255, 255, 0.75);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
   }
 
   /* ─── Title bar ─── */
