@@ -1,0 +1,277 @@
+---
+/**
+ * HeroCodeShowcase.astro — Terminal-style output for the hero.
+ *
+ * Replaces the previous static mockup image (generic "tech company
+ * dashboard") with a CSS-built terminal that narrates the user's actual
+ * workflow. No JS, no images — pure HTML + scoped CSS.
+ *
+ * The narrative uses the user's real tokens (ship, pipeline, AI agents,
+ * spec/constraint validation) discovered in `src/scripts/three/code3D.ts`.
+ *
+ * Hidden on mobile (`.hero-bg`, the prior mockup, was also hidden there).
+ */
+
+export interface Props {
+  /**
+   * Visual locale for line accents. Same color tokens across the board
+   * — the prop is here for future variants if needed.
+   */
+  locale?: 'es' | 'en';
+}
+
+const { locale = 'es' } = Astro.props;
+---
+
+<div class="terminal-showcase" aria-hidden="true" data-locale={locale}>
+  <!-- Comic-book annotation (Linear.app pattern) — gives the showcase a
+       narrative label that reinforces Marvel/comic identity and frames
+       the terminal as a "figure" in the user's storyboard. -->
+  <div class="ts-fig">
+    <span class="ts-fig-num">Fig 0.1</span>
+    <span class="ts-fig-sep">—</span>
+    <span class="ts-fig-label">Code · Ship · Iterate</span>
+  </div>
+
+  <!-- Title bar with traffic-light dots -->
+  <div class="ts-titlebar">
+    <div class="ts-dots" aria-hidden="true">
+      <span class="ts-dot ts-dot--red"></span>
+      <span class="ts-dot ts-dot--yellow"></span>
+      <span class="ts-dot ts-dot--green"></span>
+    </div>
+    <div class="ts-title">tecno@studio — ~/projects/flow-eng</div>
+  </div>
+
+  <!-- Terminal body -->
+  <div class="ts-body">
+    <div class="ts-line">
+      <span class="ts-prompt">$</span>
+      <span class="ts-cmd">ship ./ideas/flow-engineering.ts</span>
+    </div>
+
+    <div class="ts-line ts-output">
+      <span class="ts-arrow" aria-hidden="true">→</span>
+      Loading spec <span class="ts-meta">(12 constraints)</span>
+    </div>
+    <div class="ts-line ts-output">
+      <span class="ts-success" aria-hidden="true">✓</span>
+      pipeline ready
+    </div>
+    <div class="ts-line ts-output">
+      <span class="ts-arrow" aria-hidden="true">→</span>
+      AI agents: <span class="ts-num">3</span> active
+    </div>
+    <div class="ts-line ts-output">
+      <span class="ts-arrow" aria-hidden="true">→</span>
+      Building... <span class="ts-meta">1.34s</span>
+    </div>
+    <div class="ts-line ts-output">
+      <span class="ts-success" aria-hidden="true">✓</span>
+      Tests: <span class="ts-num">247</span>/<span class="ts-num">247</span> passing
+    </div>
+    <div class="ts-line ts-output">
+      <span class="ts-success" aria-hidden="true">✓</span>
+      Deploy: canary → production
+    </div>
+
+    <div class="ts-line">
+      <span class="ts-prompt">$</span>
+      <span class="ts-cursor" aria-hidden="true">█</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .terminal-showcase {
+    position: relative;
+    background: #0d0d12;
+    background-image:
+      radial-gradient(circle at 50% 0%, rgba(177, 78, 255, 0.05), transparent 60%),
+      radial-gradient(circle at 100% 100%, rgba(248, 180, 0, 0.03), transparent 60%);
+    border-radius: 0.875rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+      0 32px 64px -16px rgba(0, 0, 0, 0.6),
+      0 0 0 1px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    overflow: hidden;
+    opacity: 0;
+    animation: ts-showcase-reveal 600ms var(--ease-marvel, ease) 200ms forwards;
+  }
+
+  @keyframes ts-showcase-reveal {
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Subtle scan-line overlay for CRT feel — optional, very low opacity */
+  .terminal-showcase::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      transparent 50%,
+      rgba(0, 0, 0, 0.04) 50%
+    );
+    background-size: 100% 3px;
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  /* ─── Comic-book Fig annotation ─── */
+  .ts-fig {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem 0.375rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.5);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .ts-fig-num {
+    color: var(--color-marvel-gold);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .ts-fig-sep {
+    color: rgba(255, 255, 255, 0.25);
+  }
+
+  .ts-fig-label {
+    color: rgba(255, 255, 255, 0.75);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ─── Title bar ─── */
+  .ts-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .ts-dots {
+    display: flex;
+    gap: 0.375rem;
+  }
+
+  .ts-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+  }
+
+  .ts-dot--red { background: #ed6a5e; }
+  .ts-dot--yellow { background: #f4bf4f; }
+  .ts-dot--green { background: #61c554; }
+
+  .ts-title {
+    flex: 1;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  /* ─── Body ─── */
+  .ts-body {
+    padding: 1.25rem 1.5rem 1.5rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.75;
+  }
+
+  .ts-line {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+
+  .ts-line + .ts-line {
+    margin-top: 0.125rem;
+  }
+
+  .ts-prompt {
+    color: var(--color-marvel-gold);
+    font-weight: 700;
+    user-select: none;
+    flex-shrink: 0;
+  }
+
+  .ts-cmd {
+    color: #ffffff;
+  }
+
+  .ts-output {
+    padding-left: 1.5rem;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.8125rem;
+  }
+
+  .ts-arrow {
+    color: #6bb6ff;
+    margin-right: 0.25rem;
+    flex-shrink: 0;
+  }
+
+  .ts-success {
+    color: #6dd47e;
+    margin-right: 0.25rem;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .ts-meta {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.75rem;
+  }
+
+  .ts-num {
+    color: #f4bf4f;
+  }
+
+  /* ─── Blinking cursor ─── */
+  .ts-cursor {
+    color: var(--color-marvel-gold);
+    animation: ts-cursor-blink 1.05s steps(2) infinite;
+    font-weight: 700;
+  }
+
+  @keyframes ts-cursor-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  /* Reduced motion: kill all animations, show everything immediately */
+  @media (prefers-reduced-motion: reduce) {
+    .terminal-showcase {
+      animation: none;
+      opacity: 1;
+    }
+    .ts-cursor {
+      animation: none;
+    }
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 1100px) {
+    .terminal-showcase {
+      font-size: 0.8125rem;
+    }
+    .ts-body {
+      padding: 1rem 1.25rem 1.25rem;
+    }
+  }
+</style>
