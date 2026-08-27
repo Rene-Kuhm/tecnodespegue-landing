@@ -7,6 +7,7 @@
 
 import ContactForm from './ContactForm.astro';
 import Icon from './Icon.astro';
+import GlowOrbs from './GlowOrbs.astro';
 import type { Locale } from '../i18n';
 
 interface Props {
@@ -35,6 +36,8 @@ const copy = {
 ---
 
 <section class="cta-section py-32 relative overflow-hidden" id="contacto" data-cta>
+  <!-- Glow orbs (atmospheric depth) -->
+  <GlowOrbs intensity={0.8} />
   <!-- Background decorativo -->
   <div class="cta-bg" aria-hidden="true">
     <div class="cta-glow cta-glow-1"></div>
