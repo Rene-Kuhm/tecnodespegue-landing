@@ -36,9 +36,9 @@
   ],
   "redirects": [
     { "source": "/index\\.html", "destination": "/", "statusCode": 301 },
-    { "source": "/work", "destination": "/404.html", "statusCode": 410 },
-    { "source": "/about", "destination": "/404.html", "statusCode": 410 },
-    { "source": "/terms", "destination": "/404.html", "statusCode": 410 },
+    { "source": "/work", "destination": "/404.html", "statusCode": 404 },
+    { "source": "/about", "destination": "/404.html", "statusCode": 404 },
+    { "source": "/terms", "destination": "/404.html", "statusCode": 404 },
     { "source": "/sitemap\\.xml", "destination": "/sitemap-index.xml", "statusCode": 301 }
   ],
   "cleanUrls": true,
