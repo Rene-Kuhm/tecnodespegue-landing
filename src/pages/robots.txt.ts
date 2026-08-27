@@ -1,42 +1,69 @@
 /**
- * robots.txt.ts
- * robots.txt personalizado con hints para crawlers.
- * - Permite todo el crawling (no hay secciones privadas)
- * - Apunta al sitemap index
- * - Excluye rutas de staging/development si las hay
+ * robots.txt — fuente única de verdad para producción y staging.
+ *
+ * Esta ruta dinámica existe porque Astro+Vercel preferirían servir
+ * el archivo estático public/robots.txt, pero necesitamos reglas
+ * distintas en staging (host ≠ www.tecnodespegue.com).
+ *
+ * Si public/robots.txt existe, Astro+Vercel sirven ese y esta ruta
+ * queda como código muerto. Por eso public/robots.txt fue eliminado.
  */
 import type { APIRoute } from 'astro';
-
-const STAGING_PATHS = [
-  '/.netlify/',
-  '/.vercel/',
-  '/__astro/',
-  '/_astro/',
-];
 
 export const GET: APIRoute = ({ request }) => {
   const url = new URL(request.url);
   const isStaging = url.hostname !== 'www.tecnodespegue.com';
 
+  const stagingDisallows = [
+    'Disallow: /.netlify/',
+    'Disallow: /.vercel/',
+    'Disallow: /__astro/',
+  ];
+
   const lines: string[] = [
+    '# tecNodespegue / robots.txt',
+    '',
     'User-agent: *',
     'Allow: /',
-    // Excluir rutas de build assets y CDN en staging
-    ...(isStaging ? STAGING_PATHS.map(p => `Disallow: ${p}`) : []),
     '',
-    `# TecnoDespegue — ${isStaging ? 'STAGING ENVIRONMENT' : 'PRODUCTION'}`,
-    `Sitemap: https://www.tecnodespegue.com/sitemap-index.xml`,
+    '# Block private areas (siempre)',
+    'Disallow: /admin/',
+    'Disallow: /api/',
+    'Disallow: /_astro/',
+    // Staging-only: paths de build que no deben crawlearse en preview deployments
+    ...(isStaging ? stagingDisallows : []),
     '',
-    '# i18n: Google sabe que /en/ es la version en ingles de cada pagina',
-    '# gracias a las etiquetas hreflang en el HTML y en el sitemap.',
-    '# No necesitamos bloquear crawlers para i18n - x-default lo cover.',
+    '# Sitemaps',
+    'Sitemap: https://www.tecnodespegue.com/sitemap-index.xml',
     '',
-    '# Rendimiento: no rastrear archivos de desarrollo o assets privados',
-    'Disallow: /src/',
-    'Disallow: /scripts/',
-    'Disallow: /node_modules/',
-    'Disallow: /dist/',
-    'Disallow: /.git/',
+    '# AI crawlers — allow (citaciones en ChatGPT, Perplexity, etc.)',
+    'User-agent: OAI-SearchBot',
+    'Allow: /',
+    '',
+    'User-agent: PerplexityBot',
+    'Allow: /',
+    '',
+    'User-agent: ClaudeBot',
+    'Allow: /',
+    '',
+    'User-agent: GPTBot',
+    'Allow: /',
+    '',
+    'User-agent: Google-Extended',
+    'Allow: /',
+    '',
+    'User-agent: Applebot-Extended',
+    'Allow: /',
+    '',
+    '# Aggressive scrapers — bloquear',
+    'User-agent: AhrefsBot',
+    'Disallow: /',
+    '',
+    'User-agent: SemrushBot',
+    'Disallow: /',
+    '',
+    'User-agent: MJ12bot',
+    'Disallow: /',
     '',
   ];
 
