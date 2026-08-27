@@ -74,7 +74,7 @@ const posts = all
           </td>
           <td class="actions">
             <a href={`/admin/edit/${p.locale}/${p.slug}`} class="btn-sm">Editar</a>
-            <a href={p.locale === 'en' ? `/en/blog/${p.slug}/` : `/blog/${p.slug}/`} target="_blank" class="btn-sm btn-ghost">Ver ↗</a>
+            <a href={p.locale === 'en' ? `/en/blog/${p.slug}` : `/blog/${p.slug}`} target="_blank" class="btn-sm btn-ghost">Ver ↗</a>
             <button
               class="btn-sm btn-danger"
               data-delete
