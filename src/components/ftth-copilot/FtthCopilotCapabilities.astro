@@ -1,0 +1,240 @@
+---
+/**
+ * FtthCopilotCapabilities.astro — Grid de 9 capabilities.
+ * Bilingüe, mobile-first (1 col), desktop 3x3.
+ * Iconos desde el componente Icon compartido (Lucide paths).
+ */
+
+import Icon from '../Icon.astro';
+import type { Locale } from '../../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale: Locale = Astro.props.locale ?? 'es';
+
+const copy = {
+  es: {
+    kicker: 'CAPACIDADES · CORE',
+    title: 'Lo que FTTH-Copilot sabe hacer.',
+    lead: 'Cobertura operativa end-to-end: integración multi-vendor, predicción, correlación y respuesta.',
+    items: [
+      { icon: 'layers',          title: 'Multi-vendor OLTs',          subtitle: '12 fabricantes soportados' },
+      { icon: 'api',             title: 'SmartOLT · Mikrowisp · MikroTik', subtitle: 'Ecosistema de integración' },
+      { icon: 'support_agent',   title: 'NOC · AIOps',                subtitle: 'Operación predictiva' },
+      { icon: 'verified',        title: 'SOC',                        subtitle: 'Respuesta e investigación' },
+      { icon: 'bolt',            title: 'Predicción óptica',          subtitle: 'Forecasting de presupuesto óptico' },
+      { icon: 'chat',            title: 'Incidentes',                 subtitle: 'Manejo automatizado' },
+      { icon: 'forum',           title: 'Alertas',                    subtitle: 'Correlación inteligente' },
+      { icon: 'database',        title: 'Prometheus · Grafana · Phoenix', subtitle: 'Stack de observabilidad' },
+      { icon: 'lock',            title: 'Seguridad multi-tenant',     subtitle: 'Aislamiento y RBAC' },
+    ],
+  },
+  en: {
+    kicker: 'CAPABILITIES · CORE',
+    title: 'What FTTH-Copilot does.',
+    lead: 'End-to-end operational coverage: multi-vendor integration, prediction, correlation and response.',
+    items: [
+      { icon: 'layers',          title: 'Multi-vendor OLTs',          subtitle: '12 supported vendors' },
+      { icon: 'api',             title: 'SmartOLT · Mikrowisp · MikroTik', subtitle: 'Integration ecosystem' },
+      { icon: 'support_agent',   title: 'NOC · AIOps',                subtitle: 'Predictive operations' },
+      { icon: 'verified',        title: 'SOC',                        subtitle: 'Response & investigation' },
+      { icon: 'bolt',            title: 'Optical prediction',         subtitle: 'Optical budget forecasting' },
+      { icon: 'chat',            title: 'Incidents',                  subtitle: 'Automated handling' },
+      { icon: 'forum',           title: 'Alerts',                     subtitle: 'Smart correlation' },
+      { icon: 'database',        title: 'Prometheus · Grafana · Phoenix', subtitle: 'Observability stack' },
+      { icon: 'lock',            title: 'Multi-tenant security',      subtitle: 'Isolation & RBAC' },
+    ],
+  },
+}[locale];
+---
+
+<section class="ftth-caps relative" data-ftth-caps>
+  <header class="ftth-caps-header">
+    <span class="kicker">
+      <span class="kicker-dot"></span>
+      <span class="kicker-text font-mono">{copy.kicker}</span>
+    </span>
+    <h2 class="ftth-caps-title font-display">{copy.title}</h2>
+    <p class="ftth-caps-lead">{copy.lead}</p>
+  </header>
+
+  <ul class="ftth-caps-grid" role="list">
+    {copy.items.map((item) => (
+      <li class="ftth-caps-card" data-ftth-cap>
+        <div class="ftth-caps-icon-wrap" aria-hidden="true">
+          <Icon name={item.icon} class="ftth-caps-icon" />
+        </div>
+        <div class="ftth-caps-text">
+          <h3 class="ftth-caps-card-title">{item.title}</h3>
+          <p class="ftth-caps-card-subtitle">{item.subtitle}</p>
+        </div>
+        <div class="ftth-caps-scan" aria-hidden="true"></div>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .ftth-caps {
+    width: 100%;
+  }
+
+  /* Header */
+  .ftth-caps-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    max-width: 48rem;
+    margin-inline: auto;
+  }
+
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .kicker-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-marvel-red);
+    box-shadow: 0 0 12px var(--color-marvel-red-glow);
+    animation: energy-pulse 2s ease-in-out infinite;
+  }
+  .kicker-text {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    color: var(--color-marvel-gold);
+  }
+
+  .ftth-caps-title {
+    font-weight: 900;
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin: 0 0 1rem;
+  }
+
+  .ftth-caps-lead {
+    color: var(--color-on-surface-variant);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Grid: 1 col mobile → 2 col tablet → 3 col desktop */
+  .ftth-caps-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 600px) {
+    .ftth-caps-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 900px) {
+    .ftth-caps-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+  }
+
+  /* Card */
+  .ftth-caps-card {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem 1.25rem;
+    border-radius: var(--radius-card);
+    background: rgba(20, 20, 26, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px) saturate(160%);
+    -webkit-backdrop-filter: blur(10px) saturate(160%);
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s var(--ease-marvel), box-shadow 0.3s;
+  }
+
+  .ftth-caps-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(248, 180, 0, 0.4);
+    box-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Icon-wrap bevel (matches Marvel style across the site) */
+  .ftth-caps-icon-wrap {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-chip);
+    background: linear-gradient(135deg, rgba(237, 29, 36, 0.15) 0%, rgba(248, 180, 0, 0.08) 100%);
+    border: 1px solid rgba(248, 180, 0, 0.3);
+    color: var(--color-marvel-gold-bright);
+  }
+  .ftth-caps-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .ftth-caps-text {
+    min-width: 0;
+  }
+
+  .ftth-caps-card-title {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0 0 0.25rem;
+    line-height: 1.3;
+  }
+
+  .ftth-caps-card-subtitle {
+    font-size: 0.8rem;
+    color: var(--color-on-surface-variant);
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  /* Scan line en hover */
+  .ftth-caps-scan {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-marvel-gold), transparent);
+    opacity: 0;
+    transform: translateY(0);
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .ftth-caps-card:hover .ftth-caps-scan {
+    opacity: 1;
+    animation: ftth-caps-scan-move 1.6s linear infinite;
+  }
+  @keyframes ftth-caps-scan-move {
+    from { transform: translateY(0); }
+    to   { transform: translateY(180px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ftth-caps-card,
+    .kicker-dot,
+    .ftth-caps-card:hover .ftth-caps-scan {
+      animation: none !important;
+      transition: none !important;
+    }
+    .ftth-caps-card:hover .ftth-caps-scan { opacity: 0; }
+  }
+</style>
