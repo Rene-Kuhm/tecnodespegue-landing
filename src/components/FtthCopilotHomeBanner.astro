@@ -1,0 +1,231 @@
+---
+/**
+ * FtthCopilotHomeBanner.astro — Discreet horizontal callout that drives
+ * traffic from the home Hero to the dedicated /ftth-copilot landing.
+ * Bilingual, Marvel visual grammar, CSS-only (no JS).
+ */
+
+import Icon from './Icon.astro';
+import type { Locale } from '../i18n';
+import { localizedPath } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale: Locale = Astro.props.locale ?? 'es';
+
+const copy = {
+  es: {
+    kicker: 'PRODUCTO DESTACADO',
+    title: 'FTTH-Copilot',
+    lead: 'Plataforma NOC/SOC para ISPs FTTH. En validación con operadores reales.',
+    cta: 'Ver landing',
+    ctaAria: 'Ir a la landing de FTTH-Copilot',
+  },
+  en: {
+    kicker: 'FEATURED PRODUCT',
+    title: 'FTTH-Copilot',
+    lead: 'NOC/SOC platform for FTTH ISPs. In validation with real operators.',
+    cta: 'View landing',
+    ctaAria: 'Go to the FTTH-Copilot landing page',
+  },
+}[locale];
+---
+
+<aside class="ftth-banner" aria-labelledby="ftth-banner-title">
+  <div class="ftth-banner-bg" aria-hidden="true">
+    <div class="ftth-banner-grid"></div>
+    <div class="ftth-banner-glow"></div>
+  </div>
+
+  <div class="ftth-banner-inner">
+    <div class="ftth-banner-copy">
+      <span class="ftth-banner-kicker">
+        <span class="ftth-banner-kicker-dot"></span>
+        <span class="ftth-banner-kicker-text font-mono">{copy.kicker}</span>
+      </span>
+      <h2 id="ftth-banner-title" class="ftth-banner-title font-display">{copy.title}</h2>
+      <p class="ftth-banner-lead">{copy.lead}</p>
+    </div>
+
+    <a
+      href={localizedPath('/ftth-copilot', locale)}
+      class="btn-primary ftth-banner-cta"
+      aria-label={copy.ctaAria}
+    >
+      <span>{copy.cta}</span>
+      <Icon name="arrow_forward" class="ftth-banner-cta-icon" />
+    </a>
+  </div>
+</aside>
+
+<style>
+  .ftth-banner {
+    position: relative;
+    isolation: isolate;
+    margin: 3rem auto;
+    max-width: 80rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-marvel);
+    background: linear-gradient(135deg, rgba(20, 20, 26, 0.85) 0%, rgba(28, 28, 36, 0.85) 100%);
+    border: 1px solid rgba(248, 180, 0, 0.22);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    overflow: hidden;
+    box-shadow: 0 16px 40px -16px rgba(0, 0, 0, 0.6);
+    transition: border-color 0.3s var(--ease-marvel), box-shadow 0.3s var(--ease-marvel);
+  }
+
+  @media (min-width: 768px) {
+    .ftth-banner {
+      padding: 2rem 2.5rem;
+    }
+  }
+
+  .ftth-banner:hover {
+    border-color: rgba(248, 180, 0, 0.45);
+    box-shadow:
+      0 16px 40px -16px rgba(0, 0, 0, 0.6),
+      0 0 0 1px rgba(248, 180, 0, 0.18),
+      0 0 28px -8px rgba(177, 78, 255, 0.35);
+  }
+
+  /* Background atmosphere */
+  .ftth-banner-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .ftth-banner-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(248, 180, 0, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(248, 180, 0, 0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+  }
+
+  .ftth-banner-glow {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 0% 50%, rgba(177, 78, 255, 0.18) 0%, transparent 45%),
+      radial-gradient(circle at 100% 50%, rgba(237, 29, 36, 0.12) 0%, transparent 50%);
+  }
+
+  /* Layout */
+  .ftth-banner-inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    align-items: stretch;
+  }
+
+  @media (min-width: 768px) {
+    .ftth-banner-inner {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2.5rem;
+    }
+  }
+
+  /* Copy */
+  .ftth-banner-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .ftth-banner-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .ftth-banner-kicker-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-marvel-red);
+    box-shadow: 0 0 12px var(--color-marvel-red-glow);
+    animation: ftth-banner-pulse 2s ease-in-out infinite;
+  }
+
+  .ftth-banner-kicker-text {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    color: var(--color-marvel-gold);
+  }
+
+  .ftth-banner-title {
+    margin: 0;
+    font-weight: 900;
+    font-size: clamp(1.5rem, 3vw, 1.875rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+  }
+
+  .ftth-banner-lead {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--color-on-surface-variant);
+  }
+
+  @media (min-width: 768px) {
+    .ftth-banner-lead { font-size: 1rem; }
+  }
+
+  /* CTA */
+  .ftth-banner-cta {
+    align-self: stretch;
+    justify-content: center;
+    font-size: 0.85rem;
+    padding: 0.875rem 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .ftth-banner-cta-icon {
+    width: 1rem;
+    height: 1rem;
+    transition: transform 0.3s var(--ease-marvel);
+  }
+
+  .ftth-banner-cta:hover .ftth-banner-cta-icon {
+    transform: translateX(3px);
+  }
+
+  @media (min-width: 768px) {
+    .ftth-banner-cta {
+      align-self: center;
+      padding: 0.75rem 1.75rem;
+    }
+  }
+
+  /* Animations + reduced motion */
+  @keyframes ftth-banner-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.65; transform: scale(0.85); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ftth-banner,
+    .ftth-banner-cta,
+    .ftth-banner-cta-icon,
+    .ftth-banner-kicker-dot {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+</style>
