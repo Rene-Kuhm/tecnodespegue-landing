@@ -1,0 +1,186 @@
+---
+/**
+ * FtthCopilotValidation.astro — CTA de validación técnica.
+ * mailto primario + WhatsApp secundario. Bilingüe.
+ */
+
+import Icon from '../Icon.astro';
+import GlowOrbs from '../GlowOrbs.astro';
+import type { Locale } from '../../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale: Locale = Astro.props.locale ?? 'es';
+
+const email = 'renekuhm2@gmail.com';
+const whatsappUrl = 'https://wa.me/5492334409838?text=Hola,%20me%20interesa%20la%20validación%20de%20FTTH-Copilot';
+const emailSubjectEs = 'Validación FTTH-Copilot — <empresa>';
+const emailSubjectEn = 'FTTH-Copilot Validation — <company>';
+const mailtoHref = (subject: string) =>
+  `mailto:${email}?subject=${encodeURIComponent(subject)}`;
+
+const copy = {
+  es: {
+    kicker: 'VALIDACIÓN · EN PROGRESO',
+    title: 'Buscamos ISPs para validación técnica',
+    lead: 'FTTH-Copilot está entrando en etapa de validación sobre infraestructura FTTH real. Buscamos ISPs, operadores NOC e integradores interesados en probar la plataforma y aportar feedback operativo.',
+    primary: 'Quiero participar en la validación',
+    whatsapp: 'WhatsApp directo',
+    emailAria: 'Enviar email para participar en la validación',
+    whatsappAria: 'Abrir WhatsApp directo con el equipo',
+  },
+  en: {
+    kicker: 'VALIDATION · IN PROGRESS',
+    title: 'Looking for ISPs for technical validation',
+    lead: "FTTH-Copilot is entering validation on real FTTH infrastructure. We're looking for ISPs, NOC operators, and integrators interested in piloting the platform and contributing operational feedback.",
+    primary: 'I want to join the validation',
+    whatsapp: 'Direct WhatsApp',
+    emailAria: 'Send email to join the validation',
+    whatsappAria: 'Open direct WhatsApp with the team',
+  },
+}[locale];
+---
+
+<section class="ftth-val relative overflow-hidden" data-ftth-validation aria-labelledby="ftth-val-title">
+  <GlowOrbs intensity={0.6} variant="cosmic-gold-red" />
+
+  <div class="ftth-val-bg" aria-hidden="true">
+    <div class="ftth-val-vignette"></div>
+  </div>
+
+  <div class="ftth-val-inner">
+    <header class="ftth-val-header">
+      <span class="kicker">
+        <span class="kicker-dot"></span>
+        <span class="kicker-text font-mono">{copy.kicker}</span>
+      </span>
+      <h2 id="ftth-val-title" class="ftth-val-title font-display">{copy.title}</h2>
+      <p class="ftth-val-lead">{copy.lead}</p>
+    </header>
+
+    <div class="ftth-val-actions">
+      <a
+        href={mailtoHref(locale === 'es' ? emailSubjectEs : emailSubjectEn)}
+        class="btn-primary ftth-val-btn"
+        aria-label={copy.emailAria}
+        data-ftth-cta="email"
+      >
+        <Icon name="forum" class="ftth-val-btn-icon" />
+        <span>{copy.primary}</span>
+      </a>
+      <a
+        href={whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-secondary ftth-val-btn"
+        aria-label={copy.whatsappAria}
+        data-ftth-cta="whatsapp"
+      >
+        <Icon name="chat" class="ftth-val-btn-icon" />
+        <span>{copy.whatsapp}</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ftth-val {
+    padding: 4rem 1.5rem;
+    border-radius: var(--radius-marvel);
+    background: linear-gradient(180deg, rgba(15, 15, 21, 0.7) 0%, rgba(20, 20, 26, 0.7) 100%);
+    border: 1px solid rgba(248, 180, 0, 0.18);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+  }
+  @media (min-width: 768px) {
+    .ftth-val { padding: 5rem 3rem; }
+  }
+
+  .ftth-val-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .ftth-val-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(0, 0, 0, 0.5) 100%);
+  }
+
+  .ftth-val-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 48rem;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  /* Header */
+  .ftth-val-header { margin-bottom: 2.5rem; }
+
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .kicker-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-marvel-red);
+    box-shadow: 0 0 12px var(--color-marvel-red-glow);
+    animation: energy-pulse 2s ease-in-out infinite;
+  }
+  .kicker-text {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    color: var(--color-marvel-gold);
+  }
+
+  .ftth-val-title {
+    font-weight: 900;
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin: 0 0 1rem;
+  }
+
+  .ftth-val-lead {
+    color: var(--color-on-surface-variant);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Actions */
+  .ftth-val-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .ftth-val-btn {
+    font-size: 0.85rem;
+  }
+
+  .ftth-val-btn-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .kicker-dot,
+    .ftth-val-btn {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>

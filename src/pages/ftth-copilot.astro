@@ -1,0 +1,301 @@
+---
+/**
+ * ftth-copilot.astro — ES landing page for FTTH-Copilot.
+ *
+ * Dedicated bilingual landing for the AI-powered NOC/SOC platform.
+ * Uses the four pre-built FTTH-Copilot components (Flow / Modes /
+ * Capabilities / Validation) and wraps them in a custom hero +
+ * numbered section headers.
+ */
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Icon from '../components/Icon.astro';
+import GlowOrbs from '../components/GlowOrbs.astro';
+import FtthCopilotFlow from '../components/ftth-copilot/FtthCopilotFlow.astro';
+import FtthCopilotModes from '../components/ftth-copilot/FtthCopilotModes.astro';
+import FtthCopilotCapabilities from '../components/ftth-copilot/FtthCopilotCapabilities.astro';
+import FtthCopilotValidation from '../components/ftth-copilot/FtthCopilotValidation.astro';
+import type { Locale } from '../i18n';
+
+const locale: Locale = 'es';
+
+// Same mailto on both locales by design: short, neutral subject line.
+const trialEmail = 'renekuhm2@gmail.com';
+const trialSubject = 'Solicitar prueba técnica FTTH-Copilot';
+const trialMailto = `mailto:${trialEmail}?subject=${encodeURIComponent(trialSubject)}`;
+---
+
+<Layout
+  title="FTTH-Copilot | Plataforma NOC/SOC para ISPs FTTH | TecnoDespegue"
+  description="Plataforma NOC/SOC para ISPs que correlaciona telemetría, eventos, topología e IA para diagnosticar, anticipar e investigar incidentes con evidencia verificable."
+  locale="es"
+  path="/ftth-copilot"
+  alternatePaths={{ es: '/ftth-copilot', en: '/en/ftth-copilot' }}
+>
+  <Nav locale={locale} alternatePath="/en/ftth-copilot" />
+
+  <main id="contenido" class="ftth-page">
+    <!-- Hero ---------------------------------------------------------------- -->
+    <section class="ftth-hero" aria-labelledby="ftth-hero-title">
+      <GlowOrbs intensity={0.6} />
+      <div class="ftth-hero-bg" aria-hidden="true"></div>
+
+      <div class="ftth-hero-inner">
+        <span class="kicker">
+          <span class="kicker-dot"></span>
+          <span class="kicker-text font-mono">FTTH-COPILOT · PLATAFORMA NOC/SOC</span>
+        </span>
+
+        <h1 id="ftth-hero-title" class="ftth-hero-title font-display">
+          <span class="ftth-hero-title-line">Tu red FTTH genera datos.</span>
+          <span class="ftth-hero-title-line ftth-hero-title-accent">FTTH-Copilot los convierte en decisiones.</span>
+        </h1>
+
+        <p class="ftth-hero-lead">
+          Plataforma NOC/SOC para ISPs que correlaciona telemetría, eventos, topología e IA para diagnosticar, anticipar e investigar incidentes con evidencia verificable.
+        </p>
+
+        <div class="ftth-hero-ctas">
+          <a class="btn-primary ftth-hero-cta" href={trialMailto}>Solicitar prueba técnica</a>
+          <a class="btn-secondary ftth-hero-cta" href="#modos">Ver arquitectura</a>
+          <a class="btn-tertiary ftth-hero-cta" href="https://github.com/Rene-Kuhm/FTTH-Copilot" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 01 · Flow --------------------------------------------------- -->
+    <section class="ftth-section" aria-labelledby="ftth-section-title-flow">
+      <header class="ftth-section-header">
+        <span class="kicker">
+          <span class="kicker-dot"></span>
+          <span class="kicker-text font-mono">CÓMO FUNCIONA · 01</span>
+        </span>
+        <h2 id="ftth-section-title-flow" class="ftth-section-title font-display">De la telemetría cruda al diagnóstico verificable.</h2>
+        <p class="ftth-section-lead">
+          El Organic Diagnostic Router decide qué camino tomar según la consulta. TruthGate valida la respuesta contra telemetría real antes de emitir un diagnóstico.
+        </p>
+      </header>
+      <FtthCopilotFlow locale={locale} />
+    </section>
+
+    <!-- Section 02 · Modes (anchored by hero secondary CTA) ----------------- -->
+    <section class="ftth-section" aria-labelledby="ftth-section-title-modes">
+      <header class="ftth-section-header">
+        <span class="kicker">
+          <span class="kicker-dot"></span>
+          <span class="kicker-text font-mono">MODOS DE OPERACIÓN · 02</span>
+        </span>
+        <h2 id="ftth-section-title-modes" class="ftth-section-title font-display">Tres modos. Un solo router.</h2>
+        <p class="ftth-section-lead">
+          Cada consulta toma el camino que necesita — desde la respuesta directa hasta la investigación con evidencia.
+        </p>
+      </header>
+      <div id="modos" class="ftth-section-anchor">
+        <FtthCopilotModes locale={locale} />
+      </div>
+    </section>
+
+    <!-- Section 03 · Capabilities ------------------------------------------- -->
+    <section class="ftth-section" aria-labelledby="ftth-section-title-caps">
+      <header class="ftth-section-header">
+        <span class="kicker">
+          <span class="kicker-dot"></span>
+          <span class="kicker-text font-mono">CAPACIDADES · 03</span>
+        </span>
+        <h2 id="ftth-section-title-caps" class="ftth-section-title font-display">Lo que FTTH-Copilot hace hoy.</h2>
+        <p class="ftth-section-lead">
+          Construido sobre el stack que ya está validado en producción. Sin claims de marketing — cada capacidad viene con su evidencia.
+        </p>
+      </header>
+      <FtthCopilotCapabilities locale={locale} />
+    </section>
+
+    <!-- Section 04 · Validation (component renders its own header) ---------- -->
+    <FtthCopilotValidation locale={locale} />
+  </main>
+
+  <Footer locale={locale} />
+</Layout>
+
+<style>
+  /* ---------- Page shell --------------------------------------------------- */
+  .ftth-page {
+    display: block;
+    padding-bottom: 0;
+  }
+
+  .ftth-section {
+    position: relative;
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .ftth-section { padding: 5rem 2rem; }
+  }
+
+  .ftth-section-anchor {
+    /* Pure scroll-target wrapper. Keeps the anchor offset above the
+       modes component without introducing a nested <section>. */
+    scroll-margin-top: 6rem;
+  }
+
+  /* ---------- Reusable kicker (mirrors ftth-* components) ----------------- */
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .kicker-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-marvel-red);
+    box-shadow: 0 0 12px var(--color-marvel-red-glow);
+    animation: energy-pulse 2s ease-in-out infinite;
+  }
+  .kicker-text {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    color: var(--color-marvel-gold);
+  }
+
+  /* ---------- Hero -------------------------------------------------------- */
+  .ftth-hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    padding: 7rem 1.25rem 4rem;
+    min-height: 78vh;
+    display: flex;
+    align-items: center;
+  }
+  @media (min-width: 768px) {
+    .ftth-hero { padding: 8rem 2rem 5rem; }
+  }
+  @media (min-width: 1024px) {
+    .ftth-hero { min-height: 82vh; padding-top: 9rem; }
+  }
+
+  .ftth-hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.95) 100%),
+      radial-gradient(circle at 25% 20%, rgba(237,29,36,0.18) 0%, transparent 55%),
+      radial-gradient(circle at 80% 70%, rgba(248,180,0,0.10) 0%, transparent 60%);
+  }
+  .ftth-hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(237,29,36,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(237,29,36,0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%);
+    opacity: 0.7;
+  }
+
+  .ftth-hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 56rem;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .ftth-hero-title {
+    font-size: clamp(2.25rem, 6vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    color: #FFFFFF;
+    margin: 0 0 1.5rem;
+  }
+  .ftth-hero-title-line {
+    display: block;
+  }
+  .ftth-hero-title-accent {
+    background: linear-gradient(135deg, #FFD75A 0%, #F8B400 35%, #ED1D24 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .ftth-hero-lead {
+    color: var(--color-on-surface-variant);
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    line-height: 1.6;
+    max-width: 44rem;
+    margin: 0 0 2.25rem;
+  }
+
+  .ftth-hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.875rem 1rem;
+    align-items: center;
+  }
+  .ftth-hero-cta {
+    font-size: 0.85rem;
+  }
+
+  /* Tertiary text-style button (GitHub link) */
+  .btn-tertiary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.625rem 0.25rem;
+    color: var(--color-marvel-gold-bright);
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    border-radius: var(--radius-marvel);
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .btn-tertiary:hover {
+    color: #FFFFFF;
+    border-bottom-color: var(--color-marvel-gold);
+  }
+
+  /* ---------- Section title (Flow / Modes / Capabilities) ----------------- */
+  .ftth-section-header {
+    text-align: center;
+    max-width: 48rem;
+    margin: 0 auto 3rem;
+  }
+  .ftth-section-title {
+    font-size: clamp(1.85rem, 4.2vw, 3rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin: 0 0 1rem;
+  }
+  .ftth-section-lead {
+    color: var(--color-on-surface-variant);
+    font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ---------- Reduced motion --------------------------------------------- */
+  @media (prefers-reduced-motion: reduce) {
+    .kicker-dot,
+    .ftth-hero-bg::after {
+      animation: none !important;
+    }
+  }
+</style>
