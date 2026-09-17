@@ -5,7 +5,7 @@
 **Repo:** `/home/tecnodespegue/tecnodespegue-landing`
 **Branch:** `feat/ftth-copilot-fase2-integration`
 **Base:** `origin/main` con T6 + T7 ya mergeados (PR #45 + PR #46)
-**Status:** 🟡 En planificación · T1–T5
+**Status:**  Implementado · T1–T5 completos · PR #47 abierto (sin merge)
 
 ---
 
@@ -110,15 +110,17 @@ odd/tasks/tecnodespegue-ftth-copilot-fase2-integration.md   (este doc)
   - `/en` (EN home): 8 occurrences de "FTTH-Copilot", hrefs a `/en/ftth-copilot` (mismos 4 entry points).
   - `/ftth-copilot` y `/en/ftth-copilot` intactas — sin cambios.
 
-### T4 · Update ODD doc + Engram mirror ⏳
-- [x] Marcar T2, T3, T4 como ✅ en este doc. ✅ (este edit)
-- [ ] Update Engram con progreso final + métricas.
+### T4 · Update ODD doc + Engram mirror ✅
+- [x] Marcar T2, T3, T4 como ✅ en este doc. ✅
+- [x] Update Engram (id 1132) con progreso final + métricas. ✅
 
-### T5 · Commit + push + PR
-- [ ] Conventional commit: `feat(integration): FTTH-Copilot Fase 2 — Portfolio + Nav + Home CTA`.
-- [ ] `git push -u origin feat/ftth-copilot-fase2-integration`.
-- [ ] Crear PR contra `main` con descripción clara.
-- [ ] **NO auto-merge.**
+### T5 · Commit + push + PR ✅
+- [x] Conventional commit `13e7573`: `feat(integration): FTTH-Copilot Fase 2 — Portfolio + Nav + Home CTA` (6 archivos, 411 inserciones). ✅
+- [x] `git push -u origin feat/ftth-copilot-fase2-integration` → branch nueva en origin. ✅
+- [x] PR **#47** abierto contra `main`: https://github.com/Rene-Kuhm/tecnodespegue-landing/pull/47 — OPEN, MERGEABLE, 6 files, +411/−0. ✅
+- [x] **NO auto-merge** — esperando review del usuario. ✅
+
+---
 
 ## Authorized Scope
 
@@ -126,22 +128,36 @@ T1–T5 según este documento. Cualquier desvío requiere autorización explíci
 
 ## Acceptance Criteria
 
-- [ ] FTTH-Copilot aparece como 1° proyecto en el Portfolio (ES + EN) con `port-card-lg`.
-- [ ] El Nav tiene un nuevo link "FTTH-Copilot" entre Portfolio y Stack (ES + EN).
-- [ ] El home muestra el banner discreto entre Hero y HeroStatStrip (ES + EN).
-- [ ] Ningún cambio a las páginas `/ftth-copilot` o `/en/ftth-copilot`.
-- [ ] SEO intacto: hreflang, canonical, OG, Twitter, JSON-LD.
-- [ ] Performance no cae bajo 98 mobile / 99 desktop.
-- [ ] Conventional commit, sin Co-Authored-By, sin AI attribution.
-- [ ] PR abierto contra `main`, sin auto-merge.
+- [x] FTTH-Copilot aparece como 1° proyecto en el Portfolio (ES + EN) con `port-card-lg`.
+- [x] El Nav tiene un nuevo link "FTTH-Copilot" entre Portfolio y Stack (ES + EN).
+- [x] El home muestra el banner discreto entre Hero y el bloque siguiente (ES: HeroStatStrip · EN: TrustSignals — la home EN no tiene HeroStatStrip).
+- [x] Ningún cambio a las páginas `/ftth-copilot` o `/en/ftth-copilot`.
+- [x] SEO intacto: hreflang, canonical, OG, Twitter, JSON-LD (no se tocaron esas páginas ni el head).
+- [ ] **Performance ≥98 mobile / 99 desktop — NO medida.** Pendiente de correr Lighthouse/PageSpeed una vez deployado el PR. El build no tiene warnings y no se agregó JS ni dependencias (banner CSS-only), así que no se espera regresión.
+- [x] Conventional commit, sin Co-Authored-By, sin AI attribution.
+- [x] PR abierto contra `main`, sin auto-merge.
 
-## Verification Evidence (a completar)
+## Verification Evidence
 
-- [ ] Build output (post-T3)
-- [ ] HTTP 200 en las 4 rutas
-- [ ] Greps verificando Portfolio tiene 7 proyectos, Nav tiene 8 links, banner renderiza
-- [ ] PR URL (post-T5)
+- **Build:** `npm run build` → PASS, 1.35s, sin warnings.
+- **Typecheck:** `npx astro check` → 0 errors, 0 warnings (73 hints pre-existentes, ninguno en archivos tocados).
+- **HTTP 200:** `/`, `/en`, `/ftth-copilot`, `/en/ftth-copilot`.
+- **HTML renderizado:** 8 occurrences de "FTTH-Copilot" en cada home; hrefs a `/ftth-copilot` (ES) y `/en/ftth-copilot` (EN) desde los 4 entry points: nav desktop, nav mobile, card del Portfolio, CTA del banner.
+- **Commit:** `13e7573` — 6 archivos, 411 inserciones, 0 borrados.
+- **PR:** https://github.com/Rene-Kuhm/tecnodespegue-landing/pull/47 (OPEN, MERGEABLE)
+- **Engram mirror:** observación id 1132, topic key `odd/tecnodespegue-ftth-copilot-fase2-integration/tasks`.
+- **Working tree:** limpio tras el commit.
+
+### Notas / desvíos
+
+- El componente `FtthCopilotHomeBanner.astro` quedó en 230 líneas (target era ~180). El writer priorizó CSS legible y tipado; se aceptó.
+- `data-magnetic` NO se aplicó al CTA del banner: no existe handler global (solo scopeado dentro de `Nav.astro`), habría sido un no-op silencioso.
+- Dependabot reporta 11 vulnerabilidades (1 crítica, 8 altas, 2 moderadas) en la rama default. **Pre-existentes**, fuera de alcance.
 
 ## Next Step
 
-Arrancar con **T2 · Implementar las 3 integraciones**, delegando a un writer con brief detallado.
+Fase 2 cerrada, esperando review/merge del PR #47. Cuando se mergee:
+
+1. Verificar el deploy de Vercel con los 3 puntos de entrada.
+2. Correr Lighthouse sobre la home deployada para cerrar el criterio de performance.
+3. Backlog candidato (requiere autorización nueva): OG image específica para `/ftth-copilot`, demo embebida 30–45s, atacar las 11 alertas de Dependabot.
