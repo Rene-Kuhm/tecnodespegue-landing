@@ -15,6 +15,7 @@ import GlowOrbs from '../components/GlowOrbs.astro';
 import FtthCopilotFlow from '../components/ftth-copilot/FtthCopilotFlow.astro';
 import FtthCopilotModes from '../components/ftth-copilot/FtthCopilotModes.astro';
 import FtthCopilotCapabilities from '../components/ftth-copilot/FtthCopilotCapabilities.astro';
+import FtthCopilotEvidence from '../components/ftth-copilot/FtthCopilotEvidence.astro';
 import FtthCopilotValidation from '../components/ftth-copilot/FtthCopilotValidation.astro';
 import type { Locale } from '../i18n';
 
@@ -111,7 +112,10 @@ const trialMailto = `mailto:${trialEmail}?subject=${encodeURIComponent(trialSubj
       <FtthCopilotCapabilities locale={locale} />
     </section>
 
-    <!-- Section 04 · Validation (component renders its own header) ---------- -->
+    <!-- Section 04 · Verifiable Engineering (component renders its own header) -->
+    <FtthCopilotEvidence locale={locale} />
+
+    <!-- Section 05 · Validation (component renders its own header) -->
     <FtthCopilotValidation locale={locale} />
   </main>
 
