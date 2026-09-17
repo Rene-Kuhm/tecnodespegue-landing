@@ -1,0 +1,248 @@
+---
+/**
+ * FtthCopilotEvidence.astro — "Verifiable Engineering" block.
+ *
+ * Compact 4-item spec sheet that points to authoritative artifacts in
+ * the FTTH-Copilot monorepo: compatibility matrix, TruthGate/abstention
+ * behavior, CI workflows + E2E/API tests, and the public roadmap.
+ *
+ * Every claim traces to a tracked file (no invented metrics):
+ *  - 12 vendors · 19 families  → docs/compatibility-matrix.md
+ *  - TruthGate / abstention    → packages/evidence (and roadmap §2)
+ *  - 4 GitHub Actions + E2E    → .github/workflows/, apps/web/e2e/
+ *  - Current / Validation / Next → docs/roadmap-investigacion-cognitiva.md
+ */
+
+import type { Locale } from '../../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale: Locale = Astro.props.locale ?? 'es';
+
+const copy = {
+  es: {
+    kicker: 'INGENIERÍA · VERIFICABLE',
+    title: 'Lo que se puede auditar hoy.',
+    items: [
+      {
+        chip: 'COMPATIBILIDAD OLT',
+        title: '12 fabricantes · 19 familias',
+        body: 'Perfiles auditados para FiberHome, Huawei, Nokia, ZTE, Adtran, Calix, C-Data, DZS, VSOL, Zyxel, BDCOM, Ubiquiti. Estado declarado por nivel de soporte (L1 documentado, L2 simulado). L3 (laboratorio) y L4 (campo) pendientes de validación — sin claims inflados.',
+      },
+      {
+        chip: 'EVIDENCIA',
+        title: 'TruthGate y abstención explícita',
+        body: 'Cada afirmación del diagnóstico se valida contra la telemetría original. Cuando la evidencia es insuficiente, el sistema se abstiene en lugar de inventar.',
+      },
+      {
+        chip: 'TESTS · CI',
+        title: 'CI con Playwright + CodeQL',
+        body: '4 workflows de GitHub Actions (CI, CodeQL, eval nightly, auditoría trimestral de fuentes). Suite E2E con Playwright + tests por ruta de API. Monorepo pnpm + Turbo.',
+      },
+      {
+        chip: 'ESTADO · ROADMAP',
+        title: 'Current / Validation / Next',
+        body: 'El ROADMAP público separa capacidades implementadas (Current) de trabajo que requiere evidencia operacional (Validation) — incluyendo el pilot ISP que estamos buscando.',
+      },
+    ],
+  },
+  en: {
+    kicker: 'ENGINEERING · VERIFIABLE',
+    title: "What's auditable today.",
+    items: [
+      {
+        chip: 'OLT COMPATIBILITY',
+        title: '12 vendors · 19 hardware families',
+        body: 'Audited profiles for FiberHome, Huawei, Nokia, ZTE, Adtran, Calix, C-Data, DZS, VSOL, Zyxel, BDCOM, Ubiquiti. Support levels declared per family (L1 documented, L2 simulated). L3 (lab) and L4 (field) pending validation — no inflated claims.',
+      },
+      {
+        chip: 'EVIDENCE',
+        title: 'TruthGate and structured abstention',
+        body: 'Each diagnosis statement is validated against original telemetry. When evidence is insufficient, the system abstains rather than inventing.',
+      },
+      {
+        chip: 'TESTS · CI',
+        title: 'CI with Playwright + CodeQL',
+        body: '4 GitHub Actions workflows (CI, CodeQL, nightly eval, quarterly sources audit). Playwright E2E suite + per-route API tests. pnpm + Turbo monorepo.',
+      },
+      {
+        chip: 'ROADMAP STATUS',
+        title: 'Current / Validation / Next',
+        body: 'The public ROADMAP separates implemented capabilities (Current) from work that requires operational evidence (Validation) — including the ISP pilot we are seeking.',
+      },
+    ],
+  },
+}[locale];
+---
+
+<section class="ftth-evi relative" data-ftth-evidence aria-labelledby="ftth-evi-title">
+  <header class="ftth-evi-header">
+    <span class="kicker">
+      <span class="kicker-dot"></span>
+      <span class="kicker-text font-mono">{copy.kicker}</span>
+    </span>
+    <h2 id="ftth-evi-title" class="ftth-evi-title font-display">{copy.title}</h2>
+  </header>
+
+  <ul class="ftth-evi-grid" role="list">
+    {copy.items.map((item) => (
+      <li class="ftth-evi-card" data-ftth-evi>
+        <div class="ftth-evi-text">
+          <span class="ftth-evi-chip font-mono">{item.chip}</span>
+          <h3 class="ftth-evi-card-title font-display">{item.title}</h3>
+          <p class="ftth-evi-card-body">{item.body}</p>
+        </div>
+        <div class="ftth-evi-scan" aria-hidden="true"></div>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .ftth-evi {
+    width: 100%;
+  }
+
+  /* Header (kicker + h2 only — the page-level <section> wrapper provides
+     the lead, so we don't duplicate it here). */
+  .ftth-evi-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    max-width: 48rem;
+    margin-inline: auto;
+  }
+
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .kicker-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-marvel-red);
+    box-shadow: 0 0 12px var(--color-marvel-red-glow);
+    animation: energy-pulse 2s ease-in-out infinite;
+  }
+  .kicker-text {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    color: var(--color-marvel-gold);
+  }
+
+  .ftth-evi-title {
+    font-weight: 900;
+    font-size: clamp(1.85rem, 4.2vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin: 0;
+  }
+
+  /* Grid: 1 col mobile → 2 col tablet/desktop (spec-sheet density) */
+  .ftth-evi-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 768px) {
+    .ftth-evi-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+  }
+
+  /* Card — compact glass with gold hover border + scan line */
+  .ftth-evi-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1.5rem 1.5rem;
+    border-radius: var(--radius-card);
+    background: rgba(20, 20, 26, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px) saturate(160%);
+    -webkit-backdrop-filter: blur(10px) saturate(160%);
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s var(--ease-marvel), box-shadow 0.3s;
+  }
+
+  .ftth-evi-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(248, 180, 0, 0.4);
+    box-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.5);
+  }
+
+  .ftth-evi-text {
+    position: relative;
+    z-index: 2;
+    min-width: 0;
+  }
+
+  .ftth-evi-chip {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    color: var(--color-marvel-gold);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .ftth-evi-card-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: #FFFFFF;
+    margin: 0 0 0.625rem;
+    line-height: 1.25;
+  }
+
+  .ftth-evi-card-body {
+    color: var(--color-on-surface-variant);
+    font-size: 0.875rem;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* Scan line in hover (mirrors FtthCopilotCapabilities pattern) */
+  .ftth-evi-scan {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-marvel-gold), transparent);
+    opacity: 0;
+    transform: translateY(0);
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .ftth-evi-card:hover .ftth-evi-scan {
+    opacity: 1;
+    animation: ftth-evi-scan-move 1.6s linear infinite;
+  }
+  @keyframes ftth-evi-scan-move {
+    from { transform: translateY(0); }
+    to   { transform: translateY(220px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ftth-evi-card,
+    .kicker-dot,
+    .ftth-evi-card:hover .ftth-evi-scan {
+      animation: none !important;
+      transition: none !important;
+    }
+    .ftth-evi-card:hover .ftth-evi-scan { opacity: 0; }
+  }
+</style>

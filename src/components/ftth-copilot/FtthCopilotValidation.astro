@@ -15,9 +15,9 @@ interface Props {
 const locale: Locale = Astro.props.locale ?? 'es';
 
 const email = 'renekuhm2@gmail.com';
-const whatsappUrl = 'https://wa.me/5492334409838?text=Hola,%20me%20interesa%20la%20validación%20de%20FTTH-Copilot';
-const emailSubjectEs = 'Validación FTTH-Copilot — <empresa>';
-const emailSubjectEn = 'FTTH-Copilot Validation — <company>';
+const whatsappUrl = 'https://wa.me/5492334409838?text=Hola,%20quiero%20solicitar%20una%20prueba%20t%C3%A9cnica%20de%20FTTH-Copilot';
+const emailSubjectEs = 'Prueba técnica FTTH-Copilot — <empresa>';
+const emailSubjectEn = 'FTTH-Copilot technical trial — <company>';
 const mailtoHref = (subject: string) =>
   `mailto:${email}?subject=${encodeURIComponent(subject)}`;
 
@@ -26,18 +26,18 @@ const copy = {
     kicker: 'VALIDACIÓN · EN PROGRESO',
     title: 'Buscamos ISPs para validación técnica',
     lead: 'FTTH-Copilot está entrando en etapa de validación sobre infraestructura FTTH real. Buscamos ISPs, operadores NOC e integradores interesados en probar la plataforma y aportar feedback operativo.',
-    primary: 'Quiero participar en la validación',
+    primary: 'Solicitar prueba técnica',
     whatsapp: 'WhatsApp directo',
-    emailAria: 'Enviar email para participar en la validación',
+    emailAria: 'Enviar email para solicitar prueba técnica',
     whatsappAria: 'Abrir WhatsApp directo con el equipo',
   },
   en: {
     kicker: 'VALIDATION · IN PROGRESS',
     title: 'Looking for ISPs for technical validation',
     lead: "FTTH-Copilot is entering validation on real FTTH infrastructure. We're looking for ISPs, NOC operators, and integrators interested in piloting the platform and contributing operational feedback.",
-    primary: 'I want to join the validation',
+    primary: 'Request technical trial',
     whatsapp: 'Direct WhatsApp',
-    emailAria: 'Send email to join the validation',
+    emailAria: 'Send email to request a technical trial',
     whatsappAria: 'Open direct WhatsApp with the team',
   },
 }[locale];

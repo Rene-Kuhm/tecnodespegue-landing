@@ -16,9 +16,6 @@ const locale: Locale = Astro.props.locale ?? 'es';
 
 const copy = {
   es: {
-    kicker: 'MODOS · DIAGNÓSTICO',
-    title: 'Tres modos, una plataforma.',
-    lead: 'El mismo núcleo decide cuánto IA necesita cada consulta. Sólo escala cuando hay valor real.',
     modes: [
       {
         index: '01',
@@ -44,9 +41,6 @@ const copy = {
     ],
   },
   en: {
-    kicker: 'MODES · DIAGNOSTIC',
-    title: 'Three modes, one platform.',
-    lead: 'The same core decides how much AI each query actually needs. It scales only when there is real value.',
     modes: [
       {
         index: '01',
@@ -75,14 +69,6 @@ const copy = {
 ---
 
 <section class="ftth-modes relative" data-ftth-modes>
-  <header class="ftth-modes-header">
-    <span class="kicker">
-      <span class="kicker-dot"></span>
-      <span class="kicker-text font-mono">{copy.kicker}</span>
-    </span>
-    <h2 class="ftth-modes-title font-display">{copy.title}</h2>
-    <p class="ftth-modes-lead">{copy.lead}</p>
-  </header>
 
   <ul class="ftth-modes-grid" role="list">
     {copy.modes.map((mode) => (
@@ -105,51 +91,9 @@ const copy = {
     width: 100%;
   }
 
-  /* Header */
-  .ftth-modes-header {
-    text-align: center;
-    margin-bottom: 3rem;
-    max-width: 48rem;
-    margin-inline: auto;
-  }
-
-  .kicker {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
-  }
-  .kicker-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--color-marvel-red);
-    box-shadow: 0 0 12px var(--color-marvel-red-glow);
-    animation: energy-pulse 2s ease-in-out infinite;
-  }
-  .kicker-text {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.4em;
-    color: var(--color-marvel-gold);
-  }
-
-  .ftth-modes-title {
-    font-weight: 900;
-    font-size: clamp(2rem, 4.5vw, 3.25rem);
-    line-height: 1;
-    letter-spacing: -0.02em;
-    text-transform: uppercase;
-    color: #FFFFFF;
-    margin: 0 0 1rem;
-  }
-
-  .ftth-modes-lead {
-    color: var(--color-on-surface-variant);
-    font-size: 1rem;
-    line-height: 1.6;
-    margin: 0;
-  }
+  /* Header removed in the conversion-optimization pass. The page-level
+     <section> wrapper in src/pages/ftth-copilot.astro provides its own
+     kicker + h2 + lead to avoid duplicate headings. */
 
   /* Grid */
   .ftth-modes-grid {
@@ -250,8 +194,7 @@ const copy = {
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ftth-modes-card,
-    .kicker-dot {
+    .ftth-modes-card {
       animation: none !important;
       transition: none !important;
     }

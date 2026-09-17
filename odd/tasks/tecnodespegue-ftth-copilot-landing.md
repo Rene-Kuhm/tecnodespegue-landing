@@ -112,10 +112,29 @@ src/
 - [x] **Verificación:** Lighthouse NO corrido en este ambiente (no hay Chrome DevTools). El build sin warnings y la verificación HTTP/HTML son el proxy funcional disponible.
 
 ### T6 · Commit + push + PR
-- [ ] Conventional commit: `feat(landing): add FTTH-Copilot dedicated landing (ES + EN)`.
-- [ ] `git push -u origin feat/ftth-copilot-landing`.
-- [ ] Crear PR contra `main` con descripción clara.
-- [ ] **Pendiente:** autorización explícita del usuario para push + PR.
+- [x] Conventional commit: `feat(landing): add FTTH-Copilot dedicated landing (ES + EN)`. Commit hash `946c742`. 7 archivos, 1659 insertions. Sin Co-Authored-By ni AI attribution. ✅
+- [x] `git push -u origin feat/ftth-copilot-landing` → push OK. ✅
+- [x] PR contra `main`: **https://github.com/Rene-Kuhm/tecnodespegue-landing/pull/45** — descripción completa con summary, design decisions, verification, future phases. NO auto-merge. ✅
+- [x] **Verificación:** PR URL devuelto, listo para revisión. ✅
+
+### T7 · Final pass — conversion optimization (per user feedback post-review)
+- [x] **Eliminar redundancia de títulos** entre page-level headers y component-internal headers:
+  - Modes: page mantiene "Tres modos. Un solo router." / "Three modes. One router."; componente FtthCopilotModes pierde su `<header>` interno (−57 líneas).
+  - Capabilities: page mantiene "Lo que FTTH-Copilot hace hoy." / "What FTTH-Copilot does today."; componente FtthCopilotCapabilities pierde su `<header>` interno (−57 líneas).
+- [x] **Nuevo bloque "Ingeniería verificable"** — componente `FtthCopilotEvidence.astro` creado (248 líneas) con 4 items verificables del repo FTTH-Copilot:
+  - Compatibilidad OLT (12 vendors · 19 families · L1/L2 levels) → `docs/compatibility-matrix.md`
+  - TruthGate + abstención estructurada → `docs/roadmap-investigacion-cognitiva.md`
+  - CI: 4 GitHub Actions workflows + Playwright E2E + per-route API tests → `.github/workflows/` + `apps/web/e2e/` + `apps/web/tests/api/`
+  - ROADMAP state (Current / Validation / Next) → `ROADMAP.md`
+  - **NO** se inventaron métricas, latencias, uptimes ni customer counts.
+- [x] **CTA final suavizado**:
+  - ES: `Quiero participar en la validación` → `Solicitar prueba técnica` (label + aria-label)
+  - EN: `I want to join the validation` → `Request technical trial` (label + aria-label)
+  - mailto subjects + WhatsApp URL message actualizados para coherencia.
+  - WhatsApp se mantiene como CTA secundario.
+- [x] Insertar `<FtthCopilotEvidence locale={locale} />` entre `<FtthCopilotCapabilities>` y `<FtthCopilotValidation>` en ambas páginas (ES + EN).
+- [x] **Verificación:** `npx astro check` PASS (0 errors, 0 warnings, 73 hints, 1 hint pre-existente en page Icon import). `npm run build` PASS (~1.4s, no warnings en archivos tocados). HTTP 200 + "Solicitar prueba técnica" + "TruthGate" + "12 fabricantes" en ES renderizado; "Request technical trial" + "12 vendors" en EN renderizado. ✅
+- [x] **Net change T7:** +142 líneas a través de 6 archivos (1 nuevo, 5 modificados). Working tree dirty, listo para commit.
 
 ### T6 · Commit + push + PR
 - [ ] Conventional commits: `feat(landing): add FTTH-Copilot dedicated landing (ES + EN)`.
