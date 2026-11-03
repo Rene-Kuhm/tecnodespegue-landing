@@ -33,7 +33,7 @@
     "@astrojs/check": "^0.9.9",
     "@playwright/test": "^1.60.0",
     "@types/three": "^0.184.1",
-    "@vercel/og": "^1.0.0",
+    "@vercel/og": "^1.0.3",
     "playwright": "^1.60.0",
     "typescript": "^5.9.3"
   },
